@@ -6,12 +6,21 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/03 20:58:50 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/03 21:54:00 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <readline/readline.h>
 #include "../minishell.h"
+
+// Yo creo que deberíamos hacer un split del input
+int	ft_process_input(char *input)
+{
+	// Process the input command
+	printf("Processing input: %s\n", input);
+
+	return (0);
+}
 
 int	ft_minishell(void)
 {
@@ -23,7 +32,12 @@ int	ft_minishell(void)
 		input = readline("minishell> ");
 		if (!input)
 			break ;
-			
+		if (input && *input)
+		{
+			add_history(input);
+			if (ft_process_input(input))
+				return (free(input), -1);
+		}
 		free(input);
 	}
 	
