@@ -1,20 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/03 13:18:28 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/03 17:59:27 by agarcia          ###   ########.fr       */
+/*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
+/*   Updated: 2025/09/03 17:50:25 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <readline/readline.h>
+#include "../minishell.h"
 
-int main(void)
+int	ft_minishell(void)
 {
-	ft_minishell();
-	ft_putstr("Hello, Minishell!\n");
+	char *input;
+	while (1)
+	{
+		input = readline("minishell> ");
+		if (!input)
+			break ;
+			
+		free(input);
+	}
+	
 	return (0);
 }

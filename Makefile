@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/03 16:09:56 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/03 18:05:32 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,22 +27,22 @@ LIB_DIR = libft
 OBJ_DIR = objs
 
 # Library files
-LIB_NAME = ${LIB_DIR}/libft.a
+LIB_NAME = $(LIB_DIR)/libft.a
 
 # Main Source Project
-MAIN_SOURCE = ${SRC_DIR}/main.c
+MAIN_SOURCE = $(SRC_DIR)/main.c
 
 # Source files
-MINISHELL_SRCS = ${SRC_DIR}/main.c
+MINISHELL_SRCS = 	$(SRC_DIR)/utils/ft_minishell.c\
 
 # Main object files
 MAIN_OBJECT = $(MAIN_SOURCE:%.c=$(OBJ_DIR)/%.o)
 
 # Source objects
 
-MINISHELL_OBJS = $(MINISHELL_SOURCE:%.c=$(OBJ_DIR)/%.o)
+MINISHELL_OBJS = $(MINISHELL_SRCS:%.c=$(OBJ_DIR)/%.o)
 
-all: ${LIB_NAME} ${NAME}
+all: $(LIB_NAME) $(NAME)
 	@echo "\033[36mEl ejecutable '$(NAME)' está listo para usarse.\033[0m"
 
 # Compile the library
@@ -50,8 +50,8 @@ $(LIB_NAME):
 	@$(MAKE) -C $(LIB_DIR)
 
 # Compile the project
-${NAME}: ${MAIN_OBJECT} $(MINISHELL_OBJS)
-	@${CC} ${CFLAGS} ${MAIN_OBJECT} -o ${NAME} ${LIB_NAME}
+$(NAME): $(MINISHELL_OBJS) $(MAIN_OBJECT)
+	@$(CC) $(CFLAGS) $(MINISHELL_OBJS) $(MAIN_OBJECT) -o $(NAME) $(LIB_NAME)
 	@chmod 755 $(NAME)
 	@if [ $$? -eq 0 ]; then \
 		echo "\033[32mCompilación finalizada correctamente.\033[0m"; \
@@ -78,7 +78,7 @@ clean:
 fclean:
 	@rm -rf $(OBJ_DIR)
 	@$(MAKE) -C $(LIB_DIR) fclean
-	@rm -f ${NAME}
+	@rm -f $(NAME)
 	@if [ $$? -eq 0 ]; then \
 		echo "\033[32mLibrerias, objetos y ejecutable eliminados correctamente.\033[0m"; \
 	else \
