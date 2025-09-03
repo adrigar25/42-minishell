@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/03 22:48:23 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/03 22:56:24 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ft_minishell(void)
 	ft_msg_start();
 	while (1)
 	{
-		input = readline("minishell> ");
+		input = readline("\033[90mminishell> \033[0m");
 		if (!input)
 			break ;
 		if (input && *input)
