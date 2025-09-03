@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:18:28 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/03 22:25:45 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/03 22:45:19 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int main(void)
 {
-	ft_minishell();
+	if (ft_minishell())
+		return (1);
 	return (0);
 }
