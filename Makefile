@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
+#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/03 18:05:32 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/03 20:29:58 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,9 @@ NAME = minishell
 
 # Compilation flags
 CFLAGS = -Wall -Wextra -Werror
+
+# Linker flags
+LDFLAGS = -lreadline
 
 # Compilator
 CC = cc
@@ -23,6 +26,7 @@ AR = ar rcs
 
 # Directories
 SRC_DIR = src
+UTILS_DIR = $(SRC_DIR)/utils
 LIB_DIR = libft
 OBJ_DIR = objs
 
@@ -33,7 +37,8 @@ LIB_NAME = $(LIB_DIR)/libft.a
 MAIN_SOURCE = $(SRC_DIR)/main.c
 
 # Source files
-MINISHELL_SRCS = 	$(SRC_DIR)/utils/ft_minishell.c\
+MINISHELL_SRCS = \
+	$(UTILS_DIR)/ft_minishell.c\
 
 # Main object files
 MAIN_OBJECT = $(MAIN_SOURCE:%.c=$(OBJ_DIR)/%.o)
@@ -51,7 +56,7 @@ $(LIB_NAME):
 
 # Compile the project
 $(NAME): $(MINISHELL_OBJS) $(MAIN_OBJECT)
-	@$(CC) $(CFLAGS) $(MINISHELL_OBJS) $(MAIN_OBJECT) -o $(NAME) $(LIB_NAME)
+	@$(CC) $(CFLAGS) $(MINISHELL_OBJS) $(MAIN_OBJECT) -o $(NAME) $(LIB_NAME) $(LDFLAGS)
 	@chmod 755 $(NAME)
 	@if [ $$? -eq 0 ]; then \
 		echo "\033[32mCompilación finalizada correctamente.\033[0m"; \
