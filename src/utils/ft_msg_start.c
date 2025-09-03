@@ -1,31 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_minishell.c                                     :+:      :+:    :+:   */
+/*   ft_msg_start.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/03 20:58:50 by adriescr         ###   ########.fr       */
+/*   Created: 2025/09/03 20:58:40 by adriescr          #+#    #+#             */
+/*   Updated: 2025/09/03 20:58:56 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <readline/readline.h>
 #include "../minishell.h"
 
-int	ft_minishell(void)
+int	ft_msg_start(void)
 {
-	char *input;
-
-	ft_msg_start();
-	while (1)
-	{
-		input = readline("minishell> ");
-		if (!input)
-			break ;
-			
-		free(input);
-	}
-	
+	system("clear");
+	ft_print_file(WELCOME_MSG_TXT, "\033[0;32m");
+	ft_putstr("\n");
+	ft_putstr("\033[0;34mWelcome to Minishell!\033[0m\n");
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:25:07 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/03 14:25:28 by adriescr         ###   ########.fr        #
+#    Updated: 2025/09/03 20:45:49 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,8 @@ FILES_DIR = files
 FILE_UTILS = \
 	$(FILES_DIR)/ft_open_file_read.c \
 	$(FILES_DIR)/ft_open_file_write.c \
+	$(FILES_DIR)/ft_print_file.c \
+	$(FILES_DIR)/ft_close_file.c \
 
 # My libft functions
 MY_LIBFT = \
@@ -50,7 +52,7 @@ MY_LIBFT = \
 	ft_rand.c \
 	ft_putnbr.c \
 	$(GET_NEXT_LINE_DIR)/get_next_line.c \
-	$(FILE_UTILS)
+	$(FILE_UTILS) \
 
 # OBJECTS
 OBJS = $(MY_LIBFT:.c=.o)

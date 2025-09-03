@@ -6,7 +6,7 @@
 #    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/03 20:29:58 by adriescr         ###   ########.fr        #
+#    Updated: 2025/09/03 20:59:09 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,8 @@ MAIN_SOURCE = $(SRC_DIR)/main.c
 
 # Source files
 MINISHELL_SRCS = \
-	$(UTILS_DIR)/ft_minishell.c\
+	$(UTILS_DIR)/ft_minishell.c \
+	$(UTILS_DIR)/ft_msg_start.c \
 
 # Main object files
 MAIN_OBJECT = $(MAIN_SOURCE:%.c=$(OBJ_DIR)/%.o)

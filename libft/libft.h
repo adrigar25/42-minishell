@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:22:52 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/03 14:26:46 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/03 20:49:06 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 
 # define BUFFER_SIZE 1024
+# define RESET_COLOR "\033[0m"
 
 // Functions lib
 int				ft_putstr_error(const char *str);
@@ -47,5 +48,6 @@ char			*ft_get_next_line(int fd);
 int				ft_close_file(int fd);
 int				ft_open_file_read(const char *filename);
 int				ft_open_file_write(const char *filename);
+int				ft_print_file(char *filename, char *color);
 
 #endif

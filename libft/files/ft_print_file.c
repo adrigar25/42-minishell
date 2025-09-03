@@ -1,31 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_minishell.c                                     :+:      :+:    :+:   */
+/*   ft_print_file.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/03 20:58:50 by adriescr         ###   ########.fr       */
+/*   Created: 2025/09/03 20:44:56 by adriescr          #+#    #+#             */
+/*   Updated: 2025/09/03 20:54:34 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <readline/readline.h>
-#include "../minishell.h"
+#include "../libft.h"
 
-int	ft_minishell(void)
+int	ft_print_file(char *filename, char *color)
 {
-	char *input;
+	int		fd;
+	char	*line;
 
-	ft_msg_start();
+	fd = ft_open_file_read(filename);
+	if (fd == -1)
+		return (-1);
 	while (1)
 	{
-		input = readline("minishell> ");
-		if (!input)
+		line = ft_get_next_line(fd);
+		if (!line)
 			break ;
-			
-		free(input);
+		if (color)
+			ft_putstr(color);
+		ft_putstr(line);
+		if (color)
+			ft_putstr(RESET_COLOR);
+		free(line);
 	}
-	
+	ft_close_file(fd);
 	return (0);
 }
