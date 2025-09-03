@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
+#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/03 14:14:48 by adriescr         ###   ########.fr        #
+#    Updated: 2025/09/03 15:52:08 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ AR = ar rcs
 
 # Directories
 SRC_DIR = src
-LIB_DIR = ${SRC_DIR}/libft
+LIB_DIR = libft
 
 # Library files
 LIB_NAME = ${LIB_DIR}/libft.a
