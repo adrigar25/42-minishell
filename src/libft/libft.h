@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:22:52 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/03 13:28:52 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/03 14:26:46 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,14 @@ char			*ft_strdup(const char *s);
 char			*ft_substr(char *s, unsigned int start, size_t len);
 char			*ft_strchr(const char *s, int c);
 int				ft_strcmp(const char *s1, const char *s2);
-int				ft_open_file_read(const char *filename);
-int				ft_open_file_write(const char *filename);
+
 // Especial functions
 unsigned int	ft_simple_rand(unsigned int *seed);
 // Get Next Line
 char			*ft_get_next_line(int fd);
+// File utils
+int				ft_close_file(int fd);
+int				ft_open_file_read(const char *filename);
+int				ft_open_file_write(const char *filename);
 
 #endif

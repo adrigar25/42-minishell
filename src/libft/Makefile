@@ -6,7 +6,7 @@
 #    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:25:07 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/03 14:14:42 by adriescr         ###   ########.fr        #
+#    Updated: 2025/09/03 14:25:28 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,13 @@ CFLAGS = -Wall -Wextra -Werror
 
 # Directories
 GET_NEXT_LINE_DIR = get_next_line
+# File utils
+FILES_DIR = files
+
+# File utils functions
+FILE_UTILS = \
+	$(FILES_DIR)/ft_open_file_read.c \
+	$(FILES_DIR)/ft_open_file_write.c \
 
 # My libft functions
 MY_LIBFT = \
@@ -41,9 +48,9 @@ MY_LIBFT = \
 	ft_strchr.c \
 	ft_strcmp.c \
 	ft_rand.c \
-	ft_file_utils.c \
 	ft_putnbr.c \
-	$(GET_NEXT_LINE_DIR)/get_next_line.c
+	$(GET_NEXT_LINE_DIR)/get_next_line.c \
+	$(FILE_UTILS)
 
 # OBJECTS
 OBJS = $(MY_LIBFT:.c=.o)
