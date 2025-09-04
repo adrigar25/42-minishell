@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
+#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/04 15:30:03 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/04 17:45:28 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,9 @@ MAIN_SOURCE = $(SRC_DIR)/main.c
 MINISHELL_SRCS = \
 	$(UTILS_DIR)/ft_minishell.c \
 	$(UTILS_DIR)/ft_msg_start.c \
+	$(UTILS_DIR)/ft_get_directory_path.c \
+	$(SRC_DIR)/execution/ft_count_args.c \
+	$(SRC_DIR)/execution/ft_skip_argument.c \
 
 # Main object files
 MAIN_OBJECT = $(MAIN_SOURCE:%.c=$(OBJ_DIR)/%.o)

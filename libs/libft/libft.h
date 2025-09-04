@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:22:52 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/03 20:49:06 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/04 17:32:15 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,10 @@ char			*ft_strdup(const char *s);
 char			*ft_substr(char *s, unsigned int start, size_t len);
 char			*ft_strchr(const char *s, int c);
 int				ft_strcmp(const char *s1, const char *s2);
+char			*ft_strstr(const char *haystack, const char *needle);
+char			*ft_strcpy(char *dest, const char *src);
+void			ft_skip_whitespace(const char *cmd, int *i);
+int				ft_isspace(int c);
 
 // Especial functions
 unsigned int	ft_simple_rand(unsigned int *seed);

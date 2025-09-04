@@ -6,7 +6,7 @@
 #    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:25:07 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/03 20:45:49 by adriescr         ###   ########.fr        #
+#    Updated: 2025/09/04 17:32:20 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,10 @@ MY_LIBFT = \
 	ft_strcmp.c \
 	ft_rand.c \
 	ft_putnbr.c \
+	ft_strstr.c \
+	ft_strcpy.c \
+	ft_skip_whitespace.c \
+	ft_isspace.c \
 	$(GET_NEXT_LINE_DIR)/get_next_line.c \
 	$(FILE_UTILS) \
 
