@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 16:48:08 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/04 16:48:57 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/04 18:55:31 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@
  * @param needle     The substring to find.
  *                   La subcadena a encontrar.
  *
- * @returns A pointer to the first occurrence of needle in haystack, or NULL if not found.
- *          Un puntero a la primera aparición de needle en haystack, o NULL si no se encuentra.
+ * @returns A pointer to the first occurrence of needle in haystack, 
+ * 			or NULL if not found.
+ *          Un puntero a la primera aparición de needle en haystack, 
+ * 			o NULL si no se encuentra.
  */
 char	*ft_strstr(const char *haystack, const char *needle)
 {

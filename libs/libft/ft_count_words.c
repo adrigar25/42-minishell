@@ -6,16 +6,18 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 13:23:07 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/03 13:29:11 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/04 18:53:53 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 /*
- * ENGLISH: Counts the number of words in a string, separated by a given delimiter.
+ * ENGLISH: Counts the number of words in a string,
+ * 			separated by a given delimiter.
  *
- * SPANISH: Cuenta el número de palabras en una cadena, separadas por un delimitador dado.
+ * SPANISH: Cuenta el número de palabras en una cadena, 
+ * 			separadas por un delimitador dado.
  *
  * @param s   The string to count words in. /
  *            La cadena en la que contar las palabras.

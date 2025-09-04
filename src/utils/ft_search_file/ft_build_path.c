@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_build_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/03 13:18:28 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/04 18:52:45 by adriescr         ###   ########.fr       */
+/*   Created: 2025/09/04 18:35:06 by adriescr          #+#    #+#             */
+/*   Updated: 2025/09/04 18:35:18 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../minishell.h"
 
-int	main(void)
+char	*ft_build_path(const char *dir, const char *entry)
 {
-	if (ft_minishell())
-		return (1);
-	return (0);
+	char	path[4096];
+
+	snprintf(path, sizeof(path), "%s/%s", dir, entry);
+	return (ft_strdup(path));
 }

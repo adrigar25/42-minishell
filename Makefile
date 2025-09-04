@@ -6,7 +6,7 @@
 #    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/04 17:45:28 by adriescr         ###   ########.fr        #
+#    Updated: 2025/09/04 18:38:30 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,11 @@ MINISHELL_SRCS = \
 	$(UTILS_DIR)/ft_minishell.c \
 	$(UTILS_DIR)/ft_msg_start.c \
 	$(UTILS_DIR)/ft_get_directory_path.c \
+	$(UTILS_DIR)/ft_search_file/ft_is_dot_or_dotdot.c \
+	$(UTILS_DIR)/ft_search_file/ft_search_file.c \
+	$(UTILS_DIR)/ft_search_file/ft_search_in_dir.c \
+	$(UTILS_DIR)/ft_search_file/ft_search_in_subdirs.c \
+	$(UTILS_DIR)/ft_search_file/ft_build_path.c \
 	$(SRC_DIR)/execution/ft_count_args.c \
 	$(SRC_DIR)/execution/ft_skip_argument.c \
 

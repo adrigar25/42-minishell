@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 16:11:51 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/04 16:34:33 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/04 18:39:54 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,5 @@
 
 int	ft_exec_cmd()
 {
-	// Execute the command
-	
 	return (0);
 }

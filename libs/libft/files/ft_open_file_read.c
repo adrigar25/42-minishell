@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:22:22 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/03 14:22:57 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/04 18:53:39 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
  *                   El nombre del archivo a abrir.
  *
  * @returns The file descriptor for the opened file, or -1 on failure. /
- *          El descriptor de archivo para el archivo abierto, o -1 en caso de error.
+ *          El descriptor de archivo para el archivo abierto, o -1
+ *          en caso de error.
  */
 int	ft_open_file_read(const char *filename)
 {

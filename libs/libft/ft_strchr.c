@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:17:18 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/03 13:29:49 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/04 18:39:23 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@
  * @param c   The character to find. /
  *            El carácter a encontrar.
  *
- * @returns A pointer to the first occurrence of the character, or NULL if not found. /
- *          Un puntero a la primera ocurrencia del carácter, o NULL si no se encuentra.
+ * @returns A pointer to the first occurrence of the character, or NULL 
+ * 			if not found. / Un puntero a la primera ocurrencia del carácter,
+ * 			o NULL si no se encuentra.
  */
 char	*ft_strchr(const char *s, int c)
 {

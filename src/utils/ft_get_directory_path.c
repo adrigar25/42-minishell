@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_get_home_directory_path.c                       :+:      :+:    :+:   */
+/*   ft_get_directory_path.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:44:08 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/04 17:45:10 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/04 18:51:52 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char *ft_get_directory_path(char *dest)
+char	*ft_get_directory_path(char *dest)
 {
-	size_t lens[3];
-	char *dir[2];
+	size_t	lens[3];
+	char	*dir[2];
 
 	dir[0] = getenv("HOME");
 	dir[1] = getenv("PWD");

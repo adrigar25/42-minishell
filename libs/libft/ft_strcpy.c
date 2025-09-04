@@ -6,16 +6,18 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 16:55:54 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/04 16:56:39 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/04 18:54:29 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 /**
- * ENGLISH: Copies the string pointed to by src (including the terminating null byte) to the buffer pointed to by dest.
+ * ENGLISH: Copies the string pointed to by src (including 
+ * 			the terminating null byte) to the buffer pointed to by dest.
  *
- * SPANISH: Copia la cadena apuntada por src (incluyendo el byte nulo de terminación) al búfer apuntado por dest.
+ * SPANISH: Copia la cadena apuntada por src (incluyendo
+ * 			el byte nulo de terminación) al búfer apuntado por dest.
  *
  * @param dest   Pointer to the destination buffer.
  *               Puntero al búfer de destino.
