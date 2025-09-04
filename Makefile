@@ -6,14 +6,14 @@
 #    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/03 20:59:09 by adriescr         ###   ########.fr        #
+#    Updated: 2025/09/04 15:11:56 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 # Compilation flags
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = 
 
 # Linker flags
 LDFLAGS = -lreadline

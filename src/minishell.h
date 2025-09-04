@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:18:46 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/03 20:59:31 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/04 15:08:22 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,6 @@
 
 int			ft_minishell(void);
 int			ft_msg_start(void);
+int			ft_print_history_list(HIST_ENTRY **the_list);
 
 #endif
