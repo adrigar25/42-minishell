@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
+#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/04 15:11:56 by adriescr         ###   ########.fr        #
+#    Updated: 2025/09/04 15:30:03 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,11 +27,12 @@ AR = ar rcs
 # Directories
 SRC_DIR = src
 UTILS_DIR = $(SRC_DIR)/utils
-LIB_DIR = libft
+LIBS_DIR = libs
+LIBFT_DIR = $(LIBS_DIR)/libft
 OBJ_DIR = objs
 
 # Library files
-LIB_NAME = $(LIB_DIR)/libft.a
+LIB_NAME = $(LIBFT_DIR)/libft.a
 
 # Main Source Project
 MAIN_SOURCE = $(SRC_DIR)/main.c
@@ -53,7 +54,7 @@ all: $(LIB_NAME) $(NAME)
 
 # Compile the library
 $(LIB_NAME):
-	@$(MAKE) -C $(LIB_DIR)
+	@$(MAKE) -C $(LIBFT_DIR)
 
 # Compile the project
 $(NAME): $(MINISHELL_OBJS) $(MAIN_OBJECT)
@@ -73,7 +74,7 @@ $(OBJ_DIR)/%.o: %.c
 # Clean up object files
 clean:
 	@rm -rf $(OBJ_DIR)
-	@$(MAKE) -C $(LIB_DIR) clean
+	@$(MAKE) -C $(LIBFT_DIR) clean
 	@if [ $$? -eq 0 ]; then \
 		echo "\033[32mArchivos objeto eliminados correctamente.\033[0m"; \
 	else \
@@ -83,7 +84,7 @@ clean:
 # Clean up object files and the executable
 fclean:
 	@rm -rf $(OBJ_DIR)
-	@$(MAKE) -C $(LIB_DIR) fclean
+	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@rm -f $(NAME)
 	@if [ $$? -eq 0 ]; then \
 		echo "\033[32mLibrerias, objetos y ejecutable eliminados correctamente.\033[0m"; \
