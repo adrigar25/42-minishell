@@ -6,14 +6,17 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:18:46 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/04 17:45:20 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/04 18:05:22 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+// Libft library
 #include "../libs/libft/libft.h"
+
+#include <dirent.h>
 
 # define WELCOME_MSG_TXT "./src/assets/welcome.txt"
 
