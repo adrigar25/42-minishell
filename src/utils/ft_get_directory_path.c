@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_get_directory_path.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:44:08 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/04 18:51:52 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/06 00:58:01 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,34 @@
 
 char	*ft_get_directory_path(char *dest)
 {
-	size_t	lens[3];
-	char	*dir[2];
+	char	cwd[1024];
+	char	*home;
+	char	*result;
+	int		home_len;
+	int		cwd_len;
 
-	dir[0] = getenv("HOME");
-	dir[1] = getenv("PWD");
-	if (dir[1] && dir[0] && ft_strstr(dir[1], dir[0]) == dir[1])
+	if (getcwd(cwd, sizeof(cwd)) == NULL)
+		return (ft_strdup("(unknown)"));
+	home = getenv("HOME");
+	if (!home)
+		return (ft_strdup(cwd));
+	home_len = ft_strlen(home);
+	cwd_len = ft_strlen(cwd);
+	// Si el directorio actual está dentro de HOME, mostrar con ~
+	if (cwd_len >= home_len && ft_strncmp(cwd, home, home_len) == 0)
 	{
-		dest = malloc(ft_strlen(dir[1]) - ft_strlen(dir[0]) + 2);
-		if (dest)
+		if (cwd_len == home_len) // Estamos en HOME exactamente
+			return (ft_strdup("~"));
+		else if (cwd[home_len] == '/') // Estamos en un subdirectorio de HOME
 		{
-			dest[0] = '~';
-			if (dir[1][ft_strlen(dir[0])] == '/')
-				ft_strcpy(dest + 1, dir[1] + ft_strlen(dir[0]));
-			else if (dir[1][ft_strlen(dir[0])] != '\0')
-			{
-				dest[1] = '/';
-				ft_strcpy(dest + 2, dir[1] + ft_strlen(dir[0]));
-			}
-			else
-				dest[1] = '\0';
+			result = malloc(cwd_len - home_len + 2);
+			if (!result)
+				return (ft_strdup(cwd));
+			result[0] = '~';
+			ft_strcpy(result + 1, cwd + home_len);
+			return (result);
 		}
 	}
-	else if (dir[1])
-		dest = dir[1];
-	return (dest);
+	// Si no está en HOME, mostrar path completo
+	return (ft_strdup(cwd));
 }

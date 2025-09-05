@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/05 19:45:55 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/06 00:58:01 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,13 @@ int	ft_minishell(char **envp)
 	fd_in = 0;
 	while (1)
 	{
-		prompt = ft_strjoin(ft_strjoin("\033[90mminishell:(",
-					ft_get_directory_path(prompt)), ")\033[0m> ");
+		char *dir_path = ft_get_directory_path(NULL);
+		char *temp = ft_strjoin("\033[90mminishell:(", dir_path);
+		if (prompt)
+			free(prompt);
+		prompt = ft_strjoin(temp, ")\033[0m> ");
+		free(temp);
+		free(dir_path);
 		input = readline(prompt);
 		if (!input)
 			break ;
@@ -67,19 +72,30 @@ int	ft_minishell(char **envp)
 			}
 			else
 			{
-				pid = fork();
-				if (pid == 0)
+				// Manejar builtins en el proceso padre
+				if (ft_handle_builtins(cmd_argv, &envp))
 				{
-					signal(SIGINT, SIG_DFL);
-					signal(SIGQUIT, SIG_DFL);
-					ft_exec_cmd(cmd_argv, fd_in, 1, envp);
-					exit(EXIT_SUCCESS);
-				}
-				else if (pid > 0)
-				{
-					waitpid(pid, &status, 0);
+					// Se ejecutó un builtin, no hacer fork
 					if (fd_in != 0)
 						close(fd_in);
+				}
+				else
+				{
+					// No es builtin, hacer fork para comando externo
+					pid = fork();
+					if (pid == 0)
+					{
+						signal(SIGINT, SIG_DFL);
+						signal(SIGQUIT, SIG_DFL);
+						ft_exec_cmd(cmd_argv, fd_in, 1, envp);
+						exit(EXIT_SUCCESS);
+					}
+					else if (pid > 0)
+					{
+						waitpid(pid, &status, 0);
+						if (fd_in != 0)
+							close(fd_in);
+					}
 				}
 			}
 		}

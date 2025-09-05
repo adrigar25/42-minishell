@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
+#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/06 00:19:13 by adriescr         ###   ########.fr        #
+#    Updated: 2025/09/06 01:33:09 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,12 +57,21 @@ MINISHELL_SRCS = \
 	$(SRC_DIR)/redirections/ft_handle_heredoc.c \
 	$(SRC_DIR)/redirections/ft_handle_infile.c \
 	$(SRC_DIR)/redirections/ft_handle_outfile.c \
+	$(SRC_DIR)/redirections/ft_handle_redir.c \
 	$(SRC_DIR)/execution/ft_exec_cmd.c \
 	$(SRC_DIR)/execution/ft_pipex.c \
 	$(SRC_DIR)/execution/ft_get_cmd_path.c \
 	$(SRC_DIR)/parsing/ft_skip_quotes.c \
 	$(SRC_DIR)/parsing/ft_parse_input.c \
 	$(SRC_DIR)/signals/ft_sigint_handler.c \
+	$(SRC_DIR)/builtins/ft_echo.c \
+	$(SRC_DIR)/builtins/ft_cd.c \
+	$(SRC_DIR)/builtins/ft_pwd.c \
+	$(SRC_DIR)/builtins/ft_export.c \
+	$(SRC_DIR)/builtins/ft_unset.c \
+	$(SRC_DIR)/builtins/ft_env.c \
+	$(SRC_DIR)/builtins/ft_exit.c \
+	$(SRC_DIR)/builtins/ft_handle_builtins.c \
 
 # Main object files
 MAIN_OBJECT = $(MAIN_SOURCE:%.c=$(OBJ_DIR)/%.o)

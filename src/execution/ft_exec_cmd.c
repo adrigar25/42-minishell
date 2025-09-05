@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 16:11:51 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/05 18:56:59 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/06 00:50:48 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@ int	ft_exec_cmd(char **args, int fd_in, int fd_out, char **envp)
 {
 	char	*path;
 
+	if (!args || !args[0])
+		return (1);
+	ft_handle_redir(args, &fd_in, &fd_out);
 	if (ft_strchr(args[0], '/'))
 		path = ft_strdup(args[0]);
 	else
