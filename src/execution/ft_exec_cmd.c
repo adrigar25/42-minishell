@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 16:11:51 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/05 17:12:47 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/05 18:56:59 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ int	ft_exec_cmd(char **args, int fd_in, int fd_out, char **envp)
 		else
 			exit(127);
 	}
-	ft_redir_io(fd_in, 0);
+	if (fd_in != 0)
+		ft_redir_io(fd_in, 0);
 	ft_redir_io(fd_out, 1);
 	execve(path, args, envp);
 	return (0);

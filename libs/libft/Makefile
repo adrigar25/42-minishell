@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
+#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:25:07 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/04 17:32:20 by adriescr         ###   ########.fr        #
+#    Updated: 2025/09/05 18:25:31 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ MY_LIBFT = \
 	ft_substr.c \
 	ft_strchr.c \
 	ft_strcmp.c \
+	ft_strncmp.c \
 	ft_rand.c \
 	ft_putnbr.c \
 	ft_strstr.c \

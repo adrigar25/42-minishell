@@ -6,23 +6,30 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/05 17:15:48 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/05 19:45:55 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <readline/history.h>
 #include <readline/readline.h>
 
 int	ft_minishell(char **envp)
 {
-	int		argc;
 	char	**argv;
+	int		argc;
 	char	*input;
 	char	*prompt;
+	int		fd_in;
 	pid_t	pid;
 	int		status;
+	char	**cmd_argv;
 
 	ft_msg_start();
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
+	prompt = NULL;
+	fd_in = 0;
 	while (1)
 	{
 		prompt = ft_strjoin(ft_strjoin("\033[90mminishell:(",
@@ -35,26 +42,49 @@ int	ft_minishell(char **envp)
 			add_history(input);
 			argc = ft_count_args(input);
 			argv = ft_parse_input(input, argc);
-			for (int i = 0; argv[i]; i++)
-				printf("argv[%d]: %s\n", i, argv[i]);
 			if (!argv)
 				return (1);
-			if (has_pipe(argv))
-				ft_pipex((const char **)argv, envp);
+			fd_in = 0;
+			cmd_argv = argv;
+			if (argv[0] && ft_strstr(argv[0], "<<") != NULL)
+			{
+				if (!argv[1])
+				{
+					printf("Error: missing delimiter for heredoc\n");
+					continue ;
+				}
+				fd_in = ft_handle_here_doc(argv[1]);
+				if (fd_in == -1)
+				{
+					printf("Error processing heredoc\n");
+					continue ;
+				}
+				cmd_argv = &argv[2];
+			}
+			if (has_pipe(cmd_argv))
+			{
+				ft_pipex((const char **)cmd_argv, fd_in, envp);
+			}
 			else
 			{
 				pid = fork();
 				if (pid == 0)
 				{
-					ft_exec_cmd(argv, 0, 1, envp);
+					signal(SIGINT, SIG_DFL);
+					signal(SIGQUIT, SIG_DFL);
+					ft_exec_cmd(cmd_argv, fd_in, 1, envp);
 					exit(EXIT_SUCCESS);
 				}
 				else if (pid > 0)
+				{
 					waitpid(pid, &status, 0);
+					if (fd_in != 0)
+						close(fd_in);
+				}
 			}
 		}
 		free(input);
 	}
-	clear_history();
+	rl_clear_history();
 	return (0);
 }

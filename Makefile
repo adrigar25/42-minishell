@@ -6,17 +6,18 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/05 17:30:36 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/05 19:42:57 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-# Compilation flags
-CFLAGS = 
-
-# Linker flags
-LDFLAGS = -lreadline
+#
+# Compilation flags (use Homebrew readline/ncurses for macOS ARM64)
+CFLAGS = -I/opt/homebrew/opt/readline/include
+#
+# Linker flags (use Homebrew readline/ncurses for macOS ARM64)
+LDFLAGS = -L/opt/homebrew/opt/readline/lib -lreadline -lncurses
 
 # Compilator
 CC = cc
@@ -52,11 +53,16 @@ MINISHELL_SRCS = \
 	$(UTILS_DIR)/ft_count_args.c \
 	$(UTILS_DIR)/ft_redir_io.c \
 	$(UTILS_DIR)/ft_has_pipe.c \
+	$(UTILS_DIR)/ft_split_strings.c \
+	$(SRC_DIR)/redirections/ft_handle_heredoc.c \
+	$(SRC_DIR)/redirections/ft_handle_infile.c \
+	$(SRC_DIR)/redirections/ft_handle_outfile.c \
 	$(SRC_DIR)/execution/ft_exec_cmd.c \
 	$(SRC_DIR)/execution/ft_pipex.c \
 	$(SRC_DIR)/execution/ft_get_cmd_path.c \
 	$(SRC_DIR)/parsing/ft_skip_quotes.c \
 	$(SRC_DIR)/parsing/ft_parse_input.c \
+	$(SRC_DIR)/signals/ft_sigint_handler.c \
 
 # Main object files
 MAIN_OBJECT = $(MAIN_SOURCE:%.c=$(OBJ_DIR)/%.o)
@@ -74,7 +80,7 @@ $(LIB_NAME):
 
 # Compile the project
 $(NAME): $(MINISHELL_OBJS) $(MAIN_OBJECT)
-	@$(CC) $(CFLAGS) $(MINISHELL_OBJS) $(MAIN_OBJECT) -o $(NAME) $(LIB_NAME) $(LDFLAGS)
+	@$(CC) $(CFLAGS) $(MINISHELL_OBJS) $(MAIN_OBJECT) $(LIB_NAME) $(LDFLAGS) -o $(NAME)
 	@chmod 755 $(NAME)
 	@if [ $$? -eq 0 ]; then \
 		echo "\033[32m✅ Compilation completed successfully!\033[0m"; \
