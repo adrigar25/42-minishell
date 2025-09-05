@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
+#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/05 19:42:57 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/06 00:19:13 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,7 +72,7 @@ MAIN_OBJECT = $(MAIN_SOURCE:%.c=$(OBJ_DIR)/%.o)
 MINISHELL_OBJS = $(MINISHELL_SRCS:%.c=$(OBJ_DIR)/%.o)
 
 all: $(LIB_NAME) $(NAME)
-	@echo "\033[32m✅ $(NAME) executable is ready to use!\033[0m"
+	@echo "\033[35m$(NAME) executable is ready to use!\033[0m"
 
 # Compile the library
 $(LIB_NAME):
@@ -115,10 +115,10 @@ fclean:
 	fi
 
 re: fclean
-	@echo "\033[32m🔄 Recompiling everything...\033[0m"
+	@echo "\033[34m🔄 Recompiling everything...\033[0m"
 	@$(MAKE) --always-make all
 	@if [ $$? -eq 0 ]; then \
-		echo "\033[32m🎉 Recompilation completed successfully!\033[0m"; \
+		echo "\033[38;5;208m🎉 Recompilation completed successfully!\033[0m"; \
 	else \
 		echo "\033[31m❌ Error during recompilation!\033[0m"; \
 	fi
