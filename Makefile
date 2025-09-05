@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/05 15:37:16 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/05 17:30:36 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,8 @@ MINISHELL_SRCS = \
 	$(UTILS_DIR)/ft_minishell.c \
 	$(UTILS_DIR)/ft_msg_start.c \
 	$(UTILS_DIR)/ft_get_directory_path.c \
+	$(UTILS_DIR)/ft_skip_spaces.c \
+	$(UTILS_DIR)/ft_trim.c \
 	$(UTILS_DIR)/ft_search_file/ft_is_dot_or_dotdot.c \
 	$(UTILS_DIR)/ft_search_file/ft_search_file.c \
 	$(UTILS_DIR)/ft_search_file/ft_search_in_dir.c \
@@ -64,7 +66,7 @@ MAIN_OBJECT = $(MAIN_SOURCE:%.c=$(OBJ_DIR)/%.o)
 MINISHELL_OBJS = $(MINISHELL_SRCS:%.c=$(OBJ_DIR)/%.o)
 
 all: $(LIB_NAME) $(NAME)
-	@echo "\033[36mEl ejecutable '$(NAME)' está listo para usarse.\033[0m"
+	@echo "\033[32m✅ $(NAME) executable is ready to use!\033[0m"
 
 # Compile the library
 $(LIB_NAME):
@@ -75,9 +77,9 @@ $(NAME): $(MINISHELL_OBJS) $(MAIN_OBJECT)
 	@$(CC) $(CFLAGS) $(MINISHELL_OBJS) $(MAIN_OBJECT) -o $(NAME) $(LIB_NAME) $(LDFLAGS)
 	@chmod 755 $(NAME)
 	@if [ $$? -eq 0 ]; then \
-		echo "\033[32mCompilación finalizada correctamente.\033[0m"; \
+		echo "\033[32m✅ Compilation completed successfully!\033[0m"; \
 	else \
-		echo "\033[31mError durante la compilación.\033[0m"; \
+		echo "\033[31m❌ Error during compilation!\033[0m"; \
 	fi
 
 # Compile object files
@@ -90,9 +92,9 @@ clean:
 	@rm -rf $(OBJ_DIR)
 	@$(MAKE) -C $(LIBFT_DIR) clean
 	@if [ $$? -eq 0 ]; then \
-		echo "\033[32mArchivos objeto eliminados correctamente.\033[0m"; \
+		echo "\033[32m🧹 Object files cleaned successfully!\033[0m"; \
 	else \
-		echo "\033[31mError al eliminar los archivos objeto.\033[0m"; \
+		echo "\033[31m❌ Error cleaning object files!\033[0m"; \
 	fi
 
 # Clean up object files and the executable
@@ -101,18 +103,18 @@ fclean:
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@rm -f $(NAME)
 	@if [ $$? -eq 0 ]; then \
-		echo "\033[32mLibrerias, objetos y ejecutable eliminados correctamente.\033[0m"; \
+		echo "\033[32m🗑️  Libraries, objects and executable cleaned successfully!\033[0m"; \
 	else \
-		echo "\033[31mError al eliminar librerias, objetos y ejecutable.\033[0m"; \
+		echo "\033[31m❌ Error cleaning libraries, objects and executable!\033[0m"; \
 	fi
 
 re: fclean
-	@echo "\033[34mRecompilando todo...\033[0m"
+	@echo "\033[32m🔄 Recompiling everything...\033[0m"
 	@$(MAKE) --always-make all
 	@if [ $$? -eq 0 ]; then \
-		echo "\033[35mRecompilación finalizada correctamente.\033[0m"; \
+		echo "\033[32m🎉 Recompilation completed successfully!\033[0m"; \
 	else \
-		echo "\033[31mError durante la recompilación.\033[0m"; \
+		echo "\033[31m❌ Error during recompilation!\033[0m"; \
 	fi
 
 # Phony targets
