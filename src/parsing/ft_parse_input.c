@@ -3,7 +3,8 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>             +#+  +:+
+	+#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 13:58:32 by agarcia           #+#    #+#             */
 /*   Updated: 2025/09/05 17:05:09 by agarcia          ###   ########.fr       */
@@ -14,12 +15,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-void	ft_skip_spaces(const char *str, int *i)
-{
-	while (str[*i] && ft_isspace(str[*i]))
-		(*i)++;
-}
 
 static char	*remove_quotes(const char *str)
 {
@@ -69,6 +64,7 @@ char	**ft_parse_input(const char *input, int argc)
 		ft_skip_spaces(input, &i);
 		if (!input[i])
 			break ;
+		start = i;
 		if (input[i] == '|')
 		{
 			substr = ft_substr((char *)input, i, 1);
@@ -82,7 +78,6 @@ char	**ft_parse_input(const char *input, int argc)
 			ft_skip_spaces(input, &i);
 			continue ;
 		}
-		start = i;
 		len = 0;
 		quote = 0;
 		while (input[i])
@@ -121,6 +116,7 @@ char	**ft_parse_input(const char *input, int argc)
 				args[pos] = NULL;
 				return (args);
 			}
+			substr = ft_trim(substr, ' ');
 			tmp = remove_quotes(substr);
 			if (!tmp)
 			{

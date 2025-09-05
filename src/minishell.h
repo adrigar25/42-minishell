@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:18:46 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/05 15:46:13 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/05 17:26:31 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ char	*ft_build_path(const char *dir, const char *entry);
 
 char	**ft_parse_input(const char *input, int argc);
 void	ft_skip_quotes(const char *cmd, int *i);
+void	ft_skip_spaces(const char *str, int *i);
+char	*ft_trim(const char *str, char c);
 
 // Execution
 int		ft_exec_cmd(char **args, int fd_in, int fd_out, char **envp);
