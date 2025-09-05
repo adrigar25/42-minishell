@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/05 15:02:06 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/05 16:39:50 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ int	ft_minishell(char **envp)
 			argv = ft_parse_input(input, argc);
 			if (!argv)
 				return (1);
-			ft_exec_cmd(argv, 0, 1, envp);
+			if (has_pipe(argv))
+				ft_pipex((const char **)argv, envp);
+			else
+				ft_exec_cmd(argv, 0, 1, envp);
 		}
 		free(input);
 	}

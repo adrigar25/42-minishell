@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 13:58:32 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/05 14:55:18 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/05 17:05:09 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+void	ft_skip_spaces(const char *str, int *i)
+{
+	while (str[*i] && ft_isspace(str[*i]))
+		(*i)++;
+}
 
 static char	*remove_quotes(const char *str)
 {
@@ -42,31 +48,16 @@ static char	*remove_quotes(const char *str)
 	return (res);
 }
 
-/*
- * ENGLISH: Parses the input command string into an array of arguments.
- *
- * SPANISH: Analiza la cadena de comando de entrada en una matriz de argumentos.
- *
- * @param input
- *      The input command string to parse.
-	/ La cadena de comando de entrada a analizar.
- * @param argc
- *      The number of arguments expected in the command string. /
- *      El número de argumentos esperados en la cadena de comando.
- * @return
- *      A NULL-terminated array of strings representing the parsed arguments, or
- *      NULL if memory allocation fails. /
-
-	*      Una matriz terminada en NULL de cadenas que representan los argumentos analizados,
-	o NULL si la asignación de memoria falla.
- */
 char	**ft_parse_input(const char *input, int argc)
 {
 	char	**args;
 	int		i;
-	int		j;
 	int		pos;
+	int		start;
+	int		len;
+	char	*substr;
 	char	*tmp;
+	char	quote;
 
 	args = malloc((argc + 1) * sizeof(char *));
 	if (!args)
@@ -75,19 +66,71 @@ char	**ft_parse_input(const char *input, int argc)
 	pos = 0;
 	while (input[i])
 	{
-		while (input[i] && ft_isspace(input[i]))
-			i++;
+		ft_skip_spaces(input, &i);
 		if (!input[i])
 			break ;
-		j = i;
-		ft_skip_quotes(input, &j);
-		args[pos] = strndup(&input[i], j - i);
-		if (!args[pos])
-			return (NULL);
-		tmp = remove_quotes(args[pos]);
-		free(args[pos]);
-		args[pos++] = tmp;
-		i = j;
+		if (input[i] == '|')
+		{
+			substr = ft_substr((char *)input, i, 1);
+			if (!substr)
+			{
+				args[pos] = NULL;
+				return (args);
+			}
+			args[pos++] = substr;
+			i++;
+			ft_skip_spaces(input, &i);
+			continue ;
+		}
+		start = i;
+		len = 0;
+		quote = 0;
+		while (input[i])
+		{
+			if (!quote && ft_isspace(input[i]))
+				break ;
+			if (!quote && input[i] == '|')
+				break ;
+			if (!quote && (input[i] == '\'' || input[i] == '"'))
+			{
+				quote = input[i];
+				i++;
+				len++;
+				continue ;
+			}
+			else if (quote && input[i] == quote)
+			{
+				quote = 0;
+				i++;
+				len++;
+				continue ;
+			}
+			i++;
+			len++;
+		}
+		while (len > 0 && ft_isspace(input[start]))
+		{
+			start++;
+			len--;
+		}
+		if (len > 0)
+		{
+			substr = ft_substr((char *)input, start, len);
+			if (!substr)
+			{
+				args[pos] = NULL;
+				return (args);
+			}
+			tmp = remove_quotes(substr);
+			if (!tmp)
+			{
+				free(substr);
+				args[pos] = NULL;
+				return (args);
+			}
+			free(substr);
+			args[pos++] = tmp;
+		}
 	}
 	args[pos] = NULL;
 	return (args);
