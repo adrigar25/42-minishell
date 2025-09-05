@@ -3,26 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/04 18:52:30 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/05 15:02:06 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <readline/readline.h>
 #include "../minishell.h"
+#include <readline/readline.h>
 
-// Yo creo que deberíamos hacer un split del input
-int	ft_process_input(char *input)
+int	ft_minishell(char **envp)
 {
-	printf("Processing input: %s\n", input);
-	return (0);
-}
-
-int	ft_minishell(void)
-{
-	int		count_args;
+	int		argc;
+	char	**argv;
 	char	*input;
 	char	*prompt;
 
@@ -36,11 +30,12 @@ int	ft_minishell(void)
 			break ;
 		if (input && *input)
 		{
-			count_args = ft_count_args(input);
-			printf("Number of arguments: %d\n", count_args);
 			add_history(input);
-			if (ft_process_input(input))
-				return (free(input), -1);
+			argc = ft_count_args(input);
+			argv = ft_parse_input(input, argc);
+			if (!argv)
+				return (1);
+			ft_exec_cmd(argv, 0, 1, envp);
 		}
 		free(input);
 	}

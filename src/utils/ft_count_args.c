@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_count_args.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 14:20:19 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/04 17:31:20 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/05 14:25:17 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	ft_count_args(const char *cmd)
 		ft_skip_whitespace(cmd, &i);
 		if (!cmd[i])
 			break ;
-		ft_skip_argument(cmd, &i);
+		ft_skip_quotes(cmd, &i);
 		count++;
 	}
 	return (count);

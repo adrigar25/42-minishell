@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
+#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/04 18:38:30 by adriescr         ###   ########.fr        #
+#    Updated: 2025/09/05 14:49:08 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,8 +47,12 @@ MINISHELL_SRCS = \
 	$(UTILS_DIR)/ft_search_file/ft_search_in_dir.c \
 	$(UTILS_DIR)/ft_search_file/ft_search_in_subdirs.c \
 	$(UTILS_DIR)/ft_search_file/ft_build_path.c \
-	$(SRC_DIR)/execution/ft_count_args.c \
-	$(SRC_DIR)/execution/ft_skip_argument.c \
+	$(UTILS_DIR)/ft_count_args.c \
+	$(UTILS_DIR)/ft_redir_io.c \
+	$(SRC_DIR)/execution/ft_exec_cmd.c \
+	$(SRC_DIR)/execution/ft_get_cmd_path.c \
+	$(SRC_DIR)/parsing/ft_skip_quotes.c \
+	$(SRC_DIR)/parsing/ft_parse_input.c \
 
 # Main object files
 MAIN_OBJECT = $(MAIN_SOURCE:%.c=$(OBJ_DIR)/%.o)

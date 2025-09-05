@@ -3,16 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exec_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 16:11:51 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/04 18:39:54 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/05 15:00:59 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_exec_cmd()
+int	ft_exec_cmd(char **args, int fd_in, int fd_out, char **envp)
 {
+	char	*path;
+
+	if (ft_strchr(args[0], '/'))
+		path = ft_strdup(args[0]);
+	else
+		path = get_cmd_path(args[0]);
+	if (!args || !args[0] || !path || access(path, X_OK) == -1)
+	{
+		if (path)
+			printf("pipex: %s\n", args[0]);
+		else
+			printf("pipex: %s: command not found\n", args[0]);
+		if (path)
+			exit(126);
+		else
+			exit(127);
+	}
+	ft_redir_io(fd_in, 0);
+	ft_redir_io(fd_out, 1);
+	execve(path, args, envp);
 	return (0);
 }

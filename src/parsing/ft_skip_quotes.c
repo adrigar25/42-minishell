@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_skip_argument.c                                 :+:      :+:    :+:   */
+/*   ft_skip_quotes.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 18:18:46 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/04 17:30:22 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/05 14:25:27 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
  *      Pointer to the index of the current character in the command string. /
  *      Puntero al índice del carácter actual en la cadena de comando.
  */
-void	ft_skip_argument(const char *cmd, int *i)
+void	ft_skip_quotes(const char *cmd, int *i)
 {
 	int		in_quote;
 	char	quote;
