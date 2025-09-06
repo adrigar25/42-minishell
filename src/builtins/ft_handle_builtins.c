@@ -6,11 +6,32 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/06 01:30:06 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/06 11:57:05 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static int	is_builtin(const char *cmd)
+{
+	if (!cmd)
+		return (0);
+	if (ft_strcmp(cmd, "echo") == 0)
+		return (1);
+	if (ft_strcmp(cmd, "cd") == 0)
+		return (1);
+	if (ft_strcmp(cmd, "pwd") == 0)
+		return (1);
+	if (ft_strcmp(cmd, "export") == 0)
+		return (1);
+	if (ft_strcmp(cmd, "unset") == 0)
+		return (1);
+	if (ft_strcmp(cmd, "env") == 0)
+		return (1);
+	if (ft_strcmp(cmd, "exit") == 0)
+		return (1);
+	return (0);
+}
 
 int	ft_handle_builtins(char **args, char ***envp)
 {
@@ -27,10 +48,7 @@ int	ft_handle_builtins(char **args, char ***envp)
 	result = 0;
 	if (!args || !args[0])
 		return (0);
-	if (ft_strcmp(args[0], "echo") != 0 && ft_strcmp(args[0], "cd") != 0
-		&& ft_strcmp(args[0], "pwd") != 0 && ft_strcmp(args[0], "export") != 0
-		&& ft_strcmp(args[0], "unset") != 0 && ft_strcmp(args[0], "env") != 0
-		&& ft_strcmp(args[0], "exit") != 0)
+	if (!is_builtin(args[0]))
 		return (0);
 	ft_handle_redir(args, &fd_in, &fd_out);
 	if (fd_out != 1)
@@ -59,7 +77,6 @@ int	ft_handle_builtins(char **args, char ***envp)
 		result = ft_env(*envp);
 	else if (ft_strcmp(args[0], "exit") == 0)
 		result = ft_exit(args);
-	// Restaurar descriptores originales
 	if (saved_stdout != -1)
 	{
 		dup2(saved_stdout, STDOUT_FILENO);

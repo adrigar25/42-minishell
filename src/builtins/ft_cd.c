@@ -26,11 +26,9 @@ static void	update_pwd_env(char **envp)
 	char	cwd[1024];
 	char	*old_pwd;
 
-	// Obtener PWD actual para convertirlo en OLDPWD
 	old_pwd = getenv("PWD");
 	if (old_pwd)
 		setenv("OLDPWD", old_pwd, 1);
-	// Obtener el nuevo directorio y actualizar PWD
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 		return ;
 	setenv("PWD", cwd, 1);
@@ -41,7 +39,7 @@ int	ft_cd(char **args, char **envp)
 	char	*home;
 	int		i;
 
-	if (!args[1]) // Sin argumentos (solo "cd")
+	if (!args[1])
 	{
 		home = NULL;
 		i = 0;
@@ -69,12 +67,12 @@ int	ft_cd(char **args, char **envp)
 			return (1);
 		}
 	}
-	else if (args[2]) // Demasiados argumentos (cd arg1 arg2)
+	else if (args[2])
 	{
 		printf("minishell: cd: too many arguments\n");
 		return (1);
 	}
-	else // Un argumento (cd directorio)
+	else
 	{
 		if (chdir(args[1]) == -1)
 		{
