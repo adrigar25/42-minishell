@@ -3,159 +3,89 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>             +#+  +:+
-	+#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/05 13:58:32 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/05 17:05:09 by agarcia          ###   ########.fr       */
+/*   Created: 2025/09/08 00:30:10 by agarcia           #+#    #+#             */
+/*   Updated: 2025/09/08 01:02:05 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-static int	is_quote_char(char c)
+static t_cmd	*ft_create_cmd_node(void)
 {
-	return (c == '\'' || c == '"');
-}
+	t_cmd	*new_cmd;
 
-static char	**cleanup_and_return(char **args, int pos)
-{
-	args[pos] = NULL;
-	return (args);
-}
-
-static int	handle_quote_transition(const char *input, int *i, int *len,
-		char *quote)
-{
-	if (!*quote && is_quote_char(input[*i]))
-	{
-		*quote = input[*i];
-		(*i)++;
-		(*len)++;
-		return (1);
-	}
-	else if (*quote && input[*i] == *quote)
-	{
-		*quote = 0;
-		(*i)++;
-		(*len)++;
-		return (1);
-	}
-	return (0);
-}
-
-static int	should_break_parsing(const char *input, int i, char quote)
-{
-	if (!quote && ft_isspace(input[i]))
-		return (1);
-	if (!quote && input[i] == '|')
-		return (1);
-	return (0);
-}
-
-static char	*remove_quotes(const char *str)
-{
-	char	*res;
-	int		i;
-	int		j;
-	char	quote;
-
-	res = malloc(strlen(str) + 1);
-	if (!res)
+	new_cmd = malloc(sizeof(t_cmd));
+	if (!new_cmd)
 		return (NULL);
-	i = 0;
-	j = 0;
-	quote = 0;
-	while (str[i])
+	new_cmd->argv = NULL;
+	new_cmd->infd = STDIN_FD;
+	new_cmd->outfd = STDOUT_FD;
+	new_cmd->next = NULL;
+	return (new_cmd);
+}
+static void	ft_add_arg_to_cmd(t_cmd *cmd, char *arg)
+{
+	int		i;
+	char	**new_argv;
+
+	if (!cmd)
+		return ;
+	if (!cmd->argv)
 	{
-		if (!quote && is_quote_char(str[i]))
-			quote = str[i];
-		else if (quote && str[i] == quote)
-			quote = 0;
-		else
-			res[j++] = str[i];
+		cmd->argv = malloc(2 * sizeof(char *));
+		if (!cmd->argv)
+			return ;
+		cmd->argv[0] = arg;
+		cmd->argv[1] = NULL;
+		return ;
+	}
+	i = 0;
+	while (cmd->argv[i])
+		i++;
+	new_argv = malloc((i + 2) * sizeof(char *));
+	if (!new_argv)
+		return ;
+	i = 0;
+	while (cmd->argv[i])
+	{
+		new_argv[i] = cmd->argv[i];
 		i++;
 	}
-	res[j] = '\0';
-	return (res);
+	new_argv[i++] = arg;
+	new_argv[i] = NULL;
+	free(cmd->argv);
+	cmd->argv = new_argv;
 }
 
-static char	**handle_pipe_token(char **args, int *pos, const char *input,
-		int *i)
+t_cmd	*ft_parse_input(char **argv, int argc)
 {
-	char	*substr;
+	t_cmd *cmd_list;
+	t_cmd *current_cmd;
+	int i;
 
-	substr = ft_substr((char *)input, *i, 1);
-	if (!substr)
-		return (cleanup_and_return(args, *pos));
-	args[(*pos)++] = substr;
-	(*i)++;
-	ft_skip_spaces(input, i);
-	return (args);
-}
-
-char	**ft_parse_input(const char *input, int argc)
-{
-	char	**args;
-	int		i;
-	int		pos;
-	int		start;
-	int		len;
-	char	*substr;
-	char	*tmp;
-	char	quote;
-
-	args = malloc((argc + 1) * sizeof(char *));
-	if (!args)
+	if (!argv || argc == 0)
 		return (NULL);
+
+	cmd_list = ft_create_cmd_node();
+	if (!cmd_list)
+		return (NULL);
+	current_cmd = cmd_list;
+
 	i = 0;
-	pos = 0;
-	while (input[i])
+	while (i < argc)
 	{
-		ft_skip_spaces(input, &i);
-		if (!input[i])
-			break ;
-		start = i;
-		if (input[i] == '|')
+		if (ft_strcmp(argv[i], "|") == 0)
 		{
-			if (!handle_pipe_token(args, &pos, input, &i))
-				return (args);
-			continue ;
+			current_cmd->next = ft_create_cmd_node();
+			current_cmd = current_cmd->next;
 		}
-		len = 0;
-		quote = 0;
-		while (input[i])
-		{
-			if (should_break_parsing(input, i, quote))
-				break ;
-			if (handle_quote_transition(input, &i, &len, &quote))
-				continue ;
-			i++;
-			len++;
-		}
-		while (len > 0 && ft_isspace(input[start]))
-		{
-			start++;
-			len--;
-		}
-		if (len > 0)
-		{
-			substr = ft_substr((char *)input, start, len);
-			if (!substr)
-				return (cleanup_and_return(args, pos));
-			substr = ft_trim(substr, ' ');
-			tmp = remove_quotes(substr);
-			if (!tmp)
-			{
-				free(substr);
-				return (cleanup_and_return(args, pos));
-			}
-			free(substr);
-			args[pos++] = tmp;
-		}
+		else
+			ft_add_arg_to_cmd(current_cmd, argv[i]);
+
+		i++;
 	}
-	return (cleanup_and_return(args, pos));
+
+	return (cmd_list);
 }

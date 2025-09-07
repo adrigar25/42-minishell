@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/07 10:47:50 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/08 01:00:45 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,8 +43,6 @@ MINISHELL_SRCS = \
 	$(UTILS_DIR)/ft_minishell.c \
 	$(UTILS_DIR)/ft_msg_start.c \
 	$(UTILS_DIR)/ft_get_directory_path.c \
-	$(UTILS_DIR)/ft_skip_spaces.c \
-	$(UTILS_DIR)/ft_trim.c \
 	$(UTILS_DIR)/ft_search_file/ft_is_dot_or_dotdot.c \
 	$(UTILS_DIR)/ft_search_file/ft_search_file.c \
 	$(UTILS_DIR)/ft_search_file/ft_search_in_dir.c \
@@ -52,8 +50,10 @@ MINISHELL_SRCS = \
 	$(UTILS_DIR)/ft_search_file/ft_build_path.c \
 	$(UTILS_DIR)/ft_count_args.c \
 	$(UTILS_DIR)/ft_redir_io.c \
-	$(UTILS_DIR)/ft_has_pipe.c \
 	$(UTILS_DIR)/ft_split_strings.c \
+	$(UTILS_DIR)/ft_generate_prompt.c \
+	$(UTILS_DIR)/ft_skip_spaces.c \
+	$(UTILS_DIR)/ft_trim.c \
 	$(SRC_DIR)/redirections/ft_handle_heredoc.c \
 	$(SRC_DIR)/redirections/ft_handle_infile.c \
 	$(SRC_DIR)/redirections/ft_handle_outfile.c \
@@ -62,6 +62,7 @@ MINISHELL_SRCS = \
 	$(SRC_DIR)/execution/ft_pipex.c \
 	$(SRC_DIR)/execution/ft_get_cmd_path.c \
 	$(SRC_DIR)/parsing/ft_skip_quotes.c \
+	$(SRC_DIR)/parsing/ft_split_input.c \
 	$(SRC_DIR)/parsing/ft_parse_input.c \
 	$(SRC_DIR)/signals/ft_sigint_handler.c \
 	$(SRC_DIR)/signals/ft_init_signals.c \

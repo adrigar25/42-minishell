@@ -1,27 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_has_pipe.c                                      :+:      :+:    :+:   */
+/*   ft_generate_prompt.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/05 15:32:10 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/05 16:22:27 by agarcia          ###   ########.fr       */
+/*   Created: 2025/09/07 11:30:00 by agarcia           #+#    #+#             */
+/*   Updated: 2025/09/07 11:24:01 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	has_pipe(char **argv)
+char	*ft_generate_prompt(void)
 {
-	int	i;
+	char	*dir_path;
+	char	*temp;
+	char	*prompt;
 
-	i = 0;
-	while (argv[i])
-	{
-		if (ft_strcmp(argv[i], "|") == 0)
-			return (1);
-		i++;
-	}
-	return (0);
+	dir_path = ft_get_directory_path(NULL);
+	if (!dir_path)
+		return (ft_strdup("minishell> "));
+	temp = ft_strjoin(PROMPT_PREFIX, dir_path);
+	free(dir_path);
+	if (!temp)
+		return (ft_strdup("minishell> "));
+	prompt = ft_strjoin(temp, PROMPT_SUFFIX);
+	free(temp);
+	if (!prompt)
+		return (ft_strdup("minishell> "));
+	return (prompt);
 }

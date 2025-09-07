@@ -5,43 +5,47 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/05 17:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/05 17:25:53 by agarcia          ###   ########.fr       */
+/*   Created: 2025/09/08 00:45:00 by agarcia           #+#    #+#             */
+/*   Updated: 2025/09/08 00:38:32 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include <stdlib.h>
-#include <string.h>
 
 char	*ft_trim(const char *str, char c)
 {
-	char	*result;
 	int		start;
 	int		end;
 	int		len;
+	char	*trimmed;
 	int		i;
 
 	if (!str)
 		return (NULL);
 	start = 0;
+	end = ft_strlen(str) - 1;
+	// Encontrar el primer carácter que no sea 'c'
 	while (str[start] && str[start] == c)
 		start++;
-	end = strlen(str) - 1;
+	// Encontrar el último carácter que no sea 'c'
 	while (end >= start && str[end] == c)
 		end--;
+	// Calcular la longitud de la cadena trimmed
 	len = end - start + 1;
 	if (len <= 0)
 		return (ft_strdup(""));
-	result = malloc(len + 1);
-	if (!result)
+	// Asignar memoria para la nueva cadena
+	trimmed = malloc((len + 1) * sizeof(char));
+	if (!trimmed)
 		return (NULL);
+	// Copiar la parte trimmed
 	i = 0;
 	while (i < len)
 	{
-		result[i] = str[start + i];
+		trimmed[i] = str[start + i];
 		i++;
 	}
-	result[len] = '\0';
-	return (result);
+	trimmed[i] = '\0';
+	return (trimmed);
 }

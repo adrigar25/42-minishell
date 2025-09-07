@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/05 17:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/05 17:25:52 by agarcia          ###   ########.fr       */
+/*   Created: 2025/09/08 00:46:00 by agarcia           #+#    #+#             */
+/*   Updated: 2025/09/08 00:38:32 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 
 void	ft_skip_spaces(const char *str, int *i)
 {
-	while (str[*i] && ft_isspace(str[*i]))
+	if (!str || !i)
+		return ;
+	while (str[*i] && (str[*i] == ' ' || str[*i] == '\t' || str[*i] == '\n'
+			|| str[*i] == '\r' || str[*i] == '\f' || str[*i] == '\v'))
+	{
 		(*i)++;
+	}
 }
