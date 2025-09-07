@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:44:08 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/06 00:58:01 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/07 00:43:43 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,11 @@ char	*ft_get_directory_path(char *dest)
 		return (ft_strdup(cwd));
 	home_len = ft_strlen(home);
 	cwd_len = ft_strlen(cwd);
-	// Si el directorio actual está dentro de HOME, mostrar con ~
 	if (cwd_len >= home_len && ft_strncmp(cwd, home, home_len) == 0)
 	{
-		if (cwd_len == home_len) // Estamos en HOME exactamente
+		if (cwd_len == home_len)
 			return (ft_strdup("~"));
-		else if (cwd[home_len] == '/') // Estamos en un subdirectorio de HOME
+		else if (cwd[home_len] == '/')
 		{
 			result = malloc(cwd_len - home_len + 2);
 			if (!result)
@@ -42,6 +41,5 @@ char	*ft_get_directory_path(char *dest)
 			return (result);
 		}
 	}
-	// Si no está en HOME, mostrar path completo
 	return (ft_strdup(cwd));
 }

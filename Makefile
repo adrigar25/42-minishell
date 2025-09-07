@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/06 01:33:09 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/07 10:47:50 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,6 +64,7 @@ MINISHELL_SRCS = \
 	$(SRC_DIR)/parsing/ft_skip_quotes.c \
 	$(SRC_DIR)/parsing/ft_parse_input.c \
 	$(SRC_DIR)/signals/ft_sigint_handler.c \
+	$(SRC_DIR)/signals/ft_init_signals.c \
 	$(SRC_DIR)/builtins/ft_echo.c \
 	$(SRC_DIR)/builtins/ft_cd.c \
 	$(SRC_DIR)/builtins/ft_pwd.c \

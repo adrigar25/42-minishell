@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:18:46 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/06 01:30:06 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/07 10:47:50 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,50 @@
 # include "../libs/libft/libft.h"
 # include <dirent.h>
 
+/*
+** ============================================================================
+**                                 MACROS
+** ============================================================================
+*/
+
+// Exit codes
+# define EXIT_SUCCESS 0
+# define EXIT_GENERAL_ERROR 1
+# define EXIT_MISUSE 2
+# define EXIT_COMMAND_NOT_FOUND 127
+# define EXIT_PERMISSION_DENIED 126
+
+// File descriptors
+# define STDIN_FD 0
+# define STDOUT_FD 1
+# define STDERR_FD 2
+
+// Prompt and messages
+# define SHELL_NAME "minishell"
+# define PROMPT_PREFIX "\033[90mminishell:("
+# define PROMPT_SUFFIX ")\033[0m> "
 # define WELCOME_MSG_TXT "./src/assets/welcome.txt"
+# define WELCOME_TEXT "\033[0;34mWelcome to Minishell!\033[0m\n"
+
+// Colors
+# define COLOR_RESET "\033[0m"
+# define COLOR_RED "\033[0;31m"
+# define COLOR_GREEN "\033[0;32m"
+# define COLOR_BLUE "\033[0;34m"
+# define COLOR_GRAY "\033[90m"
+
+// Error messages
+# define ERROR_COMMAND_NOT_FOUND "minishell: command not found: %s\n"
+# define ERROR_PERMISSION_DENIED "minishell: %s: Permission denied\n"
+# define ERROR_NO_SUCH_FILE "minishell: %s: No such file or directory\n"
+# define ERROR_SYNTAX "minishell: syntax error near unexpected token `newline'\n"
+# define ERROR_TOO_MANY_ARGS "minishell: %s: too many arguments\n"
+# define ERROR_HOME_NOT_SET "minishell: cd: HOME not set\n"
+# define ERROR_HEREDOC_DELIMITER "Error: missing delimiter for heredoc\n"
+# define ERROR_HEREDOC_PROCESS "Error processing heredoc\n"
+
+// Heredoc
+# define HEREDOC_PROMPT "heredoc> "
 
 int			ft_minishell(char **envp);
 char		*ft_get_directory_path(char *dest);
@@ -69,6 +112,7 @@ int			has_pipe(char **argv);
 
 // Signals
 void		sigint_handler(int sig);
+void		ft_init_signals(void);
 
 // Builtins
 int			ft_echo(char **args);

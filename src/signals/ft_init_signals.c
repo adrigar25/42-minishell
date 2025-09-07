@@ -1,32 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_msg_start.c                                     :+:      :+:    :+:   */
+/*   ft_init_signals.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/03 20:58:40 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/06 16:54:25 by agarcia          ###   ########.fr       */
+/*   Created: 2025/09/07 01:30:00 by agarcia           #+#    #+#             */
+/*   Updated: 2025/09/07 10:47:50 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_msg_start(void)
+void	ft_init_signals(void)
 {
-	char	*welcome_msg;
-
-	welcome_msg = ft_search_file(NULL, "welcome.txt");
-	system("clear");
-	if (welcome_msg)
-	{
-		ft_print_file(welcome_msg, COLOR_GREEN);
-		free(welcome_msg);
-	}
-	else
-		ft_print_file(WELCOME_MSG_TXT, COLOR_GREEN);
-	ft_putstr("\n");
-	ft_putstr(WELCOME_TEXT);
-	ft_putstr("\n\n");
-	return (0);
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
 }

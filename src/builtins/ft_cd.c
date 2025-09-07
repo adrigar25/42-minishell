@@ -63,13 +63,13 @@ int	ft_cd(char **args, char **envp)
 		}
 		else
 		{
-			printf("minishell: cd: HOME not set\n");
+			printf(ERROR_HOME_NOT_SET);
 			return (1);
 		}
 	}
 	else if (args[2])
 	{
-		printf("minishell: cd: too many arguments\n");
+		printf(ERROR_TOO_MANY_ARGS, "cd");
 		return (1);
 	}
 	else

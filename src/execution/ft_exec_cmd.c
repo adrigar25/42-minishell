@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 16:11:51 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/06 00:50:48 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/06 16:54:25 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ int	ft_exec_cmd(char **args, int fd_in, int fd_out, char **envp)
 	if (!args || !args[0] || !path || access(path, X_OK) == -1)
 	{
 		if (path)
-			printf("minishell: %s\n", args[0]);
+			printf(ERROR_PERMISSION_DENIED, args[0]);
 		else
-			printf("minishell: command not found: %s\n", args[0]);
+			printf(ERROR_COMMAND_NOT_FOUND, args[0]);
 		if (path)
-			exit(126);
+			exit(EXIT_PERMISSION_DENIED);
 		else
-			exit(127);
+			exit(EXIT_COMMAND_NOT_FOUND);
 	}
 	if (fd_in != 0)
 		ft_redir_io(fd_in, 0);

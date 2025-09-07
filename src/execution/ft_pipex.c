@@ -6,11 +6,19 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:37:42 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/05 19:46:32 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/07 01:16:24 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	ft_handle_pipe_error(char *msg, char ***cmds)
+{
+	perror(msg);
+	if (cmds)
+		free_split_strings(cmds);
+	return (1);
+}
 
 int	ft_pipex(const char **argv, int fd_in, char **envp)
 {
@@ -30,18 +38,8 @@ int	ft_pipex(const char **argv, int fd_in, char **envp)
 	while (cmds && cmds[i])
 	{
 		if (cmds[i + 1] && pipe(pipefds) == -1)
-		{
-			perror("pipe");
-			free_split_strings(cmds);
-			return (1);
-		}
+			return (ft_handle_pipe_error("pipe", cmds));
 		pid = fork();
-		if (pid == -1)
-		{
-			perror("fork");
-			free_split_strings(cmds);
-			return (1);
-		}
 		if (pid == 0)
 		{
 			signal(SIGINT, SIG_DFL);

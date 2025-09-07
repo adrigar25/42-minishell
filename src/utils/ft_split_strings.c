@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 20:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/05 19:42:57 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/07 00:56:51 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,34 +65,34 @@ char	***ft_split_strings(const char **argv, const char *sep)
 	while (argv[i])
 	{
 		if (ft_strcmp(argv[i], sep) == 0)
-		{
 			i++;
-			continue ;
-		}
-		start = i;
-		while (argv[i] && ft_strcmp(argv[i], sep) != 0)
-			i++;
-		end = i;
-		cmds[j] = malloc((end - start + 1) * sizeof(char *));
-		if (!cmds[j])
+		else
 		{
-			free_split_strings(cmds);
-			return (NULL);
-		}
-		k = 0;
-		while (start < end)
-		{
-			cmds[j][k] = ft_strdup(argv[start]);
-			if (!cmds[j][k])
+			start = i;
+			while (argv[i] && ft_strcmp(argv[i], sep) != 0)
+				i++;
+			end = i;
+			cmds[j] = malloc((end - start + 1) * sizeof(char *));
+			if (!cmds[j])
 			{
 				free_split_strings(cmds);
 				return (NULL);
 			}
-			k++;
-			start++;
+			k = 0;
+			while (start < end)
+			{
+				cmds[j][k] = ft_strdup(argv[start]);
+				if (!cmds[j][k])
+				{
+					free_split_strings(cmds);
+					return (NULL);
+				}
+				k++;
+				start++;
+			}
+			cmds[j][k] = NULL;
+			j++;
 		}
-		cmds[j][k] = NULL;
-		j++;
 	}
 	cmds[j] = NULL;
 	return (cmds);
