@@ -6,64 +6,89 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 14:20:19 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/08 15:55:56 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/08 16:48:41 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 /*
- * ENGLISH: Counts the number of arguments in a command string.
+ * ENGLISH: Returns the number of arguments parsed from a shell command string.
+ *          Handles quoted strings, escaped characters, and redirection operators.
  *
- * SPANISH: Cuenta el número de argumentos en una cadena de comando.
+ * SPANISH: Devuelve el número de argumentos analizados en una cadena de comando de shell.
+ *          Maneja cadenas entre comillas, caracteres escapados y operadores de redirección.
  *
  * @param {const char *} cmd
- *      - The command string to analyze.
+ *      - The command string to parse.
  *      - La cadena de comando a analizar.
  *
  * @returns {int}
- *      - Returns the number of arguments found in the command string.
- *      - Retorna el número de argumentos encontrados en la cadena de comando.
+ *      - Number of arguments detected in the command string.
+ *      - Número de argumentos detectados en la cadena de comando.
  */
 int	ft_count_args(const char *cmd)
 {
-	int	i;
-	int	count;
-	int	start;
+	int	i = 0;
+	int	count = 0;
+	int	in_quote = 0;
+	char	quote_char = 0;
 
-	i = 0;
-	count = 0;
 	while (cmd[i])
 	{
 		ft_skip_whitespace(cmd, &i);
 		if (!cmd[i])
 			break ;
-		start = i;
-		if (cmd[i] == '\\')
+
+		// Handle << or >> as a single argument
+		if ((cmd[i] == '<' || cmd[i] == '>') && cmd[i + 1] == cmd[i])
 		{
+			count++;
 			i += 2;
+			ft_skip_whitespace(cmd, &i);
+			continue;
 		}
-		else if (cmd[i] == '\'' || cmd[i] == '\"')
+		// Handle < or > as a single argument
+		else if (cmd[i] == '<' || cmd[i] == '>')
 		{
-			ft_skip_quotes(cmd, &i);
-		}
-		else if (cmd[i] == '>' || cmd[i] == '<')
-		{
+			count++;
 			i++;
-			if (cmd[i] == '>' || cmd[i] == '<')
+			ft_skip_whitespace(cmd, &i);
+			continue;
+		}
+		// Handle pipe as a separate argument, skip consecutive pipes
+		else if (cmd[i] == '|')
+		{
+			count++;
+			i++;
+			while (cmd[i] == '|')
 				i++;
+			continue;
 		}
 		else
 		{
-			while (cmd[i] && !ft_isspace(cmd[i]) && cmd[i] != '\'' && cmd[i] != '\"')
+			int start = i;
+			while (cmd[i] && (!ft_isspace(cmd[i]) || in_quote) && cmd[i] != '|' && cmd[i] != '<' && cmd[i] != '>')
 			{
-				if (cmd[i] == '\\')
+				if (!in_quote && (cmd[i] == '\'' || cmd[i] == '"'))
+				{
+					in_quote = 1;
+					quote_char = cmd[i++];
+				}
+				else if (in_quote && cmd[i] == quote_char)
+				{
+					in_quote = 0;
+					quote_char = 0;
+					i++;
+				}
+				else if (cmd[i] == '\\' && cmd[i + 1])
 					i += 2;
 				else
 					i++;
 			}
+			if (i > start)
+				count++;
 		}
-		count++;
 	}
 	return (count);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/08 16:23:12 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/08 16:50:13 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,17 @@ int	ft_minishell(char **envp)
 		add_history(input);
 		argc = ft_count_args(input);
 		printf("argc: %d\n", argc);
+		printf("argc: %d\n", argc);
 		argv = ft_split_input(input, argc);
-		// cmd_list = ft_parse_input(argv, argc);
-		curr = cmd_list;
+		printf("argv:\n");
+		i = 0;
+		while (i < argc)
+		{
+			printf("  argv[%d]: '%s'\n", i, argv[i]);
+			i++;
+		}
+		//cmd_list = ft_parse_input(argv, argc);
+		//curr = cmd_list;
 		i = 0;
 	}
 	return (0);
