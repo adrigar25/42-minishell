@@ -13,5 +13,9 @@ minishell
 *.txt
 
 # DS_Store
-
 .DS_Store/
+
+# Executables
+minishell
+
+assets/welcome.txt
