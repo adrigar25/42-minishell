@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/08 16:50:13 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/08 16:51:13 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	ft_minishell(char **envp)
 		}
 		add_history(input);
 		argc = ft_count_args(input);
-		printf("argc: %d\n", argc);
 		printf("argc: %d\n", argc);
 		argv = ft_split_input(input, argc);
 		printf("argv:\n");

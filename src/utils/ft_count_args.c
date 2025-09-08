@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 14:20:19 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/08 16:48:41 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/08 16:51:18 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	ft_count_args(const char *cmd)
 					i++;
 				}
 				else if (cmd[i] == '\\' && cmd[i + 1])
-					i += 2;
+					i += 1;
 				else
 					i++;
 			}
