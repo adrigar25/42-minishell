@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 00:30:10 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/08 16:03:45 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/08 16:23:48 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,70 @@ static t_cmd	*ft_create_cmd_node(void)
 	if (!new_cmd)
 		return (NULL);
 	new_cmd->argv = NULL;
+	new_cmd->infd = malloc(2 * sizeof(int));
+	new_cmd->outfd = malloc(2 * sizeof(int));
+	if (!new_cmd->infd || !new_cmd->outfd)
+	{
+		free(new_cmd->infd);
+		free(new_cmd->outfd);
+		free(new_cmd);
+		return (NULL);
+	}
+	new_cmd->infd[0] = STDIN_FD;
+	new_cmd->infd[1] = -1;
+	new_cmd->outfd[0] = STDOUT_FD;
+	new_cmd->outfd[1] = -1;
 	new_cmd->next = NULL;
 	return (new_cmd);
 }
+
+static void	ft_add_fd_to_cmd(t_cmd *cmd, int fd, int in_or_out)
+{
+	int	*new_fds;
+	int	count;
+	int	i;
+
+	if (!cmd)
+		return ;
+	count = 0;
+	if (in_or_out == 0)
+	{
+		while (cmd->infd[count] != -1)
+			count++;
+		new_fds = malloc((count + 2) * sizeof(int));
+		if (!new_fds)
+			return ;
+		i = 0;
+		while (i < count)
+		{
+			new_fds[i] = cmd->infd[i];
+			i++;
+		}
+		new_fds[count] = fd;
+		new_fds[count + 1] = -1;
+		free(cmd->infd);
+		cmd->infd = new_fds;
+	}
+	else
+	{
+		while (cmd->outfd[count] != -1 && count < 10)
+			count++;
+		new_fds = malloc((count + 2) * sizeof(int));
+		if (!new_fds)
+			return ;
+		i = 0;
+		while (i < count)
+		{
+			new_fds[i] = cmd->outfd[i];
+			i++;
+		}
+		new_fds[count] = fd;
+		new_fds[count + 1] = -1;
+		free(cmd->outfd);
+		cmd->outfd = new_fds;
+	}
+}
+
 static void	ft_add_arg_to_cmd(t_cmd *cmd, char *arg)
 {
 	int		i;
@@ -79,9 +140,34 @@ t_cmd	*ft_parse_input(char **argv, int argc)
 			current_cmd->next = ft_create_cmd_node();
 			current_cmd = current_cmd->next;
 		}
-		else if (ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i], ">") == 0)
+		else if (ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i], ">") == 0
+			|| ft_strcmp(argv[i], ">>") == 0)
 		{
+			if (i + 1 >= argc)
+			{
+				printf("minishell: syntax error near unexpected token `newline'\n");
+				return (cmd_list);
+			}
 
+			if (ft_strcmp(argv[i], "<") == 0)
+			{
+				int fd = ft_handle_infile(argv[i + 1]);
+				if (fd != -1)
+					ft_add_fd_to_cmd(current_cmd, fd, 0);
+			}
+			else if (ft_strcmp(argv[i], ">") == 0)
+			{
+				int fd = ft_handle_outfile(argv[i + 1], 0);
+				if (fd != -1)
+					ft_add_fd_to_cmd(current_cmd, fd, 1);
+			}
+			else if (ft_strcmp(argv[i], ">>") == 0)
+			{
+				int fd = ft_handle_outfile(argv[i + 1], 1);
+				if (fd != -1)
+					ft_add_fd_to_cmd(current_cmd, fd, 1);
+			}
+			i++;
 		}
 		else
 			ft_add_arg_to_cmd(current_cmd, argv[i]);
