@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_handle_infile.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 19:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/05 19:13:11 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/08 14:37:15 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_handle_infile(char *filename)
 
 	if (!filename)
 		return (-1);
-	fd = open(filename, O_RDONLY);
+	fd = ft_open_file_read(filename);
 	if (fd == -1)
 	{
 		printf("minishell: %s: No such file or directory\n", filename);

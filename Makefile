@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
+#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/08 01:00:45 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/08 14:50:26 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,12 +52,9 @@ MINISHELL_SRCS = \
 	$(UTILS_DIR)/ft_redir_io.c \
 	$(UTILS_DIR)/ft_split_strings.c \
 	$(UTILS_DIR)/ft_generate_prompt.c \
-	$(UTILS_DIR)/ft_skip_spaces.c \
 	$(UTILS_DIR)/ft_trim.c \
-	$(SRC_DIR)/redirections/ft_handle_heredoc.c \
 	$(SRC_DIR)/redirections/ft_handle_infile.c \
 	$(SRC_DIR)/redirections/ft_handle_outfile.c \
-	$(SRC_DIR)/redirections/ft_handle_redir.c \
 	$(SRC_DIR)/execution/ft_exec_cmd.c \
 	$(SRC_DIR)/execution/ft_pipex.c \
 	$(SRC_DIR)/execution/ft_get_cmd_path.c \

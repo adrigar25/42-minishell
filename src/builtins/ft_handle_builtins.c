@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_handle_builtins.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/07 00:57:41 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/08 14:55:01 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ int	ft_handle_builtins(char **args, char ***envp)
 	int	saved_stdout;
 	int	saved_stdin;
 	int	result;
+	printf("Checking for builtin: %s\n", args && args[0] ? args[0] : "NULL");
 
 	fd_in = 0;
 	fd_out = 1;
@@ -108,7 +109,6 @@ int	ft_handle_builtins(char **args, char ***envp)
 		return (0);
 	if (!is_builtin(args[0]))
 		return (0);
-	ft_handle_redir(args, &fd_in, &fd_out);
 	handle_redirections(&fd_in, &fd_out, &saved_stdin, &saved_stdout);
 	result = execute_builtin(args, envp);
 	restore_std_fds(saved_stdin, saved_stdout);

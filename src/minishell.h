@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:18:46 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/08 01:00:52 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/08 15:28:53 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 // Libft library
 # include "../libs/libft/libft.h"
 # include <dirent.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 /*
 ** ============================================================================
@@ -64,11 +66,11 @@
 
 typedef struct s_cmd
 {
-	char			**argv;
-	int				infd;
-	int				outfd;
-	struct s_cmd	*next;
-}					t_cmd;
+	char				*command;
+	int					*infd;
+	int					*outfd;
+	struct s_cmd		*next;
+} 					t_cmd;
 
 int					ft_minishell(char **envp);
 char				*ft_get_directory_path(char *dest);
@@ -85,7 +87,6 @@ char				*ft_build_path(const char *dir, const char *entry);
 char				**ft_split_input(const char *input, int argc);
 t_cmd				*ft_parse_input(char **argv, int argc);
 void				ft_skip_quotes(const char *cmd, int *i);
-void				ft_skip_spaces(const char *str, int *i);
 char				*ft_trim(const char *str, char c);
 
 // Execution
@@ -111,10 +112,8 @@ void				free_split_strings(char ***cmds);
 
 // Redirections
 void				ft_redir_io(int fd, int in_or_out);
-int					ft_handle_here_doc(char *limiter);
 int					ft_handle_infile(char *filename);
 int					ft_handle_outfile(char *filename, int append);
-int					ft_handle_redir(char **args, int *fd_in, int *fd_out);
 
 // Signals
 void				sigint_handler(int sig);
@@ -130,10 +129,6 @@ int					ft_env(char **envp);
 int					ft_exit(char **args);
 int					ft_handle_builtins(char **args, char ***envp);
 
-// Read line
-extern void			rl_replace_line(const char *text, int clear_undo);
-extern int			rl_on_new_line(void);
-extern void			rl_redisplay(void);
 
 int					ft_is_dot_or_dotdot(const char *name);
 

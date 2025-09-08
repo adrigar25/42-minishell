@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 00:30:10 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/08 01:02:05 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/08 16:01:16 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,10 @@ t_cmd	*ft_parse_input(char **argv, int argc)
 		{
 			current_cmd->next = ft_create_cmd_node();
 			current_cmd = current_cmd->next;
+		}
+		else if (ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i], ">") == 0)
+		{
+
 		}
 		else
 			ft_add_arg_to_cmd(current_cmd, argv[i]);

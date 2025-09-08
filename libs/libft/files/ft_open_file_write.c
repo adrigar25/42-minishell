@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:23:10 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/04 18:53:30 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/08 14:38:00 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,16 @@
  *          El descriptor de archivo para el archivo abierto, o -1 
  * 			en caso de error.
  */
-int	ft_open_file_write(const char *filename)
+int	ft_open_file_write(const char *filename, int append)
 {
 	int	fd;
+	int	flags;
 
-	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (append)
+		flags = O_WRONLY | O_CREAT | O_APPEND;
+	else
+		flags = O_WRONLY | O_CREAT | O_TRUNC;
+	fd = open(filename, flags, 0644);
 	if (fd < 0)
 		return (-1);
 	return (fd);

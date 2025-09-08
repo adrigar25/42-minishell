@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exec_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 16:11:51 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/06 16:54:25 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/08 14:50:57 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	ft_exec_cmd(char **args, int fd_in, int fd_out, char **envp)
 
 	if (!args || !args[0])
 		return (1);
-	ft_handle_redir(args, &fd_in, &fd_out);
 	if (ft_strchr(args[0], '/'))
 		path = ft_strdup(args[0]);
 	else

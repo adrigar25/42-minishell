@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:22:52 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/05 18:25:31 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/08 14:40:50 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char			*ft_get_next_line(int fd);
 // File utils
 int				ft_close_file(int fd);
 int				ft_open_file_read(const char *filename);
-int				ft_open_file_write(const char *filename);
+int				ft_open_file_write(const char *filename, int append);
 int				ft_print_file(char *filename, char *color);
 
 #endif
