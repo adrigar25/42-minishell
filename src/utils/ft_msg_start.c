@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_msg_start.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 20:58:40 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/06 16:54:25 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/08 18:16:22 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ int	ft_msg_start(void)
 	system("clear");
 	if (welcome_msg)
 	{
-		ft_print_file(welcome_msg, COLOR_GREEN);
+		ft_print_file(welcome_msg, COLOR_MAGENTA);
 		free(welcome_msg);
 	}
 	else
-		ft_print_file(WELCOME_MSG_TXT, COLOR_GREEN);
+		ft_print_file(WELCOME_MSG_TXT, COLOR_MAGENTA);
 	ft_putstr("\n");
 	ft_putstr(WELCOME_TEXT);
 	ft_putstr("\n\n");

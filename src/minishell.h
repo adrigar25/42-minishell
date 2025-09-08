@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:18:46 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/08 17:35:35 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/08 18:16:12 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,9 @@
 # define COLOR_GREEN "\033[0;32m"
 # define COLOR_BLUE "\033[0;34m"
 # define COLOR_GRAY "\033[90m"
+# define COLOR_YELLOW "\033[0;33m"
+# define COLOR_CYAN "\033[0;36m"
+# define COLOR_MAGENTA "\033[0;35m"
 
 // Error messages
 # define ERROR_COMMAND_NOT_FOUND "minishell: command not found: %s\n"
