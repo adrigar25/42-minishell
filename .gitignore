@@ -11,3 +11,7 @@ minishell
 
 # Text Files
 *.txt
+
+# DS_Store
+
+.DS_Store/
