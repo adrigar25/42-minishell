@@ -13,6 +13,28 @@
 
 #include "../minishell.h"
 
+static int	is_escaped(const char *input, int pos, int in_quote,
+		char quote_char)
+{
+	int	count;
+
+	if (in_quote)
+		return (0);
+	count = 0;
+	pos--;
+	while (pos >= 0 && input[pos] == '\\')
+	{
+		count++;
+		pos--;
+	}
+	return (count % 2);
+}
+
+static int	is_operator_char(char c)
+{
+	return (c == '<' || c == '>' || c == '|');
+}
+
 char	**ft_split_input(const char *input, int argc)
 {
 	char	**args;
@@ -20,6 +42,7 @@ char	**ft_split_input(const char *input, int argc)
 	int		arg_idx;
 	int		in_quote;
 	char	quote_char;
+	int		start;
 
 	args = (char **)malloc(sizeof(char *) * (argc + 1));
 	if (!args)
@@ -33,68 +56,32 @@ char	**ft_split_input(const char *input, int argc)
 		ft_skip_whitespace(input, &i);
 		if (!input[i])
 			break ;
-		if ((input[i] == '<' || input[i] == '>') && input[i + 1] == input[i])
+		if ((input[i] == '<' || input[i] == '>') && input[i + 1] == input[i]
+			&& !is_escaped(input, i, in_quote, quote_char))
 		{
 			// Handle << or >> as a single argument
 			args[arg_idx++] = ft_substr((char *)input, i, 2);
 			i += 2;
 			ft_skip_whitespace(input, &i);
-			int start = i;
-			while (input[i] && (!ft_isspace(input[i]) || in_quote))
-			{
-				if (!in_quote && (input[i] == '\'' || input[i] == '"'))
-				{
-					in_quote = 1;
-					quote_char = input[i];
-					i++;
-				}
-				else if (in_quote && input[i] == quote_char)
-				{
-					in_quote = 0;
-					quote_char = 0;
-					i++;
-				}
-				else if (input[i] == '\\' && input[i + 1])
-					i += 2;
-				else
-					i++;
-			}
-			if (i > start)
-				args[arg_idx++] = ft_substr((char *)input, start, i - start);
 		}
-		else if (input[i] == '<' || input[i] == '>')
+		else if ((input[i] == '<' || input[i] == '>') && !is_escaped(input, i,
+				in_quote, quote_char))
 		{
-			// Handle <infile.txt or >outfile.txt as a single argument
+			// Handle < or > as a single argument
 			args[arg_idx++] = ft_substr((char *)input, i, 1);
 			i++;
 			ft_skip_whitespace(input, &i);
-			int start = i;
-			while (input[i] && (!ft_isspace(input[i]) || in_quote))
-			{
-				if (!in_quote && (input[i] == '\'' || input[i] == '"'))
-				{
-					in_quote = 1;
-					quote_char = input[i];
-					i++;
-				}
-				else if (in_quote && input[i] == quote_char)
-				{
-					in_quote = 0;
-					quote_char = 0;
-					i++;
-				}
-				else if (input[i] == '\\' && input[i + 1])
-					i += 2;
-				else
-					i++;
-			}
-			if (i > start)
-				args[arg_idx++] = ft_substr((char *)input, start, i - start);
+		}
+		else if (input[i] == '|' && !is_escaped(input, i, in_quote, quote_char))
+		{
+			// Handle pipe as a single argument
+			args[arg_idx++] = ft_substr((char *)input, i, 1);
+			i++;
 		}
 		else
 		{
-			int start = i;
-			while (input[i] && (!ft_isspace(input[i]) || in_quote))
+			start = i;
+			while (input[i])
 			{
 				if (!in_quote && (input[i] == '\'' || input[i] == '"'))
 				{
@@ -110,6 +97,11 @@ char	**ft_split_input(const char *input, int argc)
 				}
 				else if (input[i] == '\\' && input[i + 1])
 					i += 2;
+				else if (!in_quote && is_operator_char(input[i])
+					&& !is_escaped(input, i, in_quote, quote_char))
+					break ;
+				else if (!in_quote && ft_isspace(input[i]))
+					break ;
 				else
 					i++;
 			}
@@ -118,5 +110,5 @@ char	**ft_split_input(const char *input, int argc)
 		}
 	}
 	args[arg_idx] = NULL;
-	return args;
+	return (args);
 }
