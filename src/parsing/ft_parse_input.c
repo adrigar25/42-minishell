@@ -3,11 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>             +#+  +:+      
-	+#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/08 00:30:10 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/08 17:40:31 by agarcia          ###   ########.fr       */
+/*   Created: 2025/09/08 18:06:03 by agarcia           #+#    #+#             */
+/*   Updated: 2025/09/08 18:08:08 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +158,7 @@ t_cmd	*ft_parse_input(char **argv, int argc)
 				printf("minishell: syntax error near unexpected token `newline'\n");
 				return (cmd_list);
 			}
-
+			// Pasar el argumento completo (sin modificar) a las funciones de manejo de archivos
 			if (ft_strcmp(argv[i], "<") == 0)
 			{
 				int fd = ft_handle_infile(argv[i + 1]);
@@ -181,7 +180,16 @@ t_cmd	*ft_parse_input(char **argv, int argc)
 			i++;
 		}
 		else
-			ft_add_arg_to_cmd(current_cmd, argv[i]);
+		{
+			// Remove leading spaces from the argument (but keep escapes as-is)
+			char *arg = argv[i];
+			while (*arg == ' ')
+				arg++;
+			// Duplicate the trimmed argument to ensure ownership
+			char *clean_arg = strdup(arg);
+			if (clean_arg)
+				ft_add_arg_to_cmd(current_cmd, clean_arg);
+		}
 
 		i++;
 	}
