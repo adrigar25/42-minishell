@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_handle_builtins.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/08 14:55:01 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/09 01:04:11 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,11 @@ static void	restore_std_fds(int saved_stdin, int saved_stdout)
 	}
 }
 
+int	ft_is_builtin(const char *cmd)
+{
+	return (is_builtin(cmd));
+}
+
 int	ft_handle_builtins(char **args, char ***envp)
 {
 	int	fd_in;
@@ -98,7 +103,6 @@ int	ft_handle_builtins(char **args, char ***envp)
 	int	saved_stdout;
 	int	saved_stdin;
 	int	result;
-	printf("Checking for builtin: %s\n", args && args[0] ? args[0] : "NULL");
 
 	fd_in = 0;
 	fd_out = 1;
@@ -106,11 +110,11 @@ int	ft_handle_builtins(char **args, char ***envp)
 	saved_stdin = -1;
 	result = 0;
 	if (!args || !args[0])
-		return (0);
+		return (1);
 	if (!is_builtin(args[0]))
-		return (0);
+		return (1);
 	handle_redirections(&fd_in, &fd_out, &saved_stdin, &saved_stdout);
 	result = execute_builtin(args, envp);
 	restore_std_fds(saved_stdin, saved_stdout);
-	return (1);
+	return (result);
 }

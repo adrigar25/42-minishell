@@ -1,5 +1,7 @@
 /* ************************************************************************** */
-/*                                                                            */
+/*                          			if (i > start)
+				args[arg_idx++] = ft_substr((char *)input, start, i
+						- start);                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_parse_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
@@ -43,6 +45,7 @@ char	**ft_split_input(const char *input, int argc)
 	int		in_quote;
 	char	quote_char;
 	int		start;
+	char	*trimmed;
 
 	args = (char **)malloc(sizeof(char *) * (argc + 1));
 	if (!args)
@@ -67,7 +70,6 @@ char	**ft_split_input(const char *input, int argc)
 		else if ((input[i] == '<' || input[i] == '>') && !is_escaped(input, i,
 				in_quote, quote_char))
 		{
-			// Handle < or > as a single argument
 			args[arg_idx++] = ft_substr((char *)input, i, 1);
 			i++;
 			ft_skip_whitespace(input, &i);
@@ -77,6 +79,9 @@ char	**ft_split_input(const char *input, int argc)
 			// Handle pipe as a single argument
 			args[arg_idx++] = ft_substr((char *)input, i, 1);
 			i++;
+			// Skip whitespace manually después del pipe
+			while (input[i] && (input[i] == ' ' || input[i] == '\t'))
+				i++;
 		}
 		else
 		{
@@ -106,9 +111,18 @@ char	**ft_split_input(const char *input, int argc)
 					i++;
 			}
 			if (i > start)
+			{
 				args[arg_idx++] = ft_substr((char *)input, start, i - start);
+			}
 		}
 	}
 	args[arg_idx] = NULL;
+	for (int j = 0; j < arg_idx; j++)
+	{
+		trimmed = ft_trim(args[j], ' ');
+		trimmed = ft_trim(args[j], '\t');
+		free(args[j]);
+		args[j] = trimmed;
+	}
 	return (args);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:18:46 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/08 18:16:12 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/09 01:04:11 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@
 typedef struct s_cmd
 {
 	char			**argv;
-	int				*infds;
-	int				*outfds;
+	int				infd;
+	int				outfd;
 	struct s_cmd	*next;
 }					t_cmd;
 
@@ -93,8 +93,7 @@ void				ft_skip_quotes(const char *cmd, int *i);
 char				*ft_trim(const char *str, char c);
 
 // Execution
-int					ft_exec_cmd(char **args, int fd_in, int fd_out,
-						char **envp);
+int					ft_exec_cmd(t_cmd *cmd, char **envp);
 int					ft_pipex(const char **argv, int fd_in, char **envp);
 char				*get_cmd_path(char *cmd);
 
@@ -131,6 +130,7 @@ int					ft_unset(char **args, char ***envp);
 int					ft_env(char **envp);
 int					ft_exit(char **args);
 int					ft_handle_builtins(char **args, char ***envp);
+int					ft_is_builtin(const char *cmd);
 
 int					ft_is_dot_or_dotdot(const char *name);
 
