@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/08 17:35:43 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/08 19:45:08 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	ft_minishell(char **envp)
 	t_cmd	*cmd_list;
 	t_cmd	*curr;
 	int		i;
+	pid_t	pid;
+	int		status;
 
 	ft_msg_start();
 	ft_init_signals();
@@ -31,9 +33,9 @@ int	ft_minishell(char **envp)
 		prompt = ft_generate_prompt();
 		input = readline(prompt);
 		free(prompt);
-		if (!input) // Solo salir si es EOF (Ctrl+D)
+		if (!input)
 			break ;
-		if (!*input) // Si está vacío, continuar sin procesar
+		if (!*input)
 		{
 			free(input);
 			continue ;
