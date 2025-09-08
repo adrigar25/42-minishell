@@ -3,7 +3,8 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>             +#+  +:+
+	+#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 18:06:03 by agarcia           #+#    #+#             */
 /*   Updated: 2025/09/08 18:08:08 by agarcia          ###   ########.fr       */
@@ -156,6 +157,14 @@ t_cmd	*ft_parse_input(char **argv, int argc)
 			if (i + 1 >= argc)
 			{
 				printf("minishell: syntax error near unexpected token `newline'\n");
+				return (cmd_list);
+			}
+			if (ft_strcmp(argv[i + 1], "|") == 0 || ft_strcmp(argv[i + 1],
+					"<") == 0 || ft_strcmp(argv[i + 1], ">") == 0
+				|| ft_strcmp(argv[i + 1], ">>") == 0)
+			{
+				printf("minishell: syntax error near unexpected token `%s'\n",
+					argv[i + 1]);
 				return (cmd_list);
 			}
 			// Pasar el argumento completo (sin modificar) a las funciones de manejo de archivos
