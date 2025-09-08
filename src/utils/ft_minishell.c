@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/08 16:51:13 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/08 17:35:43 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,25 @@ int	ft_minishell(char **envp)
 			printf("  argv[%d]: '%s'\n", i, argv[i]);
 			i++;
 		}
-		//cmd_list = ft_parse_input(argv, argc);
-		//curr = cmd_list;
+		cmd_list = ft_parse_input(argv, argc);
+		curr = cmd_list;
 		i = 0;
+		while (curr)
+		{
+			printf("cmd: %d\n", i);
+			printf("  args:\n");
+			for (int j = 0; curr->argv && curr->argv[j]; j++)
+				printf("    [%d]: '%s'\n", j, curr->argv[j]);
+			printf("  fds:\n");
+			printf("    infds:\n");
+			for (int j = 0; curr->infds && curr->infds[j] != -1; j++)
+				printf("      [%d]: %d\n", j, curr->infds[j]);
+			printf("    outfds:\n");
+			for (int j = 0; curr->outfds && curr->outfds[j] != -1; j++)
+				printf("      [%d]: %d\n", j, curr->outfds[j]);
+			curr = curr->next;
+			i++;
+		}
 	}
 	return (0);
 }

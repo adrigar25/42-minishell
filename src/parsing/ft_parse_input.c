@@ -3,10 +3,11 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>             +#+  +:+      
+	+#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 00:30:10 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/08 16:23:48 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/08 17:40:31 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +21,19 @@ static t_cmd	*ft_create_cmd_node(void)
 	if (!new_cmd)
 		return (NULL);
 	new_cmd->argv = NULL;
-	new_cmd->infd = malloc(2 * sizeof(int));
-	new_cmd->outfd = malloc(2 * sizeof(int));
-	if (!new_cmd->infd || !new_cmd->outfd)
+	new_cmd->infds = malloc(1 * sizeof(int));
+	new_cmd->outfds = malloc(1 * sizeof(int));
+	if (!new_cmd->infds || !new_cmd->outfds)
 	{
-		free(new_cmd->infd);
-		free(new_cmd->outfd);
+		free(new_cmd->infds);
+		free(new_cmd->outfds);
 		free(new_cmd);
 		return (NULL);
 	}
-	new_cmd->infd[0] = STDIN_FD;
-	new_cmd->infd[1] = -1;
-	new_cmd->outfd[0] = STDOUT_FD;
-	new_cmd->outfd[1] = -1;
+	new_cmd->infds[0] = STDIN_FD;
+	new_cmd->infds[1] = -1;
+	new_cmd->outfds[0] = STDOUT_FD;
+	new_cmd->outfds[1] = -1;
 	new_cmd->next = NULL;
 	return (new_cmd);
 }
@@ -48,7 +49,12 @@ static void	ft_add_fd_to_cmd(t_cmd *cmd, int fd, int in_or_out)
 	count = 0;
 	if (in_or_out == 0)
 	{
-		while (cmd->infd[count] != -1)
+		if (cmd->infds[0] == STDIN_FD)
+		{
+			cmd->infds[0] = fd;
+			return ;
+		}
+		while (cmd->infds[count] != -1)
 			count++;
 		new_fds = malloc((count + 2) * sizeof(int));
 		if (!new_fds)
@@ -56,17 +62,22 @@ static void	ft_add_fd_to_cmd(t_cmd *cmd, int fd, int in_or_out)
 		i = 0;
 		while (i < count)
 		{
-			new_fds[i] = cmd->infd[i];
+			new_fds[i] = cmd->infds[i];
 			i++;
 		}
 		new_fds[count] = fd;
 		new_fds[count + 1] = -1;
-		free(cmd->infd);
-		cmd->infd = new_fds;
+		free(cmd->infds);
+		cmd->infds = new_fds;
 	}
 	else
 	{
-		while (cmd->outfd[count] != -1 && count < 10)
+		if (cmd->outfds[0] == STDOUT_FD)
+		{
+			cmd->outfds[0] = fd;
+			return ;
+		}
+		while (cmd->outfds[count] != -1 && count < 10)
 			count++;
 		new_fds = malloc((count + 2) * sizeof(int));
 		if (!new_fds)
@@ -74,13 +85,13 @@ static void	ft_add_fd_to_cmd(t_cmd *cmd, int fd, int in_or_out)
 		i = 0;
 		while (i < count)
 		{
-			new_fds[i] = cmd->outfd[i];
+			new_fds[i] = cmd->outfds[i];
 			i++;
 		}
 		new_fds[count] = fd;
 		new_fds[count + 1] = -1;
-		free(cmd->outfd);
-		cmd->outfd = new_fds;
+		free(cmd->outfds);
+		cmd->outfds = new_fds;
 	}
 }
 

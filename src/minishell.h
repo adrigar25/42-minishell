@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:18:46 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/08 16:03:15 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/08 17:35:35 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 // Libft library
 # include "../libs/libft/libft.h"
 # include <dirent.h>
-# include <readline/readline.h>
 # include <readline/history.h>
+# include <readline/readline.h>
 
 /*
 ** ============================================================================
@@ -66,11 +66,11 @@
 
 typedef struct s_cmd
 {
-	char				**argv;
-	int					*infd;
-	int					*outfd;
-	struct s_cmd		*next;
-} 					t_cmd;
+	char			**argv;
+	int				*infds;
+	int				*outfds;
+	struct s_cmd	*next;
+}					t_cmd;
 
 int					ft_minishell(char **envp);
 char				*ft_get_directory_path(char *dest);
@@ -128,7 +128,6 @@ int					ft_unset(char **args, char ***envp);
 int					ft_env(char **envp);
 int					ft_exit(char **args);
 int					ft_handle_builtins(char **args, char ***envp);
-
 
 int					ft_is_dot_or_dotdot(const char *name);
 
