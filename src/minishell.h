@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:18:46 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/08 15:28:53 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/08 16:03:15 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@
 
 typedef struct s_cmd
 {
-	char				*command;
+	char				**argv;
 	int					*infd;
 	int					*outfd;
 	struct s_cmd		*next;

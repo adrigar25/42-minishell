@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 00:30:10 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/08 16:01:16 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/08 16:03:45 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ static t_cmd	*ft_create_cmd_node(void)
 	if (!new_cmd)
 		return (NULL);
 	new_cmd->argv = NULL;
-	new_cmd->infd = STDIN_FD;
-	new_cmd->outfd = STDOUT_FD;
 	new_cmd->next = NULL;
 	return (new_cmd);
 }

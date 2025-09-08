@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/08 01:00:37 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/08 16:01:45 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,6 @@ int	ft_minishell(char **envp)
 		cmd_list = ft_parse_input(argv, argc);
 		curr = cmd_list;
 		i = 0;
-		while (curr)
-		{
-			if (curr->argv && curr->argv[0])
-			{
-				printf("cmd%d: args:", i);
-				for (int j = 0; curr->argv[j]; j++)
-					printf(" %s", curr->argv[j]);
-				printf(" fdin:%d fdout:%d\n", curr->infd, curr->outfd);
-			}
-			curr = curr->next;
-			i++;
-		}
 	}
 	return (0);
 }

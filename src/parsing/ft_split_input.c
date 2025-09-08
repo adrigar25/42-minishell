@@ -93,7 +93,7 @@ static char	**handle_pipe_token(char **args, int *pos, const char *input,
 		return (cleanup_and_return(args, *pos));
 	args[(*pos)++] = substr;
 	(*i)++;
-	ft_skip_spaces(input, i);
+	ft_skip_whitespace(input, i);
 	return (args);
 }
 
@@ -115,7 +115,7 @@ char	**ft_split_input(const char *input, int argc)
 	pos = 0;
 	while (input[i])
 	{
-		ft_skip_spaces(input, &i);
+		ft_skip_whitespace(input, &i);
 		if (!input[i])
 			break ;
 		start = i;
