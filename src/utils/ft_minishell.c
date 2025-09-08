@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/08 16:01:45 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/08 16:23:12 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,9 @@ int	ft_minishell(char **envp)
 		}
 		add_history(input);
 		argc = ft_count_args(input);
+		printf("argc: %d\n", argc);
 		argv = ft_split_input(input, argc);
-		cmd_list = ft_parse_input(argv, argc);
+		// cmd_list = ft_parse_input(argv, argc);
 		curr = cmd_list;
 		i = 0;
 	}
