@@ -8,3 +8,6 @@ minishell
 
 # Static Libraries
 *.a
+
+# Text Files
+*.txt
