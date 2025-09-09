@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
+#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/08 19:36:46 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/09 18:19:06 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ MAIN_SOURCE = $(SRC_DIR)/main.c
 # Source files
 MINISHELL_SRCS = \
 	$(UTILS_DIR)/ft_minishell.c \
+	$(UTILS_DIR)/ft_save_envp.c \
 	$(UTILS_DIR)/ft_msg_start.c \
 	$(UTILS_DIR)/ft_get_directory_path.c \
 	$(UTILS_DIR)/ft_search_file/ft_is_dot_or_dotdot.c \
@@ -56,7 +57,6 @@ MINISHELL_SRCS = \
 	$(SRC_DIR)/redirections/ft_handle_infile.c \
 	$(SRC_DIR)/redirections/ft_handle_outfile.c \
 	$(SRC_DIR)/execution/ft_exec_cmd.c \
-	$(SRC_DIR)/execution/ft_pipex.c \
 	$(SRC_DIR)/execution/ft_get_cmd_path.c \
 	$(SRC_DIR)/parsing/ft_skip_quotes.c \
 	$(SRC_DIR)/parsing/ft_split_input.c \

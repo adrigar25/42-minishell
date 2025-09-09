@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/09 17:21:53 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/09 18:19:43 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,9 @@ int	ft_minishell(char **envp)
 	pid_t	pid;
 	int		status;
 	int		pipefd[2];
+	char	**envp_cpy;
 
+	ft_save_envp(&envp_cpy, envp);
 	ft_msg_start();
 	ft_init_signals();
 	while (1)
@@ -74,7 +76,7 @@ int	ft_minishell(char **envp)
 		{
 			signal(SIGINT, SIG_DFL);
 			signal(SIGQUIT, SIG_DFL);
-			ft_exec_cmd(curr, envp);
+			ft_exec_cmd(curr, envp_cpy);
 			exit(1);
 		}
 		else if (pid < 0)

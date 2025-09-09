@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:18:46 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/09 01:04:11 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/09 18:18:43 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct s_cmd
 }					t_cmd;
 
 int					ft_minishell(char **envp);
+int					ft_save_envp(char ***envp_cpy, char **envp);
 char				*ft_get_directory_path(char *dest);
 
 // Search for a file in the current directory and subdirectories.
