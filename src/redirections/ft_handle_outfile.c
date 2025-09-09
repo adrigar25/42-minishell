@@ -6,13 +6,11 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 19:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/08 14:40:18 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/09 17:13:46 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <fcntl.h>
-#include <unistd.h>
 
 int	ft_handle_outfile(char *filename, int append)
 {

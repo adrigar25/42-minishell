@@ -12,7 +12,6 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <unistd.h>
 
 static void	ft_add_fd_to_cmd(t_cmd *cmd, int fd, int in_or_out)
 {

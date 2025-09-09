@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_trim.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 00:45:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/08 00:38:32 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/09 17:13:17 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <stdlib.h>
 
 char	*ft_trim(const char *str, char c)
 {

@@ -1,25 +1,16 @@
 /* ************************************************************************** */
-/*	else  // Un argumento (cd directorio)
-	{
-		if (chdir(args[1]) == -1)
-		{
-			perror("minishell: cd");
-			return (1);
-		}
-		update_pwd_env(envp);
-	}                                                                    */
+/*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/06 00:54:29 by agarcia          ###   ########.fr       */
+/*   Created: 2025/09/09 17:16:33 by adriescr          #+#    #+#             */
+/*   Updated: 2025/09/09 17:16:36 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <stdlib.h>
 
 static void	update_pwd_env(char **envp)
 {
