@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exec_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 16:11:51 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/09 19:32:27 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/09 20:15:46 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,34 @@ int	ft_exec_cmd(t_cmd *cmd, char **envp)
 
 	if (!cmd || !cmd->argv || !cmd->argv[0])
 		return (1);
-	while (cmd)
+	if (ft_handle_builtins(cmd, &envp) == 0)
+		return (0);
+	if (cmd->infd != STDIN_FILENO)
 	{
-		if (ft_handle_builtins(cmd, &envp) == 0)
-			return (0);
-		path = get_cmd_path(cmd->argv[0]);
-		if (!path)
-		{
-			printf(ERROR_COMMAND_NOT_FOUND, cmd->argv[0]);
-			return (127);
-		}
-		if (execve(path, cmd->argv, envp) == -1)
-		{
-			perror("execve");
-			free(path);
-			return (1);
-		}
-		free(path);
-		cmd = cmd->next;
+		dup2(cmd->infd, STDIN_FILENO);
+		close(cmd->infd);
 	}
-	return (0);
+	if (cmd->outfd != STDOUT_FILENO)
+	{
+		dup2(cmd->outfd, STDOUT_FILENO);
+		close(cmd->outfd);
+	}
+	if (ft_strchr(cmd->argv[0], '/'))
+		path = ft_strdup(cmd->argv[0]);
+	else
+		path = get_cmd_path(cmd->argv[0]);
+	if (!path || access(path, X_OK) == -1)
+	{
+		if (path)
+			printf(ERROR_PERMISSION_DENIED, cmd->argv[0]);
+		else
+			printf(ERROR_COMMAND_NOT_FOUND, cmd->argv[0]);
+		free(path);
+		exit(127);
+	}
+	// Ejecutar comando (esto reemplaza el proceso)
+	execve(path, cmd->argv, envp);
+	perror("minishell: execve");
+	free(path);
+	exit(127);
 }
