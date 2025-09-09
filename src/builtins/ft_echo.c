@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/09 19:54:29 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/09 21:04:14 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,8 @@ static int	ft_putarg_echo(char *arg, int flag_n, int outfd)
 		ft_putchar_fd(arg[i], outfd);
 		i++;
 	}
-	if (flag_n)
-	{
-		if (arg[len - 1] == ' ')
-			ft_putchar_fd('%', outfd);
-	}
+	if (!flag_n)
+		ft_putchar_fd('\n', outfd);
 	return (0);
 }
 
