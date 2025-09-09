@@ -71,7 +71,8 @@ static void	ft_add_arg_to_cmd(t_cmd *cmd, char *arg)
 		new_argv[i] = cmd->argv[i];
 		i++;
 	}
-	new_argv[i] = NULL;
+	new_argv[i] = arg;      // Agregar el nuevo argumento
+	new_argv[i + 1] = NULL; // Terminar con NULL
 	free(cmd->argv);
 	cmd->argv = new_argv;
 }
@@ -84,6 +85,7 @@ t_cmd	*ft_parse_input(char **argv, int argc)
 	int		fd;
 	char	*arg;
 	char	*clean_arg;
+			int pipefd[2];
 
 	if (!argv || argc == 0)
 		return (NULL);
@@ -96,8 +98,23 @@ t_cmd	*ft_parse_input(char **argv, int argc)
 	{
 		if (ft_strcmp(argv[i], "|") == 0)
 		{
+			// Crear pipe entre comando actual y siguiente
+			if (pipe(pipefd) == -1)
+			{
+				perror("pipe");
+				return (cmd_list);
+			}
+			// El comando actual escribe al pipe
+			if (current_cmd->outfd == STDOUT_FD)
+				// Solo si no hay redirección de salida
+				current_cmd->outfd = pipefd[1];
+			else
+				close(pipefd[1]); // Cerrar write end si ya hay redirección
+			// Crear siguiente comando
 			current_cmd->next = ft_create_cmd_node();
 			current_cmd = current_cmd->next;
+			// El siguiente comando lee del pipe
+			current_cmd->infd = pipefd[0];
 		}
 		else if (ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i], ">") == 0
 			|| ft_strcmp(argv[i], ">>") == 0)
@@ -138,7 +155,7 @@ t_cmd	*ft_parse_input(char **argv, int argc)
 		else
 		{
 			arg = argv[i];
-			clean_arg = ft_trim(arg, ' ');  // Limpiar espacios al inicio y final
+			clean_arg = ft_trim(arg, ' ');
 			if (clean_arg)
 				ft_add_arg_to_cmd(current_cmd, clean_arg);
 		}
