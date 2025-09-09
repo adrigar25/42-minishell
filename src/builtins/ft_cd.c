@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 17:16:33 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/09 17:16:36 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/09 20:50:41 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void	update_pwd_env(char **envp)
 int	ft_cd(char **args, char **envp)
 {
 	char	*home;
+	char	*error_msg;
 	int		i;
 
 	if (!args[1])
@@ -54,13 +55,13 @@ int	ft_cd(char **args, char **envp)
 		}
 		else
 		{
-			printf(ERROR_HOME_NOT_SET);
+			ft_putstr_error(ERROR_HOME_NOT_SET);
 			return (1);
 		}
 	}
 	else if (args[2])
 	{
-		printf(ERROR_TOO_MANY_ARGS, "cd");
+		ft_putstr_error(ERROR_TOO_MANY_ARGS);
 		return (1);
 	}
 	else
