@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/09 18:19:43 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/09 18:53:00 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,21 @@ int	ft_minishell(char **envp)
 		argc = ft_count_args(input);
 		argv = ft_split_input(input, argc);
 		free(input);
+		for (i = 0; i < argc; i++)
+			printf("argv[%d]: %s\n", i, argv[i]);
 		cmd_list = ft_parse_input(argv, argc);
+		for (i = 0; i < argc; i++)
+			free(argv[i]);
 		free(argv);
+		if (!cmd_list)
+			continue ;
 		curr = cmd_list;
 		pid = fork();
 		if (pid == 0)
 		{
 			signal(SIGINT, SIG_DFL);
 			signal(SIGQUIT, SIG_DFL);
-			ft_exec_cmd(curr, envp_cpy);
+			ft_exec_cmd(curr, envp);
 			exit(1);
 		}
 		else if (pid < 0)

@@ -62,7 +62,6 @@ char	**ft_split_input(const char *input, int argc)
 		if ((input[i] == '<' || input[i] == '>') && input[i + 1] == input[i]
 			&& !is_escaped(input, i, in_quote, quote_char))
 		{
-			// Handle << or >> as a single argument
 			args[arg_idx++] = ft_substr((char *)input, i, 2);
 			i += 2;
 			ft_skip_whitespace(input, &i);
@@ -76,10 +75,8 @@ char	**ft_split_input(const char *input, int argc)
 		}
 		else if (input[i] == '|' && !is_escaped(input, i, in_quote, quote_char))
 		{
-			// Handle pipe as a single argument
 			args[arg_idx++] = ft_substr((char *)input, i, 1);
 			i++;
-			// Skip whitespace manually después del pipe
 			while (input[i] && (input[i] == ' ' || input[i] == '\t'))
 				i++;
 		}
