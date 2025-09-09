@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/09 19:01:35 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/09 19:27:18 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,52 @@
 static int	ft_putarg_echo(char *arg, int flag_n, int outfd)
 {
 	int	i;
+	int	len;
+	int	quote = 0;
 
-	printf("entro");
-	i = 0;
-	while (arg[i] != '\0')
+	if (!arg)
 	{
+		if (!flag_n)
+			ft_putchar_fd('\n', outfd);
+		return (0);
+	}
+	len = ft_strlen(arg);
+
+	// Check if argument is quoted
+	if ((arg[0] == '"' && arg[len - 1] == '"') || (arg[0] == '\'' && arg[len - 1] == '\''))
+	{
+		quote = 1;
+		i = 1;
+		len--;
+	}
+	else
+		i = 0;
+	while (i < len)
+	{
+		// Handle escaped newline
+		if (arg[i] == '\\' && arg[i + 1] == 'n')
+		{
+			ft_putchar_fd('\\', outfd);
+			ft_putchar_fd('n', outfd);
+			i += 2;
+			continue ;
+		}
 		ft_putchar_fd(arg[i], outfd);
 		i++;
 	}
-	if (arg[i - 1] != '\n' && !flag_n)
-		ft_putchar_fd('\n', outfd);
-	else if (arg[i - 1] == '\n' && flag_n)
-		ft_putchar_fd('%', outfd);
+	if (flag_n)
+	{
+		if (arg[len - 1] == ' ')
+			ft_putchar_fd('%', outfd);
+	}
 	return (0);
 }
 
 int	ft_intflag_n(char *arg)
 {
-	int	i;
-
-	printf("arg: %s\n", arg);
-	if (arg[0] == '-')
-		return (0);
-	return (1);
+	if (arg && arg[0] == '-' && arg[1] == 'n')
+		return (1);
+	return (0);
 }
 
 int	ft_echo(t_cmd cmd)
@@ -47,9 +70,7 @@ int	ft_echo(t_cmd cmd)
 	int	newline;
 	int	outfd;
 
-	printf("argv[0]: %s\n", cmd.argv[0]);
 	n_flag = ft_intflag_n(cmd.argv[1]);
-	printf("n_flag: %d\n", n_flag);
 	ft_putarg_echo(cmd.argv[1 + n_flag], n_flag, cmd.outfd);
 	return (0);
 }
