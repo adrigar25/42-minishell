@@ -6,35 +6,50 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/08 14:53:38 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/09 19:01:35 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_echo(char **args)
+static int	ft_putarg_echo(char *arg, int flag_n, int outfd)
 {
 	int	i;
-	int	newline;
 
-	printf("Executing builtin: echo\n");
-	if (!args || !args[0])
-		return (1);
-	newline = 1;
-	i = 1;
-	if (args[i] && ft_strcmp(args[i], "-n") == 0)
+	printf("entro");
+	i = 0;
+	while (arg[i] != '\0')
 	{
-		newline = 0;
+		ft_putchar_fd(arg[i], outfd);
 		i++;
 	}
-	while (args[i])
-	{
-		printf("%s", args[i]);
-		if (args[i + 1])
-			printf(" ");
-		i++;
-	}
-	if (newline)
-		printf("\n");
+	if (arg[i - 1] != '\n' && !flag_n)
+		ft_putchar_fd('\n', outfd);
+	else if (arg[i - 1] == '\n' && flag_n)
+		ft_putchar_fd('%', outfd);
+	return (0);
+}
+
+int	ft_intflag_n(char *arg)
+{
+	int	i;
+
+	printf("arg: %s\n", arg);
+	if (arg[0] == '-')
+		return (0);
+	return (1);
+}
+
+int	ft_echo(t_cmd cmd)
+{
+	int	i;
+	int	n_flag;
+	int	newline;
+	int	outfd;
+
+	printf("argv[0]: %s\n", cmd.argv[0]);
+	n_flag = ft_intflag_n(cmd.argv[1]);
+	printf("n_flag: %d\n", n_flag);
+	ft_putarg_echo(cmd.argv[1 + n_flag], n_flag, cmd.outfd);
 	return (0);
 }

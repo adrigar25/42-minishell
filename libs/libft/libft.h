@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:22:52 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/08 14:40:50 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/09 18:57:02 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,7 @@ int				ft_close_file(int fd);
 int				ft_open_file_read(const char *filename);
 int				ft_open_file_write(const char *filename, int append);
 int				ft_print_file(char *filename, char *color);
+int				ft_putstr_fd(char *s, int fd);
+void			ft_putchar_fd(char c, int fd);
 
 #endif

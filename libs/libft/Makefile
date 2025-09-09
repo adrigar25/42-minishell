@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
+#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:25:07 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/05 18:25:31 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/09 18:57:21 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,8 @@ FILE_UTILS = \
 	$(FILES_DIR)/ft_open_file_write.c \
 	$(FILES_DIR)/ft_print_file.c \
 	$(FILES_DIR)/ft_close_file.c \
+	$(FILES_DIR)/ft_putstr_fd.c \
+	$(FILES_DIR)/ft_putchar_fd.c \
 
 # My libft functions
 MY_LIBFT = \
@@ -83,7 +85,7 @@ clean:
 		echo "\033[31mError al eliminar los archivos objeto.\033[0m"; \
 	fi
 
-fclean: 
+fclean:
 	@rm -f $(OBJS)
 	@rm -f $(NAME)
 	@if [ $$? -ne 0 ]; then \

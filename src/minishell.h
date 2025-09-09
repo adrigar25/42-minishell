@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:18:46 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/09 18:18:43 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/09 18:32:12 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,15 +123,14 @@ void				sigint_handler(int sig);
 void				ft_init_signals(void);
 
 // Builtins
-int					ft_echo(char **args);
+int					ft_echo(t_cmd cmd);
 int					ft_cd(char **args, char **envp);
 int					ft_pwd(char **args);
 int					ft_export(char **args, char ***envp);
 int					ft_unset(char **args, char ***envp);
 int					ft_env(char **envp);
 int					ft_exit(char **args);
-int					ft_handle_builtins(char **args, char ***envp);
-int					ft_is_builtin(const char *cmd);
+int					ft_handle_builtins(t_cmd *cmd, char ***envp);
 
 int					ft_is_dot_or_dotdot(const char *name);
 

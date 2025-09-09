@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exec_cmd.c                                      :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/04 16:11:51 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/09 18:39:18 by adriescr         ###   ########.fr       */
+/*   Created: 2025/09/09 18:56:33 by adriescr          #+#    #+#             */
+/*   Updated: 2025/09/09 18:56:44 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../libft.h"
 
-int	ft_exec_cmd(t_cmd *cmd, char **envp)
+void	ft_putchar_fd(char c, int fd)
 {
-	char	*path;
-
-	if (!cmd || !cmd->argv || !cmd->argv[0])
-		return (1);
-	while (cmd)
-	{
-		if (ft_handle_builtins(cmd, &envp) == 0)
-			return (0);
-		cmd = cmd->next;
-	}
-	return (0);
+	write(fd, &c, 1);
 }
