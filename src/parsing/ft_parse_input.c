@@ -17,16 +17,24 @@ static void	ft_add_fd_to_cmd(t_cmd *cmd, int fd, int in_or_out)
 {
 	if (!cmd)
 		return ;
+	printf("DEBUG: ft_add_fd_to_cmd called with fd=%d, in_or_out=%d\n", fd,
+		in_or_out);
+	printf("DEBUG: Before - infd=%d, outfd=%d\n", cmd->infd, cmd->outfd);
+	if (in_or_out == 0) // Input redirection
 	{
 		if (cmd->infd != STDIN_FD)
 			close(cmd->infd);
 		cmd->infd = fd;
+		printf("DEBUG: Set infd to %d\n", fd);
 	}
+	else // Output redirection (in_or_out == 1)
 	{
 		if (cmd->outfd != STDOUT_FD)
 			close(cmd->outfd);
 		cmd->outfd = fd;
+		printf("DEBUG: Set outfd to %d\n", fd);
 	}
+	printf("DEBUG: After - infd=%d, outfd=%d\n", cmd->infd, cmd->outfd);
 }
 
 static t_cmd	*ft_create_cmd_node(void)
@@ -85,7 +93,7 @@ t_cmd	*ft_parse_input(char **argv, int argc)
 	int		fd;
 	char	*arg;
 	char	*clean_arg;
-			int pipefd[2];
+	int		pipefd[2];
 
 	if (!argv || argc == 0)
 		return (NULL);

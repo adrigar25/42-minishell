@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/09 18:53:00 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/09 19:22:03 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,19 +76,45 @@ int	ft_minishell(char **envp)
 		free(argv);
 		if (!cmd_list)
 			continue ;
+		printf("Comandos parseados:\n");
 		curr = cmd_list;
-		pid = fork();
-		if (pid == 0)
+		while (curr)
 		{
-			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_DFL);
-			ft_exec_cmd(curr, envp);
-			exit(1);
+			printf("cmd: \n");
+			for (i = 0; curr->argv && curr->argv[i]; i++)
+				printf("argv[%d]: %s\n", i, curr->argv[i]);
+			printf("\nfd_in: %d, fd_out: %d\n", curr->infd, curr->outfd);
+			curr = curr->next;
 		}
-		else if (pid < 0)
-			perror("fork");
-		waitpid(pid, &status, 0);
+		curr = cmd_list;
+		while (curr)
+		{
+			pid = fork();
+			if (pid == 0)
+			{
+				signal(SIGINT, SIG_DFL);
+				signal(SIGQUIT, SIG_DFL);
+				ft_exec_cmd(curr, envp);
+				exit(1);
+			}
+			else if (pid > 0)
+			{
+				// Cerrar file descriptors en el padre
+				if (curr->infd != STDIN_FILENO)
+					close(curr->infd);
+				if (curr->outfd != STDOUT_FILENO)
+					close(curr->outfd);
+				// Esperar a que termine este proceso
+				waitpid(pid, &status, 0);
+			}
+			else
+			{
+				perror("fork");
+				break ;
+			}
+			curr = curr->next;
+		}
+		ft_free_cmd_list(cmd_list);
 	}
-	ft_free_cmd_list(cmd_list);
 	return (0);
 }
