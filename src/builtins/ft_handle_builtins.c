@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/09 18:45:41 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/09 19:58:15 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,12 @@ int	ft_execute_builtin(t_cmd *cmd, char ***envp)
 
 int	ft_handle_builtins(t_cmd *cmd, char ***envp)
 {
-	if (ft_execute_builtin(cmd, envp) == 1)
+	int	result;
+
+	result = ft_execute_builtin(cmd, envp);
+	if (result == 1)
 		return (1);
+	else if (result == -1)
+		return (-1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/09 19:27:18 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/09 19:54:29 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ static int	ft_putarg_echo(char *arg, int flag_n, int outfd)
 		return (0);
 	}
 	len = ft_strlen(arg);
-
-	// Check if argument is quoted
 	if ((arg[0] == '"' && arg[len - 1] == '"') || (arg[0] == '\'' && arg[len - 1] == '\''))
 	{
 		quote = 1;
@@ -37,7 +35,6 @@ static int	ft_putarg_echo(char *arg, int flag_n, int outfd)
 		i = 0;
 	while (i < len)
 	{
-		// Handle escaped newline
 		if (arg[i] == '\\' && arg[i + 1] == 'n')
 		{
 			ft_putchar_fd('\\', outfd);
@@ -56,7 +53,7 @@ static int	ft_putarg_echo(char *arg, int flag_n, int outfd)
 	return (0);
 }
 
-int	ft_intflag_n(char *arg)
+static int	ft_intflag_n(char *arg)
 {
 	if (arg && arg[0] == '-' && arg[1] == 'n')
 		return (1);

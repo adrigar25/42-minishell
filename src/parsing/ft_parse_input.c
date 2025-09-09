@@ -93,7 +93,8 @@ t_cmd	*ft_parse_input(char **argv, int argc)
 	int		fd;
 	char	*arg;
 	char	*clean_arg;
-	int		pipefd[2];
+	int pipefd[2];
+	char	*error_msg;
 
 	if (!argv || argc == 0)
 		return (NULL);
@@ -129,15 +130,16 @@ t_cmd	*ft_parse_input(char **argv, int argc)
 		{
 			if (i + 1 >= argc)
 			{
-				printf("minishell: syntax error near unexpected token `newline'\n");
+				ft_putstr_error("minishell: syntax error near unexpected token `newline'\n");
 				return (cmd_list);
 			}
 			if (ft_strcmp(argv[i + 1], "|") == 0 || ft_strcmp(argv[i + 1],
 					"<") == 0 || ft_strcmp(argv[i + 1], ">") == 0
 				|| ft_strcmp(argv[i + 1], ">>") == 0)
 			{
-				printf("minishell: syntax error near unexpected token `%s'\n",
-					argv[i + 1]);
+				error_msg = ft_strjoin(ft_strjoin("minishell: syntax error near unexpected token `", argv[i + 1]), "'\n");
+				ft_putstr_error(error_msg);
+				free(error_msg);
 				return (cmd_list);
 			}
 			if (ft_strcmp(argv[i], "<") == 0)

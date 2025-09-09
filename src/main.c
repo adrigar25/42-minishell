@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:18:28 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/08 18:04:07 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/09 20:12:51 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,5 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	if (ft_minishell(envp))
-		return (1);
-	return (0);
+	return (ft_minishell(envp));
 }

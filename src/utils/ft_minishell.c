@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/09 19:22:03 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/09 20:31:45 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <signal.h>
 
 static void	ft_free_cmd_list(t_cmd *cmd_list)
 {
@@ -37,23 +38,22 @@ static void	ft_free_cmd_list(t_cmd *cmd_list)
 
 int	ft_minishell(char **envp)
 {
-	char	**argv;
-	int		argc;
 	char	*input;
+	int		argc;
+	char	**argv;
 	char	*prompt;
 	t_cmd	*cmd_list;
+	pid_t	pid;
+	char	**envp_cpy;
 	t_cmd	*curr;
 	int		i;
-	pid_t	pid;
-	int		status;
-	int		pipefd[2];
-	char	**envp_cpy;
 
 	ft_save_envp(&envp_cpy, envp);
 	ft_msg_start();
 	ft_init_signals();
 	while (1)
 	{
+		cmd_list = NULL;
 		prompt = ft_generate_prompt();
 		input = readline(prompt);
 		free(prompt);
@@ -65,15 +65,17 @@ int	ft_minishell(char **envp)
 			continue ;
 		}
 		add_history(input);
+
 		argc = ft_count_args(input);
 		argv = ft_split_input(input, argc);
 		free(input);
-		for (i = 0; i < argc; i++)
-			printf("argv[%d]: %s\n", i, argv[i]);
+
 		cmd_list = ft_parse_input(argv, argc);
-		for (i = 0; i < argc; i++)
-			free(argv[i]);
+
+		while (argc-- > 0)
+			free(argv[argc]);
 		free(argv);
+
 		if (!cmd_list)
 			continue ;
 		printf("Comandos parseados:\n");
@@ -86,7 +88,12 @@ int	ft_minishell(char **envp)
 			printf("\nfd_in: %d, fd_out: %d\n", curr->infd, curr->outfd);
 			curr = curr->next;
 		}
-		curr = cmd_list;
+
+		if (cmd_list && cmd_list->argv && strcmp(cmd_list->argv[0], "exit") == 0)
+		{
+			ft_free_cmd_list(cmd_list);
+			break;
+		}
 		while (curr)
 		{
 			pid = fork();
@@ -94,8 +101,12 @@ int	ft_minishell(char **envp)
 			{
 				signal(SIGINT, SIG_DFL);
 				signal(SIGQUIT, SIG_DFL);
-				ft_exec_cmd(curr, envp);
-				exit(1);
+				if (ft_exec_cmd(cmd_list, envp) == -1)
+			{
+				ft_free_cmd_list(cmd_list);
+				exit(EXIT_FAILURE);
+			}
+				exit(EXIT_SUCCESS);
 			}
 			else if (pid > 0)
 			{
@@ -105,7 +116,8 @@ int	ft_minishell(char **envp)
 				if (curr->outfd != STDOUT_FILENO)
 					close(curr->outfd);
 				// Esperar a que termine este proceso
-				waitpid(pid, &status, 0);
+		else
+					waitpid(pid, NULL, 0);
 			}
 			else
 			{
@@ -113,8 +125,10 @@ int	ft_minishell(char **envp)
 				break ;
 			}
 			curr = curr->next;
-		}
-		ft_free_cmd_list(cmd_list);
+
+			ft_free_cmd_list(cmd_list);
+		cmd_list = NULL;
+	}
 	}
 	return (0);
 }

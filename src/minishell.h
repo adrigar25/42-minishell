@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:18:46 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/09 18:32:12 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/09 20:10:57 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,11 @@
 # define COLOR_MAGENTA "\033[0;35m"
 
 // Error messages
-# define ERROR_COMMAND_NOT_FOUND "minishell: command not found: %s\n"
+# define ERROR_COMMAND_NOT_FOUND "minishell: command not found: "
 # define ERROR_PERMISSION_DENIED "minishell: %s: Permission denied\n"
 # define ERROR_NO_SUCH_FILE "minishell: %s: No such file or directory\n"
 # define ERROR_SYNTAX "minishell: syntax error near unexpected token `newline'\n"
-# define ERROR_TOO_MANY_ARGS "minishell: %s: too many arguments\n"
+# define ERROR_TOO_MANY_ARGS "minishell: too many arguments\n"
 # define ERROR_HOME_NOT_SET "minishell: cd: HOME not set\n"
 # define ERROR_HEREDOC_DELIMITER "Error: missing delimiter for heredoc\n"
 # define ERROR_HEREDOC_PROCESS "Error processing heredoc\n"
