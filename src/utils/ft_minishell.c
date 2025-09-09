@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/09 20:31:45 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/09 20:48:29 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ int	ft_minishell(char **envp)
 			ft_free_cmd_list(cmd_list);
 			break;
 		}
+
+		curr = cmd_list;
 		while (curr)
 		{
 			pid = fork();
@@ -101,11 +103,12 @@ int	ft_minishell(char **envp)
 			{
 				signal(SIGINT, SIG_DFL);
 				signal(SIGQUIT, SIG_DFL);
-				if (ft_exec_cmd(cmd_list, envp) == -1)
-			{
-				ft_free_cmd_list(cmd_list);
-				exit(EXIT_FAILURE);
-			}
+				printf("Ejecutando comando:\n");
+				if (ft_exec_cmd(curr, envp) == -1)
+				{
+					ft_free_cmd_list(cmd_list);
+					exit(EXIT_FAILURE);
+				}
 				exit(EXIT_SUCCESS);
 			}
 			else if (pid > 0)
@@ -116,8 +119,7 @@ int	ft_minishell(char **envp)
 				if (curr->outfd != STDOUT_FILENO)
 					close(curr->outfd);
 				// Esperar a que termine este proceso
-		else
-					waitpid(pid, NULL, 0);
+				waitpid(pid, NULL, 0);
 			}
 			else
 			{
@@ -125,10 +127,10 @@ int	ft_minishell(char **envp)
 				break ;
 			}
 			curr = curr->next;
+		}
 
-			ft_free_cmd_list(cmd_list);
+		ft_free_cmd_list(cmd_list);
 		cmd_list = NULL;
-	}
 	}
 	return (0);
 }
