@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/09 17:13:11 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/09 17:21:53 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,16 @@ static void	ft_free_cmd_list(t_cmd *cmd_list)
 
 int	ft_minishell(char **envp)
 {
-	char **argv;
-	int argc;
-	char *input;
-	char *prompt;
-	t_cmd *cmd_list;
-	t_cmd *curr;
-	int i;
-	pid_t pid;
-	int status;
-	int pipefd[2];
+	char	**argv;
+	int		argc;
+	char	*input;
+	char	*prompt;
+	t_cmd	*cmd_list;
+	t_cmd	*curr;
+	int		i;
+	pid_t	pid;
+	int		status;
+	int		pipefd[2];
 
 	ft_msg_start();
 	ft_init_signals();
@@ -69,7 +69,18 @@ int	ft_minishell(char **envp)
 		cmd_list = ft_parse_input(argv, argc);
 		free(argv);
 		curr = cmd_list;
-		ft_free_cmd_list(cmd_list);
-
-		return (0);
+		pid = fork();
+		if (pid == 0)
+		{
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
+			ft_exec_cmd(curr, envp);
+			exit(1);
+		}
+		else if (pid < 0)
+			perror("fork");
+		waitpid(pid, &status, 0);
 	}
+	ft_free_cmd_list(cmd_list);
+	return (0);
+}
