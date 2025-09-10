@@ -1,23 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*             		// Check for syntax errors before processing
-		if (ft_check_syntax_errors(argv, data->argc))
-		{
-			data->last_exit_status = 2;
-			free(input);
-			for (i = 0; i < data->argc; i++)
-				free(argv[i]);
-			free(argv);
-			if (!is_interactive)
-				exit(2);
-			continue ;
-		}                                 :::      ::::::::   */
+/*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/11 01:08:02 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/10 22:53:52 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,90 +36,6 @@ static void	ft_free_cmd_list(t_cmd *cmd_list)
 		free(cmd_list);
 		cmd_list = tmp;
 	}
-}
-
-static int	ft_check_syntax_errors(char **argv, int argc)
-{
-	int		i;
-	char	*error_msg;
-	char	*temp;
-
-	if (!argv || argc == 0)
-		return (0);
-	// Error: starts with pipe
-	if (ft_strcmp(argv[0], "|") == 0)
-	{
-		ft_putstr_error("minishell: syntax error near unexpected token `|'\n");
-		return (1);
-	}
-	// Error: starts with redirection
-	if (ft_strcmp(argv[0], ">") == 0 || ft_strcmp(argv[0], ">>") == 0
-		|| ft_strcmp(argv[0], "<") == 0 || ft_strcmp(argv[0], "<<") == 0)
-	{
-		ft_putstr_error("minishell: syntax error near unexpected token `newline'\n");
-		return (1);
-	}
-	i = 0;
-	while (i < argc)
-	{
-		// Error: redirection at end without filename
-		if ((ft_strcmp(argv[i], ">") == 0 || ft_strcmp(argv[i], ">>") == 0
-				|| ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i],
-					"<<") == 0) && i + 1 >= argc)
-		{
-			ft_putstr_error("minishell: syntax error near unexpected token `newline'\n");
-			return (1);
-		}
-		// Error: redirection followed by another operator
-		if ((ft_strcmp(argv[i], ">") == 0 || ft_strcmp(argv[i], ">>") == 0
-				|| ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i],
-					"<<") == 0) && i + 1 < argc)
-		{
-			if (ft_strcmp(argv[i + 1], "|") == 0 || ft_strcmp(argv[i + 1],
-					">") == 0 || ft_strcmp(argv[i + 1], ">>") == 0
-				|| ft_strcmp(argv[i + 1], "<") == 0 || ft_strcmp(argv[i + 1],
-					"<<") == 0)
-			{
-				temp = ft_strjoin(argv[i + 1], "'\n");
-				error_msg = ft_strjoin("minishell: syntax error near unexpected token `",
-						temp);
-				ft_putstr_error(error_msg);
-				free(temp);
-				free(error_msg);
-				return (1);
-			}
-		}
-		// Error: pipe followed by pipe or redirection
-		if (ft_strcmp(argv[i], "|") == 0 && i + 1 < argc)
-		{
-			if (ft_strcmp(argv[i + 1], "|") == 0)
-			{
-				ft_putstr_error("minishell: syntax error near unexpected token `|'\n");
-				return (1);
-			}
-			if (ft_strcmp(argv[i + 1], ">") == 0 || ft_strcmp(argv[i + 1],
-					">>") == 0)
-			{
-				ft_putstr_error("minishell: syntax error near unexpected token `newline'\n");
-				return (1);
-			}
-		}
-		// Error: pipe at end
-		if (ft_strcmp(argv[i], "|") == 0 && i + 1 >= argc)
-		{
-			ft_putstr_error("minishell: syntax error near unexpected token `newline'\n");
-			return (1);
-		}
-		// Error: triple redirection like ">>>"
-		if (ft_strcmp(argv[i], ">>") == 0 && i + 1 < argc && ft_strcmp(argv[i
-				+ 1], ">") == 0)
-		{
-			ft_putstr_error("minishell: syntax error near unexpected token `>'\n");
-			return (1);
-		}
-		i++;
-	}
-	return (0);
 }
 
 int	ft_minishell(char **envp, int debug)
@@ -165,16 +70,9 @@ int	ft_minishell(char **envp, int debug)
 	while (1)
 	{
 		cmd_list = NULL;
-		if (is_interactive)
-		{
-			prompt = ft_generate_prompt(data->envp);
-			input = readline(prompt);
-			free(prompt);
-		}
-		else
-		{
-			input = readline("minishell> ");
-		}
+		prompt = ft_generate_prompt(data->envp);
+		input = readline(prompt);
+		free(prompt);
 		if (!input)
 			break ;
 		if (!*input)
@@ -192,18 +90,6 @@ int	ft_minishell(char **envp, int debug)
 			for (i = 0; i < data->argc; i++)
 				printf("argv[%d]: %s\n", i, argv[i]);
 		}
-		// Check for syntax errors before processing
-		if (ft_check_syntax_errors(argv, data->argc))
-		{
-			data->last_exit_status = 2;
-			free(input);
-			for (i = 0; i < data->argc; i++)
-				free(argv[i]);
-			free(argv);
-			if (!is_interactive)
-				exit(2);
-			continue ;
-		}
 		expanded_argv = ft_handle_env_expansion(argv, data);
 		if (!expanded_argv)
 			expanded_argv = argv;
@@ -214,7 +100,7 @@ int	ft_minishell(char **envp, int debug)
 				printf("argv[%d]: %s\n", i, expanded_argv[i]);
 		}
 		free(input);
-		cmd_list = ft_parse_input(expanded_argv, data->argc);
+		cmd_list = ft_parse_input(expanded_argv, data->argc, data);
 		while (data->argc-- > 0)
 			free(argv[data->argc]);
 		free(argv);

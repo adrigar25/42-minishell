@@ -1,22 +1,5 @@
 /* ************************************************************************** */
-/*    		if ((input[i] == '<' || input[i] == '>') && input[i + 1] == input[i]
-			&& !is_in_quotes(input, i) && !is_escaped(input, i, in_quote,
-				quote_char))
-		{
-			args[arg_idx++] = ft_substr((char *)input, i, 2);
-			i += 2;
-			ft_skip_whitespace(input, &i);
-		}
-		else if ((input[i] == '<' || input[i] == '>') && !is_in_quotes(input, i)
-			&& !is_escaped(input, i, in_quote, quote_char))
-		{
-			args[arg_idx++] = ft_substr((char *)input, i, 1);
-			i++;
-			ft_skip_whitespace(input, &i);
-		}
-		else if (input[i] == '|' && !is_in_quotes(input, i)
-						&& !is_escaped(input, i, in_quote,
-							quote_char))       			if (i > start)
+/*                          			if (i > start)
 				args[arg_idx++] = ft_substr((char *)input, start, i
 						- start);                                            */
 /*                                                        :::      ::::::::   */
@@ -31,32 +14,6 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-static int	is_in_quotes(const char *input, int pos)
-{
-	int		i;
-	int		in_quote;
-	char	quote_char;
-
-	i = 0;
-	in_quote = 0;
-	quote_char = 0;
-	while (i <= pos && input[i])
-	{
-		if (!in_quote && (input[i] == '\'' || input[i] == '"'))
-		{
-			in_quote = 1;
-			quote_char = input[i];
-		}
-		else if (in_quote && input[i] == quote_char)
-		{
-			in_quote = 0;
-			quote_char = 0;
-		}
-		i++;
-	}
-	return (in_quote);
-}
 
 static int	is_escaped(const char *input, int pos, int in_quote,
 		char quote_char)
@@ -103,21 +60,36 @@ char	**ft_split_input(const char *input, int argc)
 		if (!input[i])
 			break ;
 		if ((input[i] == '<' || input[i] == '>') && input[i + 1] == input[i]
-			&& !in_quote && !is_escaped(input, i, in_quote, quote_char))
+			&& !is_escaped(input, i, in_quote, quote_char))
 		{
 			args[arg_idx++] = ft_substr((char *)input, i, 2);
 			i += 2;
 			ft_skip_whitespace(input, &i);
 		}
-		else if ((input[i] == '<' || input[i] == '>') && !in_quote
-			&& !is_escaped(input, i, in_quote, quote_char))
+		else if ((input[i] == '<' || input[i] == '>') && !is_escaped(input, i,
+				in_quote, quote_char))
 		{
 			args[arg_idx++] = ft_substr((char *)input, i, 1);
 			i++;
 			ft_skip_whitespace(input, &i);
 		}
-		else if (input[i] == '|' && !in_quote && !is_escaped(input, i, in_quote,
-				quote_char))
+		else if (input[i] == '|' && input[i + 1] == '|' && !is_escaped(input, i,
+				in_quote, quote_char))
+		{
+			args[arg_idx++] = ft_substr((char *)input, i, 2);
+			i += 2;
+			while (input[i] && (input[i] == ' ' || input[i] == '\t'))
+				i++;
+		}
+		else if (input[i] == '&' && input[i + 1] == '&' && !is_escaped(input, i,
+				in_quote, quote_char))
+		{
+			args[arg_idx++] = ft_substr((char *)input, i, 2);
+			i += 2;
+			while (input[i] && (input[i] == ' ' || input[i] == '\t'))
+				i++;
+		}
+		else if (input[i] == '|' && !is_escaped(input, i, in_quote, quote_char))
 		{
 			args[arg_idx++] = ft_substr((char *)input, i, 1);
 			i++;
