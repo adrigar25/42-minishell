@@ -3,75 +3,69 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 17:16:33 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/09 20:50:41 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/10 10:40:44 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	update_pwd_env(char **envp)
+void	ft_change_env(char *key, char *value, char ***envp)
 {
-	char	cwd[1024];
-	char	*old_pwd;
+	int		i;
+	char	*new_var;
+	char	**old_envp;
+	int		key_len;
+	char	*temp;
 
-	old_pwd = getenv("PWD");
-	if (old_pwd)
-		setenv("OLDPWD", old_pwd, 1);
-	if (getcwd(cwd, sizeof(cwd)) == NULL)
+	if (!key || !value || !envp)
 		return ;
-	setenv("PWD", cwd, 1);
+	// Actualizar entorno del sistema
+	setenv(key, value, 1);
+	// Actualizar copia local
+	key_len = ft_strlen(key);
+	temp = ft_strjoin(key, "=");
+	if (!temp)
+		return ;
+	new_var = ft_strjoin(temp, value);
+	free(temp);
+	if (!new_var)
+		return ;
+	i = 0;
+	while ((*envp)[i])
+	{
+		if (ft_strncmp((*envp)[i], key, key_len) == 0
+			&& (*envp)[i][key_len] == '=')
+		{
+			free((*envp)[i]); // Liberar la variable anterior
+			(*envp)[i] = new_var;
+			return ;
+		}
+		i++;
+	}
+	// Si llegamos aquí, la variable no existe - habría que expandir el array
+	// Por simplicidad, solo usamos setenv() para variables nuevas
+	free(new_var);
 }
 
-int	ft_cd(char **args, char **envp)
+int	ft_cd(char **argv, char ***envp)
 {
-	char	*home;
-	char	*error_msg;
-	int		i;
+	char	buf[PATH_MAX];
+	char	*oldpwd;
 
-	if (!args[1])
+	if (chdir(argv[1]) != 0)
 	{
-		home = NULL;
-		i = 0;
-		while (envp[i])
-		{
-			if (ft_strncmp(envp[i], "HOME=", 5) == 0)
-			{
-				home = envp[i] + 5;
-				break ;
-			}
-			i++;
-		}
-		if (home)
-		{
-			if (chdir(home) == -1)
-			{
-				perror("minishell: cd");
-				return (1);
-			}
-			update_pwd_env(envp);
-		}
-		else
-		{
-			ft_putstr_error(ERROR_HOME_NOT_SET);
-			return (1);
-		}
-	}
-	else if (args[2])
-	{
-		ft_putstr_error(ERROR_TOO_MANY_ARGS);
+		perror("cd");
 		return (1);
 	}
-	else
+	oldpwd = getenv("PWD");
+	if (getcwd(buf, sizeof(buf)))
 	{
-		if (chdir(args[1]) == -1)
-		{
-			perror("minishell: cd");
-			return (1);
-		}
-		update_pwd_env(envp);
+		if (oldpwd)
+			ft_change_env("OLDPWD", oldpwd, envp);
+		ft_change_env("PWD", buf, envp);
 	}
 	return (0);
 }
