@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/10 17:09:14 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/10 17:37:42 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,13 @@ int	ft_minishell(char **envp, int debug)
 	int		cmd_count;
 	t_cmd	*tmp;
 	int		cmd_index;
+	int		exit_status;
 
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (1);
 	data->last_exit_status = 0;
 	ft_save_envp(&data->envp, envp);
-	// Solo mostrar mensaje de bienvenida si es interactivo (tiene TTY)
 	is_interactive = isatty(STDIN_FILENO);
 	if (is_interactive)
 	{
@@ -130,34 +130,27 @@ int	ft_minishell(char **envp, int debug)
 				curr = curr->next;
 			}
 		}
-		// Verificar si hay un solo comando exit para manejo especial
 		if (cmd_list && cmd_list->argv && strcmp(cmd_list->argv[0], "exit") == 0
 			&& !cmd_list->next)
 		{
-			// Solo manejar exit si es un comando simple (no en pipe)
 			builtin_result = ft_handle_builtins(cmd_list, &data);
 			if (builtin_result == 0)
 			{
-				// Error en exit (ej: demasiados argumentos), continuar
 				data->last_exit_status = 1;
 			}
-			// Para exit válido, ft_exit hace exit() internamente
 			ft_free_cmd_list(cmd_list);
 			cmd_list = NULL;
 			continue ;
 		}
-		// Ejecutar todos los comandos en paralelo para pipes
 		curr = cmd_list;
 		pids = NULL;
 		cmd_count = 0;
-		// Contar comandos
 		tmp = cmd_list;
 		while (tmp)
 		{
 			cmd_count++;
 			tmp = tmp->next;
 		}
-		// Allocar array para PIDs
 		pids = malloc(sizeof(pid_t) * cmd_count);
 		if (!pids)
 		{
@@ -166,7 +159,6 @@ int	ft_minishell(char **envp, int debug)
 		}
 		cmd_index = 0;
 		curr = cmd_list;
-		// Fork todos los comandos
 		while (curr)
 		{
 			builtin_result = ft_handle_builtins(curr, &data);
@@ -182,12 +174,13 @@ int	ft_minishell(char **envp, int debug)
 				{
 					signal(SIGINT, SIG_DFL);
 					signal(SIGQUIT, SIG_DFL);
-					if (ft_exec_cmd(curr, data) == -1)
+					exit_status = ft_exec_cmd(curr, data);
+					if (exit_status == -1)
 					{
 						ft_free_cmd_list(cmd_list);
 						exit(EXIT_FAILURE);
 					}
-					exit(EXIT_SUCCESS);
+					exit(exit_status);
 				}
 				else if (pid > 0)
 				{
@@ -202,7 +195,6 @@ int	ft_minishell(char **envp, int debug)
 			cmd_index++;
 			curr = curr->next;
 		}
-		// Cerrar file descriptors en el proceso padre
 		curr = cmd_list;
 		while (curr)
 		{

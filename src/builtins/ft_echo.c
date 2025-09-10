@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/10 10:46:26 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/10 17:41:07 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	ft_echo(t_cmd cmd)
 	while (cmd.argv[i])
 	{
 		ft_putarg_echo(cmd.argv[i], 0, cmd.outfd);
-		if (cmd.argv[i + 1])
+		if (cmd.argv[i + 1] && cmd.argv[i + 1][0] != '\0')
 			ft_putchar_fd(' ', cmd.outfd);
 		i++;
 	}
