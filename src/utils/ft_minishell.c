@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/09 20:48:29 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/10 10:39:18 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	ft_minishell(char **envp)
 	char	*input;
 	int		argc;
 	char	**argv;
+	char	**expanded_argv;
 	char	*prompt;
 	t_cmd	*cmd_list;
 	pid_t	pid;
@@ -54,7 +55,7 @@ int	ft_minishell(char **envp)
 	while (1)
 	{
 		cmd_list = NULL;
-		prompt = ft_generate_prompt();
+		prompt = ft_generate_prompt(envp_cpy);
 		input = readline(prompt);
 		free(prompt);
 		if (!input)
@@ -65,17 +66,34 @@ int	ft_minishell(char **envp)
 			continue ;
 		}
 		add_history(input);
-
 		argc = ft_count_args(input);
 		argv = ft_split_input(input, argc);
+		printf("Argumentos recibidos:\n");
+		for (i = 0; i < argc; i++)
+			printf("argv[%d]: %s\n", i, argv[i]);
+		expanded_argv = ft_handle_env_expansion(argc, argv, envp_cpy);
+		if (!expanded_argv)
+			expanded_argv = argv;
+		printf("Argumentos después de expandir:\n");
+		for (i = 0; i < argc; i++)
+			printf("argv[%d]: %s\n", i, expanded_argv[i]);
 		free(input);
-
-		cmd_list = ft_parse_input(argv, argc);
-
+		cmd_list = ft_parse_input(expanded_argv, argc);
+		// Liberar argv original
 		while (argc-- > 0)
 			free(argv[argc]);
 		free(argv);
-
+		// Liberar expanded_argv si es diferente de argv
+		if (expanded_argv != argv)
+		{
+			i = 0;
+			while (expanded_argv[i])
+			{
+				free(expanded_argv[i]);
+				i++;
+			}
+			free(expanded_argv);
+		}
 		if (!cmd_list)
 			continue ;
 		printf("Comandos parseados:\n");
@@ -88,47 +106,52 @@ int	ft_minishell(char **envp)
 			printf("\nfd_in: %d, fd_out: %d\n", curr->infd, curr->outfd);
 			curr = curr->next;
 		}
-
-		if (cmd_list && cmd_list->argv && strcmp(cmd_list->argv[0], "exit") == 0)
+		if (cmd_list && cmd_list->argv && strcmp(cmd_list->argv[0],
+				"exit") == 0)
 		{
 			ft_free_cmd_list(cmd_list);
-			break;
+			break ;
 		}
-
 		curr = cmd_list;
 		while (curr)
 		{
-			pid = fork();
-			if (pid == 0)
+			// Ejecutar builtins en el proceso padre
+			if (curr->argv[0] && (ft_strcmp(curr->argv[0], "cd") == 0
+					|| ft_strcmp(curr->argv[0], "export") == 0
+					|| ft_strcmp(curr->argv[0], "unset") == 0))
 			{
-				signal(SIGINT, SIG_DFL);
-				signal(SIGQUIT, SIG_DFL);
-				printf("Ejecutando comando:\n");
-				if (ft_exec_cmd(curr, envp) == -1)
-				{
-					ft_free_cmd_list(cmd_list);
-					exit(EXIT_FAILURE);
-				}
-				exit(EXIT_SUCCESS);
-			}
-			else if (pid > 0)
-			{
-				// Cerrar file descriptors en el padre
-				if (curr->infd != STDIN_FILENO)
-					close(curr->infd);
-				if (curr->outfd != STDOUT_FILENO)
-					close(curr->outfd);
-				// Esperar a que termine este proceso
-				waitpid(pid, NULL, 0);
+				ft_handle_builtins(curr, &envp_cpy);
 			}
 			else
 			{
-				perror("fork");
-				break ;
+				pid = fork();
+				if (pid == 0)
+				{
+					signal(SIGINT, SIG_DFL);
+					signal(SIGQUIT, SIG_DFL);
+					if (ft_exec_cmd(curr, &envp_cpy) == -1)
+					{
+						ft_free_cmd_list(cmd_list);
+						exit(EXIT_FAILURE);
+					}
+					exit(EXIT_SUCCESS);
+				}
+				else if (pid > 0)
+				{
+					if (curr->infd != STDIN_FILENO)
+						close(curr->infd);
+					if (curr->outfd != STDOUT_FILENO)
+						close(curr->outfd);
+					waitpid(pid, NULL, 0);
+				}
+				else
+				{
+					perror("fork");
+					break ;
+				}
 			}
 			curr = curr->next;
 		}
-
 		ft_free_cmd_list(cmd_list);
 		cmd_list = NULL;
 	}
