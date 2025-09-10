@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putstr_error.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:41:33 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/03 13:29:38 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/10 16:49:52 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,7 @@ int	ft_putstr_error(const char *str)
 	while (*str)
 	{
 		if (ft_putchar_error(*str) == -1)
-		{
-			ft_putchar_error('\n');
 			return (-1);
-		}
 		str++;
 	}
 	return (0);

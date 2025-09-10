@@ -155,7 +155,7 @@ t_cmd	*ft_parse_input(char **argv, int argc)
 		else
 		{
 			arg = argv[i];
-			clean_arg = ft_strtrim(arg, ' ');
+			clean_arg = ft_remove_quotes(arg);
 			if (clean_arg)
 				ft_add_arg_to_cmd(current_cmd, clean_arg);
 		}

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 21:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/10 12:07:09 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/10 16:29:49 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,18 @@ char	**ft_handle_env_expansion(char **argv, t_data *data)
 						}
 					}
 					free(env_name);
+				}
+				else
+				{
+					// Si no hay nada después del $, mantener el $
+					old_str = new_argv[i];
+					new_argv[i] = ft_strjoin(old_str, "$");
+					free(old_str);
+					if (!new_argv[i])
+					{
+						free(new_argv);
+						return (NULL);
+					}
 				}
 			}
 		}

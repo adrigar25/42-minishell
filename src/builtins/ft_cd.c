@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 17:16:33 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/10 12:34:36 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/10 16:50:50 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ void	ft_change_env(char *key, char *value, char ***envp)
 
 	if (!key || !value || !envp)
 		return ;
-	// Actualizar entorno del sistema
 	setenv(key, value, 1);
-	// Actualizar copia local
 	key_len = ft_strlen(key);
 	temp = ft_strjoin(key, "=");
 	if (!temp)
@@ -39,14 +37,12 @@ void	ft_change_env(char *key, char *value, char ***envp)
 		if (ft_strncmp((*envp)[i], key, key_len) == 0
 			&& (*envp)[i][key_len] == '=')
 		{
-			free((*envp)[i]); // Liberar la variable anterior
+			free((*envp)[i]);
 			(*envp)[i] = new_var;
 			return ;
 		}
 		i++;
 	}
-	// Si llegamos aquí, la variable no existe - habría que expandir el array
-	// Por simplicidad, solo usamos setenv() para variables nuevas
 	free(new_var);
 }
 
@@ -56,7 +52,6 @@ int	ft_cd(char **argv, char ***envp)
 	char	*oldpwd;
 	char	*target_dir;
 
-	// Si no se proporciona argumento, ir a HOME
 	if (!argv[1])
 	{
 		target_dir = getenv("HOME");

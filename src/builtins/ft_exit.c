@@ -3,18 +3,72 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/09 20:11:43 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/10 17:07:27 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_exit(char **args)
+int	ft_is_numeric(const char *str)
 {
-	int	exit_code;
+	int	i;
 
-	return (-1);
+	if (!str || *str == '\0')
+		return (0);
+	i = 0;
+	if (str[i] == '+' || str[i] == '-')
+		i++;
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	ft_exit(t_cmd *cmd, t_data *data)
+{
+	char **args;
+	int arg_count;
+	int i;
+
+	args = cmd->argv;
+	if (!args)
+	{
+		exit(0);
+	}
+
+	arg_count = 0;
+	i = 0;
+	while (args[i])
+	{
+		arg_count++;
+		i++;
+	}
+
+	if (arg_count == 1)
+	{
+		exit(0);
+	}
+	else if (arg_count > 2)
+	{
+		ft_putstr_error("minishell: exit: too many arguments");
+		exit(1);
+	}
+	else if (!ft_is_numeric(args[1]))
+	{
+		ft_putstr_error("minishell: exit: ");
+		ft_putstr_error(args[1]);
+		ft_putstr_error(": numeric argument required");
+		exit(255);
+	}
+	else
+	{
+		exit(ft_atoi(args[1]) % 256);
+	}
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:18:46 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/10 11:57:30 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/10 17:23:49 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ char				**ft_split_input(const char *input, int argc);
 t_cmd				*ft_parse_input(char **argv, int argc);
 void				ft_skip_quotes(const char *cmd, int *i);
 char				**ft_handle_env_expansion(char **argv, t_data *data);
+char				*ft_remove_quotes(const char *str);
 
 // Execution
 int					ft_exec_cmd(t_cmd *cmd, t_data *data);
@@ -114,6 +115,7 @@ char				*get_cmd_path(char *cmd);
 
 char				*ft_getenv(const char *name, char **envp);
 void				ft_change_env(char *key, char *value, char ***envp);
+int					ft_setenv(char *name, char *value, char ***envp);
 
 // Initialize message
 int					ft_msg_start(void);
@@ -142,8 +144,8 @@ int					ft_pwd(char **args);
 int					ft_export(char **args, char ***envp);
 int					ft_unset(char **args, char ***envp);
 int					ft_env(char **envp);
-int					ft_exit(char **args);
-int					ft_handle_builtins(t_cmd *cmd, char ***envp);
+int					ft_exit(t_cmd *cmd, t_data *data);
+int					ft_handle_builtins(t_cmd *cmd, t_data **data);
 
 int					ft_is_dot_or_dotdot(const char *name);
 
