@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/10 12:08:39 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/10 13:20:11 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int	ft_minishell(char **envp, int debug)
 	t_cmd	*curr;
 	int		i;
 	int		status;
+	int		builtin_result;
 
 	data = malloc(sizeof(t_data));
 	if (!data)
@@ -126,6 +127,16 @@ int	ft_minishell(char **envp, int debug)
 		curr = cmd_list;
 		while (curr)
 		{
+			builtin_result = ft_handle_builtins(curr, &data->envp);
+			if (builtin_result != 1)
+			{
+				if (builtin_result == 0)
+					data->last_exit_status = 0;
+				else
+					data->last_exit_status = 1;
+				curr = curr->next;
+				continue ;
+			}
 			pid = fork();
 			if (pid == 0)
 			{

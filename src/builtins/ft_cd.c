@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 17:16:33 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/10 10:40:44 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/10 12:34:36 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,21 @@ int	ft_cd(char **argv, char ***envp)
 {
 	char	buf[PATH_MAX];
 	char	*oldpwd;
+	char	*target_dir;
 
-	if (chdir(argv[1]) != 0)
+	// Si no se proporciona argumento, ir a HOME
+	if (!argv[1])
+	{
+		target_dir = getenv("HOME");
+		if (!target_dir)
+		{
+			ft_putstr_error("cd: HOME not set\n");
+			return (1);
+		}
+	}
+	else
+		target_dir = argv[1];
+	if (chdir(target_dir) != 0)
 	{
 		perror("cd");
 		return (1);

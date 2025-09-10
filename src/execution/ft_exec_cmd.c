@@ -20,8 +20,6 @@ int	ft_exec_cmd(t_cmd *cmd, t_data *data)
 
 	if (!cmd || !cmd->argv || !cmd->argv[0])
 		return (1);
-	if (ft_handle_builtins(cmd, &data->envp) == 0)
-		return (0);
 	if (cmd->infd != STDIN_FILENO)
 	{
 		dup2(cmd->infd, STDIN_FILENO);
