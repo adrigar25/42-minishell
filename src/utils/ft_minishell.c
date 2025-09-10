@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/10 17:37:42 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/10 18:23:59 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,7 @@ int	ft_minishell(char **envp, int debug)
 	ft_save_envp(&data->envp, envp);
 	is_interactive = isatty(STDIN_FILENO);
 	if (is_interactive)
-	{
 		ft_msg_start();
-	}
 	ft_init_signals();
 	while (1)
 	{
@@ -82,7 +80,8 @@ int	ft_minishell(char **envp, int debug)
 			free(input);
 			continue ;
 		}
-		add_history(input);
+		if (is_interactive)
+			add_history(input);
 		data->argc = ft_count_args(input);
 		argv = ft_split_input(input, data->argc);
 		if (debug)

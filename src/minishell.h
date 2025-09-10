@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:18:46 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/10 17:23:49 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/10 18:13:45 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@
 // Error messages
 # define ERROR_COMMAND_NOT_FOUND "minishell: command not found: "
 # define ERROR_PERMISSION_DENIED "minishell: Permission denied\n"
-# define ERROR_NO_SUCH_FILE "minishell: %s: No such file or directory\n"
+# define ERROR_NO_SUCH_FILE "minishell: %s: No such file or directory"
 # define ERROR_SYNTAX "minishell: syntax error near unexpected token `newline'\n"
 # define ERROR_TOO_MANY_ARGS "minishell: too many arguments\n"
 # define ERROR_HOME_NOT_SET "minishell: cd: HOME not set\n"
