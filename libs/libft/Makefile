@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
+#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:25:07 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/09 18:57:21 by adriescr         ###   ########.fr        #
+#    Updated: 2025/09/09 23:27:31 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,6 +56,7 @@ MY_LIBFT = \
 	ft_putnbr.c \
 	ft_strstr.c \
 	ft_strcpy.c \
+	ft_strlcpy.c \
 	ft_skip_whitespace.c \
 	ft_isspace.c \
 	$(GET_NEXT_LINE_DIR)/get_next_line.c \
