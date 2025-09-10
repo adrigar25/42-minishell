@@ -1,4 +1,5 @@
-/* ************************************************************************** */
+/* ***************************************************	execve(path, cmd->argv,
+		data->envp);********************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_exec_cmd.c                                      :+:      :+:    :+:   */
@@ -6,20 +7,20 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 16:11:51 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/10 10:36:01 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/10 11:47:47 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_exec_cmd(t_cmd *cmd, char ***envp)
+int	ft_exec_cmd(t_cmd *cmd, t_data *data)
 {
 	char	*path;
 	char	*error_msg;
 
 	if (!cmd || !cmd->argv || !cmd->argv[0])
 		return (1);
-	if (ft_handle_builtins(cmd, envp) == 0)
+	if (ft_handle_builtins(cmd, &data->envp) == 0)
 		return (0);
 	if (cmd->infd != STDIN_FILENO)
 	{
@@ -52,7 +53,7 @@ int	ft_exec_cmd(t_cmd *cmd, char ***envp)
 		free(path);
 		exit(127);
 	}
-	execve(path, cmd->argv, *envp);
+	execve(path, cmd->argv, data->envp);
 	perror("minishell: execve");
 	free(path);
 	exit(127);

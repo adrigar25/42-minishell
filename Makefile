@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/10 10:28:08 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/10 11:15:56 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,6 @@ MINISHELL_SRCS = \
 	$(UTILS_DIR)/ft_redir_io.c \
 	$(UTILS_DIR)/ft_split_strings.c \
 	$(UTILS_DIR)/ft_generate_prompt.c \
-	$(UTILS_DIR)/ft_trim.c \
 	$(UTILS_DIR)/ft_getenv.c \
 	$(SRC_DIR)/redirections/ft_handle_infile.c \
 	$(SRC_DIR)/redirections/ft_handle_outfile.c \

@@ -116,8 +116,8 @@ char	**ft_split_input(const char *input, int argc)
 	args[arg_idx] = NULL;
 	for (int j = 0; j < arg_idx; j++)
 	{
-		trimmed = ft_trim(args[j], ' ');
-		trimmed = ft_trim(args[j], '\t');
+		trimmed = ft_strtrim(args[j], ' ');
+		trimmed = ft_strtrim(args[j], '\t');
 		free(args[j]);
 		args[j] = trimmed;
 	}

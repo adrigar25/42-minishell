@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:18:46 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/10 10:33:33 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/10 11:57:30 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,15 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
-int					ft_minishell(char **envp);
+typedef struct s_data
+{
+	char			**envp;
+	int				argc;
+	int				last_exit_status;
+	struct s_data	*next;
+}					t_data;
+
+int					ft_minishell(char **envp, int debug);
 int					ft_save_envp(char ***envp_cpy, char **envp);
 char				*ft_get_directory_path(char **envp);
 
@@ -91,13 +99,10 @@ char				*ft_build_path(const char *dir, const char *entry);
 char				**ft_split_input(const char *input, int argc);
 t_cmd				*ft_parse_input(char **argv, int argc);
 void				ft_skip_quotes(const char *cmd, int *i);
-char				*ft_trim(const char *str, char c);
-char				**ft_handle_env_expansion(int argc, char **argv,
-						char **envp);
-char				*ft_expand_string(const char *str, char **envp);
+char				**ft_handle_env_expansion(char **argv, t_data *data);
 
 // Execution
-int					ft_exec_cmd(t_cmd *cmd, char ***envp);
+int					ft_exec_cmd(t_cmd *cmd, t_data *data);
 int					ft_pipex(const char **argv, int fd_in, char **envp);
 char				*get_cmd_path(char *cmd);
 

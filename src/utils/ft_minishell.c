@@ -6,12 +6,13 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/10 10:39:18 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/10 12:08:39 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include <signal.h>
+#include <sys/wait.h>
 
 static void	ft_free_cmd_list(t_cmd *cmd_list)
 {
@@ -36,26 +37,29 @@ static void	ft_free_cmd_list(t_cmd *cmd_list)
 	}
 }
 
-int	ft_minishell(char **envp)
+int	ft_minishell(char **envp, int debug)
 {
 	char	*input;
-	int		argc;
 	char	**argv;
 	char	**expanded_argv;
 	char	*prompt;
 	t_cmd	*cmd_list;
+	t_data	*data;
 	pid_t	pid;
-	char	**envp_cpy;
 	t_cmd	*curr;
 	int		i;
+	int		status;
 
-	ft_save_envp(&envp_cpy, envp);
+	data = malloc(sizeof(t_data));
+	if (!data)
+		return (1);
+	ft_save_envp(&data->envp, envp);
 	ft_msg_start();
 	ft_init_signals();
 	while (1)
 	{
 		cmd_list = NULL;
-		prompt = ft_generate_prompt(envp_cpy);
+		prompt = ft_generate_prompt(data->envp);
 		input = readline(prompt);
 		free(prompt);
 		if (!input)
@@ -66,24 +70,28 @@ int	ft_minishell(char **envp)
 			continue ;
 		}
 		add_history(input);
-		argc = ft_count_args(input);
-		argv = ft_split_input(input, argc);
-		printf("Argumentos recibidos:\n");
-		for (i = 0; i < argc; i++)
-			printf("argv[%d]: %s\n", i, argv[i]);
-		expanded_argv = ft_handle_env_expansion(argc, argv, envp_cpy);
+		data->argc = ft_count_args(input);
+		argv = ft_split_input(input, data->argc);
+		if (debug)
+		{
+			printf("Argumentos recibidos:\n");
+			for (i = 0; i < data->argc; i++)
+				printf("argv[%d]: %s\n", i, argv[i]);
+		}
+		expanded_argv = ft_handle_env_expansion(argv, data);
 		if (!expanded_argv)
 			expanded_argv = argv;
-		printf("Argumentos después de expandir:\n");
-		for (i = 0; i < argc; i++)
-			printf("argv[%d]: %s\n", i, expanded_argv[i]);
+		if (debug)
+		{
+			printf("Argumentos después de expandir:\n");
+			for (i = 0; i < data->argc; i++)
+				printf("argv[%d]: %s\n", i, expanded_argv[i]);
+		}
 		free(input);
-		cmd_list = ft_parse_input(expanded_argv, argc);
-		// Liberar argv original
-		while (argc-- > 0)
-			free(argv[argc]);
+		cmd_list = ft_parse_input(expanded_argv, data->argc);
+		while (data->argc-- > 0)
+			free(argv[data->argc]);
 		free(argv);
-		// Liberar expanded_argv si es diferente de argv
 		if (expanded_argv != argv)
 		{
 			i = 0;
@@ -96,15 +104,18 @@ int	ft_minishell(char **envp)
 		}
 		if (!cmd_list)
 			continue ;
-		printf("Comandos parseados:\n");
-		curr = cmd_list;
-		while (curr)
+		if (debug)
 		{
-			printf("cmd: \n");
-			for (i = 0; curr->argv && curr->argv[i]; i++)
-				printf("argv[%d]: %s\n", i, curr->argv[i]);
-			printf("\nfd_in: %d, fd_out: %d\n", curr->infd, curr->outfd);
-			curr = curr->next;
+			printf("Comandos parseados:\n");
+			curr = cmd_list;
+			while (curr)
+			{
+				printf("cmd: \n");
+				for (i = 0; curr->argv && curr->argv[i]; i++)
+					printf("argv[%d]: %s\n", i, curr->argv[i]);
+				printf("\nfd_in: %d, fd_out: %d\n", curr->infd, curr->outfd);
+				curr = curr->next;
+			}
 		}
 		if (cmd_list && cmd_list->argv && strcmp(cmd_list->argv[0],
 				"exit") == 0)
@@ -115,40 +126,34 @@ int	ft_minishell(char **envp)
 		curr = cmd_list;
 		while (curr)
 		{
-			// Ejecutar builtins en el proceso padre
-			if (curr->argv[0] && (ft_strcmp(curr->argv[0], "cd") == 0
-					|| ft_strcmp(curr->argv[0], "export") == 0
-					|| ft_strcmp(curr->argv[0], "unset") == 0))
+			pid = fork();
+			if (pid == 0)
 			{
-				ft_handle_builtins(curr, &envp_cpy);
+				signal(SIGINT, SIG_DFL);
+				signal(SIGQUIT, SIG_DFL);
+				if (ft_exec_cmd(curr, data) == -1)
+				{
+					ft_free_cmd_list(cmd_list);
+					exit(EXIT_FAILURE);
+				}
+				exit(EXIT_SUCCESS);
+			}
+			else if (pid > 0)
+			{
+				if (curr->infd != STDIN_FILENO)
+					close(curr->infd);
+				if (curr->outfd != STDOUT_FILENO)
+					close(curr->outfd);
+				waitpid(pid, &status, 0);
+				if (WIFEXITED(status))
+					data->last_exit_status = WEXITSTATUS(status);
+				else if (WIFSIGNALED(status))
+					data->last_exit_status = 128 + WTERMSIG(status);
 			}
 			else
 			{
-				pid = fork();
-				if (pid == 0)
-				{
-					signal(SIGINT, SIG_DFL);
-					signal(SIGQUIT, SIG_DFL);
-					if (ft_exec_cmd(curr, &envp_cpy) == -1)
-					{
-						ft_free_cmd_list(cmd_list);
-						exit(EXIT_FAILURE);
-					}
-					exit(EXIT_SUCCESS);
-				}
-				else if (pid > 0)
-				{
-					if (curr->infd != STDIN_FILENO)
-						close(curr->infd);
-					if (curr->outfd != STDOUT_FILENO)
-						close(curr->outfd);
-					waitpid(pid, NULL, 0);
-				}
-				else
-				{
-					perror("fork");
-					break ;
-				}
+				perror("fork");
+				break ;
 			}
 			curr = curr->next;
 		}

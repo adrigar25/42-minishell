@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:22:52 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/09 23:27:31 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/10 12:00:45 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int				ft_putchar_error(char c);
 int				ft_is_digit(unsigned char c);
 int				ft_is_number(const char *str);
 int				ft_atoi(const char *str);
+char			*ft_itoa(int n);
 char			**ft_split(char const *s, char c);
 void			*ft_memcpy(void *dst, const void *src, size_t n);
 size_t			ft_count_words(const char *s, char c);
@@ -43,6 +44,7 @@ int				ft_strncmp(const char *s1, const char *s2, size_t n);
 char			*ft_strstr(const char *haystack, const char *needle);
 char			*ft_strcpy(char *dest, const char *src);
 size_t			ft_strlcpy(char *dst, const char *src, size_t size);
+char			*ft_strtrim(const char *str, char c);
 void			ft_skip_whitespace(const char *cmd, int *i);
 int				ft_isspace(int c);
 

@@ -17,24 +17,18 @@ static void	ft_add_fd_to_cmd(t_cmd *cmd, int fd, int in_or_out)
 {
 	if (!cmd)
 		return ;
-	printf("DEBUG: ft_add_fd_to_cmd called with fd=%d, in_or_out=%d\n", fd,
-		in_or_out);
-	printf("DEBUG: Before - infd=%d, outfd=%d\n", cmd->infd, cmd->outfd);
-	if (in_or_out == 0) // Input redirection
+	if (in_or_out == 0)
 	{
 		if (cmd->infd != STDIN_FD)
 			close(cmd->infd);
 		cmd->infd = fd;
-		printf("DEBUG: Set infd to %d\n", fd);
 	}
-	else // Output redirection (in_or_out == 1)
+	else
 	{
 		if (cmd->outfd != STDOUT_FD)
 			close(cmd->outfd);
 		cmd->outfd = fd;
-		printf("DEBUG: Set outfd to %d\n", fd);
 	}
-	printf("DEBUG: After - infd=%d, outfd=%d\n", cmd->infd, cmd->outfd);
 }
 
 static t_cmd	*ft_create_cmd_node(void)
@@ -45,8 +39,8 @@ static t_cmd	*ft_create_cmd_node(void)
 	if (!new_cmd)
 		return (NULL);
 	new_cmd->argv = NULL;
-	new_cmd->infd = STDIN_FD;   // Inicializar con stdin
-	new_cmd->outfd = STDOUT_FD; // Inicializar con stdout
+	new_cmd->infd = STDIN_FD;
+	new_cmd->outfd = STDOUT_FD;
 	new_cmd->next = NULL;
 	return (new_cmd);
 }
@@ -79,8 +73,8 @@ static void	ft_add_arg_to_cmd(t_cmd *cmd, char *arg)
 		new_argv[i] = cmd->argv[i];
 		i++;
 	}
-	new_argv[i] = arg;      // Agregar el nuevo argumento
-	new_argv[i + 1] = NULL; // Terminar con NULL
+	new_argv[i] = arg;
+	new_argv[i + 1] = NULL;
 	free(cmd->argv);
 	cmd->argv = new_argv;
 }
@@ -93,7 +87,7 @@ t_cmd	*ft_parse_input(char **argv, int argc)
 	int		fd;
 	char	*arg;
 	char	*clean_arg;
-	int pipefd[2];
+	int		pipefd[2];
 	char	*error_msg;
 
 	if (!argv || argc == 0)
@@ -107,22 +101,17 @@ t_cmd	*ft_parse_input(char **argv, int argc)
 	{
 		if (ft_strcmp(argv[i], "|") == 0)
 		{
-			// Crear pipe entre comando actual y siguiente
 			if (pipe(pipefd) == -1)
 			{
 				perror("pipe");
 				return (cmd_list);
 			}
-			// El comando actual escribe al pipe
 			if (current_cmd->outfd == STDOUT_FD)
-				// Solo si no hay redirección de salida
 				current_cmd->outfd = pipefd[1];
 			else
-				close(pipefd[1]); // Cerrar write end si ya hay redirección
-			// Crear siguiente comando
+				close(pipefd[1]);
 			current_cmd->next = ft_create_cmd_node();
 			current_cmd = current_cmd->next;
-			// El siguiente comando lee del pipe
 			current_cmd->infd = pipefd[0];
 		}
 		else if (ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i], ">") == 0
@@ -137,7 +126,8 @@ t_cmd	*ft_parse_input(char **argv, int argc)
 					"<") == 0 || ft_strcmp(argv[i + 1], ">") == 0
 				|| ft_strcmp(argv[i + 1], ">>") == 0)
 			{
-				error_msg = ft_strjoin(ft_strjoin("minishell: syntax error near unexpected token `", argv[i + 1]), "'\n");
+				error_msg = ft_strjoin(ft_strjoin("minishell: syntax error near unexpected token `",
+							argv[i + 1]), "'\n");
 				ft_putstr_error(error_msg);
 				free(error_msg);
 				return (cmd_list);
@@ -165,7 +155,7 @@ t_cmd	*ft_parse_input(char **argv, int argc)
 		else
 		{
 			arg = argv[i];
-			clean_arg = ft_trim(arg, ' ');
+			clean_arg = ft_strtrim(arg, ' ');
 			if (clean_arg)
 				ft_add_arg_to_cmd(current_cmd, clean_arg);
 		}

@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:25:07 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/09 23:27:31 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/10 12:00:45 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ MY_LIBFT = \
 	ft_putchar.c \
 	ft_is_number.c \
 	ft_atoi.c \
+	ft_itoa.c \
 	ft_split.c \
 	ft_count_words.c \
 	ft_memcpy.c \
@@ -57,6 +58,7 @@ MY_LIBFT = \
 	ft_strstr.c \
 	ft_strcpy.c \
 	ft_strlcpy.c \
+	ft_strtrim.c \
 	ft_skip_whitespace.c \
 	ft_isspace.c \
 	$(GET_NEXT_LINE_DIR)/get_next_line.c \
