@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/10 22:53:52 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/12 00:54:19 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,30 +160,47 @@ int	ft_minishell(char **envp, int debug)
 		curr = cmd_list;
 		while (curr)
 		{
-			builtin_result = ft_handle_builtins(curr, &data);
-			if (builtin_result != -1)
-			{
-				data->last_exit_status = builtin_result;
-				pids[cmd_index] = -1;
-			}
-			else
+			// En pipes, todos los comandos (incluyendo builtins) deben ejecutarse en procesos hijo
+			if (cmd_list->next) // Si hay más de un comando (hay pipes)
 			{
 				pid = fork();
 				if (pid == 0)
 				{
 					signal(SIGINT, SIG_DFL);
 					signal(SIGQUIT, SIG_DFL);
-					exit_status = ft_exec_cmd(curr, data);
-					if (exit_status == -1)
+					
+					// Redirigir input/output antes de ejecutar
+					if (curr->infd != STDIN_FILENO)
 					{
-						ft_free_cmd_list(cmd_list);
-						exit(EXIT_FAILURE);
+						dup2(curr->infd, STDIN_FILENO);
+						close(curr->infd);
 					}
-					exit(exit_status);
+					if (curr->outfd != STDOUT_FILENO)
+					{
+						dup2(curr->outfd, STDOUT_FILENO);
+						close(curr->outfd);
+					}
+					
+					// Ejecutar builtin o comando externo
+					builtin_result = ft_handle_builtins(curr, &data);
+					if (builtin_result != -1)
+					{
+						exit(builtin_result);
+					}
+					else
+					{
+						exit_status = ft_exec_cmd(curr, data);
+						exit(exit_status);
+					}
 				}
 				else if (pid > 0)
 				{
 					pids[cmd_index] = pid;
+					// Cerrar los file descriptors del proceso padre inmediatamente
+					if (curr->infd != STDIN_FILENO)
+						close(curr->infd);
+					if (curr->outfd != STDOUT_FILENO)
+						close(curr->outfd);
 				}
 				else
 				{
@@ -191,16 +208,46 @@ int	ft_minishell(char **envp, int debug)
 					break ;
 				}
 			}
+			else // Solo un comando, manejar builtins en el proceso padre
+			{
+				builtin_result = ft_handle_builtins(curr, &data);
+				if (builtin_result != -1)
+				{
+					data->last_exit_status = builtin_result;
+					pids[cmd_index] = -1;
+				}
+				else
+				{
+					pid = fork();
+					if (pid == 0)
+					{
+						signal(SIGINT, SIG_DFL);
+						signal(SIGQUIT, SIG_DFL);
+						exit_status = ft_exec_cmd(curr, data);
+						if (exit_status == -1)
+						{
+							ft_free_cmd_list(cmd_list);
+							exit(EXIT_FAILURE);
+						}
+						exit(exit_status);
+					}
+					else if (pid > 0)
+					{
+						pids[cmd_index] = pid;
+						// Cerrar los file descriptors del proceso padre inmediatamente
+						if (curr->infd != STDIN_FILENO)
+							close(curr->infd);
+						if (curr->outfd != STDOUT_FILENO)
+							close(curr->outfd);
+					}
+					else
+					{
+						perror("fork");
+						break ;
+					}
+				}
+			}
 			cmd_index++;
-			curr = curr->next;
-		}
-		curr = cmd_list;
-		while (curr)
-		{
-			if (curr->infd != STDIN_FILENO)
-				close(curr->infd);
-			if (curr->outfd != STDOUT_FILENO)
-				close(curr->outfd);
 			curr = curr->next;
 		}
 		i = 0;

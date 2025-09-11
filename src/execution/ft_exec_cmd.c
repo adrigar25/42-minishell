@@ -20,16 +20,8 @@ int	ft_exec_cmd(t_cmd *cmd, t_data *data)
 
 	if (!cmd || !cmd->argv || !cmd->argv[0])
 		return (1);
-	if (cmd->infd != STDIN_FILENO)
-	{
-		dup2(cmd->infd, STDIN_FILENO);
-		close(cmd->infd);
-	}
-	if (cmd->outfd != STDOUT_FILENO)
-	{
-		dup2(cmd->outfd, STDOUT_FILENO);
-		close(cmd->outfd);
-	}
+	// No hacer redirecciones aquí si ya se hicieron en el proceso padre
+	// Las redirecciones para pipes se manejan en ft_minishell.c
 	if (ft_strchr(cmd->argv[0], '/'))
 		path = ft_strdup(cmd->argv[0]);
 	else

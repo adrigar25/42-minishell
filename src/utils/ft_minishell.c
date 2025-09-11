@@ -57,13 +57,11 @@ static int	ft_check_syntax_errors(char **argv, int argc)
 
 	if (!argv || argc == 0)
 		return (0);
-	// Error: starts with pipe
 	if (ft_strcmp(argv[0], "|") == 0)
 	{
 		ft_putstr_error("minishell: syntax error near unexpected token `|'\n");
 		return (1);
 	}
-	// Error: starts with redirection
 	if (ft_strcmp(argv[0], ">") == 0 || ft_strcmp(argv[0], ">>") == 0
 		|| ft_strcmp(argv[0], "<") == 0 || ft_strcmp(argv[0], "<<") == 0)
 	{
@@ -73,7 +71,6 @@ static int	ft_check_syntax_errors(char **argv, int argc)
 	i = 0;
 	while (i < argc)
 	{
-		// Error: redirection at end without filename
 		if ((ft_strcmp(argv[i], ">") == 0 || ft_strcmp(argv[i], ">>") == 0
 				|| ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i],
 					"<<") == 0) && i + 1 >= argc)
@@ -81,7 +78,6 @@ static int	ft_check_syntax_errors(char **argv, int argc)
 			ft_putstr_error("minishell: syntax error near unexpected token `newline'\n");
 			return (1);
 		}
-		// Error: redirection followed by another operator
 		if ((ft_strcmp(argv[i], ">") == 0 || ft_strcmp(argv[i], ">>") == 0
 				|| ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i],
 					"<<") == 0) && i + 1 < argc)
@@ -100,7 +96,6 @@ static int	ft_check_syntax_errors(char **argv, int argc)
 				return (1);
 			}
 		}
-		// Error: pipe followed by pipe or redirection
 		if (ft_strcmp(argv[i], "|") == 0 && i + 1 < argc)
 		{
 			if (ft_strcmp(argv[i + 1], "|") == 0)
@@ -115,13 +110,11 @@ static int	ft_check_syntax_errors(char **argv, int argc)
 				return (1);
 			}
 		}
-		// Error: pipe at end
 		if (ft_strcmp(argv[i], "|") == 0 && i + 1 >= argc)
 		{
 			ft_putstr_error("minishell: syntax error near unexpected token `newline'\n");
 			return (1);
 		}
-		// Error: triple redirection like ">>>"
 		if (ft_strcmp(argv[i], ">>") == 0 && i + 1 < argc && ft_strcmp(argv[i
 				+ 1], ">") == 0)
 		{
@@ -192,7 +185,6 @@ int	ft_minishell(char **envp, int debug)
 			for (i = 0; i < data->argc; i++)
 				printf("argv[%d]: %s\n", i, argv[i]);
 		}
-		// Check for syntax errors before processing
 		if (ft_check_syntax_errors(argv, data->argc))
 		{
 			data->last_exit_status = 2;
@@ -274,30 +266,43 @@ int	ft_minishell(char **envp, int debug)
 		curr = cmd_list;
 		while (curr)
 		{
-			builtin_result = ft_handle_builtins(curr, &data);
-			if (builtin_result != -1)
-			{
-				data->last_exit_status = builtin_result;
-				pids[cmd_index] = -1;
-			}
-			else
+			if (cmd_list->next)
 			{
 				pid = fork();
 				if (pid == 0)
 				{
 					signal(SIGINT, SIG_DFL);
 					signal(SIGQUIT, SIG_DFL);
-					exit_status = ft_exec_cmd(curr, data);
-					if (exit_status == -1)
+					if (curr->infd != STDIN_FILENO)
 					{
-						ft_free_cmd_list(cmd_list);
-						exit(EXIT_FAILURE);
+						dup2(curr->infd, STDIN_FILENO);
+						close(curr->infd);
 					}
-					exit(exit_status);
+					if (curr->outfd != STDOUT_FILENO)
+					{
+						dup2(curr->outfd, STDOUT_FILENO);
+						close(curr->outfd);
+					}
+					// Ejecutar builtin o comando externo
+					builtin_result = ft_handle_builtins(curr, &data);
+					if (builtin_result != -1)
+					{
+						exit(builtin_result);
+					}
+					else
+					{
+						exit_status = ft_exec_cmd(curr, data);
+						exit(exit_status);
+					}
 				}
 				else if (pid > 0)
 				{
 					pids[cmd_index] = pid;
+					// Cerrar los file descriptors del proceso padre inmediatamente
+					if (curr->infd != STDIN_FILENO)
+						close(curr->infd);
+					if (curr->outfd != STDOUT_FILENO)
+						close(curr->outfd);
 				}
 				else
 				{
@@ -305,16 +310,46 @@ int	ft_minishell(char **envp, int debug)
 					break ;
 				}
 			}
+			else // Solo un comando, manejar builtins en el proceso padre
+			{
+				builtin_result = ft_handle_builtins(curr, &data);
+				if (builtin_result != -1)
+				{
+					data->last_exit_status = builtin_result;
+					pids[cmd_index] = -1;
+				}
+				else
+				{
+					pid = fork();
+					if (pid == 0)
+					{
+						signal(SIGINT, SIG_DFL);
+						signal(SIGQUIT, SIG_DFL);
+						exit_status = ft_exec_cmd(curr, data);
+						if (exit_status == -1)
+						{
+							ft_free_cmd_list(cmd_list);
+							exit(EXIT_FAILURE);
+						}
+						exit(exit_status);
+					}
+					else if (pid > 0)
+					{
+						pids[cmd_index] = pid;
+						// Cerrar los file descriptors del proceso padre inmediatamente
+						if (curr->infd != STDIN_FILENO)
+							close(curr->infd);
+						if (curr->outfd != STDOUT_FILENO)
+							close(curr->outfd);
+					}
+					else
+					{
+						perror("fork");
+						break ;
+					}
+				}
+			}
 			cmd_index++;
-			curr = curr->next;
-		}
-		curr = cmd_list;
-		while (curr)
-		{
-			if (curr->infd != STDIN_FILENO)
-				close(curr->infd);
-			if (curr->outfd != STDOUT_FILENO)
-				close(curr->outfd);
 			curr = curr->next;
 		}
 		i = 0;
