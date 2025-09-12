@@ -1,23 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*             		// Check for syntax errors before processing
-		if (ft_check_syntax_errors(argv, data->argc))
-		{
-			data->last_exit_status = 2;
-			free(input);
-			for (i = 0; i < data->argc; i++)
-				free(argv[i]);
-			free(argv);
-			if (!is_interactive)
-				exit(2);
-			continue ;
-		}                                 :::      ::::::::   */
+/*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/11 01:08:02 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/12 19:01:54 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,96 +23,94 @@ static void	ft_free_cmd_list(t_cmd *cmd_list)
 	while (cmd_list)
 	{
 		tmp = cmd_list->next;
-		if (cmd_list->argv)
-		{
-			i = 0;
-			while (cmd_list->argv[i])
-			{
-				free(cmd_list->argv[i]);
-				i++;
-			}
-			free(cmd_list->argv);
-		}
+		ft_free_char_array(cmd_list->argv);
 		free(cmd_list);
 		cmd_list = tmp;
 	}
 }
-
-static int	ft_check_syntax_errors(char **argv, int argc)
+static int	ft_read_input(char **input, t_data *data)
 {
-	int		i;
-	char	*error_msg;
-	char	*temp;
+	char	*prompt;
 
-	if (!argv || argc == 0)
+	while (1)
+	{
+		if (data->isatty)
+		{
+			prompt = ft_generate_prompt(data->envp);
+			*input = readline(prompt);
+			free(prompt);
+		}
+		else
+			*input = readline("minishell> ");
+		if (!*input)
+			return (0);
+		if (**input)
+		{
+			if (data->isatty)
+				add_history(*input);
+			return (1);
+		}
+		free(*input);
+	}
+}
+
+static void	ft_finish_execution(pid_t *pids, int cmd_count, t_cmd *cmd_list,
+		t_data *data)
+{
+	int	i;
+	int	status;
+
+	i = cmd_count - 1;
+	while (i >= 0)
+	{
+		if (pids[i] > 0)
+		{
+			waitpid(pids[i], &status, 0);
+			if (WIFEXITED(status))
+				data->last_exit_status = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				data->last_exit_status = 128 + WTERMSIG(status);
+		}
+		i--;
+	}
+	free(pids);
+	ft_free_cmd_list(cmd_list);
+	cmd_list = NULL;
+}
+
+static int	ft_process_input(char *input, t_data *data, t_cmd **cmd_list,
+		int debug)
+{
+	t_cmd	*head;
+	char	**argv;
+	char	**expanded_argv;
+
+	data->argc = ft_count_args(input);
+	argv = ft_split_input(input, data->argc);
+	free(input);
+	if (ft_check_syntax_errors(argv, data->argc))
+	{
+		data->last_exit_status = 2;
+		ft_free_char_array(argv);
+		if (!data->isatty)
+			exit(2);
 		return (0);
-	if (ft_strcmp(argv[0], "|") == 0)
-	{
-		ft_putstr_error("minishell: syntax error near unexpected token `|'\n");
-		return (1);
 	}
-	if (ft_strcmp(argv[0], ">") == 0 || ft_strcmp(argv[0], ">>") == 0
-		|| ft_strcmp(argv[0], "<") == 0 || ft_strcmp(argv[0], "<<") == 0)
+	expanded_argv = ft_handle_env_expansion(argv, data);
+	*cmd_list = ft_parse_input(expanded_argv, data);
+	if (debug && *cmd_list)
+		ft_show_debug(argv, data->argc, expanded_argv, *cmd_list);
+	ft_free_char_array(argv);
+	if (expanded_argv != argv)
+		ft_free_char_array(expanded_argv);
+	data->cmd_count = 0;
+	head = *cmd_list;
+	while (head)
 	{
-		ft_putstr_error("minishell: syntax error near unexpected token `newline'\n");
-		return (1);
+		data->cmd_count++;
+		head = head->next;
 	}
-	i = 0;
-	while (i < argc)
-	{
-		if ((ft_strcmp(argv[i], ">") == 0 || ft_strcmp(argv[i], ">>") == 0
-				|| ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i],
-					"<<") == 0) && i + 1 >= argc)
-		{
-			ft_putstr_error("minishell: syntax error near unexpected token `newline'\n");
-			return (1);
-		}
-		if ((ft_strcmp(argv[i], ">") == 0 || ft_strcmp(argv[i], ">>") == 0
-				|| ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i],
-					"<<") == 0) && i + 1 < argc)
-		{
-			if (ft_strcmp(argv[i + 1], "|") == 0 || ft_strcmp(argv[i + 1],
-					">") == 0 || ft_strcmp(argv[i + 1], ">>") == 0
-				|| ft_strcmp(argv[i + 1], "<") == 0 || ft_strcmp(argv[i + 1],
-					"<<") == 0)
-			{
-				temp = ft_strjoin(argv[i + 1], "'\n");
-				error_msg = ft_strjoin("minishell: syntax error near unexpected token `",
-						temp);
-				ft_putstr_error(error_msg);
-				free(temp);
-				free(error_msg);
-				return (1);
-			}
-		}
-		if (ft_strcmp(argv[i], "|") == 0 && i + 1 < argc)
-		{
-			if (ft_strcmp(argv[i + 1], "|") == 0)
-			{
-				ft_putstr_error("minishell: syntax error near unexpected token `|'\n");
-				return (1);
-			}
-			if (ft_strcmp(argv[i + 1], ">") == 0 || ft_strcmp(argv[i + 1],
-					">>") == 0)
-			{
-				ft_putstr_error("minishell: syntax error near unexpected token `newline'\n");
-				return (1);
-			}
-		}
-		if (ft_strcmp(argv[i], "|") == 0 && i + 1 >= argc)
-		{
-			ft_putstr_error("minishell: syntax error near unexpected token `newline'\n");
-			return (1);
-		}
-		if (ft_strcmp(argv[i], ">>") == 0 && i + 1 < argc && ft_strcmp(argv[i
-				+ 1], ">") == 0)
-		{
-			ft_putstr_error("minishell: syntax error near unexpected token `>'\n");
-			return (1);
-		}
-		i++;
-	}
-	return (0);
+	return (1);
 }
 
 int	ft_minishell(char **envp, int debug)
@@ -135,14 +122,11 @@ int	ft_minishell(char **envp, int debug)
 	t_cmd	*cmd_list;
 	t_data	*data;
 	pid_t	pid;
-	t_cmd	*curr;
 	int		i;
 	int		status;
 	int		builtin_result;
-	int		is_interactive;
 	pid_t	*pids;
-	int		cmd_count;
-	t_cmd	*tmp;
+	t_cmd	*head;
 	int		cmd_index;
 	int		exit_status;
 
@@ -151,121 +135,29 @@ int	ft_minishell(char **envp, int debug)
 		return (1);
 	data->last_exit_status = 0;
 	ft_save_envp(&data->envp, envp);
-	is_interactive = isatty(STDIN_FILENO);
-	if (is_interactive)
+	data->isatty = isatty(STDIN_FILENO);
+	if (data->isatty)
 		ft_msg_start();
 	ft_init_signals();
-	while (1)
+	while (ft_read_input(&input, data))
 	{
-		cmd_list = NULL;
-		if (is_interactive)
-		{
-			prompt = ft_generate_prompt(data->envp);
-			input = readline(prompt);
-			free(prompt);
-		}
-		else
-		{
-			input = readline("minishell> ");
-		}
-		if (!input)
-			break ;
-		if (!*input)
-		{
-			free(input);
+		if (!ft_process_input(input, data, &cmd_list, debug))
 			continue ;
-		}
-		if (is_interactive)
-			add_history(input);
-		data->argc = ft_count_args(input);
-		argv = ft_split_input(input, data->argc);
-		if (debug)
-		{
-			printf("Argumentos recibidos:\n");
-			for (i = 0; i < data->argc; i++)
-				printf("argv[%d]: %s\n", i, argv[i]);
-		}
-		if (ft_check_syntax_errors(argv, data->argc))
-		{
-			data->last_exit_status = 2;
-			free(input);
-			for (i = 0; i < data->argc; i++)
-				free(argv[i]);
-			free(argv);
-			if (!is_interactive)
-				exit(2);
-			continue ;
-		}
-		expanded_argv = ft_handle_env_expansion(argv, data);
-		if (!expanded_argv)
-			expanded_argv = argv;
-		if (debug)
-		{
-			printf("Argumentos después de expandir:\n");
-			for (i = 0; i < data->argc; i++)
-				printf("argv[%d]: %s\n", i, expanded_argv[i]);
-		}
-		free(input);
-		cmd_list = ft_parse_input(expanded_argv, data->argc);
-		while (data->argc-- > 0)
-			free(argv[data->argc]);
-		free(argv);
-		if (expanded_argv != argv)
-		{
-			i = 0;
-			while (expanded_argv[i])
-			{
-				free(expanded_argv[i]);
-				i++;
-			}
-			free(expanded_argv);
-		}
-		if (!cmd_list)
-			continue ;
-		if (debug)
-		{
-			printf("Comandos parseados:\n");
-			curr = cmd_list;
-			while (curr)
-			{
-				printf("cmd: \n");
-				for (i = 0; curr->argv && curr->argv[i]; i++)
-					printf("argv[%d]: %s\n", i, curr->argv[i]);
-				printf("\nfd_in: %d, fd_out: %d\n", curr->infd, curr->outfd);
-				curr = curr->next;
-			}
-		}
-		if (cmd_list && cmd_list->argv && strcmp(cmd_list->argv[0], "exit") == 0
-			&& !cmd_list->next)
-		{
-			builtin_result = ft_handle_builtins(cmd_list, &data);
-			if (builtin_result == 0)
-			{
-				data->last_exit_status = 1;
-			}
-			ft_free_cmd_list(cmd_list);
-			cmd_list = NULL;
-			continue ;
-		}
-		curr = cmd_list;
-		pids = NULL;
-		cmd_count = 0;
-		tmp = cmd_list;
-		while (tmp)
-		{
-			cmd_count++;
-			tmp = tmp->next;
-		}
-		pids = malloc(sizeof(pid_t) * cmd_count);
+		head = cmd_list;
+		pids = malloc(sizeof(pid_t) * data->cmd_count);
 		if (!pids)
-		{
-			perror("malloc");
 			continue ;
-		}
 		cmd_index = 0;
-		curr = cmd_list;
-		while (curr)
+		cmd_list = head;
+		while (cmd_list)
 		{
+			if (cmd_list->has_error)
+			{
+				pids[cmd_index] = -1;
+				cmd_index++;
+				cmd_list = cmd_list->next;
+				continue ;
+			}
 			if (cmd_list->next)
 			{
 				pid = fork();
@@ -273,36 +165,30 @@ int	ft_minishell(char **envp, int debug)
 				{
 					signal(SIGINT, SIG_DFL);
 					signal(SIGQUIT, SIG_DFL);
-					if (curr->infd != STDIN_FILENO)
+					signal(SIGPIPE, SIG_DFL);
+					if (cmd_list->infd != STDIN_FILENO)
 					{
-						dup2(curr->infd, STDIN_FILENO);
-						close(curr->infd);
+						dup2(cmd_list->infd, STDIN_FILENO);
+						close(cmd_list->infd);
 					}
-					if (curr->outfd != STDOUT_FILENO)
+					if (cmd_list->outfd != STDOUT_FILENO)
 					{
-						dup2(curr->outfd, STDOUT_FILENO);
-						close(curr->outfd);
+						dup2(cmd_list->outfd, STDOUT_FILENO);
+						close(cmd_list->outfd);
 					}
-					// Ejecutar builtin o comando externo
-					builtin_result = ft_handle_builtins(curr, &data);
+					builtin_result = ft_handle_builtins(cmd_list, &data);
 					if (builtin_result != -1)
-					{
 						exit(builtin_result);
-					}
 					else
-					{
-						exit_status = ft_exec_cmd(curr, data);
-						exit(exit_status);
-					}
+						exit(ft_exec_cmd(cmd_list, data));
 				}
 				else if (pid > 0)
 				{
 					pids[cmd_index] = pid;
-					// Cerrar los file descriptors del proceso padre inmediatamente
-					if (curr->infd != STDIN_FILENO)
-						close(curr->infd);
-					if (curr->outfd != STDOUT_FILENO)
-						close(curr->outfd);
+					if (cmd_list->infd != STDIN_FILENO)
+						close(cmd_list->infd);
+					if (cmd_list->outfd != STDOUT_FILENO)
+						close(cmd_list->outfd);
 				}
 				else
 				{
@@ -310,37 +196,45 @@ int	ft_minishell(char **envp, int debug)
 					break ;
 				}
 			}
-			else // Solo un comando, manejar builtins en el proceso padre
+			else
 			{
-				builtin_result = ft_handle_builtins(curr, &data);
-				if (builtin_result != -1)
-				{
-					data->last_exit_status = builtin_result;
-					pids[cmd_index] = -1;
-				}
-				else
+				if (cmd_list->infd != STDIN_FILENO
+					|| cmd_list->outfd != STDOUT_FILENO)
 				{
 					pid = fork();
 					if (pid == 0)
 					{
 						signal(SIGINT, SIG_DFL);
 						signal(SIGQUIT, SIG_DFL);
-						exit_status = ft_exec_cmd(curr, data);
-						if (exit_status == -1)
+						signal(SIGPIPE, SIG_DFL);
+						if (cmd_list->infd != STDIN_FILENO)
 						{
-							ft_free_cmd_list(cmd_list);
-							exit(EXIT_FAILURE);
+							dup2(cmd_list->infd, STDIN_FILENO);
+							close(cmd_list->infd);
 						}
-						exit(exit_status);
+						if (cmd_list->outfd != STDOUT_FILENO)
+						{
+							dup2(cmd_list->outfd, STDOUT_FILENO);
+							close(cmd_list->outfd);
+						}
+						builtin_result = ft_handle_builtins(cmd_list, &data);
+						if (builtin_result != -1)
+						{
+							exit(builtin_result);
+						}
+						else
+						{
+							exit_status = ft_exec_cmd(cmd_list, data);
+							exit(exit_status);
+						}
 					}
 					else if (pid > 0)
 					{
 						pids[cmd_index] = pid;
-						// Cerrar los file descriptors del proceso padre inmediatamente
-						if (curr->infd != STDIN_FILENO)
-							close(curr->infd);
-						if (curr->outfd != STDOUT_FILENO)
-							close(curr->outfd);
+						if (cmd_list->infd != STDIN_FILENO)
+							close(cmd_list->infd);
+						if (cmd_list->outfd != STDOUT_FILENO)
+							close(cmd_list->outfd);
 					}
 					else
 					{
@@ -348,26 +242,47 @@ int	ft_minishell(char **envp, int debug)
 						break ;
 					}
 				}
+				else
+				{
+					builtin_result = ft_handle_builtins(cmd_list, &data);
+					if (builtin_result != -1)
+					{
+						data->last_exit_status = builtin_result;
+						pids[cmd_index] = -1;
+					}
+					else
+					{
+						pid = fork();
+						if (pid == 0)
+						{
+							signal(SIGINT, SIG_DFL);
+							signal(SIGQUIT, SIG_DFL);
+							signal(SIGPIPE, SIG_DFL);
+							exit_status = ft_exec_cmd(cmd_list);
+							if (exit_status == -1)
+							{
+								ft_free_cmd_list(cmd_list);
+								exit(EXIT_FAILURE);
+							}
+							exit(exit_status);
+						}
+						else if (pid > 0)
+						{
+							pids[cmd_index] = pid;
+						}
+						else
+						{
+							perror("fork");
+							break ;
+						}
+					}
+				}
 			}
 			cmd_index++;
-			curr = curr->next;
+			cmd_list = cmd_list->next;
 		}
-		i = 0;
-		while (i < cmd_count)
-		{
-			if (pids[i] > 0)
-			{
-				waitpid(pids[i], &status, 0);
-				if (WIFEXITED(status))
-					data->last_exit_status = WEXITSTATUS(status);
-				else if (WIFSIGNALED(status))
-					data->last_exit_status = 128 + WTERMSIG(status);
-			}
-			i++;
-		}
-		free(pids);
-		ft_free_cmd_list(cmd_list);
-		cmd_list = NULL;
+		cmd_list = head;
+		ft_finish_execution(pids, data->cmd_count, cmd_list, data);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/10 17:17:27 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/12 18:22:00 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,6 +55,9 @@ MINISHELL_SRCS = \
 	$(UTILS_DIR)/ft_generate_prompt.c \
 	$(UTILS_DIR)/ft_getenv.c \
 	$(UTILS_DIR)/ft_setenv.c \
+	$(UTILS_DIR)/ft_show_debug.c \
+	$(UTILS_DIR)/ft_free_char_array.c \
+	$(UTILS_DIR)/env/ft_change_env.c \
 	$(SRC_DIR)/redirections/ft_handle_infile.c \
 	$(SRC_DIR)/redirections/ft_handle_outfile.c \
 	$(SRC_DIR)/execution/ft_exec_cmd.c \
@@ -64,6 +67,7 @@ MINISHELL_SRCS = \
 	$(SRC_DIR)/parsing/ft_parse_input.c \
 	$(SRC_DIR)/parsing/ft_handle_env_expansion.c \
 	$(SRC_DIR)/parsing/ft_remove_quotes.c \
+	$(SRC_DIR)/parsing/ft_syntax_check.c \
 	$(SRC_DIR)/signals/ft_sigint_handler.c \
 	$(SRC_DIR)/signals/ft_init_signals.c \
 	$(SRC_DIR)/builtins/ft_echo.c \

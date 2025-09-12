@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 17:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/10 17:24:05 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/12 18:20:12 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,12 @@ int	ft_setenv(char *name, char *value, char ***envp)
 	if (!name || !value || !envp || !*envp)
 		return (-1);
 	name_len = ft_strlen(name);
-	// Buscar si la variable ya existe
 	i = 0;
 	while ((*envp)[i])
 	{
 		if (ft_strncmp((*envp)[i], name, name_len) == 0
 			&& (*envp)[i][name_len] == '=')
 		{
-			// La variable existe, reemplazarla
 			temp = ft_strjoin(name, "=");
 			if (!temp)
 				return (-1);
@@ -80,12 +78,10 @@ int	ft_setenv(char *name, char *value, char ***envp)
 		}
 		i++;
 	}
-	// La variable no existe, añadirla
 	envp_size = ft_count_envp(*envp);
 	new_envp = ft_realloc_envp(*envp, envp_size + 1);
 	if (!new_envp)
 		return (-1);
-	// Crear la nueva variable
 	temp = ft_strjoin(name, "=");
 	if (!temp)
 	{
@@ -107,12 +103,10 @@ int	ft_setenv(char *name, char *value, char ***envp)
 	}
 	new_envp[envp_size] = new_var;
 	new_envp[envp_size + 1] = NULL;
-	// Liberar el envp anterior
 	i = 0;
 	while ((*envp)[i])
 		free((*envp)[i++]);
 	free(*envp);
-	// Asignar el nuevo envp
 	*envp = new_envp;
 	return (0);
 }

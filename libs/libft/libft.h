@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:22:52 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/10 12:00:45 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/12 18:18:27 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,6 @@ int				ft_open_file_read(const char *filename);
 int				ft_open_file_write(const char *filename, int append);
 int				ft_print_file(char *filename, char *color);
 int				ft_putstr_fd(char *s, int fd);
-void			ft_putchar_fd(char c, int fd);
+int				ft_putchar_fd(char c, int fd);
 
 #endif

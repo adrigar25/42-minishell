@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/10 17:24:58 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/12 18:23:03 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ int	ft_export(char **argv, char ***envp)
 
 	if (!argv[1])
 	{
-		// Sin argumentos: mostrar todas las variables exportadas
 		ft_print_exported_vars(*envp);
 		return (0);
 	}

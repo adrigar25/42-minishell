@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/10 17:41:07 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/12 18:18:41 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,30 +21,34 @@ static int	ft_putarg_echo(char *arg, int flag_n, int outfd)
 		return (0);
 	len = ft_strlen(arg);
 	i = 0;
-	// Manejar comillas si están presentes
 	if (len >= 2 && ((arg[0] == '"' && arg[len - 1] == '"') || (arg[0] == '\''
 				&& arg[len - 1] == '\'')))
 	{
-		i = 1; // Empezar después de la comilla inicial
-		len--; // No imprimir la comilla final
+		i = 1;
+		len--;
 	}
-	// Imprimir el contenido del argumento
 	while (i < len)
 	{
 		if (arg[i] == '\\' && arg[i + 1] == 'n')
 		{
-			ft_putchar_fd('\\', outfd);
-			ft_putchar_fd('n', outfd);
+			if (ft_putchar_fd('\\', outfd) == -1)
+				return (-1);
+			if (ft_putchar_fd('n', outfd) == -1)
+				return (-1);
 			i += 2;
 			continue ;
 		}
-		ft_putchar_fd(arg[i], outfd);
+		if (ft_putchar_fd(arg[i], outfd) == -1)
+			return (-1);
 		i++;
 	}
 	if (flag_n)
 	{
 		if (arg[len - 1] == ' ')
-			ft_putchar_fd('%', outfd);
+		{
+			if (ft_putchar_fd('%', outfd) == -1)
+				return (-1);
+		}
 	}
 	return (0);
 }
@@ -64,7 +68,8 @@ int	ft_echo(t_cmd cmd)
 
 	if (!cmd.argv || !cmd.argv[0])
 		return (1);
-	// Verificar si hay flag -n
+	if (cmd.outfd < 0)
+		return (1);
 	n_flag = 0;
 	start_index = 1;
 	if (cmd.argv[1] && ft_intflag_n(cmd.argv[1]))
@@ -75,12 +80,19 @@ int	ft_echo(t_cmd cmd)
 	i = start_index;
 	while (cmd.argv[i])
 	{
-		ft_putarg_echo(cmd.argv[i], 0, cmd.outfd);
+		if (ft_putarg_echo(cmd.argv[i], 0, cmd.outfd) == -1)
+			return (1);
 		if (cmd.argv[i + 1] && cmd.argv[i + 1][0] != '\0')
-			ft_putchar_fd(' ', cmd.outfd);
+		{
+			if (ft_putchar_fd(' ', cmd.outfd) == -1)
+				return (1);
+		}
 		i++;
 	}
 	if (!n_flag)
-		ft_putchar_fd('\n', cmd.outfd);
+	{
+		if (ft_putchar_fd('\n', cmd.outfd) == -1)
+			return (1);
+	}
 	return (0);
 }

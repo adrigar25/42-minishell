@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 16:43:33 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/10 17:09:20 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/12 19:01:50 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_handle_builtins(t_cmd *cmd, t_data **data)
 {
 	if (ft_strcmp(cmd->argv[0], "echo") == 0)
-		return (ft_echo(*cmd));
+		return (ft_echo(cmd->argv));
 	if (ft_strcmp(cmd->argv[0], "cd") == 0)
 		return (ft_cd(cmd->argv, &(*data)->envp));
 	if (ft_strcmp(cmd->argv[0], "pwd") == 0)
@@ -27,6 +27,6 @@ int	ft_handle_builtins(t_cmd *cmd, t_data **data)
 	if (ft_strcmp(cmd->argv[0], "env") == 0)
 		return (ft_env((*data)->envp));
 	if (ft_strcmp(cmd->argv[0], "exit") == 0)
-		return (ft_exit(cmd, *data));
+		return (ft_exit(cmd));
 	return (-1);
 }

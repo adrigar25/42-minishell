@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 21:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/10 16:29:49 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/12 17:37:58 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	**ft_handle_env_expansion(char **argv, t_data *data)
 			if (!new_argv[i])
 			{
 				free(new_argv);
-				return (NULL);
+				return (argv);
 			}
 			i++;
 			continue ;
@@ -67,7 +67,7 @@ char	**ft_handle_env_expansion(char **argv, t_data *data)
 				if (!new_argv[i])
 				{
 					free(new_argv);
-					return (NULL);
+					return (argv);
 				}
 			}
 			if (argv[i][j] == '$')
@@ -79,7 +79,7 @@ char	**ft_handle_env_expansion(char **argv, t_data *data)
 					if (!temp)
 					{
 						free(new_argv);
-						return (NULL);
+						return (argv);
 					}
 					old_str = new_argv[i];
 					new_argv[i] = ft_strjoin(old_str, temp);
@@ -88,7 +88,7 @@ char	**ft_handle_env_expansion(char **argv, t_data *data)
 					if (!new_argv[i])
 					{
 						free(new_argv);
-						return (NULL);
+						return (argv);
 					}
 					j++;
 					continue ;
@@ -116,14 +116,13 @@ char	**ft_handle_env_expansion(char **argv, t_data *data)
 				}
 				else
 				{
-					// Si no hay nada después del $, mantener el $
 					old_str = new_argv[i];
 					new_argv[i] = ft_strjoin(old_str, "$");
 					free(old_str);
 					if (!new_argv[i])
 					{
 						free(new_argv);
-						return (NULL);
+						return (argv);
 					}
 				}
 			}

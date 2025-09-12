@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/06 01:30:06 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/12 18:24:26 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	ft_env(char **envp)
 {
 	int	i;
 
+	if (!envp)
+		return (1);
 	i = 0;
 	while (envp[i])
 	{

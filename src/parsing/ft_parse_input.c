@@ -19,13 +19,13 @@ static void	ft_add_fd_to_cmd(t_cmd *cmd, int fd, int in_or_out)
 		return ;
 	if (in_or_out == 0)
 	{
-		if (cmd->infd != STDIN_FD)
+		if (cmd->infd != STDIN_FILENO)
 			close(cmd->infd);
 		cmd->infd = fd;
 	}
 	else
 	{
-		if (cmd->outfd != STDOUT_FD)
+		if (cmd->outfd != STDOUT_FILENO)
 			close(cmd->outfd);
 		cmd->outfd = fd;
 	}
@@ -39,8 +39,9 @@ static t_cmd	*ft_create_cmd_node(void)
 	if (!new_cmd)
 		return (NULL);
 	new_cmd->argv = NULL;
-	new_cmd->infd = STDIN_FD;
-	new_cmd->outfd = STDOUT_FD;
+	new_cmd->infd = STDIN_FILENO;
+	new_cmd->outfd = STDOUT_FILENO;
+	new_cmd->has_error = 0;
 	new_cmd->next = NULL;
 	return (new_cmd);
 }
@@ -79,7 +80,7 @@ static void	ft_add_arg_to_cmd(t_cmd *cmd, char *arg)
 	cmd->argv = new_argv;
 }
 
-t_cmd	*ft_parse_input(char **argv, int argc)
+t_cmd	*ft_parse_input(char **argv, t_data *data)
 {
 	t_cmd	*cmd_list;
 	t_cmd	*current_cmd;
@@ -90,14 +91,15 @@ t_cmd	*ft_parse_input(char **argv, int argc)
 	int		pipefd[2];
 	char	*error_msg;
 
-	if (!argv || argc == 0)
+	if (!argv || data->argc == 0)
 		return (NULL);
 	cmd_list = ft_create_cmd_node();
 	if (!cmd_list)
 		return (NULL);
 	current_cmd = cmd_list;
+	current_cmd->data = data;
 	i = 0;
-	while (i < argc)
+	while (i < data->argc)
 	{
 		if (ft_strcmp(argv[i], "|") == 0)
 		{
@@ -106,18 +108,19 @@ t_cmd	*ft_parse_input(char **argv, int argc)
 				perror("pipe");
 				return (cmd_list);
 			}
-			if (current_cmd->outfd == STDOUT_FD)
+			if (current_cmd->outfd == STDOUT_FILENO)
 				current_cmd->outfd = pipefd[1];
 			else
 				close(pipefd[1]);
 			current_cmd->next = ft_create_cmd_node();
 			current_cmd = current_cmd->next;
+			current_cmd->data = data;
 			current_cmd->infd = pipefd[0];
 		}
 		else if (ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i], ">") == 0
 			|| ft_strcmp(argv[i], ">>") == 0)
 		{
-			if (i + 1 >= argc)
+			if (i + 1 >= data->argc)
 			{
 				ft_putstr_error("minishell: syntax error near unexpected token `newline'\n");
 				return (cmd_list);
@@ -134,21 +137,39 @@ t_cmd	*ft_parse_input(char **argv, int argc)
 			}
 			if (ft_strcmp(argv[i], "<") == 0)
 			{
-				fd = ft_handle_infile(argv[i + 1]);
+				clean_arg = ft_remove_quotes(argv[i + 1]);
+				fd = ft_handle_infile(clean_arg ? clean_arg : argv[i + 1]);
 				if (fd != -1)
 					ft_add_fd_to_cmd(current_cmd, fd, 0);
+				else
+				{
+					data->last_exit_status = 1;
+					current_cmd->has_error = 1;
+				}
+				if (clean_arg != argv[i + 1])
+					free(clean_arg);
 			}
 			else if (ft_strcmp(argv[i], ">") == 0)
 			{
-				fd = ft_handle_outfile(argv[i + 1], 0);
+				clean_arg = ft_remove_quotes(argv[i + 1]);
+				fd = ft_handle_outfile(clean_arg ? clean_arg : argv[i + 1], 0);
 				if (fd != -1)
 					ft_add_fd_to_cmd(current_cmd, fd, 1);
+				else
+					data->last_exit_status = 1;
+				if (clean_arg != argv[i + 1])
+					free(clean_arg);
 			}
 			else if (ft_strcmp(argv[i], ">>") == 0)
 			{
-				fd = ft_handle_outfile(argv[i + 1], 1);
+				clean_arg = ft_remove_quotes(argv[i + 1]);
+				fd = ft_handle_outfile(clean_arg ? clean_arg : argv[i + 1], 1);
 				if (fd != -1)
 					ft_add_fd_to_cmd(current_cmd, fd, 1);
+				else
+					data->last_exit_status = 1;
+				if (clean_arg != argv[i + 1])
+					free(clean_arg);
 			}
 			i++;
 		}

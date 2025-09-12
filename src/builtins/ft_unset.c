@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/10 17:38:05 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/12 01:26:25 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,18 @@ int	ft_unset(char **args, char ***envp)
 		j = 0;
 		while ((*envp)[j])
 		{
-			if (!ft_strncmp((*envp)[j], tmp, ft_strlen(tmp)) && (*envp)[j][ft_strlen(tmp)] == '=')
+			printf("%c", args[i][ft_strlen(args[i]) - 1]);
+			if (args[i][ft_strlen(args[i]) - 1] == '='
+				|| args[i][ft_strlen(args[i]) - 1] == '-')
+			{
+				ft_putstr_error("minishell: unset: `");
+				ft_putstr_error(args[i]);
+				ft_putstr_error("': not a valid identifier\n");
+				return (1);
+				break ;
+			}
+			if (!ft_strncmp((*envp)[j], tmp, ft_strlen(tmp))
+				&& (*envp)[j][ft_strlen(tmp)] == '=')
 			{
 				free((*envp)[j]);
 				k = j;

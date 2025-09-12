@@ -1,5 +1,6 @@
 /* ************************************************************************** */
-/*                                                                            */
+/*                t_cmd		*ft_parse_input(char **argv, int argc,
+			t_data *data);                                                           */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
@@ -67,21 +68,24 @@
 // Heredoc
 # define HEREDOC_PROMPT "heredoc> "
 
+typedef struct s_data
+{
+	char			**envp;
+	int				argc;
+	int				cmd_count;
+	int				isatty;
+	int				last_exit_status;
+	struct s_data	*next;
+}					t_data;
 typedef struct s_cmd
 {
 	char			**argv;
 	int				infd;
 	int				outfd;
+	int				has_error;
+	t_data			*data;
 	struct s_cmd	*next;
 }					t_cmd;
-
-typedef struct s_data
-{
-	char			**envp;
-	int				argc;
-	int				last_exit_status;
-	struct s_data	*next;
-}					t_data;
 
 int					ft_minishell(char **envp, int debug);
 int					ft_save_envp(char ***envp_cpy, char **envp);
@@ -97,13 +101,14 @@ char				*ft_build_path(const char *dir, const char *entry);
 // Parsing
 
 char				**ft_split_input(const char *input, int argc);
-t_cmd				*ft_parse_input(char **argv, int argc);
+t_cmd				*ft_parse_input(char **argv, t_data *data);
 void				ft_skip_quotes(const char *cmd, int *i);
 char				**ft_handle_env_expansion(char **argv, t_data *data);
 char				*ft_remove_quotes(const char *str);
+int					ft_check_syntax_errors(char **argv, int argc);
 
 // Execution
-int					ft_exec_cmd(t_cmd *cmd, t_data *data);
+int					ft_exec_cmd(t_cmd *cmd);
 int					ft_pipex(const char **argv, int fd_in, char **envp);
 char				*get_cmd_path(char *cmd);
 
@@ -124,9 +129,17 @@ char				*ft_generate_prompt(char **envp);
 // Count the number of arguments in a command string.
 int					ft_count_args(const char *cmd);
 
+// Debug
+void				ft_show_debug(char **argv, int argc, char **expanded_argv,
+						t_cmd *cmd_list);
+
 // Split strings by separator
 char				***ft_split_strings(const char **argv, const char *sep);
 void				free_split_strings(char ***cmds);
+
+// Memory management utilities
+void				ft_free_char_array(char **array);
+void				ft_free_char_array_size(char **array, int size);
 
 // Redirections
 void				ft_redir_io(int fd, int in_or_out);
@@ -144,7 +157,7 @@ int					ft_pwd(char **args);
 int					ft_export(char **args, char ***envp);
 int					ft_unset(char **args, char ***envp);
 int					ft_env(char **envp);
-int					ft_exit(t_cmd *cmd, t_data *data);
+int					ft_exit(t_cmd *cmd);
 int					ft_handle_builtins(t_cmd *cmd, t_data **data);
 
 int					ft_is_dot_or_dotdot(const char *name);

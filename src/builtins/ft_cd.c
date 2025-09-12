@@ -6,45 +6,11 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 17:16:33 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/10 16:50:50 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/12 18:22:00 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	ft_change_env(char *key, char *value, char ***envp)
-{
-	int		i;
-	char	*new_var;
-	char	**old_envp;
-	int		key_len;
-	char	*temp;
-
-	if (!key || !value || !envp)
-		return ;
-	setenv(key, value, 1);
-	key_len = ft_strlen(key);
-	temp = ft_strjoin(key, "=");
-	if (!temp)
-		return ;
-	new_var = ft_strjoin(temp, value);
-	free(temp);
-	if (!new_var)
-		return ;
-	i = 0;
-	while ((*envp)[i])
-	{
-		if (ft_strncmp((*envp)[i], key, key_len) == 0
-			&& (*envp)[i][key_len] == '=')
-		{
-			free((*envp)[i]);
-			(*envp)[i] = new_var;
-			return ;
-		}
-		i++;
-	}
-	free(new_var);
-}
 
 int	ft_cd(char **argv, char ***envp)
 {
@@ -52,6 +18,8 @@ int	ft_cd(char **argv, char ***envp)
 	char	*oldpwd;
 	char	*target_dir;
 
+	if (!argv || !envp)
+		return (1);
 	if (!argv[1])
 	{
 		target_dir = getenv("HOME");
@@ -63,6 +31,11 @@ int	ft_cd(char **argv, char ***envp)
 	}
 	else
 		target_dir = argv[1];
+	if (argv[1] && argv[2])
+	{
+		ft_putstr_error("cd: too many arguments\n");
+		return (1);
+	}
 	if (chdir(target_dir) != 0)
 	{
 		perror("cd");
@@ -74,6 +47,13 @@ int	ft_cd(char **argv, char ***envp)
 		if (oldpwd)
 			ft_change_env("OLDPWD", oldpwd, envp);
 		ft_change_env("PWD", buf, envp);
+	}
+	else
+	{
+		perror("getcwd");
+		if (oldpwd)
+			ft_change_env("OLDPWD", oldpwd, envp);
+		ft_change_env("PWD", target_dir, envp);
 	}
 	return (0);
 }

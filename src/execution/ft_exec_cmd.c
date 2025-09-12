@@ -13,7 +13,7 @@
 
 #include "../minishell.h"
 
-int	ft_exec_cmd(t_cmd *cmd, t_data *data)
+int	ft_exec_cmd(t_cmd *cmd)
 {
 	char	*path;
 	char	*error_msg;
@@ -43,7 +43,7 @@ int	ft_exec_cmd(t_cmd *cmd, t_data *data)
 		free(path);
 		exit(127);
 	}
-	execve(path, cmd->argv, data->envp);
+	execve(path, cmd->argv, cmd->data->envp);
 	perror("minishell: execve");
 	free(path);
 	exit(127);
