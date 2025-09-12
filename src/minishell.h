@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/12 20:10:39 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/13 01:31:15 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,13 @@
 # define COLOR_MAGENTA "\033[0;35m"
 
 // Error messages
-# define ERROR_COMMAND_NOT_FOUND "minishell: command not found: "
+# define ERROR_COMMAND_NOT_FOUND "minishell: %s: command not found"
 # define ERROR_PERMISSION_DENIED "minishell: Permission denied\n"
 # define ERROR_NO_SUCH_FILE "minishell: %s: No such file or directory"
 # define ERROR_SYNTAX "minishell: syntax error near unexpected token `newline'\n"
+# define ERROR_SYNTAX_PIPE "minishell: syntax error near unexpected token `|'\n"
+# define ERROR_SYNTAX_REDIRECT "minishell: syntax error near unexpected token `>'\n"
+# define ERROR_SYNTAX_TOKEN "minishell: syntax error near unexpected token `"
 # define ERROR_TOO_MANY_ARGS "minishell: too many arguments\n"
 # define ERROR_HOME_NOT_SET "minishell: cd: HOME not set\n"
 # define ERROR_HEREDOC_DELIMITER "Error: missing delimiter for heredoc\n"
@@ -82,6 +85,7 @@ typedef struct s_cmd
 	int				infd;
 	int				outfd;
 	int				has_error;
+	int				index;
 	t_data			*data;
 	struct s_cmd	*next;
 }					t_cmd;
@@ -108,6 +112,9 @@ int					ft_check_syntax_errors(char **argv, int argc);
 int					ft_exec_cmd(t_cmd *cmd);
 int					ft_pipex(const char **argv, int fd_in, char **envp);
 char				*get_cmd_path(char *cmd);
+void				ft_close_unused_fds(t_cmd *current_cmd, t_cmd *cmd_list);
+int					ft_skip_error_cmd(t_cmd *cmd_list, t_data *data,
+						pid_t *pids);
 void				ft_finish_execution(pid_t *pids, int cmd_count,
 						t_cmd *cmd_list, t_data *data);
 
@@ -141,6 +148,13 @@ void				ft_free_char_array_size(char **array, int size);
 int					ft_read_input(char **input, t_data *data);
 int					ft_process_input(char *input, t_data *data,
 						t_cmd **cmd_list, int debug);
+
+// EXECUTION
+
+int					ft_execute_command(t_cmd *cmd_list, t_cmd *head,
+						pid_t *pids, t_data **data);
+int					ft_execute_error_command(t_cmd *cmd_list, t_cmd *head,
+						pid_t *pids);
 
 // DEBUG
 

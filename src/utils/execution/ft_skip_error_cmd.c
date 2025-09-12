@@ -1,22 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_sigint_handler.c                                :+:      :+:    :+:   */
+/*   ft_skip_error_cmd.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42madrid>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/05 18:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/13 01:32:33 by agarcia          ###   ########.fr       */
+/*   Created: 2024/12/19 10:45:00 by agarcia           #+#    #+#             */
+/*   Updated: 2024/12/19 10:45:00 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	sigint_handler(int sig)
+int	ft_skip_error_cmd(t_cmd *cmd_list, t_data *data, pid_t *pids)
 {
-	(void)sig;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	data->last_exit_status = 1;
+	pids[cmd_list->index] = -1;
+	return (1);
 }

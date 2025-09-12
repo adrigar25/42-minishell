@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/12 20:04:35 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/13 01:31:15 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +62,11 @@ MINISHELL_SRCS = \
 	$(UTILS_DIR)/redirections/ft_handle_outfile.c \
 	$(UTILS_DIR)/execution/ft_exec_cmd.c \
 	$(UTILS_DIR)/execution/ft_get_cmd_path.c \
+	$(UTILS_DIR)/execution/ft_close_unused_fds.c \
+	$(UTILS_DIR)/execution/ft_skip_error_cmd.c \
 	$(UTILS_DIR)/execution/ft_finish_execution.c \
+	$(UTILS_DIR)/execution/ft_execute_command.c \
+	$(UTILS_DIR)/execution/ft_execute_error_command.c \
 	$(UTILS_DIR)/parsing/ft_skip_quotes.c \
 	$(UTILS_DIR)/parsing/ft_split_input.c \
 	$(UTILS_DIR)/parsing/ft_parse_input.c \
@@ -97,7 +101,6 @@ $(LIB_NAME):
 # Compile the project
 $(NAME): $(MINISHELL_OBJS) $(MAIN_OBJECT)
 	@$(CC) $(CFLAGS) $(MINISHELL_OBJS) $(MAIN_OBJECT) $(LIB_NAME) $(LDFLAGS) -o $(NAME)
-	@chmod 755 $(NAME)
 	@if [ $$? -eq 0 ]; then \
 		echo "\033[32m✅ Compilation completed successfully!\033[0m"; \
 	else \

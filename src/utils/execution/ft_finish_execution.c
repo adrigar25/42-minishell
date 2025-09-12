@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/12 20:06:10 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/13 00:01:14 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,27 @@ void	ft_finish_execution(pid_t *pids, int cmd_count, t_cmd *cmd_list,
 {
 	int	i;
 	int	status;
+	int	last_exit_status;
+	int	executed_processes;
 
-	i = cmd_count - 1;
-	while (i >= 0)
+	last_exit_status = data->last_exit_status;
+	executed_processes = 0;
+	i = 0;
+	while (i < cmd_count)
 	{
 		if (pids[i] > 0)
 		{
 			waitpid(pids[i], &status, 0);
 			if (WIFEXITED(status))
-				data->last_exit_status = WEXITSTATUS(status);
+				last_exit_status = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
-				data->last_exit_status = 128 + WTERMSIG(status);
+				last_exit_status = 128 + WTERMSIG(status);
+			executed_processes = 1;
 		}
-		i--;
+		i++;
 	}
+	if (executed_processes)
+		data->last_exit_status = last_exit_status;
 	free(pids);
 	ft_free_cmd_list(cmd_list);
 	cmd_list = NULL;

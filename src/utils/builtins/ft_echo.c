@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/12 20:12:09 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/13 01:33:23 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,8 @@ static int	ft_putarg_echo(char *arg, int flag_n, int outfd)
 	{
 		if (arg[i] == '\\' && arg[i + 1] == 'n')
 		{
-			if (ft_putchar_fd('\\', outfd) == -1 || ft_putchar_fd('n', outfd) ==
-				-1)
-				return (-1);
+			return ((ft_putchar_fd('\\', outfd) == -1 || ft_putchar_fd('n',
+						outfd) == -1));
 			i += 2;
 			continue ;
 		}
