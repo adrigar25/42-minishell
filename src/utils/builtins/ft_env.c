@@ -1,44 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_char_array.c                               :+:      :+:    :+:   */
+/*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/12 18:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/12 20:07:23 by agarcia          ###   ########.fr       */
+/*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
+/*   Updated: 2025/09/12 18:24:26 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
-void	ft_free_char_array(char **array)
+int	ft_env(char **envp)
 {
 	int	i;
 
-	if (!array)
-		return ;
+	if (!envp)
+		return (1);
 	i = 0;
-	while (array[i])
+	while (envp[i])
 	{
-		free(array[i]);
+		printf("%s\n", envp[i]);
 		i++;
 	}
-	free(array);
-}
-
-void	ft_free_char_array_size(char **array, int size)
-{
-	int	i;
-
-	if (!array)
-		return ;
-	i = 0;
-	while (i < size)
-	{
-		if (array[i])
-			free(array[i]);
-		i++;
-	}
-	free(array);
+	return (0);
 }

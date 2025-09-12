@@ -1,44 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_char_array.c                               :+:      :+:    :+:   */
+/*   ft_handle_outfile.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/12 18:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/12 20:07:23 by agarcia          ###   ########.fr       */
+/*   Created: 2025/09/05 19:30:00 by agarcia           #+#    #+#             */
+/*   Updated: 2025/09/12 20:09:48 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
-void	ft_free_char_array(char **array)
+int	ft_handle_outfile(char *filename, int append)
 {
-	int	i;
+	int		fd;
+	int		flags;
+	char	*error_msg;
 
-	if (!array)
-		return ;
-	i = 0;
-	while (array[i])
+	if (!filename)
+		return (-1);
+	fd = ft_open_file_write(filename, append);
+	if (fd == -1)
 	{
-		free(array[i]);
-		i++;
+		error_msg = ft_strjoin(ft_strjoin(ft_strjoin("minishell: ", filename),
+					": "), " Permission denied\n");
+		ft_putstr_error(error_msg);
+		free(error_msg);
+		return (-1);
 	}
-	free(array);
-}
-
-void	ft_free_char_array_size(char **array, int size)
-{
-	int	i;
-
-	if (!array)
-		return ;
-	i = 0;
-	while (i < size)
-	{
-		if (array[i])
-			free(array[i]);
-		i++;
-	}
-	free(array);
+	return (fd);
 }

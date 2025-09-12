@@ -1,44 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_char_array.c                               :+:      :+:    :+:   */
+/*   ft_cpyenv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/12 18:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/12 20:07:23 by agarcia          ###   ########.fr       */
+/*   Created: 2025/09/09 18:00:26 by adriescr          #+#    #+#             */
+/*   Updated: 2025/09/12 20:06:52 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
-void	ft_free_char_array(char **array)
+int	ft_cpyenv(char ***envp_cpy, char **envp)
 {
 	int	i;
 
-	if (!array)
-		return ;
 	i = 0;
-	while (array[i])
+	while (envp[i])
+		i++;
+	*envp_cpy = malloc((i + 1) * sizeof(char *));
+	if (!*envp_cpy)
+		return (1);
+	i = 0;
+	while (envp[i])
 	{
-		free(array[i]);
+		(*envp_cpy)[i] = ft_strdup(envp[i]);
+		if (!(*envp_cpy)[i])
+		{
+			while (i > 0)
+			{
+				free((*envp_cpy)[--i]);
+			}
+			free(*envp_cpy);
+			return (1);
+		}
 		i++;
 	}
-	free(array);
-}
-
-void	ft_free_char_array_size(char **array, int size)
-{
-	int	i;
-
-	if (!array)
-		return ;
-	i = 0;
-	while (i < size)
-	{
-		if (array[i])
-			free(array[i]);
-		i++;
-	}
-	free(array);
+	(*envp_cpy)[i] = NULL;
+	return (0);
 }

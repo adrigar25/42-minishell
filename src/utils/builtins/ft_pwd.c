@@ -1,44 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_char_array.c                               :+:      :+:    :+:   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/12 18:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/12 20:07:23 by agarcia          ###   ########.fr       */
+/*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
+/*   Updated: 2025/09/06 16:07:15 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
-void	ft_free_char_array(char **array)
+int	ft_pwd(char **args)
 {
-	int	i;
+	char	cwd[1024];
 
-	if (!array)
-		return ;
-	i = 0;
-	while (array[i])
+	(void)args;
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
-		free(array[i]);
-		i++;
+		printf("%s\n", cwd);
+		return (0);
 	}
-	free(array);
-}
-
-void	ft_free_char_array_size(char **array, int size)
-{
-	int	i;
-
-	if (!array)
-		return ;
-	i = 0;
-	while (i < size)
+	else
 	{
-		if (array[i])
-			free(array[i]);
-		i++;
+		perror("minishell: pwd");
+		return (1);
 	}
-	free(array);
 }

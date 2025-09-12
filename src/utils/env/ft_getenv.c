@@ -1,44 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_char_array.c                               :+:      :+:    :+:   */
+/*   ft_getenv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/12 18:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/12 20:07:23 by agarcia          ###   ########.fr       */
+/*   Created: 2025/09/10 10:26:32 by agarcia           #+#    #+#             */
+/*   Updated: 2025/09/12 20:06:57 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
-void	ft_free_char_array(char **array)
+char	*ft_getenv(const char *name, char **envp)
 {
-	int	i;
+	int		i;
+	char	*var;
 
-	if (!array)
-		return ;
+	if (!name || !envp)
+		return (NULL);
 	i = 0;
-	while (array[i])
+	while (envp[i])
 	{
-		free(array[i]);
+		var = ft_strchr(envp[i], '=');
+		if (var && ft_strncmp(envp[i], name, var - envp[i]) == 0)
+			return (var + 1);
 		i++;
 	}
-	free(array);
-}
-
-void	ft_free_char_array_size(char **array, int size)
-{
-	int	i;
-
-	if (!array)
-		return ;
-	i = 0;
-	while (i < size)
-	{
-		if (array[i])
-			free(array[i]);
-		i++;
-	}
-	free(array);
+	return (NULL);
 }

@@ -1,44 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_char_array.c                               :+:      :+:    :+:   */
+/*   ft_read_input.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/12 18:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/12 20:07:23 by agarcia          ###   ########.fr       */
+/*   Created: 2025/09/12 20:00:00 by agarcia           #+#    #+#             */
+/*   Updated: 2025/09/12 20:09:39 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
-void	ft_free_char_array(char **array)
+int	ft_read_input(char **input, t_data *data)
 {
-	int	i;
+	char	*prompt;
 
-	if (!array)
-		return ;
-	i = 0;
-	while (array[i])
+	while (1)
 	{
-		free(array[i]);
-		i++;
+		if (data->isatty)
+		{
+			prompt = ft_generate_prompt(data->envp);
+			*input = readline(prompt);
+			free(prompt);
+		}
+		else
+			*input = readline("minishell> ");
+		if (!*input)
+			return (0);
+		if (**input)
+		{
+			if (data->isatty)
+				add_history(*input);
+			return (1);
+		}
+		free(*input);
 	}
-	free(array);
-}
-
-void	ft_free_char_array_size(char **array, int size)
-{
-	int	i;
-
-	if (!array)
-		return ;
-	i = 0;
-	while (i < size)
-	{
-		if (array[i])
-			free(array[i]);
-		i++;
-	}
-	free(array);
 }

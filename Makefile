@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/12 18:22:00 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/12 20:04:35 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,10 +40,8 @@ MAIN_SOURCE = $(SRC_DIR)/main.c
 
 # Source files
 MINISHELL_SRCS = \
-	$(UTILS_DIR)/ft_minishell.c \
-	$(UTILS_DIR)/ft_save_envp.c \
+	$(SRC_DIR)/ft_minishell.c \
 	$(UTILS_DIR)/ft_msg_start.c \
-	$(UTILS_DIR)/ft_get_directory_path.c \
 	$(UTILS_DIR)/ft_search_file/ft_is_dot_or_dotdot.c \
 	$(UTILS_DIR)/ft_search_file/ft_search_file.c \
 	$(UTILS_DIR)/ft_search_file/ft_search_in_dir.c \
@@ -51,33 +49,36 @@ MINISHELL_SRCS = \
 	$(UTILS_DIR)/ft_search_file/ft_build_path.c \
 	$(UTILS_DIR)/ft_count_args.c \
 	$(UTILS_DIR)/ft_redir_io.c \
-	$(UTILS_DIR)/ft_split_strings.c \
-	$(UTILS_DIR)/ft_generate_prompt.c \
-	$(UTILS_DIR)/ft_getenv.c \
-	$(UTILS_DIR)/ft_setenv.c \
-	$(UTILS_DIR)/ft_show_debug.c \
 	$(UTILS_DIR)/ft_free_char_array.c \
-	$(UTILS_DIR)/env/ft_change_env.c \
-	$(SRC_DIR)/redirections/ft_handle_infile.c \
-	$(SRC_DIR)/redirections/ft_handle_outfile.c \
-	$(SRC_DIR)/execution/ft_exec_cmd.c \
-	$(SRC_DIR)/execution/ft_get_cmd_path.c \
-	$(SRC_DIR)/parsing/ft_skip_quotes.c \
-	$(SRC_DIR)/parsing/ft_split_input.c \
-	$(SRC_DIR)/parsing/ft_parse_input.c \
-	$(SRC_DIR)/parsing/ft_handle_env_expansion.c \
-	$(SRC_DIR)/parsing/ft_remove_quotes.c \
-	$(SRC_DIR)/parsing/ft_syntax_check.c \
-	$(SRC_DIR)/signals/ft_sigint_handler.c \
-	$(SRC_DIR)/signals/ft_init_signals.c \
-	$(SRC_DIR)/builtins/ft_echo.c \
-	$(SRC_DIR)/builtins/ft_cd.c \
-	$(SRC_DIR)/builtins/ft_pwd.c \
-	$(SRC_DIR)/builtins/ft_export.c \
-	$(SRC_DIR)/builtins/ft_unset.c \
-	$(SRC_DIR)/builtins/ft_env.c \
-	$(SRC_DIR)/builtins/ft_exit.c \
-	$(SRC_DIR)/builtins/ft_handle_builtins.c \
+	$(UTILS_DIR)/input/ft_read_input.c \
+	$(UTILS_DIR)/input/ft_process_input.c \
+	$(UTILS_DIR)/debug/ft_show_debug.c \
+	$(UTILS_DIR)/prompt/ft_get_directory_path.c \
+	$(UTILS_DIR)/prompt/ft_generate_prompt.c \
+	$(UTILS_DIR)/env/ft_cpyenv.c \
+	$(UTILS_DIR)/env/ft_getenv.c \
+	$(UTILS_DIR)/env/ft_setenv.c \
+	$(UTILS_DIR)/redirections/ft_handle_infile.c \
+	$(UTILS_DIR)/redirections/ft_handle_outfile.c \
+	$(UTILS_DIR)/execution/ft_exec_cmd.c \
+	$(UTILS_DIR)/execution/ft_get_cmd_path.c \
+	$(UTILS_DIR)/execution/ft_finish_execution.c \
+	$(UTILS_DIR)/parsing/ft_skip_quotes.c \
+	$(UTILS_DIR)/parsing/ft_split_input.c \
+	$(UTILS_DIR)/parsing/ft_parse_input.c \
+	$(UTILS_DIR)/parsing/ft_handle_env_expansion.c \
+	$(UTILS_DIR)/parsing/ft_remove_quotes.c \
+	$(UTILS_DIR)/parsing/ft_syntax_check.c \
+	$(UTILS_DIR)/signals/ft_sigint_handler.c \
+	$(UTILS_DIR)/signals/ft_init_signals.c \
+	$(UTILS_DIR)/builtins/ft_echo.c \
+	$(UTILS_DIR)/builtins/ft_cd.c \
+	$(UTILS_DIR)/builtins/ft_pwd.c \
+	$(UTILS_DIR)/builtins/ft_export.c \
+	$(UTILS_DIR)/builtins/ft_unset.c \
+	$(UTILS_DIR)/builtins/ft_env.c \
+	$(UTILS_DIR)/builtins/ft_exit.c \
+	$(UTILS_DIR)/builtins/ft_handle_builtins.c \
 
 # Main object files
 MAIN_OBJECT = $(MAIN_SOURCE:%.c=$(OBJ_DIR)/%.o)

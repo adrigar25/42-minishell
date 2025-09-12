@@ -1,13 +1,12 @@
 /* ************************************************************************** */
-/*                t_cmd		*ft_parse_input(char **argv, int argc,
-			t_data *data);                                                           */
+/*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/03 13:18:46 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/10 18:13:45 by agarcia          ###   ########.fr       */
+/*   Created: 2025/09/12 20:10:39 by agarcia           #+#    #+#             */
+/*   Updated: 2025/09/12 20:10:39 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +20,9 @@
 # include <readline/readline.h>
 
 /*
-** ============================================================================
-**                                 MACROS
-** ============================================================================
+** ===================================================================
+**                        MACROS
+** ===================================================================
 */
 
 // Exit codes
@@ -88,8 +87,6 @@ typedef struct s_cmd
 }					t_cmd;
 
 int					ft_minishell(char **envp, int debug);
-int					ft_save_envp(char ***envp_cpy, char **envp);
-char				*ft_get_directory_path(char **envp);
 
 // Search for a file in the current directory and subdirectories.
 char				*ft_search_file(const char *dir, const char *filename);
@@ -111,6 +108,8 @@ int					ft_check_syntax_errors(char **argv, int argc);
 int					ft_exec_cmd(t_cmd *cmd);
 int					ft_pipex(const char **argv, int fd_in, char **envp);
 char				*get_cmd_path(char *cmd);
+void				ft_finish_execution(pid_t *pids, int cmd_count,
+						t_cmd *cmd_list, t_data *data);
 
 /********** */
 /*  Utils   */
@@ -118,28 +117,35 @@ char				*get_cmd_path(char *cmd);
 
 // ENV
 
+int					ft_cpyenv(char ***envp_cpy, char **envp);
 char				*ft_getenv(const char *name, char **envp);
-void				ft_change_env(char *key, char *value, char ***envp);
 int					ft_setenv(char *name, char *value, char ***envp);
+
+// PROMPT
+
+char				*ft_get_directory_path(char **envp);
+char				*ft_generate_prompt(char **envp);
 
 // Initialize message
 int					ft_msg_start(void);
-char				*ft_generate_prompt(char **envp);
 
 // Count the number of arguments in a command string.
 int					ft_count_args(const char *cmd);
 
-// Debug
-void				ft_show_debug(char **argv, int argc, char **expanded_argv,
-						t_cmd *cmd_list);
-
-// Split strings by separator
-char				***ft_split_strings(const char **argv, const char *sep);
-void				free_split_strings(char ***cmds);
-
 // Memory management utilities
 void				ft_free_char_array(char **array);
 void				ft_free_char_array_size(char **array, int size);
+
+// INPUT
+
+int					ft_read_input(char **input, t_data *data);
+int					ft_process_input(char *input, t_data *data,
+						t_cmd **cmd_list, int debug);
+
+// DEBUG
+
+void				ft_show_debug(char **argv, int argc, char **expanded_argv,
+						t_cmd *cmd_list);
 
 // Redirections
 void				ft_redir_io(int fd, int in_or_out);

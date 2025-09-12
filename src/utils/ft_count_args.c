@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 14:20:19 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/08 18:17:52 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/12 20:07:15 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	is_escaped(const char *cmd, int pos, int in_quote, char quote_char)
 
 	backslashes = 0;
 	j = pos - 1;
-	// Solo se chequea fuera de comillas simples
 	if (in_quote && quote_char == '\'')
 		return (0);
 	while (j >= 0 && cmd[j] == '\\')
