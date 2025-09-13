@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 19:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/13 12:07:44 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/13 15:18:02 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_handle_infile(char *filename)
 	if (fd == -1)
 	{
 		error_msg = ft_strjoin(ft_strjoin("minishell: ", filename),
-				": No such file or directory");
+				": No such file or directory\n");
 		ft_putstr_error(error_msg);
 		free(error_msg);
 		return (-1);

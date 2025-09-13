@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 19:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/13 12:10:09 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/13 16:58:24 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,15 @@
 
 int	ft_handle_outfile(char *filename, int append)
 {
-	int		fd;
-	int		flags;
-	char	*error_msg;
+	int	fd;
 
-	if (!filename)
-		return (-1);
-	fd = ft_open_file_write(filename, append);
+	if (append)
+		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else
+		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
-		error_msg = ft_strjoin(ft_strjoin(ft_strjoin("minishell: ", filename),
-					": "), " Permission denied\n");
-		ft_putstr_error(error_msg);
-		free(error_msg);
+		perror(filename);
 		return (-1);
 	}
 	return (fd);

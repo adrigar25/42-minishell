@@ -37,9 +37,9 @@ static void	ft_setup_child_process(t_cmd *cmd_list, t_cmd *head, t_data **data)
 	else
 	{
 		exit_status = ft_exec_cmd(cmd_list);
-		if (exit_status == -1)
+		if (exit_status == 1)
 			exit(EXIT_FAILURE);
-		exit(exit_status);
+		exit(EXIT_SUCCESS);
 	}
 }
 

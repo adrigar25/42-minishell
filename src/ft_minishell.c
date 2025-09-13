@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/13 15:09:52 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/13 17:10:58 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@ int	ft_minishell(char **envp, int debug)
 	int		status;
 	int		builtin_result;
 	pid_t	*pids;
-	t_cmd	*head;
 	int		exit_status;
+	t_cmd	*temp;
+	t_cmd	*debug_cmd;
+	int		cmd_num;
 
 	data = malloc(sizeof(t_data));
 	if (!data)
@@ -44,78 +46,35 @@ int	ft_minishell(char **envp, int debug)
 	{
 		if (!ft_process_input(input, data, &cmd_list, debug))
 			continue ;
-		head = cmd_list;
 		pids = malloc(sizeof(pid_t) * data->cmd_count);
 		if (!pids)
 			continue ;
-
-		// Verificar si hay pipes en la cadena de comandos
-		int has_pipes = 0;
-		t_cmd *temp = head;
-		while (temp)
+		if (cmd_list->next)
 		{
-			if (temp->infd != STDIN_FILENO || temp->outfd != STDOUT_FILENO)
-			{
-				has_pipes = 1;
-				break;
-			}
-			temp = temp->next;
-		}
-
-		if (debug)
-		{
-			printf("DEBUG: has_pipes = %d, cmd_count = %d\n", has_pipes, data->cmd_count);
-			t_cmd *debug_cmd = head;
-			int cmd_num = 0;
-			while (debug_cmd)
-			{
-				printf("DEBUG: cmd[%d] = '%s', infd=%d, outfd=%d, has_next=%d\n",
-					cmd_num, debug_cmd->argv ? debug_cmd->argv[0] : "NULL",
-					debug_cmd->infd, debug_cmd->outfd, debug_cmd->next ? 1 : 0);
-				debug_cmd = debug_cmd->next;
-				cmd_num++;
-			}
-		}
-
-		if (has_pipes)
-		{
-			// Usar la función de pipeline para manejar múltiples comandos
-			if (ft_execute_pipeline(head, pids, &data) == -1)
-				break;
+			if (ft_execute_pipeline(cmd_list, pids, &data) == -1)
+				break ;
 		}
 		else
 		{
-			// Comando único, usar la lógica original
-			cmd_list = head;
-			while (cmd_list)
+			if (cmd_list->has_error)
 			{
-				if (cmd_list->has_error)
+				ft_skip_error_cmd(cmd_list, data, pids);
+				continue ;
+			}
+			if (cmd_list->infd == STDIN_FILENO
+				&& cmd_list->outfd == STDOUT_FILENO)
+			{
+				builtin_result = ft_handle_builtins(cmd_list, &data);
+				if (builtin_result != -1)
 				{
-					if (cmd_list->next)
-						ft_execute_error_command(cmd_list, head, pids);
-					else
-						ft_skip_error_cmd(cmd_list, data, pids);
-					cmd_list = cmd_list->next;
+					data->last_exit_status = builtin_result;
+					pids[cmd_list->index] = -1;
 					continue ;
 				}
-				if (!cmd_list->next && cmd_list->infd == STDIN_FILENO
-					&& cmd_list->outfd == STDOUT_FILENO)
-				{
-					builtin_result = ft_handle_builtins(cmd_list, &data);
-					if (builtin_result != -1)
-					{
-						data->last_exit_status = builtin_result;
-						pids[cmd_list->index] = -1;
-						cmd_list = cmd_list->next;
-						continue ;
-					}
-				}
-				if (ft_execute_command(cmd_list, head, pids, &data) == -1)
-					break ;
-				cmd_list = cmd_list->next;
 			}
+			if (ft_execute_command(cmd_list, cmd_list, pids, &data) == -1)
+				break ;
 		}
-		cmd_list = head;
 		ft_finish_execution(pids, data->cmd_count, cmd_list, data);
 	}
 	exit_status = data->last_exit_status;
