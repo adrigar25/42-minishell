@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/13 17:15:52 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/13 17:24:19 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,6 +67,7 @@ MINISHELL_SRCS = \
 	$(UTILS_DIR)/execution/ft_execute_command.c \
 	$(UTILS_DIR)/execution/ft_execute_error_command.c \
 	$(UTILS_DIR)/execution/ft_execute_pipeline.c \
+	$(UTILS_DIR)/execution/ft_handle_heredoc.c \
 	$(UTILS_DIR)/parsing/ft_skip_quotes.c \
 	$(UTILS_DIR)/parsing/ft_split_input.c \
 	$(UTILS_DIR)/parsing/ft_parse_input.c \

@@ -70,10 +70,12 @@ int	ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data)
 				}
 				builtin_result = ft_handle_builtins(current, data);
 				if (builtin_result != -1)
+				{
+					(*data)->last_exit_status = builtin_result;
 					exit(builtin_result);
+				}
 				exit_status = ft_exec_cmd(current);
-				if (exit_status == -1)
-					exit(EXIT_FAILURE);
+				cmd_list->data->last_exit_status = exit_status;
 				exit(exit_status);
 			}
 			else if (pid > 0)

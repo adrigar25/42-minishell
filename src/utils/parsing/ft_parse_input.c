@@ -121,8 +121,8 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 			current_cmd->infd = pipefd[0];
 		}
 		else if ((ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i], ">") == 0
-				|| ft_strcmp(argv[i], ">>") == 0)
-			&& current_cmd->has_error == 0)
+				|| ft_strcmp(argv[i], ">>") == 0 || ft_strcmp(argv[i],
+					"<<") == 0) && current_cmd->has_error == 0)
 		{
 			clean_arg = ft_remove_quotes(argv[i + 1]);
 			if (!clean_arg)
@@ -131,12 +131,14 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 				fd = ft_handle_infile(clean_arg);
 			else if (ft_strcmp(argv[i], ">") == 0)
 				fd = ft_handle_outfile(clean_arg, 0);
-			else
+			else if (ft_strcmp(argv[i], ">>") == 0)
 				fd = ft_handle_outfile(clean_arg, 1);
+			else // heredoc
+				fd = ft_handle_heredoc(clean_arg);
 			if (fd != -1)
 			{
-				ft_add_fd_to_cmd(current_cmd, fd, (ft_strcmp(argv[i],
-							"<") == 0 ? 0 : 1));
+				ft_add_fd_to_cmd(current_cmd, fd, (ft_strcmp(argv[i], "<") == 0
+						|| ft_strcmp(argv[i], "<<") == 0 ? 0 : 1));
 			}
 			else
 			{
