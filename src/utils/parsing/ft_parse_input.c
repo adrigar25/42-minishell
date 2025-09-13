@@ -120,51 +120,28 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 			current_cmd->data = data;
 			current_cmd->infd = pipefd[0];
 		}
-		else if (ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i], ">") == 0
-			|| ft_strcmp(argv[i], ">>") == 0)
+		else if ((ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i], ">") == 0
+				|| ft_strcmp(argv[i], ">>") == 0) && cmd_list->has_error == 0)
 		{
+			clean_arg = ft_remove_quotes(argv[i + 1]);
+			if (!clean_arg)
+				clean_arg = argv[i + 1];
 			if (ft_strcmp(argv[i], "<") == 0)
-			{
-				clean_arg = ft_remove_quotes(argv[i + 1]);
-				fd = ft_handle_infile(clean_arg ? clean_arg : argv[i + 1]);
-				if (fd != -1)
-					ft_add_fd_to_cmd(current_cmd, fd, 0);
-				else
-				{
-					data->last_exit_status = 1;
-					current_cmd->has_error = 1;
-				}
-				if (clean_arg != argv[i + 1])
-					free(clean_arg);
-			}
+				fd = ft_handle_infile(clean_arg);
 			else if (ft_strcmp(argv[i], ">") == 0)
+				fd = ft_handle_outfile(clean_arg, 0);
+			else
+				fd = ft_handle_outfile(clean_arg, 1);
+			if (fd != -1)
+				ft_add_fd_to_cmd(current_cmd, fd, (ft_strcmp(argv[i],
+							"<") == 0 ? 0 : 1));
+			else
 			{
-				clean_arg = ft_remove_quotes(argv[i + 1]);
-				fd = ft_handle_outfile(clean_arg ? clean_arg : argv[i + 1], 0);
-				if (fd != -1)
-					ft_add_fd_to_cmd(current_cmd, fd, 1);
-				else
-				{
-					data->last_exit_status = 1;
-					current_cmd->has_error = 1;
-				}
-				if (clean_arg != argv[i + 1])
-					free(clean_arg);
+				data->last_exit_status = 1;
+				current_cmd->has_error = 1;
 			}
-			else if (ft_strcmp(argv[i], ">>") == 0)
-			{
-				clean_arg = ft_remove_quotes(argv[i + 1]);
-				fd = ft_handle_outfile(clean_arg ? clean_arg : argv[i + 1], 1);
-				if (fd != -1)
-					ft_add_fd_to_cmd(current_cmd, fd, 1);
-				else
-				{
-					data->last_exit_status = 1;
-					current_cmd->has_error = 1;
-				}
-				if (clean_arg != argv[i + 1])
-					free(clean_arg);
-			}
+			if (clean_arg != argv[i + 1])
+				free(clean_arg);
 			i++;
 		}
 		else
