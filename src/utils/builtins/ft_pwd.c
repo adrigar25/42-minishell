@@ -3,23 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/06 16:07:15 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/13 15:09:46 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	ft_pwd(char **args)
+int	ft_pwd(t_cmd cmd)
 {
 	char	cwd[1024];
+	char	*output;
+	int		len;
 
-	(void)args;
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
-		printf("%s\n", cwd);
+		len = ft_strlen(cwd);
+		output = malloc(len + 2);
+		if (!output)
+			return (1);
+		ft_strcpy(output, cwd);
+		output[len] = '\n';
+		output[len + 1] = '\0';
+
+		write(cmd.outfd, output, len + 1);
+
+		free(output);
 		return (0);
 	}
 	else

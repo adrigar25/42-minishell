@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/13 12:42:53 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/13 15:11:02 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ int					ft_process_input(char *input, t_data *data,
 
 int					ft_execute_command(t_cmd *cmd_list, t_cmd *head,
 						pid_t *pids, t_data **data);
+int					ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data);
 int					ft_execute_error_command(t_cmd *cmd_list, t_cmd *head,
 						pid_t *pids);
 
@@ -173,10 +174,10 @@ void				ft_init_signals(void);
 // Builtins
 int					ft_echo(t_cmd cmd);
 int					ft_cd(char **argv, char ***envp);
-int					ft_pwd(char **args);
+int					ft_pwd(t_cmd cmd);
 int					ft_export(char **args, char ***envp);
 int					ft_unset(char **args, char ***envp);
-int					ft_env(char **envp);
+int					ft_env(t_cmd cmd, char **envp);
 int					ft_exit(t_cmd *cmd);
 int					ft_handle_builtins(t_cmd *cmd, t_data **data);
 
