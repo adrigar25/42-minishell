@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/13 20:27:14 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/13 20:36:02 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ CC = cc
 AR = ar rcs
 
 # Directories
-SRC_DIR = src
+SRC_DIR = src/mandatory
 UTILS_DIR = $(SRC_DIR)/utils
 LIBS_DIR = libs
 LIBFT_DIR = $(LIBS_DIR)/libft
@@ -84,12 +84,11 @@ MINISHELL_SRCS = \
 	$(UTILS_DIR)/builtins/ft_exit.c \
 	$(UTILS_DIR)/builtins/ft_handle_builtins.c \
 
-# Main object files
-MAIN_OBJECT = $(MAIN_SOURCE:%.c=$(OBJ_DIR)/%.o)
 
-# Source objects
-
-MINISHELL_OBJS = $(MINISHELL_SRCS:%.c=$(OBJ_DIR)/%.o)
+# Objetos para mandatory
+OBJ_DIR = objs/mandatory
+MAIN_OBJECT = $(MAIN_SOURCE:$(MANDATORY_DIR)/%.c=$(OBJ_DIR)/%.o)
+MINISHELL_OBJS = $(MINISHELL_SRCS:$(MANDATORY_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 all: $(LIB_NAME) $(NAME)
 	@echo "\033[35m$(NAME) executable is ready to use!\033[0m"
