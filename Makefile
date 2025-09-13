@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
+#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/13 20:36:02 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/13 21:12:58 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,69 +26,121 @@ CC = cc
 AR = ar rcs
 
 # Directories
-SRC_DIR = src/mandatory
-UTILS_DIR = $(SRC_DIR)/utils
+SRC_DIR = src
+MANDATORY_DIR = $(SRC_DIR)/mandatory
+BONUS_DIR = $(SRC_DIR)/bonus
+UTILS_DIR = utils
 LIBS_DIR = libs
 LIBFT_DIR = $(LIBS_DIR)/libft
 OBJ_DIR = objs
+OBJ_MANDATORY_DIR = $(OBJ_DIR)/mandatory
+OBJ_BONUS_DIR = $(OBJ_DIR)/bonus
 
 # Library files
 LIB_NAME = $(LIBFT_DIR)/libft.a
 
-# Main Source Project
-MAIN_SOURCE = $(SRC_DIR)/main.c
+# Main Source Files
+MAIN_SOURCE = $(MANDATORY_DIR)/main.c
+MAIN_SOURCE_BONUS = $(BONUS_DIR)/main.c
 
 # Source files
 MINISHELL_SRCS = \
-	$(SRC_DIR)/ft_minishell.c \
-	$(UTILS_DIR)/ft_msg_start.c \
-	$(UTILS_DIR)/ft_search_file/ft_is_dot_or_dotdot.c \
-	$(UTILS_DIR)/ft_search_file/ft_search_file.c \
-	$(UTILS_DIR)/ft_search_file/ft_search_in_dir.c \
-	$(UTILS_DIR)/ft_search_file/ft_search_in_subdirs.c \
-	$(UTILS_DIR)/ft_search_file/ft_build_path.c \
-	$(UTILS_DIR)/ft_count_args.c \
-	$(UTILS_DIR)/ft_redir_io.c \
-	$(UTILS_DIR)/ft_free_char_array.c \
-	$(UTILS_DIR)/input/ft_read_input.c \
-	$(UTILS_DIR)/input/ft_process_input.c \
-	$(UTILS_DIR)/debug/ft_show_debug.c \
-	$(UTILS_DIR)/prompt/ft_get_directory_path.c \
-	$(UTILS_DIR)/prompt/ft_generate_prompt.c \
-	$(UTILS_DIR)/env/ft_cpyenv.c \
-	$(UTILS_DIR)/env/ft_getenv.c \
-	$(UTILS_DIR)/env/ft_setenv.c \
-	$(UTILS_DIR)/redirections/ft_handle_infile.c \
-	$(UTILS_DIR)/redirections/ft_handle_outfile.c \
-	$(UTILS_DIR)/execution/ft_exec_cmd.c \
-	$(UTILS_DIR)/execution/ft_get_cmd_path.c \
-	$(UTILS_DIR)/execution/ft_close_unused_fds.c \
-	$(UTILS_DIR)/execution/ft_finish_execution.c \
-	$(UTILS_DIR)/execution/ft_execute_error_command.c \
-	$(UTILS_DIR)/execution/ft_execute_pipeline.c \
-	$(UTILS_DIR)/execution/ft_handle_heredoc.c \
-	$(UTILS_DIR)/parsing/ft_skip_quotes.c \
-	$(UTILS_DIR)/parsing/ft_split_input.c \
-	$(UTILS_DIR)/parsing/ft_parse_input.c \
-	$(UTILS_DIR)/parsing/ft_handle_env_expansion.c \
-	$(UTILS_DIR)/parsing/ft_remove_quotes.c \
-	$(UTILS_DIR)/parsing/ft_syntax_check.c \
-	$(UTILS_DIR)/signals/ft_sigint_handler.c \
-	$(UTILS_DIR)/signals/ft_init_signals.c \
-	$(UTILS_DIR)/builtins/ft_echo.c \
-	$(UTILS_DIR)/builtins/ft_cd.c \
-	$(UTILS_DIR)/builtins/ft_pwd.c \
-	$(UTILS_DIR)/builtins/ft_export.c \
-	$(UTILS_DIR)/builtins/ft_unset.c \
-	$(UTILS_DIR)/builtins/ft_env.c \
-	$(UTILS_DIR)/builtins/ft_exit.c \
-	$(UTILS_DIR)/builtins/ft_handle_builtins.c \
+	$(MANDATORY_DIR)/ft_minishell.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_msg_start.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_search_file/ft_is_dot_or_dotdot.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_search_file/ft_search_file.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_search_file/ft_search_in_dir.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_search_file/ft_search_in_subdirs.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_search_file/ft_build_path.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_count_args.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_redir_io.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_free_char_array.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/input/ft_read_input.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/input/ft_process_input.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/debug/ft_show_debug.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/prompt/ft_get_directory_path.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/prompt/ft_generate_prompt.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_cpyenv.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_getenv.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_setenv.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/redirections/ft_handle_infile.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/redirections/ft_handle_outfile.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_exec_cmd.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_get_cmd_path.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_close_unused_fds.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_finish_execution.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_execute_error_command.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_execute_pipeline.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_handle_heredoc.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/parsing/ft_skip_quotes.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/parsing/ft_split_input.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/parsing/ft_parse_input.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/parsing/ft_handle_env_expansion.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/parsing/ft_remove_quotes.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/parsing/ft_syntax_check.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/signals/ft_sigint_handler.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/signals/ft_init_signals.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/builtins/ft_echo.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/builtins/ft_cd.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/builtins/ft_pwd.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/builtins/ft_export.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/builtins/ft_unset.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/builtins/ft_env.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/builtins/ft_exit.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/builtins/ft_handle_builtins.c \
 
+MINISHELL_SRCS_BONUS = \
+	$(BONUS_DIR)/ft_minishell.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/ft_msg_start.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/ft_search_file/ft_is_dot_or_dotdot.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/ft_search_file/ft_search_file.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/ft_search_file/ft_search_in_dir.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/ft_search_file/ft_search_in_subdirs.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/ft_search_file/ft_build_path.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/ft_count_args.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/ft_redir_io.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/ft_free_char_array.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/input/ft_read_input.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/input/ft_process_input.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/debug/ft_show_debug.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/prompt/ft_get_directory_path.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/prompt/ft_generate_prompt.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_cpyenv.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_getenv.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_setenv.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/redirections/ft_handle_infile.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/redirections/ft_handle_outfile.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_exec_cmd.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_get_cmd_path.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_close_unused_fds.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_finish_execution.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_execute_error_command.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_execute_pipeline.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_handle_heredoc.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_skip_quotes.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_split_input.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_parse_input.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_handle_env_expansion.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_remove_quotes.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_syntax_check.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_handle_wildcards.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/signals/ft_sigint_handler.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/signals/ft_init_signals.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_echo.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_cd.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_pwd.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_export.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_unset.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_env.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_exit.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_handle_builtins.c \
 
-# Objetos para mandatory
-OBJ_DIR = objs/mandatory
-MAIN_OBJECT = $(MAIN_SOURCE:$(MANDATORY_DIR)/%.c=$(OBJ_DIR)/%.o)
-MINISHELL_OBJS = $(MINISHELL_SRCS:$(MANDATORY_DIR)/%.c=$(OBJ_DIR)/%.o)
+# Objetos para mandatory y bonus
+MAIN_OBJECT = $(MAIN_SOURCE:$(MANDATORY_DIR)/%.c=$(OBJ_MANDATORY_DIR)/%.o)
+MINISHELL_OBJS = $(MINISHELL_SRCS:$(MANDATORY_DIR)/%.c=$(OBJ_MANDATORY_DIR)/%.o)
+
+MAIN_OBJECT_BONUS = $(MAIN_SOURCE_BONUS:$(BONUS_DIR)/%.c=$(OBJ_BONUS_DIR)/%.o)
+MINISHELL_OBJS_BONUS = $(MINISHELL_SRCS_BONUS:$(BONUS_DIR)/%.c=$(OBJ_BONUS_DIR)/%.o)
 
 all: $(LIB_NAME) $(NAME)
 	@echo "\033[35m$(NAME) executable is ready to use!\033[0m"
@@ -106,10 +158,27 @@ $(NAME): $(MINISHELL_OBJS) $(MAIN_OBJECT)
 		echo "\033[31m❌ Error during compilation!\033[0m"; \
 	fi
 
-# Compile object files
-$(OBJ_DIR)/%.o: %.c
+# Compile object files for mandatory
+$(OBJ_MANDATORY_DIR)/%.o: $(MANDATORY_DIR)/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
+
+# Compile object files for bonus
+$(OBJ_BONUS_DIR)/%.o: $(BONUS_DIR)/%.c
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+# Compile the bonus project
+$(NAME)_bonus: $(MINISHELL_OBJS_BONUS) $(MAIN_OBJECT_BONUS)
+	@$(CC) $(CFLAGS) $(MINISHELL_OBJS_BONUS) $(MAIN_OBJECT_BONUS) $(LIB_NAME) $(LDFLAGS) -o $(NAME)_bonus
+	@if [ $$? -eq 0 ]; then \
+		echo "\033[32m✅ Bonus compilation completed successfully!\033[0m"; \
+	else \
+		echo "\033[31m❌ Error during bonus compilation!\033[0m"; \
+	fi
+
+bonus: $(LIB_NAME) $(NAME)_bonus
+	@echo "\033[35m$(NAME)_bonus executable is ready to use!\033[0m"
 
 # Clean up object files
 clean:
@@ -125,11 +194,11 @@ clean:
 fclean:
 	@rm -rf $(OBJ_DIR)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
-	@rm -f $(NAME)
+	@rm -f $(NAME) $(NAME)_bonus
 	@if [ $$? -eq 0 ]; then \
-		echo "\033[32m🗑️  Libraries, objects and executable cleaned successfully!\033[0m"; \
+		echo "\033[32m🗑️  Libraries, objects and executables cleaned successfully!\033[0m"; \
 	else \
-		echo "\033[31m❌ Error cleaning libraries, objects and executable!\033[0m"; \
+		echo "\033[31m❌ Error cleaning libraries, objects and executables!\033[0m"; \
 	fi
 
 re: fclean
@@ -142,4 +211,4 @@ re: fclean
 	fi
 
 # Phony targets
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus
