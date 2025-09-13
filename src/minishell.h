@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/13 15:11:02 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/13 17:16:25 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,6 @@ int					ft_exec_cmd(t_cmd *cmd);
 int					ft_pipex(const char **argv, int fd_in, char **envp);
 char				*get_cmd_path(char *cmd);
 void				ft_close_unused_fds(t_cmd *current_cmd, t_cmd *cmd_list);
-int					ft_skip_error_cmd(t_cmd *cmd_list, t_data *data,
-						pid_t *pids);
 void				ft_finish_execution(pid_t *pids, int cmd_count,
 						t_cmd *cmd_list, t_data *data);
 
@@ -153,7 +151,8 @@ int					ft_process_input(char *input, t_data *data,
 
 int					ft_execute_command(t_cmd *cmd_list, t_cmd *head,
 						pid_t *pids, t_data **data);
-int					ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data);
+int					ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids,
+						t_data **data);
 int					ft_execute_error_command(t_cmd *cmd_list, t_cmd *head,
 						pid_t *pids);
 
