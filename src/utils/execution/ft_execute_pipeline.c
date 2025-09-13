@@ -72,11 +72,10 @@ int	ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data)
 				if (builtin_result != -1)
 				{
 					(*data)->last_exit_status = builtin_result;
-					exit(builtin_result);
+					exit(cmd_list->data->last_exit_status);
 				}
-				exit_status = ft_exec_cmd(current);
-				cmd_list->data->last_exit_status = exit_status;
-				exit(exit_status);
+				cmd_list->data->last_exit_status = ft_exec_cmd(current);
+				exit(cmd_list->data->last_exit_status);
 			}
 			else if (pid > 0)
 				pids[current->index] = pid;

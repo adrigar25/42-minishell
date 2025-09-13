@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/13 17:16:25 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/13 20:06:20 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,12 +149,11 @@ int					ft_process_input(char *input, t_data *data,
 
 // EXECUTION
 
-int					ft_execute_command(t_cmd *cmd_list, t_cmd *head,
-						pid_t *pids, t_data **data);
 int					ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids,
 						t_data **data);
 int					ft_execute_error_command(t_cmd *cmd_list, t_cmd *head,
 						pid_t *pids);
+int					ft_exec_cmd(t_cmd *cmd);
 
 // DEBUG
 

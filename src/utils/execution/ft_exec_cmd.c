@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:06:20 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/13 17:34:09 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/13 20:14:36 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ int	ft_exec_cmd(t_cmd *cmd)
 	}
 	if (stat(path, &file_stat) == -1)
 	{
-		error_msg = ft_strjoin("\033minishell: ", cmd->argv[0]);
-		error_msg = ft_strjoin(error_msg, ": No such file or directory\033\n");
+		error_msg = ft_strjoin("\033[31mminishell: ", cmd->argv[0]);
+		error_msg = ft_strjoin(error_msg,
+				": No such file or directory\033[0m\n");
 		ft_putstr_error(error_msg);
 		free(error_msg);
 		free(path);
