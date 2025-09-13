@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/13 20:22:41 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/13 20:27:20 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ char				**ft_split_input(const char *input, int argc);
 t_cmd				*ft_parse_input(char **argv, t_data *data);
 void				ft_skip_quotes(const char *cmd, int *i);
 char				**ft_handle_env_expansion(char **argv, t_data *data);
-char				**ft_handle_wildcards(char **argv, t_data *data);
 char				*ft_remove_quotes(const char *str);
 int					ft_check_syntax_errors(char **argv, int argc);
 

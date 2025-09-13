@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_process_input.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/13 20:22:41 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/13 20:27:11 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	ft_process_input(char *input, t_data *data, t_cmd **cmd_list, int debug)
 	t_cmd	*head;
 	char	**argv;
 	char	**expanded_argv;
-	char	**wildcard_argv;
 
 	data->argc = ft_count_args(input);
 	argv = ft_split_input(input, data->argc);
@@ -38,15 +37,12 @@ int	ft_process_input(char *input, t_data *data, t_cmd **cmd_list, int debug)
 	if (ft_handle_syntax(argv, data))
 		return (0);
 	expanded_argv = ft_handle_env_expansion(argv, data);
-	wildcard_argv = ft_handle_wildcards(expanded_argv, data);
-	*cmd_list = ft_parse_input(wildcard_argv, data);
+	*cmd_list = ft_parse_input(expanded_argv, data);
 	if (debug && *cmd_list)
-		ft_show_debug(argv, data->argc, wildcard_argv, *cmd_list);
+		ft_show_debug(argv, data->argc, expanded_argv, *cmd_list);
 	ft_free_char_array(argv);
 	if (expanded_argv != argv)
 		ft_free_char_array(expanded_argv);
-	if (wildcard_argv != expanded_argv && wildcard_argv != argv)
-		ft_free_char_array(wildcard_argv);
 	data->cmd_count = 0;
 	head = *cmd_list;
 	while (head && ++data->cmd_count)

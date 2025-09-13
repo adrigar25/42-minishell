@@ -133,7 +133,7 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 				fd = ft_handle_outfile(clean_arg, 0);
 			else if (ft_strcmp(argv[i], ">>") == 0)
 				fd = ft_handle_outfile(clean_arg, 1);
-			else // heredoc
+			else
 				fd = ft_handle_heredoc(clean_arg);
 			if (fd != -1)
 			{

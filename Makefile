@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
+#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/13 20:20:38 by adriescr         ###   ########.fr        #
+#    Updated: 2025/09/13 20:27:14 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,7 +72,6 @@ MINISHELL_SRCS = \
 	$(UTILS_DIR)/parsing/ft_parse_input.c \
 	$(UTILS_DIR)/parsing/ft_handle_env_expansion.c \
 	$(UTILS_DIR)/parsing/ft_remove_quotes.c \
-	$(UTILS_DIR)/parsing/ft_handle_wildcards.c \
 	$(UTILS_DIR)/parsing/ft_syntax_check.c \
 	$(UTILS_DIR)/signals/ft_sigint_handler.c \
 	$(UTILS_DIR)/signals/ft_init_signals.c \
