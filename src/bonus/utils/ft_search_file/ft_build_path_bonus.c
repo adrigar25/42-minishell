@@ -1,18 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_build_path_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/03 13:18:28 by adriescr          #+#    #+#             */
+/*   Created: 2025/09/04 18:35:06 by adriescr          #+#    #+#             */
 /*   Updated: 2025/09/14 15:18:12 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_bonus.h"
+#include "../../minishell_bonus.h"
 
-int	main(int argc, char **argv, char **envp)
+char	*ft_build_path(const char *dir, const char *entry)
 {
-	return (ft_minishell(envp, ft_strcmp(argv[argc - 1], "debug") == 0));
+	size_t	dir_len;
+	size_t	entry_len;
+	size_t	total_len;
+	char	*path;
+
+	dir_len = ft_strlen(dir);
+	entry_len = ft_strlen(entry);
+	total_len = dir_len + 1 + entry_len + 1;
+	path = malloc(total_len);
+	if (!path)
+		return (NULL);
+	ft_memcpy(path, dir, dir_len);
+	path[dir_len] = '/';
+	ft_memcpy(path + dir_len + 1, entry, entry_len);
+	path[dir_len + 1 + entry_len] = '\0';
+	return (path);
 }

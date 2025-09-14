@@ -1,18 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_free_char_array_bonus.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/03 13:18:28 by adriescr          #+#    #+#             */
+/*   Created: 2025/09/12 18:00:00 by agarcia           #+#    #+#             */
 /*   Updated: 2025/09/14 15:18:12 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_bonus.h"
+#include "../minishell_bonus.h"
 
-int	main(int argc, char **argv, char **envp)
+void	ft_free_char_array(char **array)
 {
-	return (ft_minishell(envp, ft_strcmp(argv[argc - 1], "debug") == 0));
+	int	i;
+
+	if (!array)
+		return ;
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
+
+void	ft_free_char_array_size(char **array, int size)
+{
+	int	i;
+
+	if (!array)
+		return ;
+	i = 0;
+	while (i < size)
+	{
+		if (array[i])
+			free(array[i]);
+		i++;
+	}
+	free(array);
 }

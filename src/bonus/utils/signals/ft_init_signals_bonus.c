@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_init_signals_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/03 13:18:28 by adriescr          #+#    #+#             */
+/*   Created: 2025/09/07 01:30:00 by agarcia           #+#    #+#             */
 /*   Updated: 2025/09/14 15:18:12 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_bonus.h"
+#include "../../minishell_bonus.h"
 
-int	main(int argc, char **argv, char **envp)
+void	ft_init_signals(void)
 {
-	return (ft_minishell(envp, ft_strcmp(argv[argc - 1], "debug") == 0));
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGPIPE, SIG_IGN);
 }

@@ -1,18 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_env_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/03 13:18:28 by adriescr          #+#    #+#             */
+/*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
 /*   Updated: 2025/09/14 15:18:12 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_bonus.h"
+#include "../../minishell_bonus.h"
 
-int	main(int argc, char **argv, char **envp)
+int	ft_env(t_cmd cmd, char **envp)
 {
-	return (ft_minishell(envp, ft_strcmp(argv[argc - 1], "debug") == 0));
+	int	i;
+
+	if (!envp)
+		return (1);
+	i = 0;
+	while (envp[i])
+	{
+		dprintf(cmd.outfd, "%s\n", envp[i]);
+		i++;
+	}
+	return (0);
 }

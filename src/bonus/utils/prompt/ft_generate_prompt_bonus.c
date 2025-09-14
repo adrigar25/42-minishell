@@ -1,18 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_generate_prompt_bonus.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/03 13:18:28 by adriescr          #+#    #+#             */
+/*   Created: 2025/09/07 11:30:00 by agarcia           #+#    #+#             */
 /*   Updated: 2025/09/14 15:18:12 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_bonus.h"
+#include "../../minishell_bonus.h"
 
-int	main(int argc, char **argv, char **envp)
+char	*ft_generate_prompt(char **envp)
 {
-	return (ft_minishell(envp, ft_strcmp(argv[argc - 1], "debug") == 0));
+	char	*dir_path;
+	char	*temp;
+	char	*prompt;
+
+	dir_path = ft_get_directory_path(envp);
+	if (!dir_path)
+		return (ft_strdup("minishell> "));
+	temp = ft_strjoin(PROMPT_PREFIX, dir_path);
+	free(dir_path);
+	if (!temp)
+		return (ft_strdup("minishell> "));
+	prompt = ft_strjoin(temp, PROMPT_SUFFIX);
+	free(temp);
+	if (!prompt)
+		return (ft_strdup("minishell> "));
+	return (prompt);
 }

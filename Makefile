@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
+#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/13 21:12:58 by adriescr         ###   ########.fr        #
+#    Updated: 2025/09/14 15:16:59 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,50 +90,49 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/builtins/ft_handle_builtins.c \
 
 MINISHELL_SRCS_BONUS = \
-	$(BONUS_DIR)/ft_minishell.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/ft_msg_start.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/ft_search_file/ft_is_dot_or_dotdot.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/ft_search_file/ft_search_file.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/ft_search_file/ft_search_in_dir.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/ft_search_file/ft_search_in_subdirs.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/ft_search_file/ft_build_path.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/ft_count_args.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/ft_redir_io.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/ft_free_char_array.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/input/ft_read_input.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/input/ft_process_input.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/debug/ft_show_debug.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/prompt/ft_get_directory_path.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/prompt/ft_generate_prompt.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_cpyenv.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_getenv.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_setenv.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/redirections/ft_handle_infile.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/redirections/ft_handle_outfile.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_exec_cmd.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_get_cmd_path.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_close_unused_fds.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_finish_execution.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_execute_error_command.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_execute_pipeline.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_handle_heredoc.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_skip_quotes.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_split_input.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_parse_input.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_handle_env_expansion.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_remove_quotes.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_syntax_check.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_handle_wildcards.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/signals/ft_sigint_handler.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/signals/ft_init_signals.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_echo.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_cd.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_pwd.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_export.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_unset.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_env.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_exit.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_handle_builtins.c \
+	$(BONUS_DIR)/ft_minishell_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/ft_msg_start_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/ft_search_file/ft_is_dot_or_dotdot_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/ft_search_file/ft_search_file_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/ft_search_file/ft_search_in_dir_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/ft_search_file/ft_search_in_subdirs_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/ft_search_file/ft_build_path_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/ft_count_args_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/ft_redir_io_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/ft_free_char_array_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/input/ft_read_input_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/input/ft_process_input_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/debug/ft_show_debug_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/prompt/ft_get_directory_path_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/prompt/ft_generate_prompt_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_cpyenv_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_getenv_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_setenv_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/redirections/ft_handle_infile_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/redirections/ft_handle_outfile_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_exec_cmd_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_get_cmd_path_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_close_unused_fds_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_finish_execution_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_execute_error_command_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_execute_pipeline_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_handle_heredoc_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_split_input_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_parse_input_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_handle_env_expansion_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_remove_quotes_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_syntax_check_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_handle_wildcards_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/signals/ft_sigint_handler_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/signals/ft_init_signals_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_echo_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_cd_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_pwd_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_export_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_unset_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_env_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_exit_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_handle_builtins_bonus.c \
 
 # Objetos para mandatory y bonus
 MAIN_OBJECT = $(MAIN_SOURCE:$(MANDATORY_DIR)/%.c=$(OBJ_MANDATORY_DIR)/%.o)

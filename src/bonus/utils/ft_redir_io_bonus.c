@@ -1,18 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_redir_io_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/03 13:18:28 by adriescr          #+#    #+#             */
+/*   Created: 2025/08/01 16:30:41 by agarcia           #+#    #+#             */
 /*   Updated: 2025/09/14 15:18:12 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_bonus.h"
+#include "../minishell_bonus.h"
 
-int	main(int argc, char **argv, char **envp)
+void	ft_redir_io(int fd, int in_or_out)
 {
-	return (ft_minishell(envp, ft_strcmp(argv[argc - 1], "debug") == 0));
+	int	target_fd;
+
+	if (in_or_out == 0)
+		target_fd = STDIN_FILENO;
+	else
+		target_fd = STDOUT_FILENO;
+	if (dup2(fd, target_fd) == -1)
+		exit(EXIT_FAILURE);
 }
