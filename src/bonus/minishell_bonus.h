@@ -18,6 +18,10 @@
 # include <dirent.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <unistd.h>
 
 /*
 ** ===================================================================
