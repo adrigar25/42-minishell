@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 12:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/14 13:10:15 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/14 23:30:55 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,11 @@ int	ft_handle_heredoc(const char *delimiter)
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
-			write(1, "heredoc> ", 9);
+			write(1, HEREDOC_PROMPT, 9);
 		line = NULL;
 		nread = getline(&line, &len, stdin);
 		if (nread == -1 || !line)
 			break ;
-		// Quitar salto de línea para comparar
 		if (nread > 0 && line[nread - 1] == '\n')
 			line[nread - 1] = '\0';
 		if (ft_strcmp(line, delimiter) == 0)
@@ -42,7 +41,7 @@ int	ft_handle_heredoc(const char *delimiter)
 			free(line);
 			break ;
 		}
-		line[nread - 1] = '\n'; // restaurar salto
+		line[nread - 1] = '\n';
 		write(pipefd[1], line, nread);
 		free(line);
 	}

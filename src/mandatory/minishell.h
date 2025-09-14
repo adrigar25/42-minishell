@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/14 17:07:50 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/15 00:34:13 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@
 # include <dirent.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <unistd.h>
 
 /*
 ** ===================================================================
@@ -55,10 +59,10 @@
 # define COLOR_MAGENTA "\033[0;35m"
 
 // Error messages
-# define ERROR_COMMAND_NOT_FOUND "minishell: %s: command not found"
+# define ERROR_COMMAND_NOT_FOUND "minishell: %s: command not found\n"
 # define ERROR_PERMISSION_DENIED "minishell: Permission denied\n"
 # define ERROR_IS_A_DIRECTORY "minishell: %s: is a directory\n"
-# define ERROR_NO_SUCH_FILE "minishell: %s: No such file or directory"
+# define ERROR_NO_SUCH_FILE "minishell: %s: No such file or directory\n"
 # define ERROR_SYNTAX "minishell: syntax error near unexpected token `newline'\n"
 # define ERROR_SYNTAX_PIPE "minishell: syntax error near unexpected token `|'\n"
 # define ERROR_SYNTAX_REDIRECT "minishell: syntax error near unexpected token `>'\n"
