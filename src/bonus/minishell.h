@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/14 14:51:08 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/14 14:58:20 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,9 @@
 # define ERROR_HEREDOC_PROCESS "Error processing heredoc\n"
 # define ERROR_HOME_NOT_SET "minishell: cd: HOME not set\n"
 # define ERROR_CD_FAIL "minishell: cd: %s: %s\n"
-# define ERROR_NUMERIC_ARG "minishell: exit: %s: numeric argument required\n"
+# define ERROR_NUM_ARG_REQ "minishell: exit: %s: numeric argument required\n"
 # define ERROR_AMBIGUOUS_REDIRECT "minishell: %s: ambiguous redirect\n"
+# define ERROR_INVALID_IDENTIFIER "minishell: export: `%s': not a valid identifier\n"
 
 // Heredoc
 # define HEREDOC_PROMPT "heredoc> "

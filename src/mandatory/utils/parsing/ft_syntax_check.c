@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:25:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/14 14:44:26 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/14 15:01:39 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,7 @@ static int	is_pipe_like(const char *s)
 
 static int	syntax_error(const char *token)
 {
-	if (!token)
-		ft_fprintf(2, ERROR_SYNTAX, "newline");
-	else
-		ft_fprintf(2, ERROR_SYNTAX, token);
+	ft_fprintf(2, ERROR_SYNTAX, token);
 	return (2);
 }
 
