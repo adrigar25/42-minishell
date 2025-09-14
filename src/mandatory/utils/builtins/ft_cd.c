@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 17:16:33 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/14 14:52:29 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/14 22:46:28 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,12 @@ int	ft_cd(char **argv, char ***envp)
 	{
 		target_dir = getenv("HOME");
 		if (!target_dir)
-		{
-			ft_fprintf(2, ERROR_HOME_NOT_SET);
-			return (1);
-		}
+			return (ft_handle_error(8, EXIT_FAILURE, NULL, NULL));
 	}
 	else
 		target_dir = argv[1];
 	if (chdir(target_dir) != 0)
-	{
-		ft_fprintf(2, ERROR_CD_FAIL, target_dir, strerror(errno));
-		return (1);
-	}
+		return (ft_handle_error(11, EXIT_FAILURE, strerror(errno), target_dir));
 	oldpwd = getenv("PWD");
 	if (getcwd(buf, sizeof(buf)))
 	{

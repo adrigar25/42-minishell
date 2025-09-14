@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:06:20 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/14 14:41:15 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/14 17:03:01 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,30 +45,24 @@ int	ft_exec_cmd(t_cmd *cmd)
 	else
 		path = get_cmd_path(cmd->argv[0]);
 	if (!path)
-	{
-		ft_fprintf(2, ERROR_COMMAND_NOT_FOUND, cmd->argv[0]);
-		return (EXIT_COMMAND_NOT_FOUND);
-	}
+		return (ft_handle_error(1, EXIT_COMMAND_NOT_FOUND, cmd->argv[0], NULL));
 	if (stat(path, &file_stat) == -1)
 	{
-		ft_fprintf(2, ERROR_NO_SUCH_FILE, cmd->argv[0]);
 		free(path);
-		return (EXIT_COMMAND_NOT_FOUND);
+		return (ft_handle_error(4, EXIT_COMMAND_NOT_FOUND, cmd->argv[0], NULL));
 	}
 	if (S_ISDIR(file_stat.st_mode))
 	{
-		ft_fprintf(2, ERROR_IS_A_DIRECTORY, cmd->argv[0]);
 		free(path);
-		return (EXIT_PERMISSION_DENIED);
+		return (ft_handle_error(3, EXIT_PERMISSION_DENIED, cmd->argv[0], NULL));
 	}
 	if (access(path, X_OK) == -1)
 	{
-		ft_fprintf(2, ERROR_PERMISSION_DENIED);
 		free(path);
-		return (EXIT_PERMISSION_DENIED);
+		return (ft_handle_error(2, EXIT_PERMISSION_DENIED, cmd->argv[0], NULL));
 	}
 	execve(path, cmd->argv, cmd->data->envp);
 	perror("minishell: execve");
 	free(path);
-	return (EXIT_GENERAL_ERROR);
+	return (EXIT_FAILURE);
 }

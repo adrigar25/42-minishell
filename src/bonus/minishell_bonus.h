@@ -60,8 +60,6 @@
 # define ERROR_IS_A_DIRECTORY "minishell: %s: is a directory\n"
 # define ERROR_NO_SUCH_FILE "minishell: %s: No such file or directory\n"
 # define ERROR_SYNTAX "minishell: syntax error near unexpected token `newline'\n"
-# define ERROR_SYNTAX_PIPE "minishell: syntax error near unexpected token `|'\n"
-# define ERROR_SYNTAX_REDIRECT "minishell: syntax error near unexpected token `>'\n"
 # define ERROR_SYNTAX_TOKEN "minishell: syntax error near unexpected token `\n"
 # define ERROR_TOO_MANY_ARGS "minishell: too many arguments\n"
 # define ERROR_HOME_NOT_SET "minishell: cd: HOME not set\n"
@@ -191,5 +189,9 @@ int					ft_is_dot_or_dotdot(const char *name);
 
 // Heredoc
 int					ft_handle_heredoc(const char *delimiter);
+
+// Error handling
+int					ft_handle_error(int error_code, int exit_code, char *msg,
+						char *msg2);
 
 #endif

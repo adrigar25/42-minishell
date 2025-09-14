@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/14 14:57:48 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/14 22:46:42 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,19 +61,11 @@ int	ft_exit(t_cmd *cmd)
 		i++;
 	}
 	if (arg_count == 1)
-	{
 		exit(0);
-	}
 	else if (arg_count > 2)
-	{
-		ft_fprintf(2, ERROR_TOO_MANY_ARGS);
-		exit(1);
-	}
+		exit(ft_handle_error(7, EXIT_FAILURE, NULL, NULL));
 	else if (!ft_is_numeric(args[1]))
-	{
-		ft_fprintf(2, ERROR_NUM_ARG_REQ, args[1]);
-		exit(255);
-	}
+		exit(ft_handle_error(14, 255, NULL, NULL));
 	else
 		exit(ft_atoi(args[1]) % 256);
 	return (0);

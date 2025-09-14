@@ -212,7 +212,6 @@ char	**ft_handle_wildcards(char **argv, t_data *data)
 			}
 			else if (ft_strcmp(argv[i - 1], "<<") == 0)
 			{
-				// HereDoc: no check, contar normalmente
 				total_args++;
 				i++;
 				continue ;
@@ -236,7 +235,6 @@ char	**ft_handle_wildcards(char **argv, t_data *data)
 	{
 		if (i > 0 && ft_strcmp(argv[i - 1], "<<") == 0)
 		{
-			// HereDoc: copiar tal cual
 			new_argv[new_argc++] = ft_strdup(argv[i]);
 			i++;
 			continue ;
@@ -244,7 +242,6 @@ char	**ft_handle_wildcards(char **argv, t_data *data)
 		if (i > 0 && (ft_strcmp(argv[i - 1], "<") == 0 || ft_strcmp(argv[i - 1],
 					">") == 0 || ft_strcmp(argv[i - 1], ">>") == 0))
 		{
-			// Esto ya se chequeó antes, copiar tal cual
 			new_argv[new_argc++] = ft_strdup(argv[i]);
 			i++;
 			continue ;

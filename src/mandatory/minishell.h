@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/14 14:57:44 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/14 17:07:50 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 
 // Exit codes
 # define EXIT_SUCCESS 0
-# define EXIT_GENERAL_ERROR 1
+# define EXIT_FAILURE 1
 # define EXIT_MISUSE 2
 # define EXIT_COMMAND_NOT_FOUND 127
 # define EXIT_PERMISSION_DENIED 126
@@ -62,7 +62,7 @@
 # define ERROR_SYNTAX "minishell: syntax error near unexpected token `newline'\n"
 # define ERROR_SYNTAX_PIPE "minishell: syntax error near unexpected token `|'\n"
 # define ERROR_SYNTAX_REDIRECT "minishell: syntax error near unexpected token `>'\n"
-# define ERROR_SYNTAX_TOKEN "minishell: syntax error near unexpected token `"
+# define ERROR_SYNTAX_TOKEN "minishell: syntax error near unexpected token `%s'\n"
 # define ERROR_TOO_MANY_ARGS "minishell: too many arguments\n"
 # define ERROR_HOME_NOT_SET "minishell: cd: HOME not set\n"
 # define ERROR_HEREDOC_DELIMITER "Error: missing delimiter for heredoc\n"
@@ -189,5 +189,9 @@ int					ft_is_dot_or_dotdot(const char *name);
 
 // Heredoc
 int					ft_handle_heredoc(const char *delimiter);
+
+// Error handling
+int					ft_handle_error(int error_code, int exit_code, char *msg,
+						char *msg2);
 
 #endif

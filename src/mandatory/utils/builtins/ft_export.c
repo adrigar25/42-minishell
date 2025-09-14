@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/14 14:43:45 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/14 22:46:45 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,7 @@ static int	ft_export_variable(const char *arg, char ***envp)
 	int		result;
 
 	if (!ft_is_valid_identifier(arg))
-	{
-		ft_fprintf(2, ERROR_INVALID_IDENTIFIER, arg);
-		return (1);
-	}
+		return (ft_handle_error(13, 1, NULL, NULL));
 	equals_pos = ft_strchr(arg, '=');
 	if (equals_pos)
 	{
@@ -96,7 +93,10 @@ static int	ft_export_variable(const char *arg, char ***envp)
 				return (1);
 		}
 		result = ft_setenv((char *)arg, "", envp);
-		return (result == 0 ? 0 : 1);
+		if (result == 0)
+			return (0);
+		else
+			return (1);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/14 15:16:59 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/14 22:57:36 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,6 +55,7 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_count_args.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_redir_io.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_free_char_array.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/error/ft_handle_error.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/input/ft_read_input.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/input/ft_process_input.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/debug/ft_show_debug.c \
@@ -100,6 +101,7 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/ft_count_args_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/ft_redir_io_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/ft_free_char_array_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/error/ft_handle_error_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/ft_read_input_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/ft_process_input_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/debug/ft_show_debug_bonus.c \
