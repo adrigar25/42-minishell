@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/13 21:08:32 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/14 14:51:08 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,22 @@
 # define COLOR_MAGENTA "\033[0;35m"
 
 // Error messages
-# define ERROR_COMMAND_NOT_FOUND "minishell: %s: command not found"
+# define ERROR_COMMAND_NOT_FOUND "minishell: %s: command not found\n"
 # define ERROR_PERMISSION_DENIED "minishell: Permission denied\n"
-# define ERROR_NO_SUCH_FILE "minishell: %s: No such file or directory"
+# define ERROR_IS_A_DIRECTORY "minishell: %s: is a directory\n"
+# define ERROR_NO_SUCH_FILE "minishell: %s: No such file or directory\n"
 # define ERROR_SYNTAX "minishell: syntax error near unexpected token `newline'\n"
 # define ERROR_SYNTAX_PIPE "minishell: syntax error near unexpected token `|'\n"
 # define ERROR_SYNTAX_REDIRECT "minishell: syntax error near unexpected token `>'\n"
-# define ERROR_SYNTAX_TOKEN "minishell: syntax error near unexpected token `"
+# define ERROR_SYNTAX_TOKEN "minishell: syntax error near unexpected token `\n"
 # define ERROR_TOO_MANY_ARGS "minishell: too many arguments\n"
 # define ERROR_HOME_NOT_SET "minishell: cd: HOME not set\n"
 # define ERROR_HEREDOC_DELIMITER "Error: missing delimiter for heredoc\n"
 # define ERROR_HEREDOC_PROCESS "Error processing heredoc\n"
+# define ERROR_HOME_NOT_SET "minishell: cd: HOME not set\n"
+# define ERROR_CD_FAIL "minishell: cd: %s: %s\n"
+# define ERROR_NUMERIC_ARG "minishell: exit: %s: numeric argument required\n"
+# define ERROR_AMBIGUOUS_REDIRECT "minishell: %s: ambiguous redirect\n"
 
 // Heredoc
 # define HEREDOC_PROMPT "heredoc> "
@@ -84,6 +89,7 @@ typedef struct s_cmd
 	char			**argv;
 	int				infd;
 	int				outfd;
+	int				op;
 	int				has_error;
 	int				index;
 	t_data			*data;

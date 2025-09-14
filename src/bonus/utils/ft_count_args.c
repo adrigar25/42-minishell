@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 14:20:19 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/12 20:07:15 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/14 00:39:15 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	skip_quotes_and_escapes(const char *cmd, int *i, int *in_quote,
 		char *quote_char)
 {
 	while (cmd[*i] && ((*in_quote) || (!ft_isspace(cmd[*i]) && cmd[*i] != '|'
-				&& cmd[*i] != '<' && cmd[*i] != '>')))
+				&& cmd[*i] != '<' && cmd[*i] != '>' && cmd[*i] != '&')))
 	{
 		if (!(*in_quote) && (cmd[*i] == '\'' || cmd[*i] == '"'))
 		{
@@ -71,10 +71,13 @@ static int	handle_operator(const char *cmd, int *i, int in_quote,
 		ft_skip_whitespace(cmd, i);
 		return (1);
 	}
-	else if (cmd[*i] == '|' && !is_escaped(cmd, *i, in_quote, quote_char))
+	else if ((cmd[*i] == '|' || cmd[*i] == '&') && !is_escaped(cmd, *i,
+			in_quote, quote_char))
 	{
-		(*i)++;
-		while (cmd[*i] == '|' && !is_escaped(cmd, *i, in_quote, quote_char))
+		if (cmd[*i + 1] == cmd[*i] && !is_escaped(cmd, *i + 1, in_quote,
+				quote_char))
+			(*i) += 2;
+		else
 			(*i)++;
 		return (1);
 	}

@@ -6,11 +6,12 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 17:16:33 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/13 11:47:59 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/14 14:52:29 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <errno.h>
 
 int	ft_cd(char **argv, char ***envp)
 {
@@ -25,7 +26,7 @@ int	ft_cd(char **argv, char ***envp)
 		target_dir = getenv("HOME");
 		if (!target_dir)
 		{
-			ft_putstr_error("cd: HOME not set\n");
+			ft_fprintf(2, ERROR_HOME_NOT_SET);
 			return (1);
 		}
 	}
@@ -33,7 +34,7 @@ int	ft_cd(char **argv, char ***envp)
 		target_dir = argv[1];
 	if (chdir(target_dir) != 0)
 	{
-		perror("cd");
+		ft_fprintf(2, ERROR_CD_FAIL, target_dir, strerror(errno));
 		return (1);
 	}
 	oldpwd = getenv("PWD");
@@ -45,7 +46,6 @@ int	ft_cd(char **argv, char ***envp)
 	}
 	else
 	{
-		perror("getcwd");
 		if (oldpwd)
 			ft_setenv("OLDPWD", oldpwd, envp);
 		ft_setenv("PWD", target_dir, envp);

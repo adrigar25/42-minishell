@@ -13,6 +13,18 @@
 
 #include "../../minishell.h"
 
+static int	is_redir_token(const char *s)
+{
+	return (ft_strcmp(s, "<") == 0 || ft_strcmp(s, ">") == 0 || ft_strcmp(s,
+			">>") == 0 || ft_strcmp(s, "<<") == 0);
+}
+
+static int	is_pipe_like_token(const char *s)
+{
+	return (ft_strcmp(s, "|") == 0 || ft_strcmp(s, "||") == 0 || ft_strcmp(s,
+			"&&") == 0 || ft_strcmp(s, "&") == 0);
+}
+
 static void	ft_add_fd_to_cmd(t_cmd *cmd, int fd, int in_or_out)
 {
 	if (!cmd)
@@ -91,6 +103,9 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 	char	*clean_arg;
 	int		pipefd[2];
 	int		cmd_index;
+	int		k;
+	int		count_nonop;
+	t_cmd	*prev_cmd;
 
 	if (!argv || data->argc == 0)
 		return (NULL);
@@ -100,30 +115,57 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 		return (NULL);
 	current_cmd = cmd_list;
 	current_cmd->data = data;
+	current_cmd->op = 0;
 	i = 0;
 	while (i < data->argc)
 	{
-		if (ft_strcmp(argv[i], "|") == 0)
+		if (is_pipe_like_token(argv[i]))
 		{
-			if (pipe(pipefd) == -1)
-			{
-				perror("pipe");
-				return (cmd_list);
-			}
-			if (current_cmd->outfd == STDOUT_FILENO)
-				current_cmd->outfd = pipefd[1];
-			else
-				close(pipefd[1]);
 			cmd_index++;
+			prev_cmd = current_cmd;
 			current_cmd->next = ft_create_cmd_node(cmd_index);
 			current_cmd = current_cmd->next;
 			current_cmd->data = data;
-			current_cmd->infd = pipefd[0];
+			if (!ft_strcmp(argv[i], "|") && ft_strlen(argv[i]) == 1)
+			{
+				if (pipe(pipefd) == -1)
+				{
+					perror("pipe");
+					return (cmd_list);
+				}
+				if (prev_cmd->outfd == STDOUT_FILENO)
+					prev_cmd->outfd = pipefd[1];
+				else
+					close(pipefd[1]);
+				current_cmd->infd = pipefd[0];
+				current_cmd->op = 1;
+			}
+			else if (!ft_strcmp(argv[i], "||"))
+				current_cmd->op = 2;
+			else if (!ft_strcmp(argv[i], "&&"))
+				current_cmd->op = 3;
 		}
 		else if ((ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i], ">") == 0
 				|| ft_strcmp(argv[i], ">>") == 0 || ft_strcmp(argv[i],
 					"<<") == 0) && current_cmd->has_error == 0)
 		{
+			k = i + 1;
+			count_nonop = 0;
+			while (k < data->argc && !is_pipe_like_token(argv[k])
+				&& !is_redir_token(argv[k]))
+			{
+				count_nonop++;
+				k++;
+			}
+			if (count_nonop > 1)
+			{
+				ft_fprintf(2, ERROR_AMBIGUOUS_REDIRECT, argv[i + 1]);
+				data->last_exit_status = 1;
+				current_cmd->has_error = 1;
+				i = k - 1;
+				i++;
+				continue ;
+			}
 			clean_arg = ft_remove_quotes(argv[i + 1]);
 			if (!clean_arg)
 				clean_arg = argv[i + 1];
@@ -133,7 +175,7 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 				fd = ft_handle_outfile(clean_arg, 0);
 			else if (ft_strcmp(argv[i], ">>") == 0)
 				fd = ft_handle_outfile(clean_arg, 1);
-			else // heredoc
+			else
 				fd = ft_handle_heredoc(clean_arg);
 			if (fd != -1)
 			{

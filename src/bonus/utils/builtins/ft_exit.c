@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/12 20:07:05 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/14 14:50:04 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,12 @@ int	ft_exit(t_cmd *cmd)
 	}
 	else if (arg_count > 2)
 	{
-		ft_putstr_error("minishell: exit: too many arguments");
+		ft_fprintf(2, ERROR_TOO_MANY_ARGS);
 		exit(1);
 	}
 	else if (!ft_is_numeric(args[1]))
 	{
-		ft_putstr_error("minishell: exit: ");
-		ft_putstr_error(args[1]);
-		ft_putstr_error(": numeric argument required");
+		ft_fprintf(2, ERROR_NUMERIC_ARG, args[1]);
 		exit(255);
 	}
 	else

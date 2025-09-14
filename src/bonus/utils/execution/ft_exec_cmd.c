@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:06:20 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/13 20:14:36 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/14 14:42:26 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,12 @@ int	ft_exec_cmd(t_cmd *cmd)
 	int			i;
 	int			j;
 
-	if (!cmd || !cmd->argv || !cmd->argv[0])
+	if (!cmd)
 		return (1);
+	/* If there's no argv (redirection-only command),
+		treat as successful no-op */
+	if (!cmd->argv)
+		return (0);
 	i = 0;
 	j = 0;
 	while (cmd->argv[i])
@@ -44,34 +48,24 @@ int	ft_exec_cmd(t_cmd *cmd)
 		path = get_cmd_path(cmd->argv[0]);
 	if (!path)
 	{
-		error_msg = ft_strjoin("\033minishell: ", cmd->argv[0]);
-		error_msg = ft_strjoin(error_msg, ": command not found\033\n");
-		ft_putstr_error(error_msg);
-		free(error_msg);
+		ft_fprintf(2, ERROR_COMMAND_NOT_FOUND, cmd->argv[0]);
 		return (EXIT_COMMAND_NOT_FOUND);
 	}
 	if (stat(path, &file_stat) == -1)
 	{
-		error_msg = ft_strjoin("\033[31mminishell: ", cmd->argv[0]);
-		error_msg = ft_strjoin(error_msg,
-				": No such file or directory\033[0m\n");
-		ft_putstr_error(error_msg);
-		free(error_msg);
+		ft_fprintf(2, ERROR_NO_SUCH_FILE, cmd->argv[0]);
 		free(path);
 		return (EXIT_COMMAND_NOT_FOUND);
 	}
 	if (S_ISDIR(file_stat.st_mode))
 	{
-		error_msg = ft_strjoin("\033minishell: ", cmd->argv[0]);
-		error_msg = ft_strjoin(error_msg, ": is a directory\033\n");
-		ft_putstr_error(error_msg);
-		free(error_msg);
+		ft_fprintf(2, ERROR_IS_A_DIRECTORY, cmd->argv[0]);
 		free(path);
 		return (EXIT_PERMISSION_DENIED);
 	}
 	if (access(path, X_OK) == -1)
 	{
-		ft_putstr_error(ERROR_PERMISSION_DENIED);
+		ft_fprintf(2, ERROR_PERMISSION_DENIED, cmd->argv[0]);
 		free(path);
 		return (EXIT_PERMISSION_DENIED);
 	}

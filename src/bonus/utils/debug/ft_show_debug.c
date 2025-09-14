@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/12 20:14:23 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/14 12:12:21 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static void	ft_show_cmd_list(t_cmd *cmd_list)
 		ft_show_argv("  argv", "argv", curr->argv, arg_count);
 		printf("  fd_in: %d, fd_out: %d\n", curr->infd, curr->outfd);
 		printf("  has_error: %d\n", curr->has_error);
+		printf("  op: %d\n", curr->op);
 		curr = curr->next;
 		if (curr)
 			printf("  |\n  v\n");

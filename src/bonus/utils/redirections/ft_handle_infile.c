@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/05 19:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/13 20:00:23 by agarcia          ###   ########.fr       */
+/*   Created: 2025/09/14 14:34:15 by agarcia           #+#    #+#             */
+/*   Updated: 2025/09/14 14:52:02 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,14 @@
 
 int	ft_handle_infile(char *filename)
 {
-	int		fd;
-	char	*error_msg;
+	int	fd;
 
 	if (!filename)
 		return (-1);
 	fd = ft_open_file_read(filename);
 	if (fd == -1)
 	{
-		error_msg = ft_strjoin(ft_strjoin("\033mminishell: ", filename),
-				": No such file or directory\033\n");
-		ft_putstr_error(error_msg);
-		free(error_msg);
+		ft_fprintf(2, ERROR_NO_SUCH_FILE, filename);
 		return (-1);
 	}
 	return (fd);

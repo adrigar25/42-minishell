@@ -1,32 +1,12 @@
 /* ************************************************************************** */
-/*    		if ((input[i] == '<' || input[i] == '>') && input[i + 1] == input[i]
-			&& !is_in_quotes(input, i) && !is_escaped(input, i, in_quote,
-				quote_char))
-		{
-			args[arg_idx++] = ft_substr((char *)input, i, 2);
-			i += 2;
-			ft_skip_whitespace(input, &i);
-		}
-		else if ((input[i] == '<' || input[i] == '>') && !is_in_quotes(input, i)
-			&& !is_escaped(input, i, in_quote, quote_char))
-		{
-			args[arg_idx++] = ft_substr((char *)input, i, 1);
-			i++;
-			ft_skip_whitespace(input, &i);
-		}
-		else if (input[i] == '|' && !is_in_quotes(input, i)
-						&& !is_escaped(input, i, in_quote,
-							quote_char))       			if (i > start)
-				args[arg_idx++] = ft_substr((char *)input, start, i
-						- start);                                            */
+/*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_parse_input.c                                   :+:      :+:    :+:   */
+/*   ft_split_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>             +#+  +:+
-	+#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/05 13:58:32 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/05 17:05:09 by agarcia          ###   ########.fr       */
+/*   Created: 2025/09/14 13:27:22 by agarcia           #+#    #+#             */
+/*   Updated: 2025/09/14 13:33:51 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +57,7 @@ static int	is_escaped(const char *input, int pos, int in_quote,
 
 static int	is_operator_char(char c)
 {
-	return (c == '<' || c == '>' || c == '|');
+	return (c == '<' || c == '>' || c == '|' || c == '&');
 }
 
 char	**ft_split_input(const char *input, int argc)
@@ -116,11 +96,19 @@ char	**ft_split_input(const char *input, int argc)
 			i++;
 			ft_skip_whitespace(input, &i);
 		}
-		else if (input[i] == '|' && !in_quote && !is_escaped(input, i, in_quote,
-				quote_char))
+		else if ((input[i] == '|' || input[i] == '&') && !in_quote
+			&& !is_escaped(input, i, in_quote, quote_char))
 		{
-			args[arg_idx++] = ft_substr((char *)input, i, 1);
-			i++;
+			if (input[i + 1] == input[i])
+			{
+				args[arg_idx++] = ft_substr((char *)input, i, 2);
+				i += 2;
+			}
+			else
+			{
+				args[arg_idx++] = ft_substr((char *)input, i, 1);
+				i++;
+			}
 			while (input[i] && (input[i] == ' ' || input[i] == '\t'))
 				i++;
 		}

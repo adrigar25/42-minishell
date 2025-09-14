@@ -91,6 +91,7 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 	char	*clean_arg;
 	int		pipefd[2];
 	int		cmd_index;
+	t_cmd	*prev_cmd;
 
 	if (!argv || data->argc == 0)
 		return (NULL);
@@ -110,15 +111,17 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 				perror("pipe");
 				return (cmd_list);
 			}
+			prev_cmd = current_cmd;
+			cmd_index++;
+			prev_cmd->next = ft_create_cmd_node(cmd_index);
+			prev_cmd = prev_cmd->next;
+			prev_cmd->data = data;
 			if (current_cmd->outfd == STDOUT_FILENO)
 				current_cmd->outfd = pipefd[1];
 			else
 				close(pipefd[1]);
-			cmd_index++;
-			current_cmd->next = ft_create_cmd_node(cmd_index);
-			current_cmd = current_cmd->next;
-			current_cmd->data = data;
-			current_cmd->infd = pipefd[0];
+			prev_cmd->infd = pipefd[0];
+			current_cmd = prev_cmd;
 		}
 		else if ((ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i], ">") == 0
 				|| ft_strcmp(argv[i], ">>") == 0 || ft_strcmp(argv[i],

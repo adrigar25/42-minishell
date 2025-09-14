@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/13 20:36:30 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/14 14:50:32 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@
 // Error messages
 # define ERROR_COMMAND_NOT_FOUND "minishell: %s: command not found"
 # define ERROR_PERMISSION_DENIED "minishell: Permission denied\n"
+# define ERROR_IS_A_DIRECTORY "minishell: %s: is a directory\n"
 # define ERROR_NO_SUCH_FILE "minishell: %s: No such file or directory"
 # define ERROR_SYNTAX "minishell: syntax error near unexpected token `newline'\n"
 # define ERROR_SYNTAX_PIPE "minishell: syntax error near unexpected token `|'\n"
@@ -66,6 +67,9 @@
 # define ERROR_HOME_NOT_SET "minishell: cd: HOME not set\n"
 # define ERROR_HEREDOC_DELIMITER "Error: missing delimiter for heredoc\n"
 # define ERROR_HEREDOC_PROCESS "Error processing heredoc\n"
+# define ERROR_HOME_NOT_SET "minishell: cd: HOME not set\n"
+# define ERROR_CD_FAIL "minishell: cd: %s: %s\n"
+# define ERROR_AMBIGUOUS_REDIRECT "minishell: %s: ambiguous redirect
 
 // Heredoc
 # define HEREDOC_PROMPT "heredoc> "

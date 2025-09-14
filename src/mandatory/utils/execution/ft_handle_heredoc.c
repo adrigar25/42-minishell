@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 12:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/13 12:42:53 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/14 13:10:15 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int	ft_handle_heredoc(const char *delimiter)
 		return (-1);
 	while (1)
 	{
-		write(1, "heredoc> ", 9);
+		if (isatty(STDIN_FILENO))
+			write(1, "heredoc> ", 9);
 		line = NULL;
 		nread = getline(&line, &len, stdin);
 		if (nread == -1 || !line)

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/12 20:09:59 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/14 14:52:11 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,7 @@ static int	ft_export_variable(const char *arg, char ***envp)
 
 	if (!ft_is_valid_identifier(arg))
 	{
-		ft_putstr_error("minishell: export: `");
-		ft_putstr_error(arg);
-		ft_putstr_error("': not a valid identifier");
+		ft_fprintf(2, ERROR_INVALID_IDENTIFIER, arg);
 		return (1);
 	}
 	equals_pos = ft_strchr(arg, '=');

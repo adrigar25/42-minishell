@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 17:16:33 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/13 11:47:59 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/14 14:49:23 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ft_cd(char **argv, char ***envp)
 		target_dir = getenv("HOME");
 		if (!target_dir)
 		{
-			ft_putstr_error("cd: HOME not set\n");
+			ft_fprintf(2, ERROR_HOME_NOT_SET);
 			return (1);
 		}
 	}

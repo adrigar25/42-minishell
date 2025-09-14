@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/12 20:09:59 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/14 14:43:45 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ static void	ft_print_exported_vars(char **envp)
 		if (envp[i][j] == '=')
 		{
 			value = ft_substr(envp[i], j + 1, ft_strlen(envp[i]) - j - 1);
-			printf("declare -x %s=\"%s\"\n", name, value);
+			ft_fprintf(1, "declare -x %s=\"%s\"\n", name, value);
 			free(value);
 		}
 		else
-			printf("declare -x %s\n", name);
+			ft_fprintf(1, "declare -x %s\n", name);
 		free(name);
 		i++;
 	}
@@ -69,9 +69,7 @@ static int	ft_export_variable(const char *arg, char ***envp)
 
 	if (!ft_is_valid_identifier(arg))
 	{
-		ft_putstr_error("minishell: export: `");
-		ft_putstr_error(arg);
-		ft_putstr_error("': not a valid identifier");
+		ft_fprintf(2, ERROR_INVALID_IDENTIFIER, arg);
 		return (1);
 	}
 	equals_pos = ft_strchr(arg, '=');

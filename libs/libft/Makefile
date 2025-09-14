@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:25:07 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/10 12:00:45 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/14 14:25:04 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ FILE_UTILS = \
 	$(FILES_DIR)/ft_open_file_write.c \
 	$(FILES_DIR)/ft_print_file.c \
 	$(FILES_DIR)/ft_close_file.c \
+	$(FILES_DIR)/ft_fprintf.c \
 	$(FILES_DIR)/ft_putstr_fd.c \
 	$(FILES_DIR)/ft_putchar_fd.c \
 

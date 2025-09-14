@@ -3,10 +3,11 @@
 /*                                                        :::      ::::::::   */
 /*   ft_handle_wildcards.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>             +#+  +:+
+	+#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 20:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/13 20:22:41 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/14 14:16:42 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +113,8 @@ static int	ft_count_matches(const char *pattern)
  * @param max_matches: Maximum number of matches to store
  * @return: Number of matches found
  */
-static int	ft_expand_wildcard(const char *pattern, char **matches, int max_matches)
+static int	ft_expand_wildcard(const char *pattern, char **matches,
+		int max_matches)
 {
 	DIR				*dir;
 	struct dirent	*entry;
@@ -188,32 +190,65 @@ char	**ft_handle_wildcards(char **argv, t_data *data)
 
 	if (!argv || !data)
 		return (argv);
-	// Count total arguments needed after expansion
+	// Contar total de argumentos después de expansión
 	total_args = 0;
 	i = 0;
 	while (argv[i])
 	{
+		if (i > 0)
+		{
+			if (ft_strcmp(argv[i - 1], "<") == 0 || ft_strcmp(argv[i - 1],
+					">") == 0 || ft_strcmp(argv[i - 1], ">>") == 0)
+			{
+				if (ft_has_wildcards(argv[i]))
+				{
+					ft_fprintf(2, ERROR_AMBIGUOUS_REDIRECT, argv[i]);
+					data->argc = 0;
+					return (NULL);
+				}
+				total_args++;
+				i++;
+				continue ;
+			}
+			else if (ft_strcmp(argv[i - 1], "<<") == 0)
+			{
+				// HereDoc: no check, contar normalmente
+				total_args++;
+				i++;
+				continue ;
+			}
+		}
 		if (ft_has_wildcards(argv[i]))
 		{
 			matches = ft_count_matches(argv[i]);
-			if (matches > 0)
-				total_args += matches;
-			else
-				total_args++; // Keep original if no matches
+			total_args += (matches > 0) ? matches : 1;
 		}
 		else
 			total_args++;
 		i++;
 	}
-	// Allocate new array
 	new_argv = malloc(sizeof(char *) * (total_args + 1));
 	if (!new_argv)
 		return (argv);
-	// Expand wildcards
 	new_argc = 0;
 	i = 0;
 	while (argv[i])
 	{
+		if (i > 0 && ft_strcmp(argv[i - 1], "<<") == 0)
+		{
+			// HereDoc: copiar tal cual
+			new_argv[new_argc++] = ft_strdup(argv[i]);
+			i++;
+			continue ;
+		}
+		if (i > 0 && (ft_strcmp(argv[i - 1], "<") == 0 || ft_strcmp(argv[i - 1],
+					">") == 0 || ft_strcmp(argv[i - 1], ">>") == 0))
+		{
+			// Esto ya se chequeó antes, copiar tal cual
+			new_argv[new_argc++] = ft_strdup(argv[i]);
+			i++;
+			continue ;
+		}
 		if (ft_has_wildcards(argv[i]))
 		{
 			matches = ft_count_matches(argv[i]);
@@ -227,42 +262,18 @@ char	**ft_handle_wildcards(char **argv, t_data *data)
 				}
 				matches = ft_expand_wildcard(argv[i], temp_matches, matches);
 				ft_sort_strings(temp_matches, matches);
-				j = 0;
-				while (j < matches)
-				{
-					new_argv[new_argc] = temp_matches[j];
-					new_argc++;
-					j++;
-				}
+				for (j = 0; j < matches; j++)
+					new_argv[new_argc++] = temp_matches[j];
 				free(temp_matches);
 			}
 			else
-			{
-				// No matches found, keep original
-				new_argv[new_argc] = ft_strdup(argv[i]);
-				if (!new_argv[new_argc])
-				{
-					ft_free_char_array_size(new_argv, new_argc);
-					return (argv);
-				}
-				new_argc++;
-			}
+				new_argv[new_argc++] = ft_strdup(argv[i]);
 		}
 		else
-		{
-			// No wildcards, copy as is
-			new_argv[new_argc] = ft_strdup(argv[i]);
-			if (!new_argv[new_argc])
-			{
-				ft_free_char_array_size(new_argv, new_argc);
-				return (argv);
-			}
-			new_argc++;
-		}
+			new_argv[new_argc++] = ft_strdup(argv[i]);
 		i++;
 	}
 	new_argv[new_argc] = NULL;
-	// Update data->argc with new count
 	data->argc = new_argc;
 	return (new_argv);
 }

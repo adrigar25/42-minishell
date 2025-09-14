@@ -21,10 +21,22 @@ int	ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data)
 	int		builtin_result;
 	t_cmd	*temp;
 	int		exit_status;
+	int		last_cmd_status;
 
+	last_cmd_status = 0;
 	current = cmd_list;
 	while (current)
 	{
+		if (current->op == 2 && last_cmd_status == 0)
+		{
+			current = current->next;
+			continue ;
+		}
+		else if (current->op == 3 && last_cmd_status != 0)
+		{
+			current = current->next;
+			continue ;
+		}
 		if (current->has_error == 1)
 		{
 			if (current->outfd != STDOUT_FILENO)
@@ -72,13 +84,17 @@ int	ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data)
 				if (builtin_result != -1)
 				{
 					(*data)->last_exit_status = builtin_result;
+					last_cmd_status = builtin_result;
 					exit(cmd_list->data->last_exit_status);
 				}
 				cmd_list->data->last_exit_status = ft_exec_cmd(current);
+				last_cmd_status = cmd_list->data->last_exit_status;
 				exit(cmd_list->data->last_exit_status);
 			}
 			else if (pid > 0)
+			{
 				pids[current->index] = pid;
+			}
 			else
 			{
 				perror("fork");
