@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/14 15:18:12 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/15 20:57:15 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,7 @@ int	ft_pwd(t_cmd cmd)
 		ft_strcpy(output, cwd);
 		output[len] = '\n';
 		output[len + 1] = '\0';
-
 		write(cmd.outfd, output, len + 1);
-
 		free(output);
 		return (0);
 	}

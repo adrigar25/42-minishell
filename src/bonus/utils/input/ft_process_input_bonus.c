@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/14 15:18:12 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/15 19:11:35 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,20 @@ int	ft_process_input(char *input, t_data *data, t_cmd **cmd_list, int debug)
 
 	data->argc = ft_count_args(input);
 	argv = ft_split_input(input, data->argc);
+	// for (int i = 0; argv && argv[i]; i++)
+	// 	printf("argv[%d]: %s\n", i, argv[i]);
 	free(input);
 	if (ft_handle_syntax(argv, data))
 		return (0);
 	expanded_argv = ft_handle_env_expansion(argv, data);
 	wildcard_argv = ft_handle_wildcards(expanded_argv, data);
+	if (!wildcard_argv)
+	{
+		data->last_exit_status = 1;
+		if (!data->isatty)
+			exit(1);
+		return (0);
+	}
 	*cmd_list = ft_parse_input(wildcard_argv, data);
 	if (debug && *cmd_list)
 		ft_show_debug(argv, data->argc, wildcard_argv, *cmd_list);

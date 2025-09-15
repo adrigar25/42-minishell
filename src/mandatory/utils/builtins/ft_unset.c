@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/14 14:36:02 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/15 20:38:14 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	ft_unset(char **args, char ***envp)
 		j = 0;
 		while ((*envp)[j])
 		{
-			printf("%c", args[i][ft_strlen(args[i]) - 1]);
 			if (args[i][ft_strlen(args[i]) - 1] == '='
 				|| args[i][ft_strlen(args[i]) - 1] == '-')
 			{

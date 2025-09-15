@@ -6,25 +6,28 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 14:29:30 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/14 14:30:25 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/15 20:30:45 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 #include <stdarg.h>
+#include <string.h>
 #include <unistd.h>
 
-static void	putnbr_fd(long n, int fd)
+static int	putnbr_fd(long n, int fd)
 {
 	char	buf[32];
 	int		i;
+	int		count;
 
 	i = 0;
+	count = 0;
 	if (n == 0)
-		return ((void)write(fd, "0", 1));
+		return (write(fd, "0", 1));
 	if (n < 0)
 	{
-		write(fd, "-", 1);
+		count += write(fd, "-", 1);
 		n = -n;
 	}
 	while (n > 0)
@@ -33,36 +36,38 @@ static void	putnbr_fd(long n, int fd)
 		n /= 10;
 	}
 	while (i-- > 0)
-		write(fd, &buf[i], 1);
+		count += write(fd, &buf[i], 1);
+	return (count);
 }
 
 static int	print_int(int fd, int v)
 {
-	putnbr_fd(v, fd);
-	if (v == 0)
-		return (1);
-	else
-		return (0);
+	return (putnbr_fd((long)v, fd));
 }
 
 static int	print_uint(int fd, unsigned int v)
 {
-	putnbr_fd((long)v, fd);
-	if (v == 0)
-		return (1);
-	return (0);
+	return (putnbr_fd((long)v, fd));
 }
 
-static int	handle_format(int fd, char spec, va_list ap)
+static int	handle_format(int fd, char spec, va_list *ap)
 {
+	char	*str;
+
 	if (spec == 's')
-		return (ft_putstr_fd(va_arg(ap, char *), fd));
+	{
+		str = va_arg(*ap, char *);
+		if (!str)
+			str = "(null)";
+		ft_putstr_fd(str, fd);
+		return ((int)strlen(str));
+	}
 	else if (spec == 'd' || spec == 'i')
-		return (print_int(fd, va_arg(ap, int)));
+		return (print_int(fd, va_arg(*ap, int)));
 	else if (spec == 'u')
-		return (print_uint(fd, va_arg(ap, unsigned int)));
+		return (print_uint(fd, va_arg(*ap, unsigned int)));
 	else if (spec == 'c')
-		return (write(fd, &(char){va_arg(ap, int)}, 1));
+		return (write(fd, &(char){va_arg(*ap, int)}, 1));
 	else if (spec == '%')
 		return (write(fd, "%", 1));
 	else
@@ -81,7 +86,7 @@ int	ft_fprintf(int fd, const char *fmt, ...)
 	{
 		if (*p == '%' && *(p + 1))
 		{
-			written += handle_format(fd, *(++p), ap);
+			written += handle_format(fd, *(++p), &ap);
 			p++;
 		}
 		else

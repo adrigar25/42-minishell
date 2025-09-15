@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/14 22:46:45 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/15 20:55:52 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,15 +84,7 @@ static int	ft_export_variable(const char *arg, char ***envp)
 	}
 	else
 	{
-		if (!ft_getenv(arg, *envp))
-		{
-			result = ft_setenv((char *)arg, "", envp);
-			if (result == 0)
-				return (0);
-			else
-				return (1);
-		}
-		result = ft_setenv((char *)arg, "", envp);
+		result = ft_setenv((char *)arg, NULL, envp);
 		if (result == 0)
 			return (0);
 		else

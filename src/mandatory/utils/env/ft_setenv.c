@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 17:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/12 20:07:42 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/15 20:55:52 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,23 +56,32 @@ int	ft_setenv(char *name, char *value, char ***envp)
 	char	**new_envp;
 	int		envp_size;
 
-	if (!name || !value || !envp || !*envp)
+	if (!name || !envp || !*envp)
 		return (-1);
 	name_len = ft_strlen(name);
 	i = 0;
 	while ((*envp)[i])
 	{
 		if (ft_strncmp((*envp)[i], name, name_len) == 0
-			&& (*envp)[i][name_len] == '=')
+			&& ((*envp)[i][name_len] == '=' || (*envp)[i][name_len] == '\0'))
 		{
-			temp = ft_strjoin(name, "=");
-			if (!temp)
-				return (-1);
-			new_var = ft_strjoin(temp, value);
-			free(temp);
-			if (!new_var)
-				return (-1);
 			free((*envp)[i]);
+			if (value)
+			{
+				temp = ft_strjoin(name, "=");
+				if (!temp)
+					return (-1);
+				new_var = ft_strjoin(temp, value);
+				free(temp);
+				if (!new_var)
+					return (-1);
+			}
+			else
+			{
+				new_var = ft_strdup(name);
+				if (!new_var)
+					return (-1);
+			}
 			(*envp)[i] = new_var;
 			return (0);
 		}
@@ -82,24 +91,39 @@ int	ft_setenv(char *name, char *value, char ***envp)
 	new_envp = ft_realloc_envp(*envp, envp_size + 1);
 	if (!new_envp)
 		return (-1);
-	temp = ft_strjoin(name, "=");
-	if (!temp)
+	if (value)
 	{
-		i = 0;
-		while (new_envp[i])
-			free(new_envp[i++]);
-		free(new_envp);
-		return (-1);
+		temp = ft_strjoin(name, "=");
+		if (!temp)
+		{
+			i = 0;
+			while (new_envp[i])
+				free(new_envp[i++]);
+			free(new_envp);
+			return (-1);
+		}
+		new_var = ft_strjoin(temp, value);
+		free(temp);
+		if (!new_var)
+		{
+			i = 0;
+			while (new_envp[i])
+				free(new_envp[i++]);
+			free(new_envp);
+			return (-1);
+		}
 	}
-	new_var = ft_strjoin(temp, value);
-	free(temp);
-	if (!new_var)
+	else
 	{
-		i = 0;
-		while (new_envp[i])
-			free(new_envp[i++]);
-		free(new_envp);
-		return (-1);
+		new_var = ft_strdup(name);
+		if (!new_var)
+		{
+			i = 0;
+			while (new_envp[i])
+				free(new_envp[i++]);
+			free(new_envp);
+			return (-1);
+		}
 	}
 	new_envp[envp_size] = new_var;
 	new_envp[envp_size + 1] = NULL;

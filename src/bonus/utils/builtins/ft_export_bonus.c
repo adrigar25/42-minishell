@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/14 22:51:11 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/15 20:57:06 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ static void	ft_print_exported_vars(char **envp)
 		if (envp[i][j] == '=')
 		{
 			value = ft_substr(envp[i], j + 1, ft_strlen(envp[i]) - j - 1);
-			printf("declare -x %s=\"%s\"\n", name, value);
+			ft_fprintf(1, "declare -x %s=\"%s\"\n", name, value);
 			free(value);
 		}
 		else
-			printf("declare -x %s\n", name);
+			ft_fprintf(1, "declare -x %s\n", name);
 		free(name);
 		i++;
 	}
@@ -68,7 +68,7 @@ static int	ft_export_variable(const char *arg, char ***envp)
 	int		result;
 
 	if (!ft_is_valid_identifier(arg))
-		return (ft_handle_error(13, EXIT_FAILURE, (char *)arg, NULL));
+		return (ft_handle_error(13, 1, NULL, NULL));
 	equals_pos = ft_strchr(arg, '=');
 	if (equals_pos)
 	{
@@ -84,16 +84,11 @@ static int	ft_export_variable(const char *arg, char ***envp)
 	}
 	else
 	{
-		if (!ft_getenv(arg, *envp))
-		{
-			result = ft_setenv((char *)arg, "", envp);
-			if (result == 0)
-				return (0);
-			else
-				return (1);
-		}
-		result = ft_setenv((char *)arg, "", envp);
-		return (result == 0 ? 0 : 1);
+		result = ft_setenv((char *)arg, NULL, envp);
+		if (result == 0)
+			return (0);
+		else
+			return (1);
 	}
 	return (0);
 }

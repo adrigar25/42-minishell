@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/14 22:52:01 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/15 20:57:20 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,15 @@ int	ft_unset(char **args, char ***envp)
 		j = 0;
 		while ((*envp)[j])
 		{
-			printf("%c", args[i][ft_strlen(args[i]) - 1]);
 			if (args[i][ft_strlen(args[i]) - 1] == '='
 				|| args[i][ft_strlen(args[i]) - 1] == '-')
-				return (ft_handle_error(13, EXIT_FAILURE, args[i], NULL));
+			{
+				ft_fprintf(2,
+					"minishell: unset: `%s': not a valid identifier\n",
+					args[i]);
+				return (1);
+				break ;
+			}
 			if (!ft_strncmp((*envp)[j], tmp, ft_strlen(tmp))
 				&& (*envp)[j][ft_strlen(tmp)] == '=')
 			{

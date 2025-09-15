@@ -20,7 +20,6 @@ int	ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data)
 	pid_t	pid;
 	int		builtin_result;
 	t_cmd	*temp;
-	int		exit_status;
 
 	current = cmd_list;
 	while (current)
