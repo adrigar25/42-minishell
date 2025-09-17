@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 17:16:33 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/15 20:31:08 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/16 21:06:14 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	ft_cd(char **argv, char ***envp)
 {
-	char	buf[PATH_MAX];
+	char	buf[4096];
 	char	*oldpwd;
 	char	*target_dir;
 

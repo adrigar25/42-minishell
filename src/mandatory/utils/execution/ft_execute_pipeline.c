@@ -12,7 +12,56 @@
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <string.h>
 #include <unistd.h>
+
+static void	ft_setup_child_io(t_cmd *current, t_cmd *cmd_list)
+{
+	t_cmd	*temp;
+
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGPIPE, SIG_DFL);
+	if (current->infd != STDIN_FILENO)
+		dup2(current->infd, STDIN_FILENO);
+	if (current->outfd != STDOUT_FILENO)
+		dup2(current->outfd, STDOUT_FILENO);
+	temp = cmd_list;
+	while (temp)
+	{
+		if (temp != current)
+		{
+			if (temp->infd != STDIN_FILENO && temp->infd != current->infd
+				&& temp->infd != current->outfd)
+				close(temp->infd);
+			if (temp->outfd != STDOUT_FILENO && temp->outfd != current->infd
+				&& temp->outfd != current->outfd)
+				close(temp->outfd);
+		}
+		else
+		{
+			if (temp->infd != STDIN_FILENO && temp->infd != current->infd)
+				close(temp->infd);
+			if (temp->outfd != STDOUT_FILENO && temp->outfd != current->outfd)
+				close(temp->outfd);
+		}
+		temp = temp->next;
+	}
+}
+
+static int	ft_is_builtin(t_cmd *current)
+{
+	char	*cmd;
+
+	if (!current || !current->argv || !current->argv[0])
+		return (0);
+	cmd = current->argv[0];
+	if (strcmp(cmd, "echo") == 0 || strcmp(cmd, "cd") == 0 || strcmp(cmd,
+			"pwd") == 0 || strcmp(cmd, "export") == 0 || strcmp(cmd,
+			"unset") == 0 || strcmp(cmd, "exit") == 0)
+		return (1);
+	return (0);
+}
 
 int	ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data)
 {
@@ -32,6 +81,31 @@ int	ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data)
 		}
 		else
 		{
+			if (ft_is_builtin(current))
+			{
+				if (current->infd != STDIN_FILENO
+					|| current->outfd != STDOUT_FILENO)
+				{
+					pid = fork();
+					if (pid == 0)
+					{
+						ft_setup_child_io(current, cmd_list);
+						exit(ft_handle_builtins(current, data));
+					}
+					else if (pid > 0)
+						pids[current->index] = pid;
+					else
+					{
+						perror("fork");
+						return (-1);
+					}
+				}
+				else
+					(*data)->last_exit_status = ft_handle_builtins(current,
+							data);
+				current = current->next;
+				continue ;
+			}
 			pid = fork();
 			if (pid == 0)
 			{
@@ -66,12 +140,6 @@ int	ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data)
 							close(temp->outfd);
 					}
 					temp = temp->next;
-				}
-				builtin_result = ft_handle_builtins(current, data);
-				if (builtin_result != -1)
-				{
-					(*data)->last_exit_status = builtin_result;
-					exit(cmd_list->data->last_exit_status);
 				}
 				cmd_list->data->last_exit_status = ft_exec_cmd(current);
 				exit(cmd_list->data->last_exit_status);
