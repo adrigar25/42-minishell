@@ -14,19 +14,32 @@
 #include "../../minishell_bonus.h"
 #include <unistd.h>
 
+int	ft_is_builtin(t_cmd *current)
+{
+	char	*cmd;
+
+	if (!current || !current->argv || !current->argv[0])
+		return (0);
+	cmd = current->argv[0];
+	if (ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "cd") == 0
+		|| ft_strcmp(cmd, "pwd") == 0 || ft_strcmp(cmd, "export") == 0
+		|| ft_strcmp(cmd, "unset") == 0 || ft_strcmp(cmd, "exit") == 0)
+		return (1);
+	return (0);
+}
+
 int	ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data)
 {
 	t_cmd	*current;
 	pid_t	pid;
-	int		builtin_result;
 	t_cmd	*temp;
-	int		exit_status;
 	int		last_cmd_status;
 
 	last_cmd_status = 0;
 	current = cmd_list;
 	while (current)
 	{
+		// Control de operadores && y ||
 		if (current->op == 2 && last_cmd_status == 0)
 		{
 			current = current->next;
@@ -45,77 +58,13 @@ int	ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data)
 		}
 		else
 		{
-			builtin_result = ft_handle_builtins(current, data);
-			if (builtin_result != -1)
+			if (ft_is_builtin(current))
 			{
-				// If builtin is in a pipeline, execute in child process
-				if (current->infd != STDIN_FILENO || current->outfd != STDOUT_FILENO)
-				{
-					// For builtins that modify environment, don't execute in pipe
-					if (ft_strcmp(current->argv[0], "export") == 0 ||
-						ft_strcmp(current->argv[0], "unset") == 0 ||
-						ft_strcmp(current->argv[0], "cd") == 0)
-					{
-						last_cmd_status = 1;
-						(*data)->last_exit_status = 1;
-						current = current->next;
-						continue;
-					}
-					pid = fork();
-					if (pid == 0)
-					{
-						signal(SIGINT, SIG_DFL);
-						signal(SIGQUIT, SIG_DFL);
-						signal(SIGPIPE, SIG_DFL);
-						if (current->infd != STDIN_FILENO)
-							dup2(current->infd, STDIN_FILENO);
-						if (current->outfd != STDOUT_FILENO)
-							dup2(current->outfd, STDOUT_FILENO);
-						temp = cmd_list;
-						while (temp)
-						{
-							if (temp != current)
-							{
-								if (temp->infd != STDIN_FILENO
-									&& temp->infd != current->infd
-									&& temp->infd != current->outfd)
-									close(temp->infd);
-								if (temp->outfd != STDOUT_FILENO
-									&& temp->outfd != current->infd
-									&& temp->outfd != current->outfd)
-									close(temp->outfd);
-							}
-							else
-							{
-								if (temp->infd != STDIN_FILENO
-									&& temp->infd != current->infd)
-									close(temp->infd);
-								if (temp->outfd != STDOUT_FILENO
-									&& temp->outfd != current->outfd)
-									close(temp->outfd);
-							}
-							temp = temp->next;
-						}
-						exit(builtin_result);
-					}
-					else if (pid > 0)
-					{
-						pids[current->index] = pid;
-					}
-					else
-					{
-						perror("fork");
-						return (-1);
-					}
-				}
-				else
-				{
-					// Builtin not in pipeline, execute in parent
-					last_cmd_status = builtin_result;
-					(*data)->last_exit_status = builtin_result;
-				}
+				last_cmd_status = ft_handle_builtins(current, data, cmd_list,
+						pids);
+				(*data)->last_exit_status = last_cmd_status;
 				current = current->next;
-				continue;
+				continue ;
 			}
 			pid = fork();
 			if (pid == 0)
@@ -157,9 +106,7 @@ int	ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data)
 				exit(cmd_list->data->last_exit_status);
 			}
 			else if (pid > 0)
-			{
 				pids[current->index] = pid;
-			}
 			else
 			{
 				perror("fork");

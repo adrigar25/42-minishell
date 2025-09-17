@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/17 12:14:40 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/17 12:32:30 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -120,7 +120,7 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_execute_error_command_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_execute_pipeline_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_handle_heredoc_bonus.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_setup_child_io.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_setup_child_io_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_split_input_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_parse_input_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_handle_env_expansion_bonus.c \

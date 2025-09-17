@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/14 15:17:15 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/17 12:22:52 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,19 +49,6 @@ int	ft_minishell(char **envp, int debug)
 		pids = malloc(sizeof(pid_t) * data->cmd_count);
 		if (!pids)
 			continue ;
-		if (!cmd_list->next && cmd_list->has_error == 0
-			&& cmd_list->infd == STDIN_FILENO
-			&& cmd_list->outfd == STDOUT_FILENO)
-		{
-			builtin_result = ft_handle_builtins(cmd_list, &data);
-			if (builtin_result != -1)
-			{
-				data->last_exit_status = builtin_result;
-				pids[cmd_list->index] = -1;
-				ft_finish_execution(pids, data->cmd_count, cmd_list, data);
-				continue ;
-			}
-		}
 		if (ft_execute_pipeline(cmd_list, pids, &data) == -1)
 			break ;
 		ft_finish_execution(pids, data->cmd_count, cmd_list, data);
