@@ -1,3 +1,5 @@
+
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -6,7 +8,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/15 00:34:13 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/17 11:59:49 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,10 +127,9 @@ char				*get_cmd_path(char *cmd);
 void				ft_close_unused_fds(t_cmd *current_cmd, t_cmd *cmd_list);
 void				ft_finish_execution(pid_t *pids, int cmd_count,
 						t_cmd *cmd_list, t_data *data);
-
-/********** */
-/*  Utils   */
-/********** */
+void				ft_setup_child_io(t_cmd *current, t_cmd *cmd_list);
+int					ft_handle_builtins(t_cmd *cmd, t_data **data,
+						t_cmd *cmd_list, pid_t *pids);
 
 // ENV
 
@@ -187,7 +188,9 @@ int					ft_export(char **args, char ***envp);
 int					ft_unset(char **args, char ***envp);
 int					ft_env(t_cmd cmd, char **envp);
 int					ft_exit(t_cmd *cmd);
-int					ft_handle_builtins(t_cmd *cmd, t_data **data);
+
+int					ft_handle_builtins(t_cmd *cmd, t_data **data,
+						t_cmd *cmd_list, pid_t *pids);
 
 int					ft_is_dot_or_dotdot(const char *name);
 

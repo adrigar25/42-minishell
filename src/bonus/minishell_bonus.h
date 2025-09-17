@@ -164,7 +164,7 @@ int					ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids,
 int					ft_execute_error_command(t_cmd *cmd_list, t_cmd *head,
 						pid_t *pids);
 int					ft_exec_cmd(t_cmd *cmd);
-
+void				ft_setup_child_io(t_cmd *current, t_cmd *cmd_list);
 // DEBUG
 
 void				ft_show_debug(char **argv, int argc, char **expanded_argv,
@@ -187,8 +187,8 @@ int					ft_export(char **args, char ***envp);
 int					ft_unset(char **args, char ***envp);
 int					ft_env(t_cmd cmd, char **envp);
 int					ft_exit(t_cmd *cmd);
-int					ft_handle_builtins(t_cmd *cmd, t_data **data);
-
+int					ft_handle_builtins(t_cmd *cmd, t_data **data,
+						t_cmd *cmd_list, pid_t *pids);
 int					ft_is_dot_or_dotdot(const char *name);
 
 // Heredoc

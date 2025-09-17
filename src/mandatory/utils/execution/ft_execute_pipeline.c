@@ -15,39 +15,6 @@
 #include <string.h>
 #include <unistd.h>
 
-static void	ft_setup_child_io(t_cmd *current, t_cmd *cmd_list)
-{
-	t_cmd	*temp;
-
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-	signal(SIGPIPE, SIG_DFL);
-	if (current->infd != STDIN_FILENO)
-		dup2(current->infd, STDIN_FILENO);
-	if (current->outfd != STDOUT_FILENO)
-		dup2(current->outfd, STDOUT_FILENO);
-	temp = cmd_list;
-	while (temp)
-	{
-		if (temp != current)
-		{
-			if (temp->infd != STDIN_FILENO && temp->infd != current->infd
-				&& temp->infd != current->outfd)
-				close(temp->infd);
-			if (temp->outfd != STDOUT_FILENO && temp->outfd != current->infd
-				&& temp->outfd != current->outfd)
-				close(temp->outfd);
-		}
-		else
-		{
-			if (temp->infd != STDIN_FILENO && temp->infd != current->infd)
-				close(temp->infd);
-			if (temp->outfd != STDOUT_FILENO && temp->outfd != current->outfd)
-				close(temp->outfd);
-		}
-		temp = temp->next;
-	}
-}
 
 static int	ft_is_builtin(t_cmd *current)
 {
@@ -83,26 +50,7 @@ int	ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data)
 		{
 			if (ft_is_builtin(current))
 			{
-				if (current->infd != STDIN_FILENO
-					|| current->outfd != STDOUT_FILENO)
-				{
-					pid = fork();
-					if (pid == 0)
-					{
-						ft_setup_child_io(current, cmd_list);
-						exit(ft_handle_builtins(current, data));
-					}
-					else if (pid > 0)
-						pids[current->index] = pid;
-					else
-					{
-						perror("fork");
-						return (-1);
-					}
-				}
-				else
-					(*data)->last_exit_status = ft_handle_builtins(current,
-							data);
+				(*data)->last_exit_status = ft_handle_builtins(current, data, cmd_list, pids);
 				current = current->next;
 				continue ;
 			}
