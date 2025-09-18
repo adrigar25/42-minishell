@@ -115,7 +115,7 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 		return (NULL);
 	current_cmd = cmd_list;
 	current_cmd->data = data;
-	current_cmd->op = 0;
+	current_cmd->op = OP_NONE;
 	i = 0;
 	while (i < data->argc)
 	{
@@ -138,12 +138,12 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 				else
 					close(pipefd[1]);
 				current_cmd->infd = pipefd[0];
-				current_cmd->op = 1;
+				current_cmd->op = OP_PIPE;
 			}
 			else if (!ft_strcmp(argv[i], "||"))
-				current_cmd->op = 2;
+				current_cmd->op = OP_OR;
 			else if (!ft_strcmp(argv[i], "&&"))
-				current_cmd->op = 3;
+				current_cmd->op = OP_AND;
 		}
 		else if ((ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i], ">") == 0
 				|| ft_strcmp(argv[i], ">>") == 0 || ft_strcmp(argv[i],

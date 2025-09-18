@@ -36,10 +36,14 @@ static int	ft_match_pattern(const char *pattern, const char *filename)
 	{
 		if (*p == '*')
 		{
-			star_pattern = ++p;
+			while (*p == '*')
+				p++;
+			if (*p == '\0')
+				return (1);
+			star_pattern = p;
 			star_filename = f;
 		}
-		else if (*p == *f)
+		else if (*p == '?' || *p == *f)
 		{
 			p++;
 			f++;
@@ -66,14 +70,21 @@ static int	ft_has_wildcards(const char *str)
 {
 	int	i;
 	int	in_quotes;
+	char quote_char;
 
 	i = 0;
 	in_quotes = 0;
+	quote_char = 0;
 	while (str[i])
 	{
-		if (str[i] == '\'' || str[i] == '"')
-			in_quotes = !in_quotes;
-		else if (!in_quotes && str[i] == '*')
+		if (!in_quotes && (str[i] == '\'' || str[i] == '"'))
+		{
+			in_quotes = 1;
+			quote_char = str[i];
+		}
+		else if (in_quotes && str[i] == quote_char)
+			in_quotes = 0;
+		else if (!in_quotes && (str[i] == '*' || str[i] == '?'))
 			return (1);
 		i++;
 	}
@@ -203,7 +214,7 @@ char	**ft_handle_wildcards(char **argv, t_data *data)
 				if (ft_has_wildcards(argv[i]))
 				{
 					ft_fprintf(2, ERROR_AMBIGUOUS_REDIRECT, argv[i]);
-					data->argc = 0;
+					data->last_exit_status = 1;
 					return (NULL);
 				}
 				total_args++;

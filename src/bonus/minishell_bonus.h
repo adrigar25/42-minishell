@@ -81,6 +81,12 @@
 // Heredoc
 # define HEREDOC_PROMPT "heredoc> "
 
+// Operadores lógicos
+# define OP_NONE 0
+# define OP_PIPE 1
+# define OP_OR 2
+# define OP_AND 3
+
 typedef struct s_data
 {
 	char			**envp;
@@ -119,6 +125,7 @@ void				ft_skip_quotes(const char *cmd, int *i);
 char				**ft_handle_env_expansion(char **argv, t_data *data);
 char				*ft_remove_quotes(const char *str);
 int					ft_check_syntax_errors(char **argv, int argc);
+int					ft_handle_parentheses(char **argv, t_data *data);
 
 // Execution
 int					ft_exec_cmd(t_cmd *cmd);
@@ -157,9 +164,15 @@ void				ft_free_matrix_size(char **array, int size);
 int					ft_read_input(char **input, t_data *data);
 t_cmd				*ft_process_input(char *input, t_data *data, int debug);
 
+// WILDCARDS
+
+char				**ft_handle_wildcards(char **argv, t_data *data);
+
 // EXECUTION
 
 int					ft_execute_pipeline(t_cmd *cmd_list, t_data **data);
+int					ft_execute_logical_chain(t_cmd *cmd_list, t_data **data,
+						pid_t *pids);
 int					ft_execute_error_command(t_cmd *cmd_list, t_cmd *head,
 						pid_t *pids);
 int					ft_exec_cmd(t_cmd *cmd);

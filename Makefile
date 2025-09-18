@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
+#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/18 14:06:44 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/18 17:58:19 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -125,6 +125,7 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_remove_quotes_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_syntax_check_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_handle_wildcards_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_handle_parentheses_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/signals/ft_sigint_handler_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/signals/ft_init_signals_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_echo_bonus.c \
