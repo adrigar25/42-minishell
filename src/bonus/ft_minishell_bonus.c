@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/18 12:05:52 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/18 13:53:49 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	ft_minishell(char **envp, int debug)
 	char	*input;
 	t_cmd	*cmd_list;
 	t_data	*data;
-	pid_t	*pids;
 	int		exit_status;
 
 	data = malloc(sizeof(t_data));
@@ -34,14 +33,9 @@ int	ft_minishell(char **envp, int debug)
 	ft_init_signals();
 	while (ft_read_input(&input, data))
 	{
-		if (!ft_process_input(input, data, &cmd_list, debug))
-			continue ;
-		pids = malloc(sizeof(pid_t) * data->cmd_count);
-		if (!pids)
-			continue ;
-		if (ft_execute_pipeline(cmd_list, pids, &data) == -1)
-			break ;
-		ft_finish_execution(pids, data->cmd_count, cmd_list, data);
+		cmd_list = ft_process_input(input, data, debug);
+		if (cmd_list)
+			ft_execute_pipeline(cmd_list, &data);
 	}
 	exit_status = data->last_exit_status;
 	ft_free_matrix(data->envp);

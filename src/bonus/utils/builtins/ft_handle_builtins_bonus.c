@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 16:43:33 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/18 11:57:07 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/18 13:52:08 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	ft_handle_builtins(t_cmd *cmd, t_data **data, t_cmd *cmd_list, pid_t *pids)
 			status = ft_exec_builtin(cmd, data);
 			exit(status);
 		}
-		else if (pid > 0 && pids)
+		if (pid > 0)
 			pids[cmd->index] = pid;
 		else if (pid < 0)
 			return (perror("fork"), -1);

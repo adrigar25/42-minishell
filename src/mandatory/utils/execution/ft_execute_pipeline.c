@@ -29,13 +29,19 @@ static int	ft_is_builtin(t_cmd *current)
 	return (0);
 }
 
-int	ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data)
+int	ft_execute_pipeline(t_cmd *cmd_list, t_data **data)
 {
 	t_cmd	*current;
+	pid_t	*pids;
 	pid_t	pid;
 	int		builtin_result;
 	t_cmd	*temp;
 
+	if (!cmd_list || !data || !*data)
+		return (-1);
+	pids = malloc(sizeof(pid_t) * (*data)->cmd_count);
+	if (!pids)
+		return (-1);
 	current = cmd_list;
 	while (current)
 	{
@@ -97,6 +103,7 @@ int	ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data)
 			else
 			{
 				perror("fork");
+				ft_finish_execution(pids, cmd_list, *data);
 				return (-1);
 			}
 		}
@@ -111,5 +118,6 @@ int	ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data)
 			close(current->outfd);
 		current = current->next;
 	}
+	ft_finish_execution(pids, cmd_list, *data);
 	return (0);
 }

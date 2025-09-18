@@ -125,8 +125,8 @@ int					ft_exec_cmd(t_cmd *cmd);
 int					ft_pipex(const char **argv, int fd_in, char **envp);
 char				*get_cmd_path(char *cmd);
 void				ft_close_unused_fds(t_cmd *current_cmd, t_cmd *cmd_list);
-void				ft_finish_execution(pid_t *pids, int cmd_count,
-						t_cmd *cmd_list, t_data *data);
+void				ft_finish_execution(pid_t *pids, t_cmd *cmd_list,
+						t_data *data);
 void				ft_setup_child_io(t_cmd *current, t_cmd *cmd_list);
 int					ft_handle_builtins(t_cmd *cmd, t_data **data,
 						t_cmd *cmd_list, pid_t *pids);
@@ -155,13 +155,11 @@ void				ft_free_matrix_size(char **array, int size);
 // INPUT
 
 int					ft_read_input(char **input, t_data *data);
-int					ft_process_input(char *input, t_data *data,
-						t_cmd **cmd_list, int debug);
+t_cmd				*ft_process_input(char *input, t_data *data, int debug);
 
 // EXECUTION
 
-int					ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids,
-						t_data **data);
+int					ft_execute_pipeline(t_cmd *cmd_list, t_data **data);
 int					ft_execute_error_command(t_cmd *cmd_list, t_cmd *head,
 						pid_t *pids);
 int					ft_exec_cmd(t_cmd *cmd);

@@ -12,44 +12,39 @@
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
+#include <string.h>
 #include <unistd.h>
 
-int	ft_is_builtin(t_cmd *current)
+static int	ft_is_builtin(t_cmd *current)
 {
 	char	*cmd;
 
 	if (!current || !current->argv || !current->argv[0])
 		return (0);
 	cmd = current->argv[0];
-	if (ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "cd") == 0
-		|| ft_strcmp(cmd, "pwd") == 0 || ft_strcmp(cmd, "export") == 0
-		|| ft_strcmp(cmd, "unset") == 0 || ft_strcmp(cmd, "exit") == 0)
+	if (strcmp(cmd, "echo") == 0 || strcmp(cmd, "cd") == 0 || strcmp(cmd,
+			"pwd") == 0 || strcmp(cmd, "export") == 0 || strcmp(cmd,
+			"unset") == 0 || strcmp(cmd, "exit") == 0)
 		return (1);
 	return (0);
 }
 
-int	ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data)
+int	ft_execute_pipeline(t_cmd *cmd_list, t_data **data)
 {
 	t_cmd	*current;
+	pid_t	*pids;
 	pid_t	pid;
+	int		builtin_result;
 	t_cmd	*temp;
-	int		last_cmd_status;
 
-	last_cmd_status = 0;
+	if (!cmd_list || !data || !*data)
+		return (-1);
+	pids = malloc(sizeof(pid_t) * (*data)->cmd_count);
+	if (!pids)
+		return (-1);
 	current = cmd_list;
 	while (current)
 	{
-		// Control de operadores && y ||
-		if (current->op == 2 && last_cmd_status == 0)
-		{
-			current = current->next;
-			continue ;
-		}
-		else if (current->op == 3 && last_cmd_status != 0)
-		{
-			current = current->next;
-			continue ;
-		}
 		if (current->has_error == 1)
 		{
 			if (current->outfd != STDOUT_FILENO)
@@ -60,9 +55,8 @@ int	ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data)
 		{
 			if (ft_is_builtin(current))
 			{
-				last_cmd_status = ft_handle_builtins(current, data, cmd_list,
-						pids);
-				(*data)->last_exit_status = last_cmd_status;
+				(*data)->last_exit_status = ft_handle_builtins(current, data,
+						cmd_list, pids);
 				current = current->next;
 				continue ;
 			}
@@ -102,7 +96,6 @@ int	ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data)
 					temp = temp->next;
 				}
 				cmd_list->data->last_exit_status = ft_exec_cmd(current);
-				last_cmd_status = cmd_list->data->last_exit_status;
 				exit(cmd_list->data->last_exit_status);
 			}
 			else if (pid > 0)
@@ -110,6 +103,7 @@ int	ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data)
 			else
 			{
 				perror("fork");
+				ft_finish_execution(pids, cmd_list, *data);
 				return (-1);
 			}
 		}
@@ -124,5 +118,6 @@ int	ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data)
 			close(current->outfd);
 		current = current->next;
 	}
+	ft_finish_execution(pids, cmd_list, *data);
 	return (0);
 }

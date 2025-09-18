@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:06:20 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/14 22:53:19 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/18 13:55:26 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,5 @@ int	ft_exec_cmd(t_cmd *cmd)
 	execve(path, cmd->argv, cmd->data->envp);
 	perror("minishell: execve");
 	free(path);
-	return (EXIT_GENERAL_ERROR);
+	return (EXIT_FAILURE);
 }
