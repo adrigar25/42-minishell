@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/17 10:18:25 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/18 12:12:07 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,26 +18,16 @@
 int	ft_minishell(char **envp, int debug)
 {
 	char	*input;
-	char	**argv;
-	char	**expanded_argv;
-	char	*prompt;
 	t_cmd	*cmd_list;
 	t_data	*data;
-	pid_t	pid;
-	int		i;
-	int		status;
-	int		builtin_result;
 	pid_t	*pids;
 	int		exit_status;
-	t_cmd	*temp;
-	t_cmd	*debug_cmd;
-	int		cmd_num;
 
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (1);
 	data->last_exit_status = 0;
-	ft_cpyenv(&data->envp, envp);
+	ft_dupenv(&data->envp, envp);
 	data->isatty = isatty(STDIN_FILENO);
 	if (data->isatty)
 		ft_msg_start();
@@ -54,7 +44,7 @@ int	ft_minishell(char **envp, int debug)
 		ft_finish_execution(pids, data->cmd_count, cmd_list, data);
 	}
 	exit_status = data->last_exit_status;
-	ft_free_char_array(data->envp);
+	ft_free_matrix(data->envp);
 	free(data);
 	return (exit_status);
 }

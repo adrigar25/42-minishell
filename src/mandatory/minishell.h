@@ -133,7 +133,7 @@ int					ft_handle_builtins(t_cmd *cmd, t_data **data,
 
 // ENV
 
-int					ft_cpyenv(char ***envp_cpy, char **envp);
+int					ft_dupenv(char ***envp_cpy, char **envp);
 char				*ft_getenv(const char *name, char **envp);
 int					ft_setenv(char *name, char *value, char ***envp);
 
@@ -149,8 +149,8 @@ int					ft_msg_start(void);
 int					ft_count_args(const char *cmd);
 
 // Memory management utilities
-void				ft_free_char_array(char **array);
-void				ft_free_char_array_size(char **array, int size);
+void				ft_free_matrix(char **array);
+void				ft_free_matrix_size(char **array, int size);
 
 // INPUT
 
@@ -172,7 +172,6 @@ void				ft_show_debug(char **argv, int argc, char **expanded_argv,
 						t_cmd *cmd_list);
 
 // Redirections
-void				ft_redir_io(int fd, int in_or_out);
 int					ft_handle_infile(char *filename);
 int					ft_handle_outfile(char *filename, int append);
 

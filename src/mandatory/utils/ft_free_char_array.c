@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_char_array.c                               :+:      :+:    :+:   */
+/*   ft_free_matrix.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-void	ft_free_char_array(char **array)
+void	ft_free_matrix(char **array)
 {
 	int	i;
 
@@ -27,7 +27,7 @@ void	ft_free_char_array(char **array)
 	free(array);
 }
 
-void	ft_free_char_array_size(char **array, int size)
+void	ft_free_matrix_size(char **array, int size)
 {
 	int	i;
 

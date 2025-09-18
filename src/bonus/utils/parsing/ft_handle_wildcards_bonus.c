@@ -254,7 +254,7 @@ char	**ft_handle_wildcards(char **argv, t_data *data)
 				temp_matches = malloc(sizeof(char *) * matches);
 				if (!temp_matches)
 				{
-					ft_free_char_array_size(new_argv, new_argc);
+					ft_free_matrix_size(new_argv, new_argc);
 					return (argv);
 				}
 				matches = ft_expand_wildcard(argv[i], temp_matches, matches);

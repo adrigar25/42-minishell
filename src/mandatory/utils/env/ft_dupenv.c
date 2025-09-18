@@ -6,13 +6,13 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:00:26 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/12 20:06:52 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/18 11:58:11 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	ft_cpyenv(char ***envp_cpy, char **envp)
+int	ft_dupenv(char ***envp_cpy, char **envp)
 {
 	int	i;
 

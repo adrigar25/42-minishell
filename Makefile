@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/17 12:32:30 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/18 11:58:11 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,6 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_search_file/ft_search_in_subdirs.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_search_file/ft_build_path.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_count_args.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_redir_io.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_free_char_array.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/error/ft_handle_error.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/input/ft_read_input.c \
@@ -61,7 +60,7 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/debug/ft_show_debug.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/prompt/ft_get_directory_path.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/prompt/ft_generate_prompt.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_cpyenv.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_dupenv.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_getenv.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_setenv.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/redirections/ft_handle_infile.c \
@@ -100,7 +99,6 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/ft_search_file/ft_search_in_subdirs_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/ft_search_file/ft_build_path_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/ft_count_args_bonus.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/ft_redir_io_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/ft_free_char_array_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/error/ft_handle_error_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/ft_read_input_bonus.c \
@@ -108,7 +106,7 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/debug/ft_show_debug_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/prompt/ft_get_directory_path_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/prompt/ft_generate_prompt_bonus.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_cpyenv_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_dupenv_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_getenv_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_setenv_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/redirections/ft_handle_infile_bonus.c \

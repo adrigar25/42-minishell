@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/13 00:01:14 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/18 12:12:26 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	ft_free_cmd_list(t_cmd *cmd_list)
 	while (cmd_list)
 	{
 		tmp = cmd_list->next;
-		ft_free_char_array(cmd_list->argv);
+		ft_free_matrix(cmd_list->argv);
 		free(cmd_list);
 		cmd_list = tmp;
 	}

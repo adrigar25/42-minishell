@@ -1,7 +1,8 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_bonus.h                                        :+:      :+:    :+:   */
+/*   minishell_bonus.h                                        :+:      :+: :+:
+ */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -73,58 +74,56 @@
 # define ERROR_CD_FAIL "minishell: cd: %s: %s\n"
 # define ERROR_NUM_ARG_REQ "minishell: exit: %s: numeric argument required\n"
 # define ERROR_AMBIGUOUS_REDIRECT "minishell: %s: ambiguous redirect\n"
-# define ERROR_INVALID_IDENTIFIER "minishell: export: `%s': not a valid identifier\n"
+# define ERROR_INVALID_IDENTIFIER                                               \
+  "minishell: export: `%s': not a valid identifier\n"
 
 // Heredoc
 # define HEREDOC_PROMPT "heredoc> "
 
-typedef struct s_data
-{
-	char			**envp;
-	int				argc;
-	int				cmd_count;
-	int				isatty;
-	int				last_exit_status;
-	struct s_data	*next;
-}					t_data;
-typedef struct s_cmd
-{
-	char			**argv;
-	int				infd;
-	int				outfd;
-	int				op;
-	int				has_error;
-	int				index;
-	t_data			*data;
-	struct s_cmd	*next;
-}					t_cmd;
+typedef struct s_data {
+  char **envp;
+  int argc;
+  int cmd_count;
+  int isatty;
+  int last_exit_status;
+  struct s_data *next;
+}		t_data;
+typedef struct s_cmd {
+  char **argv;
+  int infd;
+  int outfd;
+  int op;
+  int has_error;
+  int index;
+  t_data *data;
+  struct s_cmd *next;
+}		t_cmd;
 
-int					ft_minishell(char **envp, int debug);
+int		ft_minishell(char **envp, int debug);
 
 // Search for a file in the current directory and subdirectories.
-char				*ft_search_file(const char *dir, const char *filename);
-char				*ft_search_in_subdirs(const char *dir,
-						const char *filename);
-char				*ft_search_in_dir(const char *dir, const char *filename);
-char				*ft_build_path(const char *dir, const char *entry);
+char	*ft_search_file(const char *dir, const char *filename);
+char	*ft_search_in_subdirs(const char *dir, const char *filename);
+char	*ft_search_in_dir(const char *dir, const char *filename);
+char	*ft_build_path(const char *dir, const char *entry);
 
 // Parsing
 
-char				**ft_split_input(const char *input, int argc);
-t_cmd				*ft_parse_input(char **argv, t_data *data);
-void				ft_skip_quotes(const char *cmd, int *i);
-char				**ft_handle_env_expansion(char **argv, t_data *data);
-char				**ft_handle_wildcards(char **argv, t_data *data);
-char				*ft_remove_quotes(const char *str);
-int					ft_check_syntax_errors(char **argv, int argc);
+char	**ft_split_input(const char *input, int argc);
+t_cmd	*ft_parse_input(char **argv, t_data *data);
+void	ft_skip_quotes(const char *cmd, int *i);
+char	**ft_handle_env_expansion(char **argv, t_data *data);
+char	**ft_handle_wildcards(char **argv, t_data *data);
+char	*ft_remove_quotes(const char *str);
+int		ft_check_syntax_errors(char **argv, int argc);
 
 // Execution
-int					ft_exec_cmd(t_cmd *cmd);
-int					ft_pipex(const char **argv, int fd_in, char **envp);
-char				*get_cmd_path(char *cmd);
-void				ft_close_unused_fds(t_cmd *current_cmd, t_cmd *cmd_list);
-void				ft_finish_execution(pid_t *pids, int cmd_count,
-						t_cmd *cmd_list, t_data *data);
+int		ft_exec_cmd(t_cmd *cmd);
+int		ft_pipex(const char **argv, int fd_in, char **envp);
+char	*get_cmd_path(char *cmd);
+void	ft_close_unused_fds(t_cmd *current_cmd, t_cmd *cmd_list);
+void	ft_finish_execution(pid_t *pids, int cmd_count, t_cmd *cmd_list,
+                         t_data *data);
 
 /********** */
 /*  Utils   */
@@ -132,70 +131,66 @@ void				ft_finish_execution(pid_t *pids, int cmd_count,
 
 // ENV
 
-int					ft_cpyenv(char ***envp_cpy, char **envp);
-char				*ft_getenv(const char *name, char **envp);
-int					ft_setenv(char *name, char *value, char ***envp);
+int		ft_dupenv(char ***envp_cpy, char **envp);
+char	*ft_getenv(const char *name, char **envp);
+int		ft_setenv(char *name, char *value, char ***envp);
 
 // PROMPT
 
-char				*ft_get_directory_path(char **envp);
-char				*ft_generate_prompt(char **envp);
+char	*ft_get_directory_path(char **envp);
+char	*ft_generate_prompt(char **envp);
 
 // Initialize message
-int					ft_msg_start(void);
+int		ft_msg_start(void);
 
 // Count the number of arguments in a command string.
-int					ft_count_args(const char *cmd);
+int		ft_count_args(const char *cmd);
 
 // Memory management utilities
-void				ft_free_char_array(char **array);
-void				ft_free_char_array_size(char **array, int size);
+void	ft_free_matrix(char **array);
+void	ft_free_matrix_size(char **array, int size);
 
 // INPUT
 
-int					ft_read_input(char **input, t_data *data);
-int					ft_process_input(char *input, t_data *data,
-						t_cmd **cmd_list, int debug);
+int		ft_read_input(char **input, t_data *data);
+int		ft_process_input(char *input, t_data *data, t_cmd **cmd_list,
+			int debug);
 
 // EXECUTION
 
-int					ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids,
-						t_data **data);
-int					ft_execute_error_command(t_cmd *cmd_list, t_cmd *head,
-						pid_t *pids);
-int					ft_exec_cmd(t_cmd *cmd);
-void				ft_setup_child_io(t_cmd *current, t_cmd *cmd_list);
+int		ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data);
+int		ft_execute_error_command(t_cmd *cmd_list, t_cmd *head, pid_t *pids);
+int		ft_exec_cmd(t_cmd *cmd);
+void	ft_setup_child_io(t_cmd *current, t_cmd *cmd_list);
 // DEBUG
 
-void				ft_show_debug(char **argv, int argc, char **expanded_argv,
-						t_cmd *cmd_list);
+void	ft_show_debug(char **argv, int argc, char **expanded_argv,
+                   t_cmd *cmd_list);
 
 // Redirections
-void				ft_redir_io(int fd, int in_or_out);
-int					ft_handle_infile(char *filename);
-int					ft_handle_outfile(char *filename, int append);
+int		ft_handle_infile(char *filename);
+int		ft_handle_outfile(char *filename, int append);
 
 // Signals
-void				sigint_handler(int sig);
-void				ft_init_signals(void);
+void	sigint_handler(int sig);
+void	ft_init_signals(void);
 
 // Builtins
-int					ft_echo(t_cmd cmd);
-int					ft_cd(char **argv, char ***envp);
-int					ft_pwd(t_cmd cmd);
-int					ft_export(char **args, char ***envp);
-int					ft_unset(char **args, char ***envp);
-int					ft_env(t_cmd cmd, char **envp);
-int					ft_exit(t_cmd *cmd);
-int					ft_handle_builtins(t_cmd *cmd, t_data **data,
-						t_cmd *cmd_list, pid_t *pids);
-int					ft_is_dot_or_dotdot(const char *name);
+int		ft_echo(t_cmd cmd);
+int		ft_cd(char **argv, char ***envp);
+int		ft_pwd(t_cmd cmd);
+int		ft_export(char **args, char ***envp);
+int		ft_unset(char **args, char ***envp);
+int		ft_env(t_cmd cmd, char **envp);
+int		ft_exit(t_cmd *cmd);
+int		ft_handle_builtins(t_cmd *cmd, t_data **data, t_cmd *cmd_list,
+			pid_t *pids);
+int		ft_is_dot_or_dotdot(const char *name);
 
 // Heredoc
-int					ft_handle_heredoc(const char *delimiter);
+int		ft_handle_heredoc(const char *delimiter);
 
 // Error handling
-int					ft_handle_error(int error_code, int exit_code, char *msg,
-						char *msg2);
+int		ft_handle_error(int error_code, int exit_code, char *msg, char *msg2);
 
 #endif

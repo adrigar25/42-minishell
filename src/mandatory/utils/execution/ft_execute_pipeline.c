@@ -15,7 +15,6 @@
 #include <string.h>
 #include <unistd.h>
 
-
 static int	ft_is_builtin(t_cmd *current)
 {
 	char	*cmd;
@@ -50,7 +49,8 @@ int	ft_execute_pipeline(t_cmd *cmd_list, pid_t *pids, t_data **data)
 		{
 			if (ft_is_builtin(current))
 			{
-				(*data)->last_exit_status = ft_handle_builtins(current, data, cmd_list, pids);
+				(*data)->last_exit_status = ft_handle_builtins(current, data,
+						cmd_list, pids);
 				current = current->next;
 				continue ;
 			}
