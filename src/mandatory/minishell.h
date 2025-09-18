@@ -128,8 +128,7 @@ void				ft_close_unused_fds(t_cmd *current_cmd, t_cmd *cmd_list);
 void				ft_finish_execution(pid_t *pids, t_cmd *cmd_list,
 						t_data *data);
 void				ft_setup_child_io(t_cmd *current, t_cmd *cmd_list);
-int					ft_handle_builtins(t_cmd *cmd, t_data **data,
-						t_cmd *cmd_list, pid_t *pids);
+int					ft_exec_builtin(t_cmd *cmd, t_data **data);
 
 // ENV
 

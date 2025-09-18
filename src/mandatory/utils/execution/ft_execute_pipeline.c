@@ -1,13 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_execute_pipeline.c                             :+:      :+:    :+:   */
+/*   ft_execute_pipeline.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>             +#+  +:+
-	+#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/13 14:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/13 14:30:00 by agarcia          ###   ########.fr       */
+/*   Created: 2025/09/18 16:35:40 by agarcia           #+#    #+#             */
+/*   Updated: 2025/09/18 16:43:45 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +33,6 @@ int	ft_execute_pipeline(t_cmd *cmd_list, t_data **data)
 	t_cmd	*current;
 	pid_t	*pids;
 	pid_t	pid;
-	int		builtin_result;
-	t_cmd	*temp;
 
 	if (!cmd_list || !data || !*data)
 		return (-1);
@@ -45,61 +42,43 @@ int	ft_execute_pipeline(t_cmd *cmd_list, t_data **data)
 	current = cmd_list;
 	while (current)
 	{
-		if (current->has_error == 1)
-			ft_execute_error_command(current, cmd_list, pids);
-		else
+		if (ft_is_builtin(current) && current->infd == STDIN_FILENO
+			&& current->outfd == STDOUT_FILENO && !current->next
+			&& current->has_error == 0)
 		{
-			if (ft_is_builtin(current))
-			{
-				(*data)->last_exit_status = ft_handle_builtins(current, data,
-						cmd_list, pids);
-				current = current->next;
-				continue ;
-			}
-			pid = fork();
-			if (pid == 0)
-			{
-				signal(SIGINT, SIG_DFL);
-				signal(SIGQUIT, SIG_DFL);
-				signal(SIGPIPE, SIG_DFL);
-				if (current->infd != STDIN_FILENO)
-					dup2(current->infd, STDIN_FILENO);
-				if (current->outfd != STDOUT_FILENO)
-					dup2(current->outfd, STDOUT_FILENO);
-				temp = cmd_list;
-				while (temp)
-				{
-					if (temp->infd != STDIN_FILENO
-						&& temp->infd != current->infd
-						&& temp->infd != current->outfd)
-						close(temp->infd);
-					if (temp->outfd != STDOUT_FILENO
-						&& temp->outfd != current->infd
-						&& temp->outfd != current->outfd)
-						close(temp->outfd);
-					temp = temp->next;
-				}
-				cmd_list->data->last_exit_status = ft_exec_cmd(current);
-				exit(cmd_list->data->last_exit_status);
-			}
-			else if (pid > 0)
-				pids[current->index] = pid;
+			(*data)->last_exit_status = ft_exec_builtin(current, data);
+			current = current->next;
+			continue ;
+		}
+		pid = fork();
+		if (pid == 0)
+		{
+			ft_setup_child_io(current, cmd_list);
+			if (current->has_error)
+				(*data)->last_exit_status = 1;
+			else if (ft_is_builtin(current))
+				(*data)->last_exit_status = ft_exec_builtin(current, data);
 			else
+				(*data)->last_exit_status = ft_exec_cmd(current);
+			exit((*data)->last_exit_status);
+		}
+		else if (pid > 0)
+		{
+			pids[current->index] = pid;
+			if (current->has_error == 1)
 			{
-				perror("fork");
-				ft_finish_execution(pids, cmd_list, *data);
-				return ((*data)->last_exit_status);
+				if (current->infd != STDIN_FILENO)
+					close(current->infd);
+				if (current->outfd != STDOUT_FILENO)
+					close(current->outfd);
 			}
 		}
-		current = current->next;
-	}
-	current = cmd_list;
-	while (current)
-	{
-		if (current->infd != STDIN_FILENO)
-			close(current->infd);
-		if (current->outfd != STDOUT_FILENO)
-			close(current->outfd);
+		else
+		{
+			perror("fork");
+			ft_finish_execution(pids, cmd_list, *data);
+			return ((*data)->last_exit_status);
+		}
 		current = current->next;
 	}
 	ft_finish_execution(pids, cmd_list, *data);

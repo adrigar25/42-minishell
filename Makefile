@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
+#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/18 17:58:19 by adriescr         ###   ########.fr        #
+#    Updated: 2025/09/18 22:56:26 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,7 +69,6 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_get_cmd_path.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_close_unused_fds.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_finish_execution.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_execute_error_command.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_execute_pipeline.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_handle_heredoc.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_setup_child_io.c \
@@ -88,7 +87,7 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/builtins/ft_unset.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/builtins/ft_env.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/builtins/ft_exit.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/builtins/ft_handle_builtins.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/builtins/ft_exec_builtin.c \
 
 MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/ft_minishell_bonus.c \
@@ -115,7 +114,6 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_get_cmd_path_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_close_unused_fds_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_finish_execution_bonus.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_execute_error_command_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_execute_pipeline_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_handle_heredoc_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_setup_child_io_bonus.c \
@@ -135,7 +133,7 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_unset_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_env_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_exit_bonus.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_handle_builtins_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_exec_builtin_bonus.c \
 
 # Objetos para mandatory y bonus
 MAIN_OBJECT = $(MAIN_SOURCE:$(MANDATORY_DIR)/%.c=$(OBJ_MANDATORY_DIR)/%.o)

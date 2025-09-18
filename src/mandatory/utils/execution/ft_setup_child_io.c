@@ -13,25 +13,5 @@ void	ft_setup_child_io(t_cmd *current, t_cmd *cmd_list)
 		dup2(current->infd, STDIN_FILENO);
 	if (current->outfd != STDOUT_FILENO)
 		dup2(current->outfd, STDOUT_FILENO);
-	temp = cmd_list;
-	while (temp)
-	{
-		if (temp != current)
-		{
-			if (temp->infd != STDIN_FILENO && temp->infd != current->infd
-				&& temp->infd != current->outfd)
-				close(temp->infd);
-			if (temp->outfd != STDOUT_FILENO && temp->outfd != current->infd
-				&& temp->outfd != current->outfd)
-				close(temp->outfd);
-		}
-		else
-		{
-			if (temp->infd != STDIN_FILENO && temp->infd != current->infd)
-				close(temp->infd);
-			if (temp->outfd != STDOUT_FILENO && temp->outfd != current->outfd)
-				close(temp->outfd);
-		}
-		temp = temp->next;
-	}
+	ft_close_unused_fds(current, cmd_list);
 }

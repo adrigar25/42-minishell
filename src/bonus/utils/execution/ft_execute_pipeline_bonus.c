@@ -126,7 +126,8 @@ static int	ft_execute_pipe_sequence(t_cmd *start, t_cmd **end, t_data **data,
 				temp = start;
 				while (temp)
 				{
-					if (temp->infd != STDIN_FILENO && temp->infd != current->infd
+					if (temp->infd != STDIN_FILENO
+						&& temp->infd != current->infd
 						&& temp->infd != current->outfd)
 						close(temp->infd);
 					if (temp->outfd != STDOUT_FILENO

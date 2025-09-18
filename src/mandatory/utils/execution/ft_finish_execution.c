@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/18 13:28:57 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/18 16:27:43 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,24 @@ static void	ft_free_cmd_list(t_cmd *cmd_list)
 
 void	ft_finish_execution(pid_t *pids, t_cmd *cmd_list, t_data *data)
 {
-	int	i;
-	int	status;
-	int	last_exit_status;
-	int	executed_processes;
+	int		i;
+	int		status;
+	int		last_exit_status;
+	int		executed_processes;
+	t_cmd	*current;
 
 	last_exit_status = data->last_exit_status;
 	executed_processes = 0;
 	i = 0;
+	current = cmd_list;
+	while (current)
+	{
+		if (current->infd != STDIN_FILENO)
+			close(current->infd);
+		if (current->outfd != STDOUT_FILENO)
+			close(current->outfd);
+		current = current->next;
+	}
 	while (i < data->cmd_count)
 	{
 		if (pids[i] > 0)

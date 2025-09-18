@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:06:20 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/18 13:55:26 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/18 16:16:17 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ int	ft_exec_cmd(t_cmd *cmd)
 
 	if (!cmd)
 		return (1);
-	/* If there's no argv (redirection-only command),
-		treat as successful no-op */
 	if (!cmd->argv)
 		return (0);
 	i = 0;
@@ -42,10 +40,7 @@ int	ft_exec_cmd(t_cmd *cmd)
 	cmd->argv[j] = NULL;
 	if (!cmd->argv[0])
 		return (0);
-	if (ft_strchr(cmd->argv[0], '/'))
-		path = ft_strdup(cmd->argv[0]);
-	else
-		path = get_cmd_path(cmd->argv[0]);
+	path = get_cmd_path(cmd->argv[0]);
 	if (!path)
 		return (ft_handle_error(1, EXIT_COMMAND_NOT_FOUND, cmd->argv[0], NULL));
 	if (stat(path, &file_stat) == -1)
