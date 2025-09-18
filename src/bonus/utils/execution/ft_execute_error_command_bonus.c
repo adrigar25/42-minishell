@@ -41,9 +41,7 @@ int	ft_execute_error_command(t_cmd *cmd_list, t_cmd *head, pid_t *pids)
 
 	pid = fork();
 	if (pid == 0)
-	{
 		ft_setup_error_child_process(cmd_list, head);
-	}
 	else if (pid > 0)
 	{
 		ft_handle_error_parent_process(cmd_list, pid, pids);

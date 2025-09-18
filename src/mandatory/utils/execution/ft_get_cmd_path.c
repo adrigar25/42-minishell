@@ -3,29 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_get_cmd_path.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 16:30:20 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/09 19:33:24 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/18 14:06:29 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-static void	free_char_array(char **arr)
-{
-	int	i;
-
-	if (!arr)
-		return ;
-	i = 0;
-	while (arr[i])
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
-}
 
 char	*get_cmd_path(char *cmd)
 {
@@ -44,12 +29,12 @@ char	*get_cmd_path(char *cmd)
 		free(temp);
 		if (access(path, X_OK) == 0)
 		{
-			free_char_array(paths);
+			ft_free_matrix(paths);
 			return (path);
 		}
 		free(path);
 		i++;
 	}
-	free_char_array(paths);
+	ft_free_matrix(paths);
 	return (NULL);
 }
