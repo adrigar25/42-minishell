@@ -46,14 +46,12 @@ int	ft_execute_pipeline(t_cmd *cmd_list, t_data **data)
 		if (current && current->op == OP_OR
 			&& (*data)->last_exit_status == EXIT_SUCCESS)
 		{
-			(*data)->last_exit_status = 0;
 			current = current->next;
 			continue ;
 		}
 		else if (current && current->op == OP_AND
 			&& (*data)->last_exit_status != EXIT_SUCCESS)
 		{
-			(*data)->last_exit_status = 0;
 			current = current->next;
 			continue ;
 		}

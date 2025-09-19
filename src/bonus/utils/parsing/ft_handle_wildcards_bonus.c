@@ -212,7 +212,8 @@ char	**ft_handle_wildcards(char **argv, t_data *data)
 			{
 				if (ft_has_wildcards(argv[i]))
 				{
-					data->last_exit_status = ft_handle_error(12, 1, NULL, NULL);
+					data->last_exit_status = ft_handle_error(12, 1, argv[i],
+							NULL);
 					return (NULL);
 				}
 				total_args++;
