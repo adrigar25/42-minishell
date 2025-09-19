@@ -68,9 +68,9 @@ static int	ft_match_pattern(const char *pattern, const char *filename)
  */
 static int	ft_has_wildcards(const char *str)
 {
-	int	i;
-	int	in_quotes;
-	char quote_char;
+	int		i;
+	int		in_quotes;
+	char	quote_char;
 
 	i = 0;
 	in_quotes = 0;
@@ -201,7 +201,6 @@ char	**ft_handle_wildcards(char **argv, t_data *data)
 
 	if (!argv || !data)
 		return (argv);
-	// Contar total de argumentos después de expansión
 	total_args = 0;
 	i = 0;
 	while (argv[i])
@@ -213,8 +212,7 @@ char	**ft_handle_wildcards(char **argv, t_data *data)
 			{
 				if (ft_has_wildcards(argv[i]))
 				{
-					ft_fprintf(2, ERROR_AMBIGUOUS_REDIRECT, argv[i]);
-					data->last_exit_status = 1;
+					data->last_exit_status = ft_handle_error(12, 1, NULL, NULL);
 					return (NULL);
 				}
 				total_args++;

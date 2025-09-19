@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_process_input_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/18 17:51:44 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/19 11:27:13 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,6 @@ t_cmd	*ft_process_input(char *input, t_data *data, int debug)
 	free(input);
 	if (ft_handle_syntax(argv, data))
 		return (NULL);
-	
-	// Handle parentheses first - this may execute commands directly
-	if (ft_handle_parentheses(argv, data))
-	{
-		ft_free_matrix(argv);
-		return (NULL); // Parenthesized expressions were executed
-	}
-	
 	expanded_argv = ft_handle_env_expansion(argv, data);
 	wildcard_argv = ft_handle_wildcards(expanded_argv, data);
 	if (!wildcard_argv)

@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/18 22:56:26 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/19 11:26:26 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -123,7 +123,6 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_remove_quotes_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_syntax_check_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_handle_wildcards_bonus.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_handle_parentheses_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/signals/ft_sigint_handler_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/signals/ft_init_signals_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_echo_bonus.c \
