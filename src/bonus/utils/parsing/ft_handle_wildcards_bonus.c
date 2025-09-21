@@ -205,28 +205,6 @@ char	**ft_handle_wildcards(char **argv, t_data *data)
 	i = 0;
 	while (argv[i])
 	{
-		if (i > 0)
-		{
-			if (ft_strcmp(argv[i - 1], "<") == 0 || ft_strcmp(argv[i - 1],
-					">") == 0 || ft_strcmp(argv[i - 1], ">>") == 0)
-			{
-				if (ft_has_wildcards(argv[i]))
-				{
-					data->last_exit_status = ft_handle_error(12, 1, argv[i],
-							NULL);
-					return (NULL);
-				}
-				total_args++;
-				i++;
-				continue ;
-			}
-			else if (ft_strcmp(argv[i - 1], "<<") == 0)
-			{
-				total_args++;
-				i++;
-				continue ;
-			}
-		}
 		if (ft_has_wildcards(argv[i]))
 		{
 			matches = ft_count_matches(argv[i]);
@@ -244,13 +222,6 @@ char	**ft_handle_wildcards(char **argv, t_data *data)
 	while (argv[i])
 	{
 		if (i > 0 && ft_strcmp(argv[i - 1], "<<") == 0)
-		{
-			new_argv[new_argc++] = ft_strdup(argv[i]);
-			i++;
-			continue ;
-		}
-		if (i > 0 && (ft_strcmp(argv[i - 1], "<") == 0 || ft_strcmp(argv[i - 1],
-					">") == 0 || ft_strcmp(argv[i - 1], ">>") == 0))
 		{
 			new_argv[new_argc++] = ft_strdup(argv[i]);
 			i++;

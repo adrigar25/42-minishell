@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/19 11:27:13 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/21 17:36:55 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,12 @@ t_cmd	*ft_process_input(char *input, t_data *data, int debug)
 		return (NULL);
 	expanded_argv = ft_handle_env_expansion(argv, data);
 	wildcard_argv = ft_handle_wildcards(expanded_argv, data);
+	if (debug && wildcard_argv)
+	{
+		printf("Wildcard argv:\n");
+		for (int i = 0; wildcard_argv[i]; i++)
+			printf("  [%d]: %s\n", i, wildcard_argv[i]);
+	}
 	if (!wildcard_argv)
 		wildcard_argv = expanded_argv;
 	cmd_list = ft_parse_input(wildcard_argv, data);

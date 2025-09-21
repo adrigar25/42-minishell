@@ -145,9 +145,7 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 			else if (!ft_strcmp(argv[i], "&&"))
 				current_cmd->op = OP_AND;
 		}
-		else if ((ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i], ">") == 0
-				|| ft_strcmp(argv[i], ">>") == 0 || ft_strcmp(argv[i],
-					"<<") == 0) && current_cmd->has_error == 0)
+		else if (is_redir_token(argv[i]) && current_cmd->has_error == 0)
 		{
 			k = i + 1;
 			count_nonop = 0;
