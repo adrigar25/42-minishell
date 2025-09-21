@@ -139,7 +139,7 @@ int					ft_exec_builtin(t_cmd *cmd, t_data **data);
 
 // ENV
 
-int					ft_dupenv(char ***envp_cpy, char **envp);
+char				**ft_dupenv(char **envp);
 char				*ft_getenv(const char *name, char **envp);
 int					ft_setenv(char *name, char *value, char ***envp);
 

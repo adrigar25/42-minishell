@@ -1,38 +1,18 @@
 /* ************************************************************************** */
-/*    		if ((input[i] == '<' || input[i] == '>') && input[i + 1] == input[i]
-			&& !is_in_quotes(input, i) && !is_escaped(input, i, in_quote,
-				quote_char))
-		{
-			args[arg_idx++] = ft_substr((char *)input, i, 2);
-			i += 2;
-			ft_skip_whitespace(input, &i);
-		}
-		else if ((input[i] == '<' || input[i] == '>') && !is_in_quotes(input, i)
-			&& !is_escaped(input, i, in_quote, quote_char))
-		{
-			args[arg_idx++] = ft_substr((char *)input, i, 1);
-			i++;
-			ft_skip_whitespace(input, &i);
-		}
-		else if (input[i] == '|' && !is_in_quotes(input, i)
-						&& !is_escaped(input, i, in_quote,
-							quote_char))       			if (i > start)
-				args[arg_idx++] = ft_substr((char *)input, start, i
-						- start);                                            */
+/*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_parse_input.c                                   :+:      :+:    :+:   */
+/*   ft_split_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>             +#+  +:+
-	+#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/05 13:58:32 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/05 17:05:09 by agarcia          ###   ########.fr       */
+/*   Created: 2025/09/22 00:33:34 by agarcia           #+#    #+#             */
+/*   Updated: 2025/09/22 01:42:09 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static int	is_in_quotes(const char *input, int pos)
+int	is_in_quotes(const char *input, int pos)
 {
 	int		i;
 	int		in_quote;
@@ -85,85 +65,32 @@ char	**ft_split_input(const char *input, int argc)
 	char	**args;
 	int		i;
 	int		arg_idx;
-	int		in_quote;
-	char	quote_char;
 	int		start;
-	char	*trimmed;
 
 	args = (char **)malloc(sizeof(char *) * (argc + 1));
 	if (!args)
 		return (NULL);
 	i = 0;
 	arg_idx = 0;
-	in_quote = 0;
-	quote_char = 0;
 	while (input[i] && arg_idx < argc)
 	{
 		ft_skip_whitespace(input, &i);
-		if (!input[i])
-			break ;
-		if ((input[i] == '<' || input[i] == '>') && input[i + 1] == input[i]
-			&& !in_quote && !is_escaped(input, i, in_quote, quote_char))
+		if (is_operator_char(input[i]) && !is_escaped(input, i, 0, 0))
 		{
-			args[arg_idx++] = ft_substr((char *)input, i, 2);
-			i += 2;
+			args[arg_idx++] = ft_substr((char *)input, i, 1 + (input[i
+						+ 1] == input[i]));
+			i += 1 + (input[i + 1] == input[i]);
 			ft_skip_whitespace(input, &i);
+			continue ;
 		}
-		else if ((input[i] == '<' || input[i] == '>') && !in_quote
-			&& !is_escaped(input, i, in_quote, quote_char))
-		{
-			args[arg_idx++] = ft_substr((char *)input, i, 1);
-			i++;
-			ft_skip_whitespace(input, &i);
-		}
-		else if (input[i] == '|' && !in_quote && !is_escaped(input, i, in_quote,
-				quote_char))
-		{
-			args[arg_idx++] = ft_substr((char *)input, i, 1);
-			i++;
-			while (input[i] && (input[i] == ' ' || input[i] == '\t'))
-				i++;
-		}
-		else
-		{
-			start = i;
-			while (input[i])
-			{
-				if (!in_quote && (input[i] == '\'' || input[i] == '"'))
-				{
-					in_quote = 1;
-					quote_char = input[i];
-					i++;
-				}
-				else if (in_quote && input[i] == quote_char)
-				{
-					in_quote = 0;
-					quote_char = 0;
-					i++;
-				}
-				else if (input[i] == '\\' && input[i + 1])
-					i += 2;
-				else if (!in_quote && is_operator_char(input[i])
-					&& !is_escaped(input, i, in_quote, quote_char))
-					break ;
-				else if (!in_quote && ft_isspace(input[i]))
-					break ;
-				else
-					i++;
-			}
-			if (i > start)
-			{
-				args[arg_idx++] = ft_substr((char *)input, start, i - start);
-			}
-		}
+		start = i;
+		while (input[i] && !((!is_in_quotes(input, i)
+					&& (is_operator_char(input[i]) || ft_isspace(input[i]))
+					&& !is_escaped(input, i, 0, 0))))
+			i += 1 + (input[i] == '\\' && input[i + 1]);
+		if (i > start)
+			args[arg_idx++] = ft_substr((char *)input, start, i - start);
 	}
 	args[arg_idx] = NULL;
-	for (int j = 0; j < arg_idx; j++)
-	{
-		trimmed = ft_strtrim(args[j], ' ');
-		trimmed = ft_strtrim(args[j], '\t');
-		free(args[j]);
-		args[j] = trimmed;
-	}
 	return (args);
 }

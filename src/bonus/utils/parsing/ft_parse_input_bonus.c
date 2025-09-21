@@ -157,7 +157,7 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 			}
 			if (count_nonop > 1)
 			{
-				ft_fprintf(2, ERROR_AMBIGUOUS_REDIRECT, argv[i + 1]);
+				ft_handle_error(12, 1, argv[i + 1], NULL);
 				data->last_exit_status = 1;
 				current_cmd->has_error = 1;
 				i = k - 1;

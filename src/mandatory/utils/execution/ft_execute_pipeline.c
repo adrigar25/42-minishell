@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 16:35:40 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/18 16:43:45 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/21 23:58:11 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,10 @@ int	ft_execute_pipeline(t_cmd *cmd_list, t_data **data)
 		else if (pid > 0)
 		{
 			pids[current->index] = pid;
-			if (current->has_error == 1)
-			{
-				if (current->infd != STDIN_FILENO)
-					close(current->infd);
-				if (current->outfd != STDOUT_FILENO)
-					close(current->outfd);
-			}
+			if (current->infd != STDIN_FILENO)
+				close(current->infd);
+			if (current->outfd != STDOUT_FILENO)
+				close(current->outfd);
 		}
 		else
 		{

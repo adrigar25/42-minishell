@@ -6,12 +6,11 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 21:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/14 15:18:12 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/22 01:45:29 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
-#include <ctype.h>
 
 char	**ft_handle_env_expansion(char **argv, t_data *data)
 {
@@ -19,7 +18,6 @@ char	**ft_handle_env_expansion(char **argv, t_data *data)
 	int		j;
 	char	**new_argv;
 	int		start;
-	int		len;
 	char	*temp;
 	char	*env_name;
 	char	*env_value;

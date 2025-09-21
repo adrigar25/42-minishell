@@ -13,6 +13,7 @@
 
 #include "../../minishell_bonus.h"
 #include <string.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 static int	ft_is_builtin(t_cmd *current)
@@ -34,6 +35,7 @@ int	ft_execute_pipeline(t_cmd *cmd_list, t_data **data)
 	t_cmd	*current;
 	pid_t	*pids;
 	pid_t	pid;
+	int		status;
 
 	if (!cmd_list || !data || !*data)
 		return (-1);
@@ -43,14 +45,10 @@ int	ft_execute_pipeline(t_cmd *cmd_list, t_data **data)
 	current = cmd_list;
 	while (current)
 	{
-		if (current && current->op == OP_OR
-			&& (*data)->last_exit_status == EXIT_SUCCESS)
-		{
-			current = current->next;
-			continue ;
-		}
-		else if (current && current->op == OP_AND
-			&& (*data)->last_exit_status != EXIT_SUCCESS)
+		if (current && ((current->op == OP_OR
+					&& (*data)->last_exit_status == EXIT_SUCCESS)
+				|| (current->op == OP_AND
+					&& (*data)->last_exit_status != EXIT_SUCCESS)))
 		{
 			current = current->next;
 			continue ;
@@ -82,6 +80,18 @@ int	ft_execute_pipeline(t_cmd *cmd_list, t_data **data)
 				close(current->infd);
 			if (current->outfd != STDOUT_FILENO)
 				close(current->outfd);
+			if (current->next && (current->next->op == OP_AND
+					|| current->next->op == OP_OR))
+			{
+				if (waitpid(pid, &status, 0) > 0)
+				{
+					if (WIFEXITED(status))
+						(*data)->last_exit_status = WEXITSTATUS(status);
+					else if (WIFSIGNALED(status))
+						(*data)->last_exit_status = 128 + WTERMSIG(status);
+				}
+				pids[current->index] = -1;
+			}
 		}
 		else
 		{

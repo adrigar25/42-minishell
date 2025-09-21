@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 21:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/12 17:37:58 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/22 01:33:04 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ char	**ft_handle_env_expansion(char **argv, t_data *data)
 	int		j;
 	char	**new_argv;
 	int		start;
-	int		len;
 	char	*temp;
 	char	*env_name;
 	char	*env_value;
