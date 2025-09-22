@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exec_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:06:20 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 16:42:29 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/22 18:37:31 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <sys/stat.h>
 
 /**
  * ENGLISH: Cleans the argument array by removing NULL or empty string entries.
@@ -71,17 +72,17 @@ static int	ft_check_cmd_path(const char *path, const char *cmd_name)
 	struct stat	file_stat;
 
 	if (!path)
-		return (ft_handle_error(1, EXIT_COMMAND_NOT_FOUND,
-				(char *)cmd_name, NULL));
+		return (ft_handle_error(1, EXIT_COMMAND_NOT_FOUND, (char *)cmd_name,
+				NULL));
 	if (stat(path, &file_stat) == -1)
-		return (ft_handle_error(4, EXIT_COMMAND_NOT_FOUND,
-				(char *)cmd_name, NULL));
+		return (ft_handle_error(4, EXIT_COMMAND_NOT_FOUND, (char *)cmd_name,
+				NULL));
 	if (S_ISDIR(file_stat.st_mode))
-		return (ft_handle_error(3, EXIT_PERMISSION_DENIED,
-				(char *)cmd_name, NULL));
+		return (ft_handle_error(3, EXIT_PERMISSION_DENIED, (char *)cmd_name,
+				NULL));
 	if (access(path, X_OK) == -1)
-		return (ft_handle_error(2, EXIT_PERMISSION_DENIED,
-				(char *)cmd_name, NULL));
+		return (ft_handle_error(2, EXIT_PERMISSION_DENIED, (char *)cmd_name,
+				NULL));
 	return (0);
 }
 
@@ -98,7 +99,7 @@ static int	ft_check_cmd_path(const char *path, const char *cmd_name)
  *          EXIT_SUCCESS en caso de éxito, o un código de salida apropiado en
  * 			caso de fallo.
  * @returns EXIT_FAILURE if execve fails. /
- *	 		EXIT_FAILURE si execve falla.
+ *				EXIT_FAILURE si execve falla.
  */
 int	ft_exec_cmd(t_cmd *cmd)
 {

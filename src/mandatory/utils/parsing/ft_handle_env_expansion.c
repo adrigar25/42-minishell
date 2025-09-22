@@ -14,7 +14,8 @@
 #include "../../minishell.h"
 
 /**
- * ENGLISH: Appends the source string to the destination string, updating the destination.
+ * ENGLISH: Appends the source string to the destination string,
+ * updating the destination.
  *
  * SPANISH: Añade la cadena fuente a la cadena destino, actualizando la destino.
  *
@@ -116,9 +117,11 @@ static int	ft_expand_env(char **dst, char *arg, int *j, t_data *data)
 }
 
 /**
- * ENGLISH: Processes a single argument, handling environment variable expansion.
+ * ENGLISH: Processes a single argument,
+	handling environment variable expansion.
  *
- * SPANISH: Procesa un solo argumento, manejando la expansión de variables de entorno.
+ * SPANISH: Procesa un solo argumento,
+	manejando la expansión de variables de entorno.
  *
  * @param dst   Pointer to the destination string. /
  *              Puntero a la cadena destino.
@@ -165,7 +168,9 @@ static int	ft_process_arg(char **dst, char *arg, t_data *data)
 /**
  * ENGLISH: Handles environment variable expansion for an array of arguments.
  *
- * SPANISH: Maneja la expansión de variables de entorno para un array de argumentos.
+
+	* SPANISH: Maneja la expansión de variables de entorno
+	para un array de argumentos.
  *
  * @param argv  The array of argument strings. /
  *              El array de cadenas de argumentos.
@@ -173,8 +178,11 @@ static int	ft_process_arg(char **dst, char *arg, t_data *data)
  * @param data  Pointer to the shell data structure. /
  *              Puntero a la estructura de datos del shell.
  *
- * @returns A new array of argument strings with variables expanded, or the original array on error. /
- *          Un nuevo array de cadenas de argumentos con las variables expandidas, o el array original en caso de error.
+ * @returns A new array of argument strings with variables expanded,
+	or the original array on error. /
+
+	*          Un nuevo array de cadenas de argumentos con
+	las variables expandidas, o el array original en caso de error.
  */
 char	**ft_handle_env_expansion(char **argv, t_data *data)
 {

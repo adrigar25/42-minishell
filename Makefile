@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
+#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/22 15:43:15 by adriescr         ###   ########.fr        #
+#    Updated: 2025/09/22 18:46:10 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,7 +66,6 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_realloc_envp.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_create_env_var.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_update_existing_env.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_free_env.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_update_pwd_env.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/redirections/ft_handle_infile.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/redirections/ft_handle_outfile.c \

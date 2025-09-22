@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 16:28:59 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/22 18:16:42 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,16 @@
  */
 static int	ft_putarg_echo(char *arg, int flag_n, int outfd)
 {
-	int		start;
-	int		end;
+	int	start;
+	int	end;
 
 	if (!arg)
 		return (0);
 	ft_handle_quoted_arg(arg, &start, &end);
 	if (ft_print_arg_content(arg, start, end, outfd) == -1)
 		return (-1);
-	if (flag_n)
-	{
-		if (arg[end - 1] == ' ')
-			if (ft_putchar_fd('%', outfd) == -1)
-				return (-1);
-	}
+	if (flag_n && arg[end - 1] == ' ' && ft_putchar_fd('%', outfd) == -1)
+		return (-1);
 	return (0);
 }
 
@@ -87,7 +83,8 @@ static int	ft_intflag_n(char *arg)
  * 						descriptores de archivo.
  *
  * @param start_index The index to start printing arguments from. /
- *                    El índice desde el cual comenzar a imprimir los argumentos.
+
+	*                    El índice desde el cual comenzar a imprimir los argumentos.
  *
  * @param outfd       The file descriptor to write the output to. /
  *                    El descriptor de archivo donde escribir la salida.
@@ -104,9 +101,9 @@ static int	ft_print_echo_args(t_cmd cmd, int start_index, int outfd)
 	{
 		if (ft_putarg_echo(cmd.argv[i], 0, outfd) == -1)
 			return (1);
-		if (cmd.argv[i + 1] && cmd.argv[i + 1][0] != '\0')
-			if (ft_putchar_fd(' ', outfd) == -1)
-				return (1);
+		if (cmd.argv[i + 1] && cmd.argv[i + 1][0] != '\0' && ft_putchar_fd(' ',
+				outfd) == -1)
+			return (1);
 		i++;
 	}
 	return (0);
@@ -132,9 +129,7 @@ int	ft_echo(t_cmd cmd)
 	int	n_flag;
 	int	start_index;
 
-	if (!cmd.argv || !cmd.argv[0])
-		return (1);
-	if (cmd.outfd < 0)
+	if (!cmd.argv || !cmd.argv[0] || cmd.outfd < 0)
 		return (1);
 	n_flag = 0;
 	start_index = 1;
@@ -143,10 +138,8 @@ int	ft_echo(t_cmd cmd)
 		n_flag = 1;
 		start_index = 2;
 	}
-	if (ft_print_echo_args(cmd, start_index, cmd.outfd))
+	if (ft_print_echo_args(cmd, start_index, cmd.outfd) || (!n_flag
+			&& ft_putchar_fd('\n', cmd.outfd) == -1))
 		return (1);
-	if (!n_flag)
-		if (ft_putchar_fd('\n', cmd.outfd) == -1)
-			return (1);
 	return (0);
 }

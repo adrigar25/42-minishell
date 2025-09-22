@@ -3,59 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>             +#+  +:+
-	+#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 18:06:03 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/08 18:08:08 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/22 19:14:34 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-/**
- * ENGLISH: Adds a file descriptor to the command structure, closing the previous one if necessary.
- *
- * SPANISH: Añade un descriptor de archivo a la estructura de comando, cerrando el anterior si es necesario.
- *
- * @param cmd        The command to modify. /
- *                   El comando a modificar.
- *
- * @param fd         The file descriptor to add. /
- *                   El descriptor de archivo a añadir.
- *
- * @param in_or_out  0 for input, 1 for output. /
- *                   0 para entrada, 1 para salida.
- */
-static void	ft_add_fd_to_cmd(t_cmd *cmd, int fd, int in_or_out)
-{
-	if (!cmd)
-		return ;
-	if (in_or_out == 0)
-	{
-		if (cmd->infd != STDIN_FILENO)
-			close(cmd->infd);
-		cmd->infd = fd;
-	}
-	else
-	{
-		if (cmd->outfd != STDOUT_FILENO)
-			close(cmd->outfd);
-		cmd->outfd = fd;
-	}
-}
-
-/**
- * ENGLISH: Creates and initializes a new command node.
- *
- * SPANISH: Crea e inicializa un nuevo nodo de comando.
- *
- * @param index   The index to assign to the new command node. /
- *                El índice a asignar al nuevo nodo de comando.
- *
- * @returns A pointer to the newly created command node, or NULL on failure. /
- *          Un puntero al nuevo nodo de comando creado, o NULL en caso de error.
- */
 static t_cmd	*ft_create_cmd_node(int index)
 {
 	t_cmd	*new_cmd;
@@ -99,17 +55,95 @@ static void	ft_add_arg_to_cmd(t_cmd *cmd, char *arg)
 	cmd->argv = new_argv;
 }
 
+static int	ft_handle_redirection(t_cmd *cmd, char **argv, int i, t_data *data)
+{
+	char	*clean_arg;
+	int		fd;
+
+	clean_arg = ft_remove_quotes(argv[i + 1]);
+	if (!clean_arg)
+		clean_arg = argv[i + 1];
+	if (ft_strcmp(argv[i], "<") == 0)
+		fd = ft_handle_infile(clean_arg);
+	else if (ft_strcmp(argv[i], ">") == 0)
+		fd = ft_handle_outfile(clean_arg, 0);
+	else if (ft_strcmp(argv[i], ">>") == 0)
+		fd = ft_handle_outfile(clean_arg, 1);
+	else
+		fd = ft_handle_heredoc(clean_arg);
+	if (fd != -1)
+	{
+		if (ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i], "<<") == 0)
+		{
+			if (cmd->infd != STDIN_FILENO)
+				close(cmd->infd);
+			cmd->infd = fd;
+		}
+		else
+		{
+			if (cmd->outfd != STDOUT_FILENO)
+				close(cmd->outfd);
+			cmd->outfd = fd;
+		}
+	}
+	else
+	{
+		data->last_exit_status = 1;
+		cmd->has_error = 1;
+	}
+	if (clean_arg != argv[i + 1])
+		free(clean_arg);
+	return (i + 1);
+}
+
+static int	ft_process_token(t_cmd **current_cmd, char **argv, int i,
+		int *cmd_index, t_data *data)
+{
+	int		pipefd[2];
+	t_cmd	*new_cmd;
+		char *clean_arg;
+
+	if (ft_strcmp(argv[i], "|") == 0)
+	{
+		if (pipe(pipefd) == -1)
+		{
+			perror("pipe");
+			return (i);
+		}
+		new_cmd = ft_create_cmd_node(*cmd_index + 1);
+		if (!new_cmd)
+			return (i);
+		(*cmd_index)++;
+		(*current_cmd)->next = new_cmd;
+		new_cmd->data = data;
+		if ((*current_cmd)->outfd == STDOUT_FILENO)
+			(*current_cmd)->outfd = pipefd[1];
+		else
+			close(pipefd[1]);
+		new_cmd->infd = pipefd[0];
+		*current_cmd = new_cmd;
+		return (i);
+	}
+	else if ((ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i], ">") == 0
+			|| ft_strcmp(argv[i], ">>") == 0 || ft_strcmp(argv[i], "<<") == 0)
+		&& (*current_cmd)->has_error == 0)
+		return (ft_handle_redirection(*current_cmd, argv, i, data));
+	else
+	{
+		clean_arg = ft_remove_quotes(argv[i]);
+		if (clean_arg)
+			ft_add_arg_to_cmd(*current_cmd, clean_arg);
+		return (i);
+	}
+}
+
 t_cmd	*ft_parse_input(char **argv, t_data *data)
 {
 	t_cmd	*cmd_list;
 	t_cmd	*current_cmd;
 	int		i;
-	int		fd;
-	char	*arg;
-	char	*clean_arg;
-	int		pipefd[2];
 	int		cmd_index;
-	t_cmd	*prev_cmd;
+		int new_i;
 
 	if (!argv || data->argc == 0)
 		return (NULL);
@@ -122,62 +156,11 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 	i = 0;
 	while (i < data->argc)
 	{
-		if (ft_strcmp(argv[i], "|") == 0)
-		{
-			if (pipe(pipefd) == -1)
-			{
-				perror("pipe");
-				return (cmd_list);
-			}
-			prev_cmd = current_cmd;
-			cmd_index++;
-			prev_cmd->next = ft_create_cmd_node(cmd_index);
-			prev_cmd = prev_cmd->next;
-			prev_cmd->data = data;
-			if (current_cmd->outfd == STDOUT_FILENO)
-				current_cmd->outfd = pipefd[1];
-			else
-				close(pipefd[1]);
-			prev_cmd->infd = pipefd[0];
-			current_cmd = prev_cmd;
-		}
-		else if ((ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i], ">") == 0
-				|| ft_strcmp(argv[i], ">>") == 0 || ft_strcmp(argv[i],
-					"<<") == 0) && current_cmd->has_error == 0)
-		{
-			clean_arg = ft_remove_quotes(argv[i + 1]);
-			if (!clean_arg)
-				clean_arg = argv[i + 1];
-			if (ft_strcmp(argv[i], "<") == 0)
-				fd = ft_handle_infile(clean_arg);
-			else if (ft_strcmp(argv[i], ">") == 0)
-				fd = ft_handle_outfile(clean_arg, 0);
-			else if (ft_strcmp(argv[i], ">>") == 0)
-				fd = ft_handle_outfile(clean_arg, 1);
-			else
-				fd = ft_handle_heredoc(clean_arg);
-			if (fd != -1)
-			{
-				ft_add_fd_to_cmd(current_cmd, fd, (ft_strcmp(argv[i], "<") == 0
-						|| ft_strcmp(argv[i], "<<") == 0 ? 0 : 1));
-			}
-			else
-			{
-				data->last_exit_status = 1;
-				current_cmd->has_error = 1;
-			}
-			if (clean_arg != argv[i + 1])
-				free(clean_arg);
+		new_i = ft_process_token(&current_cmd, argv, i, &cmd_index, data);
+		if (new_i == i)
 			i++;
-		}
 		else
-		{
-			arg = argv[i];
-			clean_arg = ft_remove_quotes(arg);
-			if (clean_arg)
-				ft_add_arg_to_cmd(current_cmd, clean_arg);
-		}
-		i++;
+			i = new_i + 1;
 	}
 	return (cmd_list);
 }

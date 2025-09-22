@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_remove_quotes.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:16:59 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 14:49:38 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/22 21:30:30 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 /**
  * ENGLISH: Skips a quote character in the string and manages quote state.
  *
- * SPANISH: Omite un carácter de comilla en la cadena y gestiona el estado de comillas.
+ * SPANISH: Omite un carácter de comilla en la cadena
+ * y gestiona el estado de comillas.
  *
  * @param str        The input string. /
  *                   La cadena de entrada.
@@ -26,8 +27,11 @@
  * @param quote      Pointer to the current quote character. /
  *                   Puntero al carácter de comilla actual.
  *
- * @param in_quote   Pointer to the quote state (1 if inside quotes, 0 otherwise). /
- *                   Puntero al estado de comillas (1 si está dentro de comillas, 0 en caso contrario).
+ * @param in_quote   Pointer to the quote state (1 if inside quotes,
+	0 otherwise). /
+
+	*                   Puntero al estado de comillas
+	(1 si está dentro de comillas,0 en caso contrario).
  *
  * @returns 1 if a quote was skipped, 0 otherwise. /
  *          1 si se omitió una comilla, 0 en caso contrario.
@@ -67,11 +71,11 @@ static int	ft_calc_unquoted_len(const char *str)
 	char	q;
 	int		len;
 
-	i = 0;
+	i = -1;
 	len = 0;
 	in_q = 0;
 	q = 0;
-	while (str[i])
+	while (str[++i])
 	{
 		if ((!in_q && (str[i] == '\'' || str[i] == '"')))
 		{
@@ -85,21 +89,26 @@ static int	ft_calc_unquoted_len(const char *str)
 		}
 		else
 			len++;
-		i++;
 	}
 	return (len);
 }
 
 /**
- * ENGLISH: Removes quotes from the input string and returns a new string without quotes.
+
+	* ENGLISH: Removes quotes from the input string and
+	returns a new string without quotes.
  *
- * SPANISH: Elimina las comillas de la cadena de entrada y devuelve una nueva cadena sin comillas.
+
+	* SPANISH: Elimina las comillas de la cadena de entrada
+	y devuelve una nueva cadena sin comillas.
  *
  * @param str   The input string with quotes. /
  *              La cadena de entrada con comillas.
  *
- * @returns A newly allocated string without quotes, or NULL on allocation failure. /
- *          Una cadena recién asignada sin comillas, o NULL en caso de fallo en la asignación.
+ * @returns A newly allocated string without quotes,
+	or NULL on allocation failure. /
+ *          Una cadena recién asignada sin comillas,
+	o NULL en caso de fallo en la asignación.
  */
 char	*ft_remove_quotes(const char *str)
 {

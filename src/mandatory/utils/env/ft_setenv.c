@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_setenv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 17:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 16:31:50 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/22 18:36:00 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
  *          If the variable exists, its value is updated. If it does not exist,
  *          a new variable is added to the array.
  *
- * SPANISH: Establece o actualiza una variable de entorno en el array de entorno.
+
+	* SPANISH: Establece o actualiza una variable de entorno en el array de entorno.
  *          Si la variable existe, su valor se actualiza. Si no existe,
  *          se añade una nueva variable al array.
  *
@@ -55,10 +56,10 @@ int	ft_setenv(char *name, char *value, char ***envp)
 		return (-1);
 	new_var = ft_create_env_var(name, value);
 	if (!new_var)
-		return (ft_free_envp(new_envp), -1);
+		return (ft_free_matrix(new_envp), -1);
 	new_envp[envp_size] = new_var;
 	new_envp[envp_size + 1] = NULL;
-	ft_free_envp(*envp);
+	ft_free_matrix(*envp);
 	*envp = new_envp;
 	return (0);
 }

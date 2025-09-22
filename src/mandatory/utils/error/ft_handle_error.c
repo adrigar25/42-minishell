@@ -3,51 +3,65 @@
 /*                                                        :::      ::::::::   */
 /*   ft_handle_error.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 16:27:37 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 15:35:49 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/22 18:33:15 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static void	print_error_message_part2(int error_code, char *msg, char *msg2)
+static void	print_exec_errors(int code, char *msg)
 {
-	if (error_code == 9)
-		ft_fprintf(2, ERROR_HEREDOC_DELIMITER);
-	else if (error_code == 10)
-		ft_fprintf(2, ERROR_HEREDOC_PROCESS);
-	else if (error_code == 11)
+	if (code == 1)
+		ft_fprintf(2, ERROR_COMMAND_NOT_FOUND, msg);
+	else if (code == 2)
+		ft_fprintf(2, ERROR_PERMISSION_DENIED);
+	else if (code == 3)
+		ft_fprintf(2, ERROR_IS_A_DIRECTORY, msg);
+	else if (code == 4)
+		ft_fprintf(2, ERROR_NO_SUCH_FILE, msg);
+}
+
+static void	print_syntax_errors(int code, char *msg)
+{
+	if (code == 5)
+		ft_fprintf(2, ERROR_SYNTAX);
+	else if (code == 6)
+		ft_fprintf(2, ERROR_SYNTAX_TOKEN, msg);
+}
+
+static void	print_builtin_env_errors(int code, char *msg, char *msg2)
+{
+	if (code == 7)
+		ft_fprintf(2, ERROR_TOO_MANY_ARGS);
+	else if (code == 8)
+		ft_fprintf(2, ERROR_HOME_NOT_SET);
+	else if (code == 11)
 		ft_fprintf(2, ERROR_CD_FAIL, msg, msg2);
-	else if (error_code == 12)
-		ft_fprintf(2, ERROR_AMBIGUOUS_REDIRECT, msg);
-	else if (error_code == 13)
+	else if (code == 13)
 		ft_fprintf(2, ERROR_INVALID_IDENTIFIER, msg);
-	else if (error_code == 14)
+	else if (code == 14)
 		ft_fprintf(2, ERROR_NUM_ARG_REQ, msg);
 }
 
-static void	print_error_message_part1(int error_code, char *msg, char *msg2)
+static void	print_redir_errors(int code, char *msg)
 {
-	if (error_code == 1)
-		ft_fprintf(2, ERROR_COMMAND_NOT_FOUND, msg);
-	else if (error_code == 2)
-		ft_fprintf(2, ERROR_PERMISSION_DENIED);
-	else if (error_code == 3)
-		ft_fprintf(2, ERROR_IS_A_DIRECTORY, msg);
-	else if (error_code == 4)
-		ft_fprintf(2, ERROR_NO_SUCH_FILE, msg);
-	else if (error_code == 5)
-		ft_fprintf(2, ERROR_SYNTAX);
-	else if (error_code == 6)
-		ft_fprintf(2, ERROR_SYNTAX_TOKEN, msg);
-	else if (error_code == 7)
-		ft_fprintf(2, ERROR_TOO_MANY_ARGS);
-	else if (error_code == 8)
-		ft_fprintf(2, ERROR_HOME_NOT_SET);
-	else
-		print_error_message_part2(error_code, msg, msg2);
+	if (code == 9)
+		ft_fprintf(2, ERROR_HEREDOC_DELIMITER);
+	else if (code == 10)
+		ft_fprintf(2, ERROR_HEREDOC_PROCESS);
+	else if (code == 12)
+		ft_fprintf(2, ERROR_AMBIGUOUS_REDIRECT, msg);
+}
+
+static void	print_error_message(int error_code, char *msg, char *msg2)
+{
+	print_exec_errors(error_code, msg);
+	print_syntax_errors(error_code, msg);
+	print_builtin_env_errors(error_code, msg, msg2);
+	print_redir_errors(error_code, msg);
 }
 
 /**
@@ -74,6 +88,6 @@ static void	print_error_message_part1(int error_code, char *msg, char *msg2)
  */
 int	ft_handle_error(int error_code, int exit_code, char *msg, char *msg2)
 {
-	print_error_message_part1(error_code, msg, msg2);
+	print_error_message(error_code, msg, msg2);
 	return (exit_code);
 }
