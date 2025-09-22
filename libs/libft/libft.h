@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:22:52 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/22 10:35:48 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/22 14:47:06 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,16 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdarg.h>
+# include <string.h>
+# include <errno.h>
+# include <limits.h>
+# include <signal.h>
 
 # define BUFFER_SIZE 1024
 # define RESET_COLOR "\033[0m"
 
 // Functions lib
-int				ft_putstr_error(const char *str);
-int				ft_putstr(const char *str);
-int				ft_putchar(char c);
-int				ft_putchar_error(char c);
 int				ft_is_digit(unsigned char c);
 int				ft_is_number(const char *str);
 int				ft_atoi(const char *str);
@@ -34,7 +35,6 @@ char			**ft_split(char const *s, char c);
 void			*ft_memcpy(void *dst, const void *src, size_t n);
 size_t			ft_count_words(const char *s, char c);
 size_t			ft_strlen(const char *s);
-void			ft_putnbr(int n);
 char			*ft_strjoin(char *s1, char *s2);
 char			*ft_strdup(const char *s);
 char			*ft_substr(char *s, unsigned int start, size_t len);
@@ -48,6 +48,11 @@ char			*ft_strtrim(const char *str, char c);
 void			ft_skip_whitespace(const char *cmd, int *i);
 int				ft_isspace(int c);
 int				ft_isalnum(int c);
+int				ft_numlen(int n);
+int				ft_is_quoted(const char *arg);
+int				ft_is_numeric(const char *str);
+int				ft_count_arg(char **args);
+char			**ft_copy_args(char **src, char **dst);
 
 // Especial functions
 unsigned int	ft_simple_rand(unsigned int *seed);
@@ -58,6 +63,17 @@ int				ft_close_file(int fd);
 int				ft_open_file_read(const char *filename);
 int				ft_open_file_write(const char *filename, int append);
 int				ft_print_file(char *filename, char *color);
+// Print utils
+int				ft_putstr_error(const char *str);
+int				ft_print_escaped_newline(const char *arg, int *i,
+					int outfd);
+int				ft_print_arg_content(char *arg, int start, int end,
+					int outfd);
+int				ft_putstr(const char *str);
+int				ft_putchar(char c);
+int				ft_putchar_error(char c);
+void			ft_putnbr(int n);
+int				ft_putnbr_fd(long n, int fd);
 int				ft_putstr_fd(char *s, int fd);
 int				ft_putchar_fd(char c, int fd);
 int				ft_fprintf(int fd, const char *fmt, ...);

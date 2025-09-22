@@ -6,13 +6,13 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:20:47 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/04 17:32:03 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/22 12:53:24 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
+/**
  * ENGLISH: Checks if a character is a whitespace character.
  *
  * SPANISH: Comprueba si un carácter es un carácter de espacio en blanco.

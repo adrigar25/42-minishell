@@ -6,13 +6,13 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 13:39:52 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/03 13:30:01 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/22 12:54:37 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
+/**
  * ENGLISH: Calculates the length of a string.
  *
  * SPANISH: Calcula la longitud de una cadena.

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
+#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/22 11:54:34 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/22 15:43:15 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,6 +63,11 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_dupenv.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_getenv.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_setenv.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_realloc_envp.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_create_env_var.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_update_existing_env.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_free_env.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_update_pwd_env.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/redirections/ft_handle_infile.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/redirections/ft_handle_outfile.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_exec_cmd.c \
@@ -71,11 +76,13 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_finish_execution.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_execute_pipeline.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_handle_heredoc.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_is_builtin.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_setup_child_io.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/parsing/ft_skip_quotes.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/parsing/ft_split_input.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/parsing/ft_parse_input.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/parsing/ft_handle_env_expansion.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/parsing/ft_handle_quoted_arg.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/parsing/ft_remove_quotes.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/parsing/ft_syntax_check.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/signals/ft_sigint_handler.c \

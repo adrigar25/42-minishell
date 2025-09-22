@@ -6,13 +6,13 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:34:30 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/09 18:35:11 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/22 12:52:25 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-/*
+/**
  * ENGLISH: Outputs a string to the given file descriptor.
  *
  * SPANISH: Escribe una cadena de caracteres en el descriptor de archivo dado.

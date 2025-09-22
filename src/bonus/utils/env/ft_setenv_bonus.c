@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_setenv_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 17:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/14 15:18:12 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/22 14:38:06 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static char	**ft_realloc_envp(char **envp, int new_size)
 	return (new_envp);
 }
 
-static int	ft_count_envp(char **envp)
+static int	ft_count_args(char **envp)
 {
 	int	count;
 
@@ -78,7 +78,7 @@ int	ft_setenv(char *name, char *value, char ***envp)
 		}
 		i++;
 	}
-	envp_size = ft_count_envp(*envp);
+	envp_size = ft_count_args(*envp);
 	new_envp = ft_realloc_envp(*envp, envp_size + 1);
 	if (!new_envp)
 		return (-1);

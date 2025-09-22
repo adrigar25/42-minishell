@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar_error.c                                 :+:      :+:    :+:   */
+/*   ft_putchar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/08 19:42:14 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/10 16:54:39 by agarcia          ###   ########.fr       */
+/*   Created: 2025/07/08 19:41:56 by adriescr          #+#    #+#             */
+/*   Updated: 2025/09/22 12:52:04 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../libft.h"
 
-/*
- * ENGLISH: Outputs a character to the standard error output.
+/**
+ * ENGLISH: Outputs a character to the standard output.
  *
- * SPANISH: Envía un carácter a la salida de error estándar.
+ * SPANISH: Envía un carácter a la salida estándar.
  *
  * @param c   The character to output. /
  *            El carácter a enviar.
@@ -23,18 +23,9 @@
  * @returns 0 on success, -1 on failure. /
  *          0 en caso de éxito, -1 en caso de error.
  */
-int	ft_putchar_error(char c)
+int	ft_putchar(char c)
 {
-	const char	*red;
-	const char	*reset;
-
-	red = "\033[31m";
-	reset = "\033[0m";
-	if (write(2, red, 5) == -1)
-		return (-1);
-	if (write(2, &c, 1) == -1)
-		return (-1);
-	if (write(2, reset, 4) == -1)
+	if (write(1, &c, 1) == -1)
 		return (-1);
 	return (0);
 }

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_get_cmd_path_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 16:30:20 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/18 16:09:51 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/22 14:24:52 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
 
-char	*get_cmd_path(char *cmd)
+char	*ft_get_cmd_path(char *cmd)
 {
 	char	*temp;
 	char	**paths;

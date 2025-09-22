@@ -6,13 +6,13 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:15:59 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/03 13:30:05 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/22 12:54:55 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
+/**
  * ENGLISH: Extracts a substring from a string.
  *
  * SPANISH: Extrae una subcadena de una cadena.

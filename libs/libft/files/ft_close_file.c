@@ -6,13 +6,13 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:25:57 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/03 14:26:16 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/22 12:48:29 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-/*
+/**
  * ENGLISH: Closes a file descriptor.
  *
  * SPANISH: Cierra un descriptor de archivo.

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 00:33:34 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 01:42:09 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/22 14:51:31 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	is_in_quotes(const char *input, int pos)
 	return (in_quote);
 }
 
-static int	is_escaped(const char *input, int pos, int in_quote,
+static int	ft_is_escaped(const char *input, int pos, int in_quote,
 		char quote_char)
 {
 	int	count;
@@ -55,7 +55,7 @@ static int	is_escaped(const char *input, int pos, int in_quote,
 	return (count % 2);
 }
 
-static int	is_operator_char(char c)
+static int	ft_is_operator_char(char c)
 {
 	return (c == '<' || c == '>' || c == '|');
 }
@@ -75,7 +75,7 @@ char	**ft_split_input(const char *input, int argc)
 	while (input[i] && arg_idx < argc)
 	{
 		ft_skip_whitespace(input, &i);
-		if (is_operator_char(input[i]) && !is_escaped(input, i, 0, 0))
+		if (ft_is_operator_char(input[i]) && !ft_is_escaped(input, i, 0, 0))
 		{
 			args[arg_idx++] = ft_substr((char *)input, i, 1 + (input[i
 						+ 1] == input[i]));
@@ -85,8 +85,8 @@ char	**ft_split_input(const char *input, int argc)
 		}
 		start = i;
 		while (input[i] && !((!is_in_quotes(input, i)
-					&& (is_operator_char(input[i]) || ft_isspace(input[i]))
-					&& !is_escaped(input, i, 0, 0))))
+					&& (ft_is_operator_char(input[i]) || ft_isspace(input[i]))
+					&& !ft_is_escaped(input, i, 0, 0))))
 			i += 1 + (input[i] == '\\' && input[i + 1]);
 		if (i > start)
 			args[arg_idx++] = ft_substr((char *)input, start, i - start);

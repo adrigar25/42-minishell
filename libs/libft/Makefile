@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
+#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:25:07 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/22 10:35:48 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/22 15:34:59 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,8 @@ CFLAGS = -Wall -Wextra -Werror
 GET_NEXT_LINE_DIR = get_next_line
 # File utils
 FILES_DIR = files
+# Print utils
+PRINT_UTILS_DIR = print
 
 # File utils functions
 FILE_UTILS = \
@@ -30,17 +32,25 @@ FILE_UTILS = \
 	$(FILES_DIR)/ft_open_file_write.c \
 	$(FILES_DIR)/ft_print_file.c \
 	$(FILES_DIR)/ft_close_file.c \
-	$(FILES_DIR)/ft_fprintf.c \
-	$(FILES_DIR)/ft_putstr_fd.c \
-	$(FILES_DIR)/ft_putchar_fd.c \
+
+# Print utils functions
+PRINT_UTILS = \
+	$(PRINT_UTILS_DIR)/ft_putstr.c \
+	$(PRINT_UTILS_DIR)/ft_putstr_error.c \
+	$(PRINT_UTILS_DIR)/ft_putchar_error.c \
+	$(PRINT_UTILS_DIR)/ft_putchar.c \
+	$(PRINT_UTILS_DIR)/ft_putchar_fd.c \
+	$(PRINT_UTILS_DIR)/ft_putnbr.c \
+	$(PRINT_UTILS_DIR)/ft_putnbr_fd.c \
+	$(PRINT_UTILS_DIR)/ft_putstr_fd.c \
+	$(PRINT_UTILS_DIR)/ft_fprintf.c \
+	$(PRINT_UTILS_DIR)/ft_print_escaped_newline.c \
+	$(PRINT_UTILS_DIR)/ft_print_arg_content.c \
+	$(PRINT_UTILS_DIR)/ft_print_escaped_newline.c \
 
 # My libft functions
 MY_LIBFT = \
 	ft_is_digit.c \
-	ft_putstr.c \
-	ft_putstr_error.c \
-	ft_putchar_error.c \
-	ft_putchar.c \
 	ft_is_number.c \
 	ft_atoi.c \
 	ft_itoa.c \
@@ -55,7 +65,6 @@ MY_LIBFT = \
 	ft_strcmp.c \
 	ft_strncmp.c \
 	ft_rand.c \
-	ft_putnbr.c \
 	ft_strstr.c \
 	ft_strcpy.c \
 	ft_strlcpy.c \
@@ -63,8 +72,14 @@ MY_LIBFT = \
 	ft_skip_whitespace.c \
 	ft_isspace.c \
 	ft_isalnum.c \
+	ft_numlen.c \
+	ft_is_quoted.c \
+	ft_is_numeric.c \
+	ft_count_arg.c \
+	ft_copy_args.c \
 	$(GET_NEXT_LINE_DIR)/get_next_line.c \
 	$(FILE_UTILS) \
+	$(PRINT_UTILS) \
 
 # OBJECTS
 OBJS = $(MY_LIBFT:.c=.o)

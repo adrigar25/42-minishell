@@ -6,13 +6,13 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:53:40 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/03 13:29:21 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/22 12:53:12 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
+/**
  * ENGLISH: Checks if a string represents a valid number.
  *
  * SPANISH: Verifica si una cadena representa un número válido.

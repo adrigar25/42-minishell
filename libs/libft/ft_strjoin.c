@@ -6,13 +6,13 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:56:05 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/04 18:56:06 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/22 12:54:23 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
+/**
  * ENGLISH: Joins two strings into a new string.
  *
  * SPANISH: Une dos cadenas en una nueva cadena.

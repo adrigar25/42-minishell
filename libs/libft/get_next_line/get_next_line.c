@@ -6,13 +6,13 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:20:55 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/03 13:28:12 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/22 13:06:20 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-/*
+/**
  * ENGLISH: Extracts a line from the reminder.
  *
  * SPANISH: Extrae una línea del recordatorio.
@@ -45,7 +45,7 @@ static char	*ft_extract_line(char **reminder)
 	return (line);
 }
 
-/*
+/**
  * ENGLISH: Reads from a file descriptor and appends to the reminder.
  *
  * SPANISH: Lee de un descriptor de archivo y agrega al recordatorio.
@@ -84,6 +84,19 @@ static int	ft_read_to_reminder(int fd, char **reminder)
 	return (bytes_read);
 }
 
+/**
+ * ENGLISH: Reads the next line from a file descriptor.
+ *
+ * SPANISH: Lee la siguiente línea de un descriptor de archivo.
+ *
+ * @param fd   The file descriptor to read from. /
+ *             El descriptor de archivo del que leer.
+ *
+ * @returns A pointer to the next line read, or NULL if there are no
+ * 			more lines or on error. /
+ *          Un puntero a la siguiente línea leída, o NULL si no hay
+ * 			más líneas o en caso de error.
+ */
 char	*ft_get_next_line(int fd)
 {
 	static char	*reminder;

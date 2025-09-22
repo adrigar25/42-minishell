@@ -6,13 +6,13 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:30:08 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/03 13:29:52 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/22 12:54:10 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
+/**
  * ENGLISH: Compares two strings.
  *
  * SPANISH: Compara dos cadenas.

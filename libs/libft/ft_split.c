@@ -6,13 +6,13 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 21:45:58 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/04 18:54:51 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/22 12:53:57 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
+/**
  * ENGLISH: Frees all allocated memory for an array of strings.
  *
  * SPANISH: Libera toda la memoria asignada para un array de cadenas.
@@ -44,7 +44,7 @@ static void	*free_all(char **arr, size_t j)
  *            El carácter delimitador.
  *
  * @returns A NULL-terminated array of strings on success, NULL on failure. /
- *          Un array de cadenas terminado en NULL en caso de éxito, NULL en 
+ *          Un array de cadenas terminado en NULL en caso de éxito, NULL en
  * 			caso de error.
  */
 char	**ft_split(char const *s, char c)

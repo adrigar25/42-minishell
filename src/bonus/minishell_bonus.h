@@ -130,7 +130,7 @@ int					ft_handle_parentheses(char **argv, t_data *data);
 // Execution
 int					ft_exec_cmd(t_cmd *cmd);
 int					ft_pipex(const char **argv, int fd_in, char **envp);
-char				*get_cmd_path(char *cmd);
+char				*ft_get_cmd_path(char *cmd);
 void				ft_close_unused_fds(t_cmd *current_cmd, t_cmd *cmd_list);
 void				ft_finish_execution(pid_t *pids, t_cmd *cmd_list,
 						t_data *data);

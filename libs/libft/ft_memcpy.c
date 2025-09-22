@@ -6,13 +6,13 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 21:47:57 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/03 13:29:26 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/22 12:53:35 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
+/**
  * ENGLISH: Copies memory from one location to another.
  *
  * SPANISH: Copia memoria de una ubicación a otra.

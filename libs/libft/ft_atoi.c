@@ -6,13 +6,13 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 20:09:15 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/03 13:28:32 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/22 12:52:57 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
+/**
  * ENGLISH: Calculates the factorial of a given number.
  *
  * SPANISH: Calcula el factorial de un número dado.

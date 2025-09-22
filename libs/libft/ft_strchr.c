@@ -6,13 +6,13 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:17:18 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/04 18:39:23 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/22 12:54:04 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
+/**
  * ENGLISH: Locates the first occurrence of a character in a string.
  *
  * SPANISH: Localiza la primera ocurrencia de un carácter en una cadena.
@@ -22,7 +22,7 @@
  * @param c   The character to find. /
  *            El carácter a encontrar.
  *
- * @returns A pointer to the first occurrence of the character, or NULL 
+ * @returns A pointer to the first occurrence of the character, or NULL
  * 			if not found. / Un puntero a la primera ocurrencia del carácter,
  * 			o NULL si no se encuentra.
  */

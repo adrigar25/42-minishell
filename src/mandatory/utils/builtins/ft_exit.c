@@ -12,44 +12,19 @@
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <limits.h>
 
-int	ft_is_numeric(const char *str)
-{
-	int					i;
-	long long			result;
-	int					sign;
-	unsigned long long	limit;
-
-	if (!str || *str == '\0')
-		return (0);
-	i = 0;
-	sign = 1;
-	if (str[i] == '+' || str[i] == '-')
-	{
-		if (str[i] == '-')
-			sign = -1;
-		i++;
-	}
-	if (str[i] == '\0')
-		return (0);
-	result = 0;
-	if (sign == 1)
-		limit = LLONG_MAX;
-	else
-		limit = (unsigned long long)LLONG_MAX + 1ULL;
-	while (str[i])
-	{
-		if (str[i] < '0' || str[i] > '9')
-			return (0);
-		if (result > (limit - (str[i] - '0')) / 10)
-			return (0);
-		result = result * 10 + (str[i] - '0');
-		i++;
-	}
-	return (1);
-}
-
+/**
+ * ENGLISH: Converts a string to a long long integer.
+ * 		Handles optional leading '+' or '-' signs.
+ * 	SPANISH: Convierte una cadena a un entero largo largo.
+ * 		Maneja signos '+' o '-' opcionales al principio.
+ *
+ * @param str   The string to convert. /
+ * 			La cadena a convertir.
+ *
+ * @return The converted long long integer. /
+ * 			El entero largo largo convertido.
+ */
 long long	ft_atoll(const char *str)
 {
 	int			i;
@@ -75,33 +50,42 @@ long long	ft_atoll(const char *str)
 	return (result * sign);
 }
 
+/**
+ * ENGLISH: Implements the exit command, handling optional numeric arguments
+ * 			and error cases.
+ *
+ * SPANISH: Implementa el comando exit, manejando argumentos numéricos
+ * 			opcionales y casos de error.
+ *
+ * @param cmd The command structure containing arguments. /
+ *            La estructura de comando que contiene los argumentos.
+ *
+ * @returns This function does not return; it exits the program. /
+ *          Esta función no retorna; sale del programa.
+ */
 int	ft_exit(t_cmd *cmd)
 {
 	char		**args;
-	int			arg_count;
-	int			i;
+	int			array[2];
 	long long	value;
 
 	args = cmd->argv;
 	if (!args)
 		exit(0);
-	arg_count = 0;
-	i = 0;
-	while (args[i])
+	array[0] = 0;
+	array[1] = 0;
+	while (args[array[1]])
 	{
-		arg_count++;
-		i++;
+		array[0]++;
+		array[1]++;
 	}
-	if (arg_count == 1)
+	if (array[0] == 1)
 		exit(0);
-	else if (arg_count > 2)
+	else if (array[0] > 2)
 		exit(ft_handle_error(7, EXIT_FAILURE, NULL, NULL));
 	else if (!ft_is_numeric(args[1]))
 		exit(ft_handle_error(14, 255, NULL, NULL));
 	else
-	{
-		value = ft_atoll(args[1]);
-		exit((int)(value % 256));
-	}
+		exit((int)(ft_atoll(args[1]) % 256));
 	return (0);
 }

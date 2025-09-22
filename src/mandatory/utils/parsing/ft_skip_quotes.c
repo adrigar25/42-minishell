@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_skip_quotes.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 18:18:46 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/05 14:25:27 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/22 14:49:54 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-/*
+/**
  * ENGLISH: Skips the current argument in a command string.
  *
  * SPANISH: Omite el argumento actual en una cadena de comando.

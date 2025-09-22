@@ -6,13 +6,13 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:50:10 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/03 13:29:18 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/22 12:53:08 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
+/**
  * ENGLISH: Checks if a character is a digit.
  *
  * SPANISH: Verifica si un carácter es un dígito.

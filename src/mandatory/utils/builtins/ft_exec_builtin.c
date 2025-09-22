@@ -1,19 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exec_builtins.c                                 :+:      :+:    :+:   */
+/*   ft_exec_builtin.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 16:43:33 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/18 16:42:54 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/22 13:37:31 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <sys/wait.h>
-#include <unistd.h>
 
+/**
+ * ENGLISH: Executes a built-in shell command based on the command name.
+ *
+ * SPANISH: Ejecuta un comando interno del shell según el nombre del comando.
+ *
+ * Handles: echo, cd, pwd, export, unset, env, exit
+ *
+ * Maneja: echo, cd, pwd, export, unset, env, exit
+ *
+ * @param cmd   The command structure containing arguments.
+ *              La estructura de comando que contiene los argumentos.
+ *
+ * @param data  The shell data structure (pointer to environment, etc.).
+ *              La estructura de datos del shell (puntero al entorno, etc.).
+ *
+ * @returns The result of the executed built-in command, or -1 if not found.
+ *          El resultado del comando interno ejecutado, o -1 si no se encuentra.
+ */
 int	ft_exec_builtin(t_cmd *cmd, t_data **data)
 {
 	if (ft_strcmp(cmd->argv[0], "echo") == 0)

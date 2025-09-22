@@ -3,15 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   ft_generate_prompt.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/12 20:06:42 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/22 14:55:54 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+/**
+ * ENGLISH: Generates the shell prompt string based on the current directory.
+ *
+ * SPANISH: Genera la cadena del prompt del shell basada en el directorio actual.
+ *
+ * @param envp   The environment variables. /
+ *               Las variables de entorno.
+ *
+ * @returns A dynamically allocated string with the prompt. /
+ *          Una cadena asignada dinámicamente con el prompt.
+ */
 char	*ft_generate_prompt(char **envp)
 {
 	char	*dir_path;

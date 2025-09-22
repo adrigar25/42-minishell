@@ -3,134 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   ft_setenv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 17:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/15 20:55:52 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/22 16:31:50 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static char	**ft_realloc_envp(char **envp, int new_size)
-{
-	char	**new_envp;
-	int		i;
-
-	new_envp = malloc(sizeof(char *) * (new_size + 1));
-	if (!new_envp)
-		return (NULL);
-	i = 0;
-	while (envp && envp[i] && i < new_size)
-	{
-		new_envp[i] = ft_strdup(envp[i]);
-		if (!new_envp[i])
-		{
-			while (--i >= 0)
-				free(new_envp[i]);
-			free(new_envp);
-			return (NULL);
-		}
-		i++;
-	}
-	new_envp[i] = NULL;
-	return (new_envp);
-}
-
-static int	ft_count_envp(char **envp)
-{
-	int	count;
-
-	count = 0;
-	while (envp && envp[count])
-		count++;
-	return (count);
-}
-
+/**
+ * ENGLISH: Sets or updates an environment variable in the environment array.
+ *          If the variable exists, its value is updated. If it does not exist,
+ *          a new variable is added to the array.
+ *
+ * SPANISH: Establece o actualiza una variable de entorno en el array de entorno.
+ *          Si la variable existe, su valor se actualiza. Si no existe,
+ *          se añade una nueva variable al array.
+ *
+ * @param name   The name of the environment variable to set or update. /
+ *               El nombre de la variable de entorno a establecer o actualizar.
+ *
+ * @param value  The value to set for the environment variable. Can be NULL. /
+ *               El valor a establecer para la variable de entorno.
+ * 				Puede ser NULL.
+ *
+ * @param envp   Pointer to the environment variable array. /
+ *               Puntero al array de variables de entorno.
+ *
+ * @returns 0 on success, -1 on failure (e.g., memory allocation failure). /
+ *          0 en caso de éxito, -1 en caso de fallo (p.ej., fallo en
+ * 			la asignación de memoria).
+ */
 int	ft_setenv(char *name, char *value, char ***envp)
 {
-	int		i;
-	int		name_len;
 	char	*new_var;
-	char	*temp;
 	char	**new_envp;
 	int		envp_size;
+	int		ret;
 
 	if (!name || !envp || !*envp)
 		return (-1);
-	name_len = ft_strlen(name);
-	i = 0;
-	while ((*envp)[i])
-	{
-		if (ft_strncmp((*envp)[i], name, name_len) == 0
-			&& ((*envp)[i][name_len] == '=' || (*envp)[i][name_len] == '\0'))
-		{
-			free((*envp)[i]);
-			if (value)
-			{
-				temp = ft_strjoin(name, "=");
-				if (!temp)
-					return (-1);
-				new_var = ft_strjoin(temp, value);
-				free(temp);
-				if (!new_var)
-					return (-1);
-			}
-			else
-			{
-				new_var = ft_strdup(name);
-				if (!new_var)
-					return (-1);
-			}
-			(*envp)[i] = new_var;
-			return (0);
-		}
-		i++;
-	}
-	envp_size = ft_count_envp(*envp);
+	ret = ft_update_existing_env(name, value, *envp);
+	if (ret == 0)
+		return (0);
+	else if (ret == -1)
+		return (-1);
+	envp_size = ft_count_arg(*envp);
 	new_envp = ft_realloc_envp(*envp, envp_size + 1);
 	if (!new_envp)
 		return (-1);
-	if (value)
-	{
-		temp = ft_strjoin(name, "=");
-		if (!temp)
-		{
-			i = 0;
-			while (new_envp[i])
-				free(new_envp[i++]);
-			free(new_envp);
-			return (-1);
-		}
-		new_var = ft_strjoin(temp, value);
-		free(temp);
-		if (!new_var)
-		{
-			i = 0;
-			while (new_envp[i])
-				free(new_envp[i++]);
-			free(new_envp);
-			return (-1);
-		}
-	}
-	else
-	{
-		new_var = ft_strdup(name);
-		if (!new_var)
-		{
-			i = 0;
-			while (new_envp[i])
-				free(new_envp[i++]);
-			free(new_envp);
-			return (-1);
-		}
-	}
+	new_var = ft_create_env_var(name, value);
+	if (!new_var)
+		return (ft_free_envp(new_envp), -1);
 	new_envp[envp_size] = new_var;
 	new_envp[envp_size + 1] = NULL;
-	i = 0;
-	while ((*envp)[i])
-		free((*envp)[i++]);
-	free(*envp);
+	ft_free_envp(*envp);
 	*envp = new_envp;
 	return (0);
 }

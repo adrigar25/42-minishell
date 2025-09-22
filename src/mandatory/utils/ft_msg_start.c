@@ -6,12 +6,20 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 20:58:40 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/10 18:00:45 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/22 14:59:44 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+/**
+ * ENGLISH: Prints the welcome message at the start of the shell.
+ *
+ * SPANISH: Imprime el mensaje de bienvenida al iniciar el shell.
+ *
+ * @returns Always returns 0. /
+ *          Siempre retorna 0.
+ */
 int	ft_msg_start(void)
 {
 	char	*welcome_msg;

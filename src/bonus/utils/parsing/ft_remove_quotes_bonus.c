@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_remove_quotes_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:16:59 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/14 15:18:12 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/22 14:48:37 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
 
-static int	skip_quote(const char *str, int *i, char *quote, int *in_quote)
+static int	ft_skip_quote(const char *str, int *i, char *quote, int *in_quote)
 {
 	if (!*in_quote && (str[*i] == '\'' || str[*i] == '"'))
 	{
@@ -29,7 +29,7 @@ static int	skip_quote(const char *str, int *i, char *quote, int *in_quote)
 	return (0);
 }
 
-static int	calc_unquoted_len(const char *str)
+static int	ft_calc_unquoted_len(const char *str)
 {
 	int		i;
 	int		in_q;
@@ -73,12 +73,12 @@ char	*ft_remove_quotes(const char *str)
 	q = 0;
 	if (!str)
 		return (NULL);
-	res = malloc(calc_unquoted_len(str) + 1);
+	res = malloc(ft_calc_unquoted_len(str) + 1);
 	if (!res)
 		return (NULL);
 	while (str[i])
 	{
-		if (!skip_quote(str, &i, &q, &in_q))
+		if (!ft_skip_quote(str, &i, &q, &in_q))
 			res[j++] = str[i++];
 		else
 			i++;

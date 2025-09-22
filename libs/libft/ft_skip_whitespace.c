@@ -6,13 +6,13 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 14:07:48 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/04 17:29:31 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/22 12:53:53 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
+/**
  * ENGLISH: Skips whitespace characters in a command string.
  *
  * SPANISH: Omite los caracteres de espacio en blanco en una cadena de comando.

@@ -13,6 +13,20 @@
 
 #include "../../minishell.h"
 
+/**
+ * ENGLISH: Adds a file descriptor to the command structure, closing the previous one if necessary.
+ *
+ * SPANISH: Añade un descriptor de archivo a la estructura de comando, cerrando el anterior si es necesario.
+ *
+ * @param cmd        The command to modify. /
+ *                   El comando a modificar.
+ *
+ * @param fd         The file descriptor to add. /
+ *                   El descriptor de archivo a añadir.
+ *
+ * @param in_or_out  0 for input, 1 for output. /
+ *                   0 para entrada, 1 para salida.
+ */
 static void	ft_add_fd_to_cmd(t_cmd *cmd, int fd, int in_or_out)
 {
 	if (!cmd)
@@ -31,6 +45,17 @@ static void	ft_add_fd_to_cmd(t_cmd *cmd, int fd, int in_or_out)
 	}
 }
 
+/**
+ * ENGLISH: Creates and initializes a new command node.
+ *
+ * SPANISH: Crea e inicializa un nuevo nodo de comando.
+ *
+ * @param index   The index to assign to the new command node. /
+ *                El índice a asignar al nuevo nodo de comando.
+ *
+ * @returns A pointer to the newly created command node, or NULL on failure. /
+ *          Un puntero al nuevo nodo de comando creado, o NULL en caso de error.
+ */
 static t_cmd	*ft_create_cmd_node(int index)
 {
 	t_cmd	*new_cmd;
@@ -49,7 +74,7 @@ static t_cmd	*ft_create_cmd_node(int index)
 
 static void	ft_add_arg_to_cmd(t_cmd *cmd, char *arg)
 {
-	int		i;
+	int		count;
 	char	**new_argv;
 
 	if (!cmd)
@@ -63,20 +88,13 @@ static void	ft_add_arg_to_cmd(t_cmd *cmd, char *arg)
 		cmd->argv[1] = NULL;
 		return ;
 	}
-	i = 0;
-	while (cmd->argv[i])
-		i++;
-	new_argv = malloc((i + 2) * sizeof(char *));
+	count = ft_count_arg(cmd->argv);
+	new_argv = malloc((count + 2) * sizeof(char *));
 	if (!new_argv)
 		return ;
-	i = 0;
-	while (cmd->argv[i])
-	{
-		new_argv[i] = cmd->argv[i];
-		i++;
-	}
-	new_argv[i] = arg;
-	new_argv[i + 1] = NULL;
+	ft_copy_args(cmd->argv, new_argv);
+	new_argv[count] = arg;
+	new_argv[count + 1] = NULL;
 	free(cmd->argv);
 	cmd->argv = new_argv;
 }

@@ -6,13 +6,13 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:35:21 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/03 13:29:44 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/22 12:53:46 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
+/**
  * ENGLISH: Generates a pseudo-random number.
  *
  * SPANISH: Genera un número pseudoaleatorio.

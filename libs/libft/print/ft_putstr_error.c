@@ -1,41 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr.c                                        :+:      :+:    :+:   */
+/*   ft_putstr_error.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/30 16:27:25 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/03 13:29:35 by adriescr         ###   ########.fr       */
+/*   Created: 2025/07/08 19:41:33 by adriescr          #+#    #+#             */
+/*   Updated: 2025/09/22 12:52:19 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../libft.h"
 
-/*
- * ENGLISH: Outputs an integer to the standard output.
+/**
+ * ENGLISH: Outputs a string to the standard error output.
  *
- * SPANISH: Envía un entero a la salida estándar.
+ * SPANISH: Envía una cadena a la salida de error estándar.
  *
- * @param n   The integer to output. /
- *            El entero a enviar.
+ * @param str   The string to output. /
+ *              La cadena a enviar.
  *
  * @returns 0 on success, -1 on failure. /
  *          0 en caso de éxito, -1 en caso de error.
  */
-void	ft_putnbr(int n)
+int	ft_putstr_error(const char *str)
 {
-	if (n == -2147483648)
+	if (!str)
 	{
-		ft_putstr("-2147483648");
-		return ;
+		if (ft_putstr_error("Error: NULL string\n") == -1)
+			return (-1);
+		return (0);
 	}
-	if (n < 0)
+	while (*str)
 	{
-		ft_putchar('-');
-		n = -n;
+		if (ft_putchar_error(*str) == -1)
+			return (-1);
+		str++;
 	}
-	if (n >= 10)
-		ft_putnbr(n / 10);
-	ft_putchar(n % 10 + '0');
+	return (0);
 }
