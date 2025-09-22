@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:25:07 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/14 14:25:04 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/22 10:35:48 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,6 +62,7 @@ MY_LIBFT = \
 	ft_strtrim.c \
 	ft_skip_whitespace.c \
 	ft_isspace.c \
+	ft_isalnum.c \
 	$(GET_NEXT_LINE_DIR)/get_next_line.c \
 	$(FILE_UTILS) \
 

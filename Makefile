@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/22 01:36:59 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/22 11:54:34 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,11 +78,6 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/parsing/ft_handle_env_expansion.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/parsing/ft_remove_quotes.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/parsing/ft_syntax_check.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/token/ft_is_redir_token.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/token/ft_is_pipe_token.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/token/ft_is_logical_token.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/token/ft_is_background_token.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/token/ft_is_operator_token.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/signals/ft_sigint_handler.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/signals/ft_init_signals.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/builtins/ft_echo.c \

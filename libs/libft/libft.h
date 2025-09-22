@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:22:52 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/14 14:25:04 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/22 10:35:48 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ size_t			ft_strlcpy(char *dst, const char *src, size_t size);
 char			*ft_strtrim(const char *str, char c);
 void			ft_skip_whitespace(const char *cmd, int *i);
 int				ft_isspace(int c);
+int				ft_isalnum(int c);
 
 // Especial functions
 unsigned int	ft_simple_rand(unsigned int *seed);
