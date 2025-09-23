@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 18:06:03 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 19:14:34 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/23 15:58:09 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static int	ft_process_token(t_cmd **current_cmd, char **argv, int i,
 {
 	int		pipefd[2];
 	t_cmd	*new_cmd;
-		char *clean_arg;
+	char	*clean_arg;
 
 	if (ft_strcmp(argv[i], "|") == 0)
 	{
@@ -143,7 +143,7 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 	t_cmd	*current_cmd;
 	int		i;
 	int		cmd_index;
-		int new_i;
+	int		new_i;
 
 	if (!argv || data->argc == 0)
 		return (NULL);

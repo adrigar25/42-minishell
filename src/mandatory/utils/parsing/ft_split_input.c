@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 00:33:34 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 14:51:31 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/23 15:56:46 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,35 +15,34 @@
 int	is_in_quotes(const char *input, int pos)
 {
 	int		i;
-	int		in_quote;
-	char	quote_char;
+	int		in_q;
+	char	q;
 
 	i = 0;
-	in_quote = 0;
-	quote_char = 0;
+	in_q = 0;
+	q = 0;
 	while (i <= pos && input[i])
 	{
-		if (!in_quote && (input[i] == '\'' || input[i] == '"'))
+		if (!in_q && (input[i] == '\'' || input[i] == '"'))
 		{
-			in_quote = 1;
-			quote_char = input[i];
+			in_q = 1;
+			q = input[i];
 		}
-		else if (in_quote && input[i] == quote_char)
+		else if (in_q && input[i] == q)
 		{
-			in_quote = 0;
-			quote_char = 0;
+			in_q = 0;
+			q = 0;
 		}
 		i++;
 	}
-	return (in_quote);
+	return (in_q);
 }
 
-static int	ft_is_escaped(const char *input, int pos, int in_quote,
-		char quote_char)
+static int	ft_is_escaped(const char *input, int pos, int in_q, char q)
 {
 	int	count;
 
-	if (in_quote)
+	if (in_q)
 		return (0);
 	count = 0;
 	pos--;
@@ -55,42 +54,48 @@ static int	ft_is_escaped(const char *input, int pos, int in_quote,
 	return (count % 2);
 }
 
-static int	ft_is_operator_char(char c)
+static int	ft_handle_token(const char *input, char **args, int *i, int *j)
 {
-	return (c == '<' || c == '>' || c == '|');
+	int	start;
+
+	ft_skip_whitespace(input, i);
+	if (ft_strchr("<>|", input[*i]) && !ft_is_escaped(input, *i, 0, 0))
+	{
+		args[*j] = ft_substr((char *)input, *i, 1 + (input[*i
+					+ 1] == input[*i]));
+		*j += 1;
+		*i += 1 + (input[*i + 1] == input[*i]);
+	}
+	else
+	{
+		start = *i;
+		while (input[*i] && (!ft_strchr("<>|", input[*i]) || is_in_quotes(input,
+					*i) || ft_is_escaped(input, *i, 0, 0))
+			&& (!ft_isspace(input[*i]) || is_in_quotes(input, *i)))
+			*i += 1 + (input[*i] == '\\' && input[*i + 1]);
+		if (*i > start)
+		{
+			args[*j] = ft_substr((char *)input, start, *i - start);
+			*j += 1;
+		}
+	}
+	return (0);
 }
 
 char	**ft_split_input(const char *input, int argc)
 {
 	char	**args;
 	int		i;
-	int		arg_idx;
-	int		start;
+	int		j;
 
-	args = (char **)malloc(sizeof(char *) * (argc + 1));
+	args = malloc(sizeof(char *) * (argc + 1));
 	if (!args)
 		return (NULL);
 	i = 0;
-	arg_idx = 0;
-	while (input[i] && arg_idx < argc)
-	{
-		ft_skip_whitespace(input, &i);
-		if (ft_is_operator_char(input[i]) && !ft_is_escaped(input, i, 0, 0))
-		{
-			args[arg_idx++] = ft_substr((char *)input, i, 1 + (input[i
-						+ 1] == input[i]));
-			i += 1 + (input[i + 1] == input[i]);
-			ft_skip_whitespace(input, &i);
-			continue ;
-		}
-		start = i;
-		while (input[i] && !((!is_in_quotes(input, i)
-					&& (ft_is_operator_char(input[i]) || ft_isspace(input[i]))
-					&& !ft_is_escaped(input, i, 0, 0))))
-			i += 1 + (input[i] == '\\' && input[i + 1]);
-		if (i > start)
-			args[arg_idx++] = ft_substr((char *)input, start, i - start);
-	}
-	args[arg_idx] = NULL;
+	j = 0;
+	while (input[i] && j < argc)
+		ft_handle_token(input, args, &i, &j);
+	args[j] = NULL;
 	return (args);
 }
+malloc_type_mallo

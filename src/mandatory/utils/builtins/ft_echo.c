@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 18:16:42 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/23 15:41:29 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ static int	ft_intflag_n(char *arg)
  *
  * @param start_index The index to start printing arguments from. /
 
-	*                    El índice desde el cual comenzar a imprimir los argumentos.
+	*                    El índice desde el cual comenzar a imprimir
+	los argumentos.
  *
  * @param outfd       The file descriptor to write the output to. /
  *                    El descriptor de archivo donde escribir la salida.
