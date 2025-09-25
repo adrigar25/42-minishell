@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 18:06:03 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/23 15:58:09 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/25 01:29:34 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,8 @@ static int	ft_handle_redirection(t_cmd *cmd, char **argv, int i, t_data *data)
 		clean_arg = argv[i + 1];
 	if (ft_strcmp(argv[i], "<") == 0)
 		fd = ft_handle_infile(clean_arg);
-	else if (ft_strcmp(argv[i], ">") == 0)
-		fd = ft_handle_outfile(clean_arg, 0);
-	else if (ft_strcmp(argv[i], ">>") == 0)
-		fd = ft_handle_outfile(clean_arg, 1);
+	else if (ft_strcmp(argv[i], ">") == 0 || ft_strcmp(argv[i], ">>") == 0)
+		fd = ft_handle_outfile(clean_arg, ft_strcmp(argv[i], ">>") == 0);
 	else
 		fd = ft_handle_heredoc(clean_arg);
 	if (fd != -1)

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 15:43:14 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/23 15:43:29 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/25 01:30:38 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,6 @@ void				ft_finish_execution(pid_t *pids, t_cmd *cmd_list,
 void				ft_setup_child_io(t_cmd *current, t_cmd *cmd_list);
 int					ft_exec_builtin(t_cmd *cmd, t_data **data);
 int					ft_is_builtin(t_cmd *cmd);
-int					ft_handle_quoted_arg(char *arg, int *start, int *end);
 
 // PROMPT
 
@@ -210,5 +209,8 @@ int					ft_handle_heredoc(const char *delimiter);
 // Error handling
 int					ft_handle_error(int error_code, int exit_code, char *msg,
 						char *msg2);
+
+// String utils
+int					ft_append(char **dst, const char *src);
 
 #endif

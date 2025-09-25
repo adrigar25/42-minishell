@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 00:33:34 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/23 15:56:46 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/25 01:39:26 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,7 @@ static int	ft_handle_token(const char *input, char **args, int *i, int *j)
 	{
 		args[*j] = ft_substr((char *)input, *i, 1 + (input[*i
 					+ 1] == input[*i]));
-		*j += 1;
-		*i += 1 + (input[*i + 1] == input[*i]);
+		*i += 2 + (input[*i + 1] == input[*i]);
 	}
 	else
 	{
@@ -98,4 +97,3 @@ char	**ft_split_input(const char *input, int argc)
 	args[j] = NULL;
 	return (args);
 }
-malloc_type_mallo

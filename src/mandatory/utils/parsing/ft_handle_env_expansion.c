@@ -7,35 +7,40 @@
 	+#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 21:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 10:53:22 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/24 12:00:00 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 /**
- * ENGLISH: Appends the source string to the destination string,
- * updating the destination.
- *
- * SPANISH: Añade la cadena fuente a la cadena destino, actualizando la destino.
- *
- * @param dst   Pointer to the destination string. /
- *              Puntero a la cadena destino.
- *
- * @param src   The source string to append. /
- *              La cadena fuente a añadir.
- *
- * @returns 1 if the append was successful, 0 otherwise. /
- *          1 si la concatenación fue exitosa, 0 en caso contrario.
- */
-static int	ft_append(char **dst, char *src)
-{
-	char	*old;
 
-	old = *dst;
-	*dst = ft_strjoin(old, src);
-	free(old);
-	return (*dst != NULL);
+	* Copies a literal substring from arg[start] to
+	arg[end-1] and appends it to dst.
+ *
+ * @param dst   Pointer to the destination string.
+ * @param arg   The argument string.
+ * @param start Start index (inclusive).
+ * @param end   End index (exclusive).
+ * @returns 1 on success, 0 on failure.
+ */
+int	ft_copy_literal(char **dst, char *arg, int start, int end)
+{
+	char	*literal;
+	char	*temp;
+
+	if (end <= start)
+		return (1);
+	literal = ft_substr(arg, start, end - start);
+	if (!literal)
+		return (0);
+	temp = *dst;
+	*dst = ft_strjoin(temp, literal);
+	free(temp);
+	free(literal);
+	if (!*dst)
+		return (0);
+	return (1);
 }
 
 /**
@@ -43,17 +48,10 @@ static int	ft_append(char **dst, char *src)
  *
  * SPANISH: Expande la variable especial $? con el último estado de salida.
  *
- * @param dst   Pointer to the destination string. /
- *              Puntero a la cadena destino.
- *
- * @param j     Pointer to the current index in the argument string. /
- *              Puntero al índice actual en la cadena de argumentos.
- *
- * @param data  Pointer to the shell data structure. /
- *              Puntero a la estructura de datos del shell.
- *
- * @returns 1 if the expansion was successful, 0 otherwise. /
- *          1 si la expansión fue exitosa, 0 en caso contrario.
+ * @param dst   Pointer to the destination string.
+ * @param j     Pointer to the current index.
+ * @param data  Pointer to the shell data.
+ * @returns 1 on success, 0 on failure.
  */
 static int	ft_expand_exit_status(char **dst, int *j, t_data *data)
 {
@@ -68,39 +66,28 @@ static int	ft_expand_exit_status(char **dst, int *j, t_data *data)
 		return (0);
 	}
 	free(temp);
-	(*j)++;
+	(*j) += 2;
 	return (1);
 }
 
 /**
- * ENGLISH: Expands an environment variable in the argument string.
+ * ENGLISH: Expands an environment variable.
  *
- * SPANISH: Expande una variable de entorno en la cadena de argumentos.
+ * SPANISH: Expande una variable de entorno.
  *
- * @param dst   Pointer to the destination string. /
- *              Puntero a la cadena destino.
- *
- * @param arg   The argument string containing the variable to expand. /
- *              La cadena de argumentos que contiene la variable a expandir.
- *
- * @param j     Pointer to the current index in the argument string. /
- *              Puntero al índice actual en la cadena de argumentos.
- *
- * @param data  Pointer to the shell data structure. /
- *              Puntero a la estructura de datos del shell.
- *
- * @returns 1 if the expansion was successful, 0 otherwise. /
- *          1 si la expansión fue exitosa, 0 en caso contrario.
+ * @param dst   Pointer to the destination string.
+ * @param arg   The argument string.
+ * @param j     Pointer to the current index.
+ * @param data  Pointer to the shell data.
+ * @returns 1 on success, 0 on failure.
  */
-static int	ft_expand_env(char **dst, char *arg, int *j, t_data *data)
+static int	ft_expand_env_var(char **dst, char *arg, int *j, t_data *data)
 {
 	int		start;
 	char	*env_name;
 	char	*env_value;
 
 	(*j)++;
-	if (arg[*j] == '?')
-		return (ft_expand_exit_status(dst, j, data));
 	start = *j;
 	while (arg[*j] && (ft_isalnum(arg[*j]) || arg[*j] == '_'))
 		(*j)++;
@@ -111,35 +98,26 @@ static int	ft_expand_env(char **dst, char *arg, int *j, t_data *data)
 		return (0);
 	env_value = ft_getenv(env_name, data->envp);
 	free(env_name);
-	if (env_value && !ft_append(dst, env_value))
-		return (0);
+	if (env_value)
+		if (!ft_append(dst, (char *)env_value))
+			return (0);
 	return (1);
 }
 
 /**
- * ENGLISH: Processes a single argument,
-	handling environment variable expansion.
+ * ENGLISH: Processes a single argument for environment expansion.
  *
- * SPANISH: Procesa un solo argumento,
-	manejando la expansión de variables de entorno.
+ * SPANISH: Procesa un solo argumento para expansión de entorno.
  *
- * @param dst   Pointer to the destination string. /
- *              Puntero a la cadena destino.
- *
- * @param arg   The argument string to process. /
- *              La cadena de argumentos a procesar.
- *
- * @param data  Pointer to the shell data structure. /
- *              Puntero a la estructura de datos del shell.
- *
- * @returns 1 if the processing was successful, 0 otherwise. /
- *          1 si el procesamiento fue exitoso, 0 en caso contrario.
+ * @param dst   Pointer to the destination string.
+ * @param arg   The argument string.
+ * @param data  Pointer to the shell data.
+ * @returns 1 on success, 0 on failure.
  */
 static int	ft_process_arg(char **dst, char *arg, t_data *data)
 {
-	int		j;
-	int		start;
-	char	*temp;
+	int	j;
+	int	start;
 
 	j = 0;
 	if (arg[0] == '\'' && arg[ft_strlen(arg) - 1] == '\'')
@@ -149,40 +127,30 @@ static int	ft_process_arg(char **dst, char *arg, t_data *data)
 		start = j;
 		while (arg[j] && arg[j] != '$')
 			j++;
-		if (j > start)
-		{
-			temp = ft_substr(arg, start, j - start);
-			if (!ft_append(dst, temp))
-			{
-				free(temp);
-				return (0);
-			}
-			free(temp);
-		}
-		if (arg[j] == '$' && !ft_expand_env(dst, arg, &j, data))
+		if (j > start && !ft_copy_literal(dst, arg, start, j))
 			return (0);
+		if (arg[j] == '$')
+		{
+			if (arg[j + 1] == '?')
+			{
+				if (!ft_expand_exit_status(dst, &j, data))
+					return (0);
+			}
+			else if (!ft_expand_env_var(dst, arg, &j, data))
+				return (0);
+		}
 	}
 	return (1);
 }
 
 /**
- * ENGLISH: Handles environment variable expansion for an array of arguments.
+ * ENGLISH: Handles environment variable expansion for arguments.
  *
-
-	* SPANISH: Maneja la expansión de variables de entorno
-	para un array de argumentos.
+ * SPANISH: Maneja la expansión de variables de entorno para argumentos.
  *
- * @param argv  The array of argument strings. /
- *              El array de cadenas de argumentos.
- *
- * @param data  Pointer to the shell data structure. /
- *              Puntero a la estructura de datos del shell.
- *
- * @returns A new array of argument strings with variables expanded,
-	or the original array on error. /
-
-	*          Un nuevo array de cadenas de argumentos con
-	las variables expandidas, o el array original en caso de error.
+ * @param argv  The array of arguments.
+ * @param data  Pointer to the shell data.
+ * @returns New array with expanded variables or original on error.
  */
 char	**ft_handle_env_expansion(char **argv, t_data *data)
 {
