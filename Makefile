@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
+#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/26 17:39:15 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/26 17:51:36 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,8 +68,10 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_create_env_var.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_update_existing_env.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_update_pwd_env.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/redirections/ft_handle_redirection.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/redirections/ft_handle_infile.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/redirections/ft_handle_outfile.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_process_token.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_exec_cmd.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_get_cmd_path.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_close_unused_fds.c \

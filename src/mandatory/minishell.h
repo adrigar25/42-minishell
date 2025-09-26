@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 15:43:14 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/26 17:42:03 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/26 21:35:41 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,8 @@ char				*ft_search_in_dir(const char *dir, const char *filename);
 char				*ft_build_path(const char *dir, const char *entry);
 
 // Parsing
-
+t_cmd				*ft_create_cmd_node(int index);
+void				ft_add_arg_to_cmd(t_cmd *cmd, char *arg);
 char				**ft_split_input(const char *input, int argc);
 t_cmd				*ft_parse_input(char **argv, t_data *data);
 void				ft_skip_quotes(const char *cmd, int *i);
@@ -230,7 +231,6 @@ int					ft_handle_quoted_arg(char *arg, int *start, int *end);
 
 // Execution
 int					ft_exec_cmd(t_cmd *cmd);
-int					ft_pipex(const char **argv, int fd_in, char **envp);
 char				*ft_get_cmd_path(char *cmd);
 void				ft_close_unused_fds(t_cmd *current_cmd, t_cmd *cmd_list);
 void				ft_finish_execution(pid_t *pids, t_cmd *cmd_list,
@@ -285,6 +285,8 @@ int					ft_execute_pipeline(t_cmd *cmd_list, t_data **data);
 int					ft_execute_error_command(t_cmd *cmd_list, t_cmd *head,
 						pid_t *pids);
 int					ft_exec_cmd(t_cmd *cmd);
+int					ft_process_token(t_cmd **current_cmd, char **argv,
+						int vars[2], t_data *data);
 
 // DEBUG
 
@@ -292,6 +294,8 @@ void				ft_show_debug(char **argv, int argc, char **expanded_argv,
 						t_cmd *cmd_list);
 
 // Redirections
+int					ft_handle_redirection(t_cmd *cmd, char **argv, int i,
+						t_data *data);
 int					ft_handle_infile(char *filename);
 int					ft_handle_outfile(char *filename, int append);
 
