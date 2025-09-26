@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 18:06:03 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/26 21:59:07 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/26 22:08:18 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,86 @@ void	ft_add_arg_to_cmd(t_cmd *cmd, char *arg)
 	new_argv[count + 1] = NULL;
 	free(cmd->argv);
 	cmd->argv = new_argv;
+}
+
+static int	ft_handle_redirection(t_cmd *cmd, char **argv, int i, t_data *data)
+{
+	char	*clean_arg;
+	int		fd;
+
+	clean_arg = ft_remove_quotes(argv[i + 1]);
+	if (!clean_arg)
+		clean_arg = argv[i + 1];
+	if (ft_strcmp(argv[i], "<") == 0)
+		fd = ft_handle_infile(clean_arg);
+	else if (ft_strcmp(argv[i], ">") == 0 || ft_strcmp(argv[i], ">>") == 0)
+		fd = ft_handle_outfile(clean_arg, ft_strcmp(argv[i], ">>") == 0);
+	else
+		fd = ft_handle_heredoc(clean_arg);
+	if (fd != -1)
+	{
+		if (ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i], "<<") == 0)
+		{
+			if (cmd->infd != STDIN_FILENO)
+				close(cmd->infd);
+			cmd->infd = fd;
+		}
+		else
+		{
+			if (cmd->outfd != STDOUT_FILENO)
+				close(cmd->outfd);
+			cmd->outfd = fd;
+		}
+	}
+	else
+	{
+		data->last_exit_status = 1;
+		cmd->has_error = 1;
+	}
+	if (clean_arg != argv[i + 1])
+		free(clean_arg);
+	return (i + 1);
+}
+
+static int	ft_process_token(t_cmd **current_cmd, char **argv, int i,
+		int *cmd_index, t_data *data)
+{
+	int		pipefd[2];
+	t_cmd	*new_cmd;
+	char	*clean_arg;
+
+	if (ft_strcmp(argv[i], "|") == 0)
+	{
+		if (pipe(pipefd) == -1)
+		{
+			perror("pipe");
+			return (i);
+		}
+		new_cmd = ft_create_cmd_node(*cmd_index + 1);
+		if (!new_cmd)
+			return (i);
+		(*cmd_index)++;
+		(*current_cmd)->next = new_cmd;
+		new_cmd->data = data;
+		if ((*current_cmd)->outfd == STDOUT_FILENO)
+			(*current_cmd)->outfd = pipefd[1];
+		else
+			close(pipefd[1]);
+		new_cmd->infd = pipefd[0];
+		*current_cmd = new_cmd;
+		return (i);
+	}
+	else if ((ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i], ">") == 0
+			|| ft_strcmp(argv[i], ">>") == 0 || ft_strcmp(argv[i], "<<") == 0)
+		&& (*current_cmd)->has_error == 0)
+		return (ft_handle_redirection(*current_cmd, argv, i, data));
+	else
+	{
+		clean_arg = ft_remove_quotes(argv[i]);
+		if (clean_arg)
+			ft_add_arg_to_cmd(*current_cmd, clean_arg);
+		return (i);
+	}
 }
 
 t_cmd	*ft_parse_input(char **argv, t_data *data)

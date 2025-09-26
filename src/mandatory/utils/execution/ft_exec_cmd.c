@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exec_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:06:20 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 18:37:31 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/26 22:06:54 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <sys/stat.h>
 
 /**
  * ENGLISH: Cleans the argument array by removing NULL or empty string entries.
