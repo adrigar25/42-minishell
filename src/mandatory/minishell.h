@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 15:43:14 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/25 01:30:38 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/26 17:38:30 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ void				ft_skip_quotes(const char *cmd, int *i);
 char				**ft_handle_env_expansion(char **argv, t_data *data);
 char				*ft_remove_quotes(const char *str);
 int					ft_check_syntax_errors(char **argv, int argc);
+int					ft_handle_quoted_arg(char *arg, int *start, int *end);
 
 // Execution
 int					ft_exec_cmd(t_cmd *cmd);

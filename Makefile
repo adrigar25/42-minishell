@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/25 01:30:41 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/26 17:39:15 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,6 +84,7 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/parsing/ft_handle_env_expansion.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/parsing/ft_remove_quotes.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/parsing/ft_syntax_check.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/parsing/ft_handle_quoted_arg.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/signals/ft_sigint_handler.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/signals/ft_init_signals.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/builtins/ft_echo.c \
