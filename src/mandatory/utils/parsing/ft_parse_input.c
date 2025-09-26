@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 18:06:03 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/26 21:35:07 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/26 21:59:07 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,25 +59,26 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 {
 	t_cmd	*cmd_list;
 	t_cmd	*current_cmd;
-	int		arr[2];
+	int		i;
+	int		cmd_index;
 	int		new_i;
 
 	if (!argv || data->argc == 0)
 		return (NULL);
-	arr[0] = 0;
-	cmd_list = ft_create_cmd_node(arr[0]);
+	cmd_index = 0;
+	cmd_list = ft_create_cmd_node(cmd_index);
 	if (!cmd_list)
 		return (NULL);
 	current_cmd = cmd_list;
 	current_cmd->data = data;
-	arr[1] = 0;
-	while (arr[1] < data->argc)
+	i = 0;
+	while (i < data->argc)
 	{
-		new_i = ft_process_token(&current_cmd, argv, arr, data);
-		if (new_i == arr[1])
-			arr[1]++;
+		new_i = ft_process_token(&current_cmd, argv, i, &cmd_index, data);
+		if (new_i == i)
+			i++;
 		else
-			arr[1] = new_i + 1;
+			i = new_i + 1;
 	}
 	return (cmd_list);
 }

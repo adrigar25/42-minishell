@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 17:49:41 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/26 21:36:21 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/26 21:59:27 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,30 +79,28 @@ static int	ft_handle_pipe(t_cmd **current_cmd, int *cmd_index, t_data *data)
  * @returns Updated index after processing the token. /
  * 		   Índice actualizado después de procesar el token.
  */
-int	ft_process_token(t_cmd **current_cmd, char **argv,
-	int vars[2], t_data *data)
+int	ft_process_token(t_cmd **current_cmd, char **argv, int i,
+		int *cmd_index, t_data *data)
 {
 	char	*clean_arg;
 
-	if (ft_strcmp(argv[vars[0]], "|") == 0)
+	if (ft_strcmp(argv[i], "|") == 0)
 	{
-		if (ft_handle_pipe(current_cmd, &vars[1], data) == -1)
-			return (vars[0]);
-		return (vars[0] + 1);
+		if (ft_handle_pipe(current_cmd, cmd_index, data) == -1)
+			return (i);
+		return (i);
 	}
-	else if ((ft_strcmp(argv[vars[0]], "<") == 0
-			|| ft_strcmp(argv[vars[0]], ">") == 0
-			|| ft_strcmp(argv[vars[0]], ">>") == 0
-			|| ft_strcmp(argv[vars[0]], "<<") == 0)
+	else if ((ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i], ">") == 0
+			|| ft_strcmp(argv[i], ">>") == 0 || ft_strcmp(argv[i], "<<") == 0)
 		&& (*current_cmd)->has_error == 0)
 	{
-		return (ft_handle_redirection(*current_cmd, argv, vars[0], data));
+		return (ft_handle_redirection(*current_cmd, argv, i, data));
 	}
 	else
 	{
-		clean_arg = ft_remove_quotes(argv[vars[0]]);
+		clean_arg = ft_remove_quotes(argv[i]);
 		if (clean_arg)
 			ft_add_arg_to_cmd(*current_cmd, clean_arg);
-		return (vars[0] + 1);
+		return (i);
 	}
 }

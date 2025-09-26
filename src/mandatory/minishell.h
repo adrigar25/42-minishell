@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 15:43:14 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/26 21:35:41 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/26 21:58:48 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -285,8 +285,8 @@ int					ft_execute_pipeline(t_cmd *cmd_list, t_data **data);
 int					ft_execute_error_command(t_cmd *cmd_list, t_cmd *head,
 						pid_t *pids);
 int					ft_exec_cmd(t_cmd *cmd);
-int					ft_process_token(t_cmd **current_cmd, char **argv,
-						int vars[2], t_data *data);
+int					ft_process_token(t_cmd **current_cmd, char **argv, int i,
+						int *cmd_index, t_data *data);
 
 // DEBUG
 
