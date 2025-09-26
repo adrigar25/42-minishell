@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 15:43:14 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/26 17:38:30 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/26 17:42:03 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,13 @@
 # define ERROR_PERMISSION_DENIED "minishell: Permission denied\n"
 # define ERROR_IS_A_DIRECTORY "minishell: %s: is a directory\n"
 # define ERROR_NO_SUCH_FILE "minishell: %s: No such file or directory\n"
-# define ERROR_SYNTAX "minishell: syntax error near unexpected token `newline'\n"
+# define ERROR_SYNTAX \
+	"minishell: syntax error near unexpected token `newline'\n"
 # define ERROR_SYNTAX_PIPE "minishell: syntax error near unexpected token `|'\n"
-# define ERROR_SYNTAX_REDIRECT "minishell: syntax error near unexpected token `>'\n"
-# define ERROR_SYNTAX_TOKEN "minishell: syntax error near unexpected token `%s'\n"
+# define ERROR_SYNTAX_REDIRECT \
+	"minishell: syntax error near unexpected token `>'\n"
+# define ERROR_SYNTAX_TOKEN \
+	"minishell: syntax error near unexpected token `%s'\n"
 # define ERROR_TOO_MANY_ARGS "minishell: too many arguments\n"
 # define ERROR_HOME_NOT_SET "minishell: cd: HOME not set\n"
 # define ERROR_HEREDOC_DELIMITER "Error: missing delimiter for heredoc\n"
@@ -74,12 +77,66 @@
 # define ERROR_HOME_NOT_SET "minishell: cd: HOME not set\n"
 # define ERROR_CD_FAIL "minishell: cd: %s: %s\n"
 # define ERROR_AMBIGUOUS_REDIRECT "minishell: %s: ambiguous redirect\n"
-# define ERROR_INVALID_IDENTIFIER "minishell: export: `%s': not a valid identifier\n"
+# define ERROR_INVALID_IDENTIFIER \
+	"minishell: export: `%s': not a valid identifier\n"
 # define ERROR_NUM_ARG_REQ "minishell: exit: %s: numeric argument required\n"
 
 // Heredoc
 # define HEREDOC_PROMPT "heredoc> "
 
+/*
+** ===================================================================
+**                        DATA STRUCTURES
+** ===================================================================
+*/
+
+/**
+ * ENGLISH: Represents the main structure for managing the shell state
+ * 	in the minishell project.
+ *
+ * - Holds all relevant data for environment management, argument count,
+ * 	command tracking, and shell status.
+ * - Centralizes pointers to environment variables and links to
+ * 	other shell data nodes.
+ * - Facilitates access and modification of shell state throughout the program.
+ *
+ * SPANISH: Representa la estructura principal para gestionar el estado del
+ * 	shell en el proyecto minishell.
+ *
+ * - Contiene todos los datos relevantes para la gestión del entorno,
+ * 	el recuento de argumentos, el seguimiento de comandos y el estado del shell.
+ * - Centraliza los punteros a las variables de entorno y enlaza con otros
+ * 	nodos de datos del shell.
+ * - Facilita el acceso y la modificación del estado del shell en
+ * 	todo el programa.
+ *
+ * ENGLISH/SPANISH: Variable documentation for t_data structure.
+ *
+ * @member {char **} envp
+ *      - EN: Array of environment variable strings.
+ *      - ES: Array de cadenas de variables de entorno.
+ *
+ * @member {int} argc
+ *      - EN: Number of arguments passed to the shell.
+ *      - ES: Número de argumentos pasados al shell.
+ *
+ * @member {int} cmd_count
+ *      - EN: Number of commands processed or to be processed.
+ *      - ES: Número de comandos procesados o a procesar.
+ *
+ * @member {int} isatty
+ *      - EN: Indicates if the shell is running in a terminal (1 = yes, 0 = no).
+ *      - ES: Indica si el shell se ejecuta en un terminal (1 = sí, 0 = no).
+ *
+ * @member {int} last_exit_status
+ *      - EN: Exit status of the last executed command.
+ *      - ES: Estado de salida del último comando ejecutado.
+ *
+ * @member {struct s_data *} next
+ *      - EN: Pointer to the next shell data node (for chaining or history).
+ *      - ES: Puntero al siguiente nodo de datos del shell (para encadenar o
+ * 			historial).
+ */
 typedef struct s_data
 {
 	char			**envp;
@@ -89,6 +146,52 @@ typedef struct s_data
 	int				last_exit_status;
 	struct s_data	*next;
 }					t_data;
+
+/**
+ * ENGLISH: Represents a command node in the minishell command list.
+ *
+ * - Holds command arguments, input/output file descriptors, and error state.
+ * - Links to shell data and the next command in a pipeline or sequence.
+ * - Used for parsing, execution, and management of shell commands.
+ *
+ * SPANISH: Representa un nodo de comando en la lista de comandos de minishell.
+ *
+ * - Contiene los argumentos del comando, descriptores de archivos de
+ * 	entrada/salida y estado de error.
+ * - Enlaza con los datos del shell y el siguiente comando en una tubería
+ * 	o secuencia.
+ * - Se utiliza para el análisis, ejecución y gestión de los comandos del shell.
+ *
+ * ENGLISH/SPANISH: Variable documentation for t_cmd structure.
+ *
+ * @member {char **} argv
+ *      - EN: Array of command arguments.
+ *      - ES: Array de argumentos del comando.
+ *
+ * @member {int} infd
+ *      - EN: Input file descriptor for the command.
+ *      - ES: Descriptor de archivo de entrada para el comando.
+ *
+ * @member {int} outfd
+ *      - EN: Output file descriptor for the command.
+ *      - ES: Descriptor de archivo de salida para el comando.
+ *
+ * @member {int} has_error
+ *      - EN: Indicates if the command has an error (1 = error, 0 = no error).
+ *      - ES: Indica si el comando tiene un error (1 = error, 0 = sin error).
+ *
+ * @member {int} index
+ *      - EN: Index of the command in the pipeline or sequence.
+ *      - ES: Índice del comando en la tubería o secuencia.
+ *
+ * @member {t_data *} data
+ *      - EN: Pointer to the shell's main data structure.
+ *      - ES: Puntero a la estructura principal de datos del shell.
+ *
+ * @member {struct s_cmd *} next
+ *      - EN: Pointer to the next command node.
+ *      - ES: Puntero al siguiente nodo de comando.
+ */
 typedef struct s_cmd
 {
 	char			**argv;
@@ -99,6 +202,12 @@ typedef struct s_cmd
 	t_data			*data;
 	struct s_cmd	*next;
 }					t_cmd;
+
+/*
+** ===================================================================
+**                        FUNCTIONS
+** ===================================================================
+*/
 
 int					ft_minishell(char **envp, int debug);
 
@@ -198,9 +307,6 @@ int					ft_export(char **args, char ***envp);
 int					ft_unset(char **args, char ***envp);
 int					ft_env(t_cmd cmd, char **envp);
 int					ft_exit(t_cmd *cmd);
-
-int					ft_handle_builtins(t_cmd *cmd, t_data **data,
-						t_cmd *cmd_list, pid_t *pids);
 
 int					ft_is_dot_or_dotdot(const char *name);
 
