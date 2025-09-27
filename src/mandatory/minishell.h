@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/23 15:43:14 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/26 22:07:02 by adriescr         ###   ########.fr       */
+/*   Created: 2025/09/27 19:59:15 by agarcia           #+#    #+#             */
+/*   Updated: 2025/09/27 20:06:26 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,14 @@
 # define ERROR_PERMISSION_DENIED "minishell: Permission denied\n"
 # define ERROR_IS_A_DIRECTORY "minishell: %s: is a directory\n"
 # define ERROR_NO_SUCH_FILE "minishell: %s: No such file or directory\n"
-# define ERROR_SYNTAX \
-	"minishell: syntax error near unexpected token `newline'\n"
-# define ERROR_SYNTAX_PIPE "minishell: syntax error near unexpected token `|'\n"
-# define ERROR_SYNTAX_REDIRECT \
-	"minishell: syntax error near unexpected token `>'\n"
-# define ERROR_SYNTAX_TOKEN \
-	"minishell: syntax error near unexpected token `%s'\n"
+# define ERROR_SYNTAX "minishell:\
+syntax error near unexpected token `newline'\n"
+# define ERROR_SYNTAX_PIPE "minishell:\
+syntax error near unexpected token `|'\n"
+# define ERROR_SYNTAX_REDIRECT "minishell:\
+syntax error near unexpected token `>'\n"
+# define ERROR_SYNTAX_TOKEN "minishell:\
+syntax error near unexpected token `%s'\n"
 # define ERROR_TOO_MANY_ARGS "minishell: too many arguments\n"
 # define ERROR_HOME_NOT_SET "minishell: cd: HOME not set\n"
 # define ERROR_HEREDOC_DELIMITER "Error: missing delimiter for heredoc\n"
@@ -78,8 +79,8 @@
 # define ERROR_HOME_NOT_SET "minishell: cd: HOME not set\n"
 # define ERROR_CD_FAIL "minishell: cd: %s: %s\n"
 # define ERROR_AMBIGUOUS_REDIRECT "minishell: %s: ambiguous redirect\n"
-# define ERROR_INVALID_IDENTIFIER \
-	"minishell: export: `%s': not a valid identifier\n"
+# define ERROR_INVALID_IDENTIFIER "minishell:\
+ export: `%s': not a valid identifier\n"
 # define ERROR_NUM_ARG_REQ "minishell: exit: %s: numeric argument required\n"
 
 // Heredoc
@@ -219,16 +220,13 @@ char				*ft_search_in_subdirs(const char *dir,
 char				*ft_search_in_dir(const char *dir, const char *filename);
 char				*ft_build_path(const char *dir, const char *entry);
 
-// Parsing
-t_cmd				*ft_create_cmd_node(int index);
-void				ft_add_arg_to_cmd(t_cmd *cmd, char *arg);
-char				**ft_split_input(const char *input, int argc);
-t_cmd				*ft_parse_input(char **argv, t_data *data);
-void				ft_skip_quotes(const char *cmd, int *i);
+// Expansion
+int					ft_copy_literal(char **dst, char *arg, int start, int end);
+int					ft_expand_exit_status(char **dst, int *j, t_data *data);
+int					ft_expand_env_var(char **dst, char *arg, int *j,
+						t_data *data);
+int					ft_process_arg(char **dst, char *arg, t_data *data);
 char				**ft_handle_env_expansion(char **argv, t_data *data);
-char				*ft_remove_quotes(const char *str);
-int					ft_check_syntax_errors(char **argv, int argc);
-int					ft_handle_quoted_arg(char *arg, int *start, int *end);
 
 // Execution
 int					ft_exec_cmd(t_cmd *cmd);
@@ -239,6 +237,11 @@ void				ft_finish_execution(pid_t *pids, t_cmd *cmd_list,
 void				ft_setup_child_io(t_cmd *current, t_cmd *cmd_list);
 int					ft_exec_builtin(t_cmd *cmd, t_data **data);
 int					ft_is_builtin(t_cmd *cmd);
+
+int					ft_execute_pipeline(t_cmd *cmd_list, t_data **data);
+int					ft_execute_error_command(t_cmd *cmd_list, t_cmd *head,
+						pid_t *pids);
+int					ft_exec_cmd(t_cmd *cmd);
 
 // PROMPT
 
@@ -258,15 +261,25 @@ void				ft_free_matrix_size(char **array, int size);
 // INPUT
 
 int					ft_read_input(char **input, t_data *data);
+char				**ft_split_input(const char *input, int argc);
 t_cmd				*ft_process_input(char *input, t_data *data, int debug);
+int					ft_check_input_syntax(char **argv, int argc);
+char				*ft_remove_quotes(const char *str);
 
-// TOKEN UTILS
+// Parsing
 
-int					ft_is_redir_token(const char *s);
-int					ft_is_pipe_token(const char *s);
-int					ft_is_logical_token(const char *s);
-int					ft_is_background_token(const char *s);
-int					ft_is_operator_token(const char *s);
+t_cmd				*ft_parse_input(char **argv, t_data *data);
+int					ft_append(char **dst, const char *src);
+t_cmd				*ft_create_cmd_node(int index);
+void				ft_add_arg_to_cmd(t_cmd *cmd, char *arg);
+int					ft_get_fd_from_token(char *token, char *filename);
+void				ft_assign_fd(t_cmd *cmd, char *token, int fd);
+int					ft_handle_redirection(t_cmd *cmd, char **argv, int i,
+						t_data *data);
+int					ft_process_pipe(t_cmd **current_cmd, int *cmd_index,
+						t_data *data);
+int					ft_process_token(t_cmd **current_cmd, char **argv, int i,
+						int *cmd_index);
 
 // ENV
 
@@ -279,13 +292,6 @@ int					ft_update_existing_env(char *name, char *value,
 						char **envp);
 void				ft_update_pwd_env(char *oldpwd, char *target_dir,
 						char ***envp);
-
-// EXECUTION
-
-int					ft_execute_pipeline(t_cmd *cmd_list, t_data **data);
-int					ft_execute_error_command(t_cmd *cmd_list, t_cmd *head,
-						pid_t *pids);
-int					ft_exec_cmd(t_cmd *cmd);
 
 // DEBUG
 
@@ -308,7 +314,10 @@ int					ft_export(char **args, char ***envp);
 int					ft_unset(char **args, char ***envp);
 int					ft_env(t_cmd cmd, char **envp);
 int					ft_exit(t_cmd *cmd);
+int					ft_handle_builtins(t_cmd *cmd, t_data **data,
+						t_cmd *cmd_list, pid_t *pids);
 
+// Utils
 int					ft_is_dot_or_dotdot(const char *name);
 
 // Heredoc

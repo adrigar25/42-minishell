@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:25:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 17:11:22 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/27 19:27:40 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static int	ft_is_pipe_like(const char *s)
  *          0 si no se encuentran errores de sintaxis,
 	o un código de error si se detecta un error de sintaxis.
  */
-int	ft_check_syntax_errors(char **argv, int argc)
+int	ft_check_input_syntax(char **argv, int argc)
 {
 	int	i;
 

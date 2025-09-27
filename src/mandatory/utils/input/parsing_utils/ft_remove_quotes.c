@@ -6,11 +6,11 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:16:59 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 21:30:30 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/27 19:50:08 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../minishell.h"
 
 /**
  * ENGLISH: Skips a quote character in the string and manages quote state.

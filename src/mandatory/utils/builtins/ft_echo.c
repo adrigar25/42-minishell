@@ -6,11 +6,43 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/23 15:41:29 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/27 19:22:40 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+/**
+ * ENGLISH: Handles quoted arguments by determining the start and end
+ * 			indices for printing.
+ *
+ * SPANISH: Maneja los argumentos entre comillas determinando los índices
+ * 			de inicio y fin para la impresión.
+ *
+ * @param arg   The argument string to check for quotes. /
+ *              La cadena de argumentos a comprobar en busca de comillas.
+ *
+ * @param start Pointer to store the start index for printing. /
+ *              Puntero para almacenar el índice de inicio para la impresión.
+ *
+ * @param end   Pointer to store the end index for printing. /
+ *              Puntero para almacenar el índice de fin para la impresión.
+ *
+ * @returns 1 if the argument is quoted, 0 otherwise. /
+ *          1 si el argumento está entre comillas, 0 en caso contrario.
+ */
+int	ft_handle_quoted_arg(char *arg, int *start, int *end)
+{
+	if (ft_is_quoted(arg))
+	{
+		*start = 1;
+		*end = ft_strlen(arg) - 1;
+		return (1);
+	}
+	*start = 0;
+	*end = ft_strlen(arg);
+	return (0);
+}
 
 /**
  * ENGLISH: Prints a single argument for the echo command, handling
@@ -63,12 +95,6 @@ static int	ft_putarg_echo(char *arg, int flag_n, int outfd)
  * @returns 0 on success, 1 on error. /
  *          0 en caso de éxito, 1 en caso de error.
  */
-static int	ft_intflag_n(char *arg)
-{
-	if (arg && arg[0] == '-' && arg[1] == 'n')
-		return (1);
-	return (0);
-}
 
 /**
  * ENGLISH: Prints all arguments for the echo command, handling spacing
@@ -134,7 +160,7 @@ int	ft_echo(t_cmd cmd)
 		return (1);
 	n_flag = 0;
 	start_index = 1;
-	if (cmd.argv[1] && ft_intflag_n(cmd.argv[1]))
+	if (cmd.argv[1] && cmd.argv[1][0] == '-' && cmd.argv[1][1] == 'n')
 	{
 		n_flag = 1;
 		start_index = 2;

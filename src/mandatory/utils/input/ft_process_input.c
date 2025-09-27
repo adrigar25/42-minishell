@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/12 20:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/25 00:42:47 by agarcia          ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/09/27 20:03:40 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../../minishell.h"
 
@@ -73,7 +74,7 @@ t_cmd	*ft_process_input(char *input, t_data *data, int debug)
 	data->argc = ft_count_args(input);
 	argv = ft_split_input(input, data->argc);
 	free(input);
-	if (ft_check_syntax_errors(argv, data->argc))
+	if (ft_check_input_syntax(argv, data->argc))
 	{
 		ft_free_matrix(argv);
 		data->last_exit_status = 2;
