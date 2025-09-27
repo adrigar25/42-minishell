@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/27 20:07:04 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/27 20:12:13 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,6 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_search_file/ft_build_path.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_count_args.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_free_matrix.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/string/ft_append.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/error/ft_handle_error.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/input/ft_read_input.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/input/ft_process_input.c \
