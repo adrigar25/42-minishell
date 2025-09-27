@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:55:03 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/27 19:55:03 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/27 21:35:28 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	ft_process_token(t_cmd **current_cmd, char **argv, int i, int *cmd_index)
 {
 	char	*clean_arg;
 
+	if (!argv[i])
+		return (i);
 	if (ft_strcmp(argv[i], "|") == 0)
 		return (ft_process_pipe(current_cmd, cmd_index, (*current_cmd)->data),
 			i);

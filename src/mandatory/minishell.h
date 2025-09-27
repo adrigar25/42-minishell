@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:59:15 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/27 20:06:26 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/27 21:38:31 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,13 @@
 # define ERROR_PERMISSION_DENIED "minishell: Permission denied\n"
 # define ERROR_IS_A_DIRECTORY "minishell: %s: is a directory\n"
 # define ERROR_NO_SUCH_FILE "minishell: %s: No such file or directory\n"
-# define ERROR_SYNTAX "minishell:\
+# define ERROR_SYNTAX "minishell: \
 syntax error near unexpected token `newline'\n"
-# define ERROR_SYNTAX_PIPE "minishell:\
+# define ERROR_SYNTAX_PIPE "minishell: \
 syntax error near unexpected token `|'\n"
-# define ERROR_SYNTAX_REDIRECT "minishell:\
+# define ERROR_SYNTAX_REDIRECT "minishell: \
 syntax error near unexpected token `>'\n"
-# define ERROR_SYNTAX_TOKEN "minishell:\
+# define ERROR_SYNTAX_TOKEN "minishell: \
 syntax error near unexpected token `%s'\n"
 # define ERROR_TOO_MANY_ARGS "minishell: too many arguments\n"
 # define ERROR_HOME_NOT_SET "minishell: cd: HOME not set\n"
@@ -326,8 +326,4 @@ int					ft_handle_heredoc(const char *delimiter);
 // Error handling
 int					ft_handle_error(int error_code, int exit_code, char *msg,
 						char *msg2);
-
-// String utils
-int					ft_append(char **dst, const char *src);
-
 #endif

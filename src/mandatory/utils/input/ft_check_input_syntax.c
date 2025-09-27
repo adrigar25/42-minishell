@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_syntax_check.c                                  :+:      :+:    :+:   */
+/*   ft_check_input_syntax.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:25:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/27 19:27:40 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/27 20:41:28 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
  */
 static int	ft_is_redir(const char *s)
 {
+	if (!s)
+		return (0);
 	return (ft_strcmp(s, "<") == 0 || ft_strcmp(s, ">") == 0 || ft_strcmp(s,
 			">>") == 0 || ft_strcmp(s, "<<") == 0);
 }
@@ -42,6 +44,8 @@ static int	ft_is_redir(const char *s)
  */
 static int	ft_is_logical_op(const char *s)
 {
+	if (!s)
+		return (0);
 	return (ft_strcmp(s, "||") == 0 || ft_strcmp(s, "&&") == 0);
 }
 
@@ -62,6 +66,8 @@ static int	ft_is_logical_op(const char *s)
  */
 static int	ft_is_pipe_like(const char *s)
 {
+	if (!s)
+		return (0);
 	return (ft_strcmp(s, "|") == 0 || ft_is_logical_op(s) || ft_strcmp(s,
 			"&") == 0);
 }
@@ -100,11 +106,14 @@ int	ft_check_input_syntax(char **argv, int argc)
 	{
 		if ((ft_is_pipe_like(argv[i]) || ft_is_redir(argv[i])) && i == argc - 1)
 			return (ft_handle_error(5, 2, NULL, NULL));
-		if (ft_is_pipe_like(argv[i]) && ft_is_pipe_like(argv[i + 1]))
-			return (ft_handle_error(6, 2, argv[i + 1], NULL));
-		if (ft_is_redir(argv[i]) && (ft_is_pipe_like(argv[i + 1])
-				|| ft_is_redir(argv[i + 1])))
-			return (ft_handle_error(6, 2, argv[i + 1], NULL));
+		if (i + 1 < argc)
+		{
+			if (ft_is_pipe_like(argv[i]) && ft_is_pipe_like(argv[i + 1]))
+				return (ft_handle_error(6, 2, argv[i + 1], NULL));
+			if (ft_is_redir(argv[i]) && (ft_is_pipe_like(argv[i + 1])
+					|| ft_is_redir(argv[i + 1])))
+				return (ft_handle_error(6, 2, argv[i + 1], NULL));
+		}
 		i++;
 	}
 	return (0);
