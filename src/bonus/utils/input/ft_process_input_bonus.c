@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 17:37:00 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/28 18:10:47 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ static int	ft_count_cmds(t_cmd *cmd_list)
  */
 t_cmd	*ft_process_input(char *input, t_data *data, int debug)
 {
-	t_cmd	*head;
 	char	**argv;
 	t_cmd	*cmd_list;
 

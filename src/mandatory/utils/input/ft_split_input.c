@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 00:33:34 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 17:55:32 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/28 18:12:15 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,10 @@ int	is_in_quotes(const char *input, int pos)
  *               Bandera que indica si actualmente está dentro de comillas
  *               (1 si está dentro, 0 si no).
  *
- * @param q     The quote character if inside quotes (' or "), 0 otherwise.
- *               El carácter de comillas si está dentro de comillas
- *               (' o "), 0 en caso contrario.
- *
  * @returns 1 if the character is escaped, 0 otherwise.
  *          1 si el carácter está escapado, 0 en caso contrario.
  */
-static int	ft_is_escaped(const char *input, int pos, int in_q, char q)
+static int	ft_is_escaped(const char *input, int pos, int in_q)
 {
 	int	count;
 
@@ -120,7 +116,7 @@ static int	ft_handle_token(const char *input, char **args, int *i, int *j)
 	int	start;
 
 	ft_skip_whitespace(input, i);
-	if (ft_strchr("<>|", input[*i]) && !ft_is_escaped(input, *i, 0, 0))
+	if (ft_strchr("<>|", input[*i]) && !ft_is_escaped(input, *i, 0))
 	{
 		args[*j] = ft_substr((char *)input, *i, 1 + (input[*i
 					+ 1] == input[*i]));
@@ -131,7 +127,7 @@ static int	ft_handle_token(const char *input, char **args, int *i, int *j)
 	{
 		start = *i;
 		while (input[*i] && (!ft_strchr("<>|", input[*i]) || is_in_quotes(input,
-					*i) || ft_is_escaped(input, *i, 0, 0))
+					*i) || ft_is_escaped(input, *i, 0))
 			&& (!ft_isspace(input[*i]) || is_in_quotes(input, *i)))
 			*i += 1 + (input[*i] == '\\' && input[*i + 1]);
 		if (*i > start)

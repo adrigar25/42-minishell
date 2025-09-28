@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:55:03 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 17:43:16 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/28 18:13:36 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,7 @@ static int	is_pipe_like_token(const char *token)
 int	ft_process_token(t_cmd **current_cmd, char **argv, int i, int *cmd_index)
 {
 	char	*clean_arg;
-	t_cmd	*new_cmd;
-	int		k;
-	int		count_nonop;
 
-	k = 0;
 	if (is_pipe_like_token(argv[i]))
 	{
 		ft_process_op(current_cmd, argv[i], cmd_index, (*current_cmd)->data);

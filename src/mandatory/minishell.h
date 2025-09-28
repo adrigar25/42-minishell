@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:59:15 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 16:21:44 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 18:06:41 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,8 +314,6 @@ int					ft_export(char **args, char ***envp);
 int					ft_unset(char **args, char ***envp);
 int					ft_env(t_cmd cmd, char **envp);
 int					ft_exit(t_cmd *cmd);
-int					ft_handle_builtins(t_cmd *cmd, t_data **data,
-						t_cmd *cmd_list, pid_t *pids);
 
 // Utils
 int					ft_is_dot_or_dotdot(const char *name);

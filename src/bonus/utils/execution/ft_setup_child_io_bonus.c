@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_setup_child_io_bonus.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:29:06 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/28 16:09:16 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 18:09:21 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@
  */
 void	ft_setup_child_io(t_cmd *current, t_cmd *cmd_list)
 {
-	t_cmd	*temp;
 	t_cmd	*cmd;
 
 	signal(SIGINT, SIG_DFL);

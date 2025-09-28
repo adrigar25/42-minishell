@@ -67,7 +67,6 @@ int	ft_exit(t_cmd *cmd)
 {
 	char		**args;
 	int			array[2];
-	long long	value;
 
 	args = cmd->argv;
 	if (!args)

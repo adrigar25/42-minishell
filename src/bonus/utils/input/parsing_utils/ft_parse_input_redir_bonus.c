@@ -6,50 +6,11 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:51:26 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 17:41:34 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/28 18:13:14 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell_bonus.h"
-
-/**
- * ENGLISH: Checks if a token is a redirection operator.
- *
- * SPANISH: Verifica si un token es un operador de redirección.
- *
- * @param token The token to check.
- *              El token a verificar.
- *
- * @returns 1 if the token is a redirection operator, 0 otherwise.
- *          1 si el token es un operador de redirección, 0 en caso contrario.
- */
-static int	is_redir_token(const char *token)
-{
-	if (!token)
-		return (0);
-	return (!ft_strcmp(token, "<") || !ft_strcmp(token, ">")
-		|| !ft_strcmp(token, ">>") || !ft_strcmp(token, "<<"));
-}
-
-/**
- * ENGLISH: Checks if a token is a pipe or logical operator.
- *
- * SPANISH: Verifica si un token es un operador de tubería o lógico.
- *
- * @param token The token to check.
- * 			El token a verificar.
- *
- * @returns 1 if the token is a pipe or logical operator, 0 otherwise.
- * 			1 si el token es un operador de tubería o lógico, 0 en
- * 			caso contrario.
- */
-static int	is_pipe_like_token(const char *token)
-{
-	if (!token)
-		return (0);
-	return (!ft_strcmp(token, "|") || !ft_strcmp(token, "||")
-		|| !ft_strcmp(token, "&&"));
-}
 
 /**
  * ENGLISH: Checks for ambiguous redirection scenarios.
@@ -67,15 +28,10 @@ static int	is_pipe_like_token(const char *token)
  * @param i     The current index in the argument array.
  *              El índice actual en el arreglo de argumentos.
  *
- * @param data  Pointer to the shell data structure containing
- *              environment variables.
- *              Puntero a la estructura de datos del shell que
- *              contiene las variables de entorno.
- *
  * @returns 1 if the redirection is ambiguous, 0 otherwise.
  *          1 si la redirección es ambigua, 0 en caso contrario.
  */
-static int	is_ambiguous_redir(char **argv, int i, t_data *data)
+static int	is_ambiguous_redir(char **argv, int i)
 {
 	int	matches;
 
@@ -125,10 +81,8 @@ int	ft_handle_redirection(t_cmd *cmd, char **argv, int i, t_data *data)
 {
 	char	*clean_arg;
 	int		fd;
-	int		k;
-	int		count_nonop;
 
-	if (is_ambiguous_redir(argv, i, data) == 1)
+	if (is_ambiguous_redir(argv, i) == 1)
 	{
 		data->last_exit_status = ft_handle_error(12, 1, argv[i + 1], NULL);
 		cmd->has_error = 1;

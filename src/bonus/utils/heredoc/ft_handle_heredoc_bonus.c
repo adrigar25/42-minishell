@@ -3,43 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_handle_heredoc_bonus.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 12:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 15:55:33 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 18:10:30 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
-
-/**
- * ENGLISH: Writes a line to the heredoc file descriptor, ensuring
- * 			it ends with a newline.
- *
- * SPANISH: Escribe una línea en el descriptor de archivo heredoc,
- * 			asegurando que termine con un salto de línea.
- *
- * @param fd     The file descriptor to write to. /
- *               El descriptor de archivo donde escribir.
- *
- * @param line   The line to write. /
- *               La línea a escribir.
- *
- * @param nread  The number of bytes read from the line. /
- *               El número de bytes leídos de la línea.
- *
- * @returns 0 on success. /
- *          0 en caso de éxito.
- */
-static int	ft_write_heredoc_line(int fd, char *line, ssize_t nread)
-{
-	if (nread > 0 && line[nread - 1] == '\n')
-		line[nread - 1] = '\n';
-	else
-		line[nread] = '\n';
-	write(fd, line, nread);
-	return (0);
-}
 
 /**
  * ENGLISH: Processes a single line read from stdin for the heredoc.

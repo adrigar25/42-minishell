@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_search_in_subdirs_bonus.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:24:06 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/27 22:27:16 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 18:09:27 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ static char	*ft_search_entries(DIR *d, const char *dir, const char *filename)
 {
 	struct dirent	*entry;
 	char			*result;
-	int				dot_status;
 
 	result = NULL;
 	entry = readdir(d);

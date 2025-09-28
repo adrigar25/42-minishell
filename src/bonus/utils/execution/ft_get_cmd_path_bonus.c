@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_get_cmd_path_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 16:30:20 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/27 22:27:16 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 18:09:15 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ char	*ft_get_cmd_path(char *cmd)
 	char	**paths;
 	char	*path;
 	int		i;
-	int		j;
 
 	if (ft_strchr(cmd, '/'))
 		return (ft_strdup(cmd));

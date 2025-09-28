@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 16:30:20 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 16:36:12 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/28 18:04:59 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ char	*ft_get_cmd_path(char *cmd)
 	char	**paths;
 	char	*path;
 	int		i;
-	int		j;
 
 	if (ft_strchr(cmd, '/'))
 		return (ft_strdup(cmd));

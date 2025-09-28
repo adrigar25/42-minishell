@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:24:06 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/22 16:24:59 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/28 18:05:12 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ static char	*ft_search_entries(DIR *d, const char *dir, const char *filename)
 {
 	struct dirent	*entry;
 	char			*result;
-	int				dot_status;
 
 	result = NULL;
 	entry = readdir(d);

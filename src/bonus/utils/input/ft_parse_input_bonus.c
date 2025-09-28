@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 18:57:27 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 17:37:17 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/28 18:10:40 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 	t_cmd	*current_cmd;
 	int		i;
 	int		cmd_index;
-	int		new_i;
 
 	if (!argv || data->argc == 0)
 		return (NULL);
