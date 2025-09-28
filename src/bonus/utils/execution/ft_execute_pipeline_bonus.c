@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 00:32:13 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 14:04:46 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 15:12:20 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,8 @@ int	ft_execute_pipeline(t_cmd *cmd_list, t_data **data)
 {
 	t_cmd	*current;
 	pid_t	*pids;
+	int		status;
+	pid_t	child;
 
 	if (!cmd_list || !data || !*data)
 		return (-1);
@@ -158,6 +160,19 @@ int	ft_execute_pipeline(t_cmd *cmd_list, t_data **data)
 		{
 			ft_finish_execution(pids, cmd_list, *data);
 			return ((*data)->last_exit_status);
+		}
+		if (!current->next || current->next->op != OP_PIPE)
+		{
+			child = pids[current->index];
+			if (child > 0)
+			{
+				waitpid(child, &status, 0);
+				if (WIFEXITED(status))
+					(*data)->last_exit_status = WEXITSTATUS(status);
+				else if (WIFSIGNALED(status))
+					(*data)->last_exit_status = 128 + WTERMSIG(status);
+				pids[current->index] = 0;
+			}
 		}
 		current = current->next;
 	}
