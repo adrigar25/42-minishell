@@ -6,15 +6,27 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 00:13:28 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/27 22:27:16 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_bonus.h"
-#include <signal.h>
-#include <sys/wait.h>
-#include <unistd.h>
 
+/**
+ * ENGLISH: Initializes the shell data structure with environment variables.
+ *
+ * SPANISH: Inicializa la estructura de datos del shell con las variables
+ * 			de entorno.
+ *
+ * @param data   Pointer to the shell data structure to initialize. /
+ *               Puntero a la estructura de datos del shell a inicializar.
+ *
+ * @param envp   The environment variables. /
+ *               Las variables de entorno.
+ *
+ * @returns 0 on success, 1 on failure. /
+ *          0 en caso de éxito, 1 en caso de error.
+ */
 static int	ft_init_data(t_data **data, char **envp)
 {
 	*data = malloc(sizeof(t_data));
@@ -31,6 +43,29 @@ static int	ft_init_data(t_data **data, char **envp)
 	return (0);
 }
 
+/**
+ * ENGLISH: The main function for the minishell program.
+ *          It initializes the shell, displays a welcome message if in
+ *          interactive mode,
+ *          reads user input, processes commands, and executes
+ *          them in a loop until exit.
+ *
+ * SPANISH: La función principal para el programa minishell.
+ *          Inicializa el shell, muestra un mensaje de bienvenida si está
+ *          en modo interactivo,
+ *          lee la entrada del usuario, procesa los comandos y los ejecuta
+ *          en un bucle hasta salir.
+ *
+ * @param envp   The environment variables. /
+ *               Las variables de entorno.
+ *
+ * @param debug  Flag to indicate if debug information should be shown. /
+ *               Indicador para indicar si se debe mostrar información de
+ *               depuración.
+ *
+ * @returns The exit status of the last executed command. /
+ *          El estado de salida del último comando ejecutado.
+ */
 int	ft_minishell(char **envp, int debug)
 {
 	char	*input;

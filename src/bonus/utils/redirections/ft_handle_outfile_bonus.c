@@ -6,12 +6,28 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 19:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/14 15:18:12 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/27 22:27:16 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
 
+/**
+ * ENGLISH: Opens the given filename for output redirection,
+ * 			either in append or truncate mode.
+ *
+ * SPANISH: Abre el archivo dado para redirección de salida,
+ * 			en modo append o truncate.
+ *
+ * @param filename  The name of the file to open. /
+ *                  El nombre del archivo a abrir.
+ *
+ * @param append    If non-zero, open in append mode; otherwise, truncate. /
+ *                  Si es distinto de cero, abre en modo append; si no, trunca.
+ *
+ * @returns The file descriptor on success, -1 on error. /
+ *          El descriptor de archivo en éxito, -1 en error.
+ */
 int	ft_handle_outfile(char *filename, int append)
 {
 	int	fd;

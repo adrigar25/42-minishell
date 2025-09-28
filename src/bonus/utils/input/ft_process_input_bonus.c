@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 01:07:34 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 01:34:35 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_cmd	*ft_process_input(char *input, t_data *data, int debug)
 	data->argc = ft_count_args(input);
 	argv = ft_split_input(input, data->argc);
 	free(input);
-	if (ft_check_syntax_errors(argv, data->argc))
+	if (ft_check_input_syntax(argv, data->argc))
 	{
 		ft_free_matrix(argv);
 		data->last_exit_status = 2;

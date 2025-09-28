@@ -5,13 +5,26 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/09 18:00:26 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/22 00:11:55 by agarcia          ###   ########.fr       */
+/*   Created: 2025/09/28 00:36:00 by agarcia           #+#    #+#             */
+/*   Updated: 2025/09/28 00:36:00 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
 
+/**
+ * ENGLISH: Duplicates the environment variable array.
+ *
+ * SPANISH: Duplica el array de variables de entorno.
+ *
+ * @param envp   The original environment variable array. /
+ *               El array original de variables de entorno.
+ *
+ * @returns A newly allocated copy of the environment variable array,
+ *          or NULL if allocation fails. /
+ *          Una copia recién asignada del array de variables de entorno,
+ *          o NULL si la asignación falla.
+ */
 char	**ft_dupenv(char **envp)
 {
 	char	**envp_cpy;
@@ -30,9 +43,7 @@ char	**ft_dupenv(char **envp)
 		if (!envp_cpy[i])
 		{
 			while (i > 0)
-			{
 				free(envp_cpy[--i]);
-			}
 			free(envp_cpy);
 			return (NULL);
 		}

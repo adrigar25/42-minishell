@@ -5,13 +5,26 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/15 20:57:15 by agarcia          ###   ########.fr       */
+/*   Created: 2025/09/28 00:36:11 by agarcia           #+#    #+#             */
+/*   Updated: 2025/09/28 00:36:11 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
 
+/**
+ * ENGLISH: Implements the pwd command, printing the current working directory
+ * 			to the specified output file descriptor.
+ *
+ * SPANISH: Implementa el comando pwd, imprimiendo el directorio de trabajo
+ * 			actual en el descriptor de archivo de salida especificado.
+ *
+ * @param cmd The command structure containing file descriptors. /
+ *            La estructura de comando que contiene descriptores de archivo.
+ *
+ * @returns 0 on success, 1 on error. /
+ *          0 en caso de éxito, 1 en caso de error.
+ */
 int	ft_pwd(t_cmd cmd)
 {
 	char	cwd[1024];

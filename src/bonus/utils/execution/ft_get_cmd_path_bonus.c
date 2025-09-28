@@ -3,15 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_get_cmd_path_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 16:30:20 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 14:24:52 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/27 22:27:16 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
 
+/**
+ * ENGLISH: Gets the full path of a command by searching in the PATH
+ * 			environment variable.
+ *
+ * SPANISH: Obtiene la ruta completa de un comando buscando en la variable
+ * 			de entorno PATH.
+ *
+ * @param cmd   The command to search for. /
+ *              El comando a buscar.
+ *
+ * @returns The full path to the command if found, or NULL otherwise. /
+ *          La ruta completa al comando si se encuentra, o NULL en caso
+ *           contrario.
+ */
 char	*ft_get_cmd_path(char *cmd)
 {
 	char	*temp;

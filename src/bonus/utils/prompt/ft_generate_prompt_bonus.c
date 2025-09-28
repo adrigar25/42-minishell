@@ -6,12 +6,23 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/14 15:18:12 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/27 22:27:16 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
 
+/**
+ * ENGLISH: Generates the shell prompt string based on the current directory.
+ *
+ * SPANISH: Genera la cadena del prompt del shell basada en el directorio actual.
+ *
+ * @param envp   The environment variables. /
+ *               Las variables de entorno.
+ *
+ * @returns A dynamically allocated string with the prompt. /
+ *          Una cadena asignada dinámicamente con el prompt.
+ */
 char	*ft_generate_prompt(char **envp)
 {
 	char	*dir_path;

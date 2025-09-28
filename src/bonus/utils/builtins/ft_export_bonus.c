@@ -6,12 +6,28 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/15 20:57:06 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/27 22:27:16 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
 
+/**
+ * ENGLISH: Checks if a string is a valid environment variable identifier.
+ * 			Valid identifiers start with a letter or underscore, followed by
+ * 			letters, digits, or underscores, and may include an optional '='.
+ *
+ * SPANISH: Verifica si una cadena es un identificador válido de variable
+ * 			de entorno. Los identificadores válidos comienzan con una letra
+ * 			o guion bajo, seguidos de letras, dígitos o guiones bajos,
+ * 			y pueden incluir un '=' opcional.
+ *
+ * @param str The string to check. /
+ *            La cadena a verificar.
+ *
+ * @return 1 if valid, 0 if invalid. /
+ *         1 si es válido, 0 si es inválido.
+ */
 static int	ft_is_valid_identifier(const char *str)
 {
 	int	i;
@@ -33,6 +49,17 @@ static int	ft_is_valid_identifier(const char *str)
 	return (1);
 }
 
+/**
+ * ENGLISH: Prints all environment variables in the format used by the export
+ * 			command, i.e., declare -x NAME="value" or declare -x NAME.
+ *
+ * SPANISH: Imprime todas las variables de entorno en el formato utilizado
+ * 			por el comando export, es decir, declare -x NOMBRE="valor"
+ * 			o declare -x NOMBRE.
+ *
+ * @param envp The environment variables array. /
+ *             La matriz de variables de entorno.
+ */
 static void	ft_print_exported_vars(char **envp)
 {
 	int		i;
@@ -60,32 +87,49 @@ static void	ft_print_exported_vars(char **envp)
 	}
 }
 
+/**
+ * ENGLISH: Exports a single environment variable from the given argument.
+ * 			The argument can be in the form NAME=value or just NAME.
+ * 			If the identifier is invalid, an error is returned.
+ * 			Uses ft_setenv to set the variable in the environment.
+ * 			Returns 0 on success, 1 on error.
+ *
+ * SPANISH: Exporta una sola variable de entorno a partir del argumento
+ * 			dado. El argumento puede estar en la forma NOMBRE=valor o
+ * 			solo NOMBRE.
+ * 			Si el identificador es inválido, se devuelve un error.
+ * 			Utiliza ft_setenv para establecer la variable en el entorno.
+ * 			Devuelve 0 en caso de éxito, 1 en caso de error.
+ *
+ * @param arg  The argument string (NAME=value or NAME). /
+ * 		   La cadena de argumentos (NOMBRE=valor o NOMBRE).
+ * @param envp The pointer to the environment variables array. /
+ * 	   El puntero a la matriz de variables de entorno.
+ *
+ * @return 0 on success, 1 on error. /
+ * 		   0 en caso de éxito, 1 en caso de error.
+ */
 static int	ft_export_variable(const char *arg, char ***envp)
 {
-	char	*name;
-	char	*value;
-	char	*equals_pos;
-	int		result;
+	char	*array[3];
 
 	if (!ft_is_valid_identifier(arg))
 		return (ft_handle_error(13, 1, NULL, NULL));
-	equals_pos = ft_strchr(arg, '=');
-	if (equals_pos)
+	array[0] = ft_strchr(arg, '=');
+	if (array[0])
 	{
-		name = ft_substr((char *)arg, 0, equals_pos - arg);
-		value = ft_strdup(equals_pos + 1);
-		result = ft_setenv(name, value, envp);
-		free(name);
-		free(value);
-		if (result == 0)
+		array[1] = ft_substr((char *)arg, 0, array[0] - arg);
+		array[2] = ft_strdup(array[0] + 1);
+		free(array[1]);
+		free(array[2]);
+		if (ft_setenv(array[1], array[2], envp) == 0)
 			return (0);
 		else
 			return (1);
 	}
 	else
 	{
-		result = ft_setenv((char *)arg, NULL, envp);
-		if (result == 0)
+		if (ft_setenv((char *)arg, NULL, envp) == 0)
 			return (0);
 		else
 			return (1);
@@ -93,6 +137,24 @@ static int	ft_export_variable(const char *arg, char ***envp)
 	return (0);
 }
 
+/**
+ * ENGLISH: Implements the export command, handling multiple arguments.
+ * 			If no arguments are provided, it prints all environment variables.
+ * 			Returns 0 on success, 1 if any argument is invalid.
+ *
+ * SPANISH: Implementa el comando export, manejando múltiples argumentos.
+ * 			Si no se proporcionan argumentos, imprime todas las variables
+ * 			de entorno. Devuelve 0 en caso de éxito, 1 si algún argumento
+ * 			es inválido.
+ *
+ * @param argv The command arguments array. /
+ *             La matriz de argumentos del comando.
+ * @param envp The pointer to the environment variables array. /
+ *             El puntero a la matriz de variables de entorno.
+ *
+ * @return 0 on success, 1 if any argument is invalid. /
+ *         0 en caso de éxito, 1 si algún argumento es inválido.
+ */
 int	ft_export(char **argv, char ***envp)
 {
 	int	i;

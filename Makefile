@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/27 20:12:13 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/28 01:56:32 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ LIB_NAME = $(LIBFT_DIR)/libft.a
 
 # Main Source Files
 MAIN_SOURCE = $(MANDATORY_DIR)/main.c
-MAIN_SOURCE_BONUS = $(BONUS_DIR)/main.c
+MAIN_SOURCE_BONUS = $(BONUS_DIR)/main_bonus.c
 
 # Source files
 MINISHELL_SRCS = \
@@ -116,12 +116,31 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/error/ft_handle_error_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/ft_read_input_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/ft_process_input_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/input/ft_split_input_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/input/ft_check_input_syntax_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/input/ft_parse_input_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_parse_input_node_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_parse_input_fd_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_parse_input_redir_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_parse_input_op_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_parse_input_token_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_remove_quotes_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/wildcards/ft_handle_wildcards_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/wildcards/ft_count_matches_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/wildcards/ft_expand_wildcard_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/wildcards/ft_has_wildcards_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/wildcards/ft_match_pattern_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/wildcards/ft_sort_strings_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/debug/ft_show_debug_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/prompt/ft_get_directory_path_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/prompt/ft_generate_prompt_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_dupenv_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_getenv_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_setenv_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_realloc_envp_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_create_env_var_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_update_existing_env_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_update_pwd_env_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/redirections/ft_handle_infile_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/redirections/ft_handle_outfile_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_exec_cmd_bonus.c \
@@ -130,13 +149,8 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_finish_execution_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_execute_pipeline_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_handle_heredoc_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_is_builtin_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_setup_child_io_bonus.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_split_input_bonus.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_parse_input_bonus.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_handle_env_expansion_bonus.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_remove_quotes_bonus.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_syntax_check_bonus.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/parsing/ft_handle_wildcards_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/signals/ft_sigint_handler_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/signals/ft_init_signals_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_echo_bonus.c \
@@ -147,6 +161,12 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_env_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_exit_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_exec_builtin_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_expansion_utils_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_expand_exit_status_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_expand_env_var_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_process_arg_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_handle_env_expansion_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_append_bonus.c \
 
 # Objetos para mandatory y bonus
 MAIN_OBJECT = $(MAIN_SOURCE:$(MANDATORY_DIR)/%.c=$(OBJ_MANDATORY_DIR)/%.o)
