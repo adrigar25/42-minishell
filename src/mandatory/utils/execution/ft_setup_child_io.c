@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_setup_child_io.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:29:06 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/22 16:38:47 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/28 16:09:52 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 void	ft_setup_child_io(t_cmd *current, t_cmd *cmd_list)
 {
 	t_cmd	*temp;
+	t_cmd	*cmd;
 
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
@@ -38,5 +39,18 @@ void	ft_setup_child_io(t_cmd *current, t_cmd *cmd_list)
 		dup2(current->infd, STDIN_FILENO);
 	if (current->outfd != STDOUT_FILENO)
 		dup2(current->outfd, STDOUT_FILENO);
-	ft_close_unused_fds(current, cmd_list);
+	cmd = cmd_list;
+	while (cmd)
+	{
+		if (cmd != current)
+		{
+			if (cmd->infd != STDIN_FILENO && cmd->infd != current->infd
+				&& cmd->infd != current->outfd)
+				close(cmd->infd);
+			if (cmd->outfd != STDOUT_FILENO && cmd->outfd != current->infd
+				&& cmd->outfd != current->outfd)
+				close(cmd->outfd);
+		}
+		cmd = cmd->next;
+	}
 }

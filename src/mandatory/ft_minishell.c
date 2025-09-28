@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/27 21:29:18 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 16:22:30 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	ft_minishell(char **envp, int debug)
 	while (ft_read_input(&input, data))
 	{
 		cmd_list = ft_process_input(input, data, debug);
-		exit_status = ft_execute_pipeline(cmd_list, &data);
+		exit_status = ft_execute_cmds(cmd_list, &data);
 	}
 	ft_free_matrix(data->envp);
 	free(data);

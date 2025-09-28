@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:59:15 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 15:49:42 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 16:21:44 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,19 +234,15 @@ int					ft_process_arg(char **dst, char *arg, t_data *data);
 char				**ft_handle_env_expansion(char **argv, t_data *data);
 
 // Execution
-int					ft_exec_cmd(t_cmd *cmd);
 char				*ft_get_cmd_path(char *cmd);
-void				ft_close_unused_fds(t_cmd *current_cmd, t_cmd *cmd_list);
-void				ft_finish_execution(pid_t *pids, t_cmd *cmd_list,
+int					ft_finish_execution(pid_t *pids, t_cmd *cmd_list,
 						t_data *data);
 void				ft_setup_child_io(t_cmd *current, t_cmd *cmd_list);
 int					ft_exec_builtin(t_cmd *cmd, t_data **data);
 int					ft_is_builtin(t_cmd *cmd);
-
-int					ft_execute_pipeline(t_cmd *cmd_list, t_data **data);
-int					ft_execute_error_command(t_cmd *cmd_list, t_cmd *head,
-						pid_t *pids);
-int					ft_exec_cmd(t_cmd *cmd);
+int					ft_should_execute(t_cmd **current, t_data *data);
+int					ft_execute_cmds(t_cmd *cmd_list, t_data **data);
+int					ft_exec_bin(t_cmd *cmd);
 
 // PROMPT
 char				*ft_get_directory_path(char **envp);

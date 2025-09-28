@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/28 15:44:11 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/28 16:25:23 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,14 +78,14 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_update_pwd_env.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/redirections/ft_handle_infile.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/redirections/ft_handle_outfile.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_exec_cmd.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_exec_bin.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_get_cmd_path.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_close_unused_fds.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_finish_execution.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_execute_pipeline.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_execute_cmds.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/heredoc/ft_handle_heredoc.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_is_builtin.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_setup_child_io.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_exec_builtin.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/signals/ft_sigint_handler.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/signals/ft_init_signals.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/builtins/ft_echo.c \
@@ -95,7 +95,6 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/builtins/ft_unset.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/builtins/ft_env.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/builtins/ft_exit.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/builtins/ft_exec_builtin.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/expansion/ft_expansion_utils.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/expansion/ft_expand_exit_status.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/expansion/ft_expand_env_var.c \
@@ -143,14 +142,15 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_update_pwd_env_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/redirections/ft_handle_infile_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/redirections/ft_handle_outfile_bonus.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_exec_cmd_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_exec_bin_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_get_cmd_path_bonus.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_close_unused_fds_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_finish_execution_bonus.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_execute_pipeline_bonus.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/heredoc/ft_handle_heredoc_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_execute_cmds_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_exec_builtin_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_is_builtin_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_setup_child_io_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_should_execute_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/heredoc/ft_handle_heredoc_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/signals/ft_sigint_handler_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/signals/ft_init_signals_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_echo_bonus.c \
@@ -160,7 +160,6 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_unset_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_env_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_exit_bonus.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/builtins/ft_exec_builtin_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_expansion_utils_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_expand_exit_status_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_expand_env_var_bonus.c \

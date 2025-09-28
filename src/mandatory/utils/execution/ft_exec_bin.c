@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exec_cmd_bonus.c                                :+:      :+:    :+:   */
+/*   ft_exec_bin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:06:20 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/27 22:27:16 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 16:14:47 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell_bonus.h"
+#include "../../minishell.h"
 
 /**
  * ENGLISH: Cleans the argument array by removing NULL or empty string entries.
@@ -100,7 +100,7 @@ static int	ft_check_cmd_path(const char *path, const char *cmd_name)
  * @returns EXIT_FAILURE if execve fails. /
  *				EXIT_FAILURE si execve falla.
  */
-int	ft_exec_cmd(t_cmd *cmd)
+int	ft_exec_bin(t_cmd *cmd)
 {
 	char	*path;
 	int		ret;

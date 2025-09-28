@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_finish_execution.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 16:40:01 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/28 16:17:01 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static void	ft_close_fds(t_cmd *cmd_list)
  *                           Puntero para almacenar el último estado de salida.
  */
 static void	ft_wait_for_children(pid_t *pids, int cmd_count,
-	int *last_exit_status)
+		int *last_exit_status)
 {
 	int	i;
 	int	status;
@@ -107,7 +107,8 @@ static void	ft_wait_for_children(pid_t *pids, int cmd_count,
  *          esperando a los procesos hijos, actualizando el último estado
  * 			de salida, liberando memoria asignada y reiniciando el puntero
  * 			de la lista de comandos.
- *
+ * @param last_exit_status The exit status of the last executed command. /
+ *                         El estado de salida del último comando ejecutado.
  * @param pids       Array of process IDs of the child processes. /
  *                   Array de IDs de proceso de los procesos hijos.
  * @param cmd_list   Pointer to the head of the command list. /
@@ -117,7 +118,7 @@ static void	ft_wait_for_children(pid_t *pids, int cmd_count,
  *                   Puntero a la estructura de datos que contiene información
  *                   del entorno y estado.
  */
-void	ft_finish_execution(pid_t *pids, t_cmd *cmd_list, t_data *data)
+int	ft_finish_execution(pid_t *pids, t_cmd *cmd_list, t_data *data)
 {
 	int	last_exit_status;
 
@@ -128,4 +129,5 @@ void	ft_finish_execution(pid_t *pids, t_cmd *cmd_list, t_data *data)
 	free(pids);
 	ft_free_cmd_list(cmd_list);
 	cmd_list = NULL;
+	return (last_exit_status);
 }
