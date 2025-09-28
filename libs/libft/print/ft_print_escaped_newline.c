@@ -6,14 +6,15 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 13:27:12 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/22 15:35:18 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/28 16:58:26 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
 /**
- * ENGLISH: Prints an escaped newline sequence ("\n") if found in the argument string.
+ * ENGLISH: Prints an escaped newline sequence ("\n") if found in the argument
+ * 			string.
  *
  * SPANISH: Imprime una secuencia de nueva línea escapada ("\n") si se
  * 			encuentra en la cadena de argumentos.
@@ -28,7 +29,8 @@
  *              El descriptor de archivo donde escribir la salida.
  *
  * @returns 1 if an escaped newline was printed, 0 otherwise, -1 on error. /
- *          1 si se imprimió una nueva línea escapada, 0 en caso contrario, -1 en error.
+ *          1 si se imprimió una nueva línea escapada, 0 en caso contrario,
+ * 			-1 en error.
  */
 int	ft_print_escaped_newline(const char *arg, int *i, int outfd)
 {

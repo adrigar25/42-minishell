@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 13:38:46 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/22 15:34:22 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/28 16:56:48 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ static int	ft_is_valid_sign(const char *str, int *sign, int *i)
  * 		It ensures all characters are digits and checks for overflow.
  *
  * SPANISH: Función auxiliar para verificar el cuerpo numérico de la cadena.
- * 		Asegura que todos los caracteres sean dígitos y verifica el desbordamiento
+ * 		Asegura que todos los caracteres sean dígitos y verifica el
+ * 		desbordamiento
  *
  * @param str   The string to check. /
  * 			La cadena a verificar.

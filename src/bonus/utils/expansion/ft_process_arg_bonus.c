@@ -3,15 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   ft_process_arg_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/27 22:27:16 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 17:48:57 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
 
+/**
+ * ENGLISH: Processes an argument string, expanding environment variables
+ * 		and the special variable '$?', and appending the result to the
+ * 		destination string.
+ *
+ * SPANISH: Procesa una cadena de argumentos, expandiendo variables de
+ * 		entorno y la variable especial '$?', y añadiendo el resultado a la
+ * 		cadena de destino.
+ *
+ * @param dst   Pointer to the destination string to append
+ * 				the processed argument to. /
+ * 				Puntero a la cadena de destino donde se añadirá
+ * 				el argumento procesado.
+ * @param arg   The argument string to process. /
+ * 				La cadena de argumentos a procesar.
+ * @param data  Pointer to the shell data structure containing
+ * 				environment variables and last exit status. /
+ * 				Puntero a la estructura de datos del shell que contiene
+ * 				las variables de entorno y el último estado de salida.
+ */
 int	ft_process_arg(char **dst, char *arg, t_data *data)
 {
 	int	j;

@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 13:30:38 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/22 13:30:56 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/28 16:58:49 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@
  */
 int	ft_print_arg_content(char *arg, int start, int end, int outfd)
 {
-	int i;
-	int res;
+	int	i;
+	int	res;
 
 	i = start;
 	while (i < end)
@@ -43,7 +43,7 @@ int	ft_print_arg_content(char *arg, int start, int end, int outfd)
 		if (res == -1)
 			return (-1);
 		if (res == 1)
-			continue;
+			continue ;
 		if (ft_putchar_fd(arg[i], outfd) == -1)
 			return (-1);
 		i++;

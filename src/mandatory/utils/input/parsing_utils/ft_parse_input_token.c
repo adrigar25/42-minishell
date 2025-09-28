@@ -3,15 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_input_token.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:55:03 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/27 21:35:28 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 17:53:59 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
+/**
+ * ENGLISH: Checks if a token is a redirection operator.
+ *
+ * SPANISH: Verifica si un token es un operador de redirección.
+ *
+ * @param token The token to check.
+ *              El token a verificar.
+ *
+ * @returns 1 if the token is a redirection operator, 0 otherwise.
+ *          1 si el token es un operador de redirección, 0 en caso contrario.
+ */
 int	ft_process_token(t_cmd **current_cmd, char **argv, int i, int *cmd_index)
 {
 	char	*clean_arg;

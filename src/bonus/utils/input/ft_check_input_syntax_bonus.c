@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_check_input_syntax_bonus.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:25:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/27 22:27:16 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 17:16:34 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,11 @@ static int	ft_is_pipe_like(const char *s)
 /**
  * ENGLISH: Checks for syntax errors in the command arguments.
  *          It checks for invalid placements of pipes, redirections,
-	and logical operators.
+ *          and logical operators.
  *
  * SPANISH: Verifica errores de sintaxis en los argumentos del comando.
  *          Verifica colocaciones inválidas de tuberías,
-	redirecciones y operadores lógicos.
+ *          redirecciones y operadores lógicos.
  *
  * @param argv  The array of command arguments. /
  *              El arreglo de argumentos del comando.
@@ -88,9 +88,9 @@ static int	ft_is_pipe_like(const char *s)
  *              El número de argumentos del comando.
  *
  * @returns 0 if no syntax errors are found,
-	or an error code if a syntax error is detected. /
+ *          or an error code if a syntax error is detected. /
  *          0 si no se encuentran errores de sintaxis,
-	o un código de error si se detecta un error de sintaxis.
+ *          o un código de error si se detecta un error de sintaxis.
  */
 int	ft_check_input_syntax(char **argv, int argc)
 {

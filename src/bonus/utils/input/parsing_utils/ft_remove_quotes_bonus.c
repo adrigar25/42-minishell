@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_remove_quotes_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:16:59 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/27 22:27:16 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 17:16:15 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,21 +94,19 @@ static int	ft_calc_unquoted_len(const char *str)
 }
 
 /**
-
-	* ENGLISH: Removes quotes from the input string and
-	returns a new string without quotes.
+ * ENGLISH: Removes quotes from the input string and
+ *          returns a new string without quotes.
  *
-
-	* SPANISH: Elimina las comillas de la cadena de entrada
-	y devuelve una nueva cadena sin comillas.
+ * SPANISH: Elimina las comillas de la cadena de entrada
+ *          y devuelve una nueva cadena sin comillas.
  *
  * @param str   The input string with quotes. /
  *              La cadena de entrada con comillas.
  *
  * @returns A newly allocated string without quotes,
-	or NULL on allocation failure. /
+ *          or NULL on allocation failure. /
  *          Una cadena recién asignada sin comillas,
-	o NULL en caso de fallo en la asignación.
+ *          o NULL en caso de fallo en la asignación.
  */
 char	*ft_remove_quotes(const char *str)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_bonus.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:59:15 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 16:25:03 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 17:51:45 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,17 +65,13 @@
 # define ERROR_IS_A_DIRECTORY "minishell: %s: is a directory\n"
 # define ERROR_NO_SUCH_FILE "minishell: %s: No such file or directory\n"
 # define ERROR_SYNTAX \
-	"minishell: \
-syntax error near unexpected token `newline'\n"
+	"minishell: syntax error near unexpected token `newline'\n"
 # define ERROR_SYNTAX_PIPE \
-	"minishell: \
-syntax error near unexpected token `|'\n"
+	"minishell: syntax error near unexpected token `|'\n"
 # define ERROR_SYNTAX_REDIRECT \
-	"minishell: \
-syntax error near unexpected token `>'\n"
+	"minishell: syntax error near unexpected token `>'\n"
 # define ERROR_SYNTAX_TOKEN \
-	"minishell: \
-syntax error near unexpected token `%s'\n"
+	"minishell: syntax error near unexpected token `%s'\n"
 # define ERROR_TOO_MANY_ARGS "minishell: too many arguments\n"
 # define ERROR_HOME_NOT_SET "minishell: cd: HOME not set\n"
 # define ERROR_HEREDOC_DELIMITER "Error: missing delimiter for heredoc\n"
@@ -84,8 +80,7 @@ syntax error near unexpected token `%s'\n"
 # define ERROR_CD_FAIL "minishell: cd: %s: %s\n"
 # define ERROR_AMBIGUOUS_REDIRECT "minishell: %s: ambiguous redirect\n"
 # define ERROR_INVALID_IDENTIFIER \
-	"minishell:\
- export: `%s': not a valid identifier\n"
+	"minishell: export: `%s': not a valid identifier\n"
 # define ERROR_NUM_ARG_REQ "minishell: exit: %s: numeric argument required\n"
 
 // Heredoc

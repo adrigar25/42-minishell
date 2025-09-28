@@ -3,15 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_input_node_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:51:29 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/27 22:27:16 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 17:44:11 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell_bonus.h"
 
+/**
+ * ENGLISH: Creates and initializes a new command node for the command list.
+ *           Sets default values for argv, file descriptors, error flag,
+ *           index, and next pointer.
+ *
+ * SPANISH: Crea e inicializa un nuevo nodo de comando para la lista de comandos.
+ *           Establece valores predeterminados para argv, descriptores de
+ *           archivo, bandera de error, índice y puntero siguiente.
+ *
+ * @param index    The index to assign to the new command node.
+ *                 El índice que se asignará al nuevo nodo de comando.
+ *
+ * @returns A pointer to the newly created t_cmd node, or NULL on failure.
+ *          Un puntero al nuevo nodo t_cmd creado, o NULL en caso de error.
+ */
 t_cmd	*ft_create_cmd_node(int index)
 {
 	t_cmd	*new_cmd;
@@ -28,6 +43,21 @@ t_cmd	*ft_create_cmd_node(int index)
 	return (new_cmd);
 }
 
+/**
+ * ENGLISH: Adds an argument to the command's argv array, reallocating
+ * 			memory as needed.
+ *
+ * SPANISH: Añade un argumento al arreglo argv del comando, realojando
+ *  		memoria según sea necesario.
+ *
+ * @param cmd   Pointer to the command structure to update.
+ *               Puntero a la estructura de comando a actualizar.
+ *
+ * @param arg   The argument string to add to the command's argv.
+ *               La cadena de argumentos que se añadirá al argv del comando.
+ *
+ * @returns void.
+ */
 void	ft_add_arg_to_cmd(t_cmd *cmd, char *arg)
 {
 	int		count;

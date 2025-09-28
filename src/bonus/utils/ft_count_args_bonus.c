@@ -3,15 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   ft_count_args_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 14:20:19 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/14 15:18:12 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 17:32:55 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell_bonus.h"
 
+/**
+ * ENGLISH: Counts the number of arguments in a command string,
+ *          considering quotes, escaped characters, and operators.
+ *
+ * SPANISH: Cuenta el número de argumentos en una cadena de comando,
+ *          considerando comillas, caracteres escapados y operadores.
+ *
+ * @param cmd   The command string to analyze. /
+ *              La cadena de comando a analizar.
+ *
+ * @returns The number of arguments in the command string. /
+ *          El número de argumentos en la cadena de comando.
+ */
 int	is_escaped(const char *cmd, int pos, int in_quote, char quote_char)
 {
 	int	backslashes;
@@ -29,6 +42,24 @@ int	is_escaped(const char *cmd, int pos, int in_quote, char quote_char)
 	return (backslashes % 2 == 1);
 }
 
+/**
+ * ENGLISH: Skips over quotes and escaped characters in the command string.
+ *
+ * SPANISH: Salta las comillas y los caracteres escapados en la cadena de
+ * 			comando.
+ *
+ * @param cmd        The command string to analyze. /
+ *                   La cadena de comando a analizar.
+ *
+ * @param i          The current position in the command string. /
+ *                   La posición actual en la cadena de comando.
+ *
+ * @param in_quote   Indicates if we are inside a quote. /
+ *                   Indica si estamos dentro de una comilla.
+ *
+ * @param quote_char The character of the quote we are in. /
+ *                   El carácter de la comilla en la que estamos.
+ */
 static void	skip_quotes_and_escapes(const char *cmd, int *i, int *in_quote,
 		char *quote_char)
 {
@@ -54,6 +85,28 @@ static void	skip_quotes_and_escapes(const char *cmd, int *i, int *in_quote,
 	}
 }
 
+/**
+ * ENGLISH: Handles operators in the command string, updating the index
+ *          and counting them as arguments.
+ *
+ * SPANISH: Maneja los operadores en la cadena de comando, actualizando el
+ *          índice y contándolos como argumentos.
+ *
+ * @param cmd        The command string to analyze. /
+ *                   La cadena de comando a analizar.
+ *
+ * @param i          The current position in the command string. /
+ *                   La posición actual en la cadena de comando.
+ *
+ * @param in_quote   Indicates if we are inside a quote. /
+ *                   Indica si estamos dentro de una comilla.
+ *
+ * @param quote_char The character of the quote we are in. /
+ *                   El carácter de la comilla en la que estamos.
+ *
+ * @returns 1 if an operator was handled, 0 otherwise. /
+ *          1 si se manejó un operador, 0 en caso contrario.
+ */
 static int	handle_operator(const char *cmd, int *i, int in_quote,
 		char quote_char)
 {
@@ -84,6 +137,22 @@ static int	handle_operator(const char *cmd, int *i, int in_quote,
 	return (0);
 }
 
+/**
+ * ENGLISH: Counts a single word in the command string, considering quotes
+ *          and escaped characters.
+ *
+ * SPANISH: Cuenta una sola palabra en la cadena de comando, considerando
+ *          comillas y caracteres escapados.
+ *
+ * @param cmd   The command string to analyze. /
+ *              La cadena de comando a analizar.
+ *
+ * @param i     The current position in the command string. /
+ *              La posición actual en la cadena de comando.
+ *
+ * @returns 1 if a word was counted, 0 otherwise. /
+ *          1 si se contó una palabra, 0 en caso contrario.
+ */
 static int	count_word(const char *cmd, int *i)
 {
 	int		count;
@@ -103,6 +172,19 @@ static int	count_word(const char *cmd, int *i)
 	return (count);
 }
 
+/**
+ * ENGLISH: Counts the number of arguments in a command string,
+ *          considering quotes, escaped characters, and operators.
+ *
+ * SPANISH: Cuenta el número de argumentos en una cadena de comando,
+ *          considerando comillas, caracteres escapados y operadores.
+ *
+ * @param cmd   The command string to analyze. /
+ *              La cadena de comando a analizar.
+ *
+ * @returns The number of arguments in the command string. /
+ *          El número de argumentos en la cadena de comando.
+ */
 int	ft_count_args(const char *cmd)
 {
 	int	i;

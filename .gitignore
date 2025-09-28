@@ -22,5 +22,4 @@ minishell_bonus
 assets/welcome.txt
 
 # Tester
-
-./minishell_tester/
+minishell_tester/

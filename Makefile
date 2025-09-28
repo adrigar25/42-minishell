@@ -3,19 +3,18 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
+#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/28 16:25:23 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/28 18:02:07 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-#
 # Compilation flags (use Homebrew readline/ncurses for macOS ARM64)
 CFLAGS = -I/opt/homebrew/opt/readline/include
-#
+
 # Linker flags (use Homebrew readline/ncurses for macOS ARM64)
 LDFLAGS = -L/opt/homebrew/opt/readline/lib -lreadline -lncurses
 

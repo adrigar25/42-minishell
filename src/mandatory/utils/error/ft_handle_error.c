@@ -3,15 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_handle_error.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 16:27:37 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 13:12:46 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 17:58:53 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+/**
+ * ENGLISH: Prints execution-related error messages based on the error code.
+ *
+ * SPANISH: Imprime mensajes de error relacionados con la ejecución según
+ * 			el código de error.
+ *
+ * @param code   The execution error code to handle. /
+ *               El código de error de ejecución a manejar.
+ *
+ * @param msg    The message argument for formatting (e.g., command name). /
+ *               El argumento de mensaje para formatear (por ejemplo, nombre
+ * 				del comando).
+ *
+ * Handles the following error codes:
+ *   1 - Command not found
+ *   2 - Permission denied
+ *   3 - Is a directory
+ *   4 - No such file
+ */
 static void	print_exec_errors(int code, char *msg)
 {
 	if (code == 1)
@@ -24,6 +43,22 @@ static void	print_exec_errors(int code, char *msg)
 		ft_fprintf(2, ERROR_NO_SUCH_FILE, msg);
 }
 
+/**
+ * ENGLISH: Prints syntax-related error messages based on the error code.
+ *
+ * SPANISH: Imprime mensajes de error relacionados con la sintaxis según
+ * 			el código de error.
+ *
+ * @param code   The syntax error code to handle. /
+ * 			 El código de error de sintaxis a manejar.
+ * @param msg    The message argument for formatting (e.g., unexpected token). /
+ * 			 El argumento de mensaje para formatear (por ejemplo, token
+ * 			inesperado).
+ *
+ * Handles the following error codes:
+ *  5 - Syntax error near unexpected token
+ *  6 - Syntax error: unexpected token
+ */
 static void	print_syntax_errors(int code, char *msg)
 {
 	if (code == 5)
@@ -32,6 +67,30 @@ static void	print_syntax_errors(int code, char *msg)
 		ft_fprintf(2, ERROR_SYNTAX_TOKEN, msg);
 }
 
+/**
+ * ENGLISH: Prints built-in command and environment-related error messages
+ * 			based on the error code.
+ *
+ * SPANISH: Imprime mensajes de error relacionados con comandos integrados
+ * 			y entorno según el código de error.
+ *
+ * @param code   The built-in/env error code to handle. /
+ * 			 El código de error de comandos integrados/entorno a manejar.
+ * @param msg    The first message argument for formatting (e.g., filename). /
+ * 			 El primer argumento de mensaje para formatear (por ejemplo,
+ * 			nombre de archivo).
+ * @param msg2   The second message argument for formatting
+ * 			 (e.g., error detail). /
+ * 			 El segundo argumento de mensaje para formatear (por ejemplo,
+ * 			detalle del error).
+ *
+ * Handles the following error codes:
+ *  7  - Too many arguments
+ *  8  - HOME not set
+ *  11 - cd failure
+ *  13 - Invalid identifier for export/unset
+ *  14 - Numeric argument required for exit
+ */
 static void	print_builtin_env_errors(int code, char *msg, char *msg2)
 {
 	if (code == 7)
@@ -46,6 +105,24 @@ static void	print_builtin_env_errors(int code, char *msg, char *msg2)
 		ft_fprintf(2, ERROR_NUM_ARG_REQ, msg);
 }
 
+/**
+ * ENGLISH: Prints redirection-related error messages based on the error code.
+ * 			Handles heredoc and ambiguous redirect errors.
+ *
+ * SPANISH: Imprime mensajes de error relacionados con redirecciones según
+ * 			el código de error. Maneja errores de heredoc y redirección
+ * 			ambigua.
+ *
+ * @param code   The redirection error code to handle. /
+ * 			 El código de error de redirección a manejar.
+ * @param msg    The message argument for formatting (e.g., filename). /
+ * 		 El argumento de mensaje para formatear (por ejemplo, nombre de archivo).
+ *
+ * Handles the following error codes:
+ * 9  - Heredoc delimiter error
+ * 10 - Heredoc process error
+ * 12 - Ambiguous redirect
+ */
 static void	print_redir_errors(int code, char *msg)
 {
 	if (code == 9)

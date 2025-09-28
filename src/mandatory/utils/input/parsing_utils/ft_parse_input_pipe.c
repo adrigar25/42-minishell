@@ -3,15 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_input_pipe.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:52:24 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/27 19:52:25 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 17:53:45 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
+/**
+ * ENGLISH: Processes a pipe operator, creating a new command node
+ *          and setting up the appropriate file descriptors for
+ *          inter-process communication.
+ *
+ * SPANISH: Procesa un operador de tubería, creando un nuevo nodo
+ *          de comando y configurando los descriptores de archivo
+ *          apropiados para la comunicación entre procesos.
+ *
+ * @param current_cmd  Pointer to the current command pointer. /
+ *                     Puntero al puntero del comando actual.
+ *
+ * @param cmd_index    Pointer to the current command index. /
+ *                     Puntero al índice del comando actual.
+ *
+ * @param data         Pointer to the shell data structure. /
+ *                     Puntero a la estructura de datos del shell.
+ *
+ * @returns 0 on success, -1 on failure. /
+ *          0 en caso de éxito, -1 en caso de error.
+ */
 int	ft_process_pipe(t_cmd **current_cmd, int *cmd_index, t_data *data)
 {
 	int		pipefd[2];

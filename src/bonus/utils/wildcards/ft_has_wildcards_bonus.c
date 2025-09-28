@@ -3,15 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_has_wildcards_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 01:42:14 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 15:05:23 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 17:35:51 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
 
+/**
+ * ENGLISH: Checks if the given string contains unquoted wildcard characters
+ *          ('*' or '?').
+ *
+ * SPANISH: Comprueba si la cadena dada contiene caracteres comodín
+ *          ('*' o '?') no entre comillas.
+ *
+ * @param str   The string to check.
+ *              La cadena a comprobar.
+ *
+ * @returns 1 if the string contains unquoted wildcards, 0 otherwise.
+ *          1 si la cadena contiene comodines no entre comillas, 0 en
+ *          caso contrario.
+ */
 int	ft_has_wildcards(const char *str)
 {
 	int		i;

@@ -3,15 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expand_env_var.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/27 19:32:49 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 17:59:01 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+/**
+ * ENGLISH: Expands an environment variable in the given argument string,
+ *          appending its value to the destination string.
+ *
+ * SPANISH: Expande una variable de entorno en la cadena de argumentos dada,
+ *          añadiendo su valor a la cadena de destino.
+ *
+ * @param dst   Pointer to the destination string to append the variable
+ *              value to. /
+ *              Puntero a la cadena de destino donde se añadirá el valor
+ *              de la variable.
+ *
+ * @param arg   The argument string containing the environment variable. /
+ *              La cadena de argumentos que contiene la variable de entorno.
+ *
+ * @param j     Pointer to the current index in the argument string
+ *              (points to '$'). /
+ *              Puntero al índice actual en la cadena de argumentos
+ *              (apunta a '$').
+ *
+ * @param data  Pointer to the shell data structure containing environment
+ *              variables. /
+ *              Puntero a la estructura de datos del shell que contiene las
+ *              variables de entorno.
+ *
+ * @returns 1 on success, 0 on memory allocation failure. /
+ *          1 en caso de éxito, 0 en caso de fallo de asignación de memoria.
+ */
 int	ft_expand_env_var(char **dst, char *arg, int *j, t_data *data)
 {
 	int		start;

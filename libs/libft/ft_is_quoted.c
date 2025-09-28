@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isquoted.c                                      :+:      :+:    :+:   */
+/*   ft_is_quoted.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 13:10:21 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/22 13:10:36 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/28 16:57:56 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 /**
  * ENGLISH: Checks if a string is enclosed in matching single or double quotes.
  *
- * SPANISH: Comprueba si una cadena está encerrada entre comillas simples o dobles coincidentes.
+ * SPANISH: Comprueba si una cadena está encerrada entre comillas simples o
+ * 			dobles coincidentes.
  *
  * @param arg   The string to check.
  *              La cadena a comprobar.
@@ -30,6 +31,10 @@ int	ft_is_quoted(const char *arg)
 	if (!arg)
 		return (0);
 	len = ft_strlen(arg);
-	return (len >= 2 && ((arg[0] == '"' && arg[len - 1] == '"') ||
-						(arg[0] == '\'' && arg[len - 1] == '\'')));
+	if (len < 2)
+		return (0);
+	if ((arg[0] == '"' && arg[len - 1] == '"')
+		|| (arg[0] == '\'' && arg[len - 1] == '\''))
+		return (1);
+	return (0);
 }
