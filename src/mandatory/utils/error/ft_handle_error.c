@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 16:27:37 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 02:02:44 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 13:12:46 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static void	print_redir_errors(int code, char *msg)
  * @returns The provided exit code. /
  *          El código de salida proporcionado.
  */
-*/ int ft_handle_error(int error_code, int exit_code, char *msg, char *msg2)
+int	ft_handle_error(int error_code, int exit_code, char *msg, char *msg2)
 {
 	if (error_code >= 1 && error_code <= 4)
 		print_exec_errors(error_code, msg);

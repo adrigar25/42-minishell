@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:51:26 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 03:33:19 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 13:38:56 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,16 @@ static int	is_pipe_like_token(const char *token)
 
 static int	is_ambiguous_redir(char **argv, int i, t_data *data)
 {
+	int	matches;
+
 	if (!argv[i + 1])
 		return (0);
 	if (ft_strcmp(argv[i], "<<") == 0)
 		return (0);
-	if (ft_has_wildcards(argv[i + 1]) && ft_count_matches(argv[i + 1]) > 1)
+	matches = ft_count_matches(argv[i + 1]);
+	// printf("Wildcard matches for '%s': %d\n", argv[i + 1], matches);
+	// printf("Has wildcards: %d\n", ft_has_wildcards(argv[i + 1]));
+	if (ft_has_wildcards(argv[i + 1]) && matches != 1)
 		return (1);
 	return (0);
 }
@@ -46,11 +51,11 @@ int	ft_handle_redirection(t_cmd *cmd, char **argv, int i, t_data *data)
 	int		k;
 	int		count_nonop;
 
-	if (!is_ambiguous_redir(argv, i, data) && ft_strcmp(argv[i], "<<") != 0)
+	if (is_ambiguous_redir(argv, i, data) == 1)
 	{
 		data->last_exit_status = ft_handle_error(12, 1, argv[i + 1], NULL);
 		cmd->has_error = 1;
-		return (i);
+		return (i + 2);
 	}
 	clean_arg = ft_remove_quotes(argv[i + 1]);
 	if (!clean_arg)
@@ -65,5 +70,5 @@ int	ft_handle_redirection(t_cmd *cmd, char **argv, int i, t_data *data)
 	}
 	if (clean_arg != argv[i + 1])
 		free(clean_arg);
-	return (i + 1);
+	return (i + 2);
 }

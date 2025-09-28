@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 00:36:44 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 02:31:17 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 12:20:40 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	copy_heredoc_arg(char **argv, char **new_argv, int *i,
 	return (0);
 }
 
-static int	expand_wildcard_arg(char *arg, char **new_argv, int *new_argc)
+static int	ft_process_wildcard(char *arg, char **new_argv, int *new_argc)
 {
 	int		matches;
 	char	**temp_matches;
@@ -89,7 +89,7 @@ static int	expand_and_copy_args(char **argv, char **new_argv, t_data *data)
 		}
 		else if (ft_has_wildcards(argv[i]))
 		{
-			if (expand_wildcard_arg(argv[i], new_argv, &new_argc) == -1)
+			if (ft_process_wildcard(argv[i], new_argv, &new_argc) == -1)
 			{
 				ft_free_matrix_size(new_argv, new_argc);
 				return (-1);

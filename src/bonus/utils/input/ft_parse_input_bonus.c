@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 18:57:27 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 03:06:08 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 13:03:29 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,7 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 	i = 0;
 	while (i < data->argc)
 	{
-		new_i = ft_process_token(&current_cmd, argv, i, &cmd_index);
-		if (new_i == i)
-			i++;
-		else
-			i = new_i + 1;
+		i = ft_process_token(&current_cmd, argv, i, &cmd_index);
 	}
 	return (cmd_list);
 }

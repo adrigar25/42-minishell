@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 01:42:14 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 03:30:00 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 03:54:45 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@ int	ft_has_wildcards(const char *str)
 	i = 0;
 	in_quotes = 0;
 	quote_char = 0;
+	if (!str)
+		return (0);
+	if (ft_strchr(str, '*') == NULL || ft_strchr(str, '?') == NULL)
+		return (1);
 	while (str[i])
 	{
 		if (!in_quotes && (str[i] == '\'' || str[i] == '"'))

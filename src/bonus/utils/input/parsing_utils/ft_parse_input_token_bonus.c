@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:55:03 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 03:15:50 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 13:03:45 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	ft_process_token(t_cmd **current_cmd, char **argv, int i, int *cmd_index)
 	if (!argv[i])
 		return (i);
 	k = 0;
+	// printf("Processing token: %s\n", argv[i]);
 	if (is_pipe_like_token(argv[i]))
 	{
 		ft_process_op(current_cmd, argv[i], cmd_index, (*current_cmd)->data);
@@ -53,7 +54,7 @@ int	ft_process_token(t_cmd **current_cmd, char **argv, int i, int *cmd_index)
 		clean_arg = ft_remove_quotes(argv[i]);
 		if (clean_arg)
 			ft_add_arg_to_cmd(*current_cmd, clean_arg);
-		return (i);
+		return (i + 1);
 	}
-	return (i);
+	return (i + 1);
 }
