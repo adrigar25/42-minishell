@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:55:03 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 13:03:45 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 13:56:11 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	is_pipe_like_token(const char *token)
 	if (!token)
 		return (0);
 	return (ft_strcmp(token, "|") == 0 || ft_strcmp(token, "||") == 0
-		|| ft_strcmp(token, "&&") == 0);
+		|| ft_strcmp(token, "&&") == 0 || ft_strcmp(token, "&") == 0);
 }
 
 int	ft_process_token(t_cmd **current_cmd, char **argv, int i, int *cmd_index)
@@ -35,10 +35,7 @@ int	ft_process_token(t_cmd **current_cmd, char **argv, int i, int *cmd_index)
 	int		k;
 	int		count_nonop;
 
-	if (!argv[i])
-		return (i);
 	k = 0;
-	// printf("Processing token: %s\n", argv[i]);
 	if (is_pipe_like_token(argv[i]))
 	{
 		ft_process_op(current_cmd, argv[i], cmd_index, (*current_cmd)->data);

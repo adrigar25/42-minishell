@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 00:36:44 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 12:20:40 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 14:02:40 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,9 @@ static int	expand_and_copy_args(char **argv, char **new_argv, t_data *data)
 	while (argv[i])
 	{
 		if (i > 0 && ft_strcmp(argv[i - 1], "<<") == 0)
-		{
 			if (copy_heredoc_arg(argv, new_argv, &i, &new_argc) == -1)
 				return (-1);
-		}
-		else if (ft_has_wildcards(argv[i]))
+		if (ft_has_wildcards(argv[i]))
 		{
 			if (ft_process_wildcard(argv[i], new_argv, &new_argc) == -1)
 			{

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:51:26 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 13:38:56 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 13:58:15 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ static int	is_ambiguous_redir(char **argv, int i, t_data *data)
 	if (ft_strcmp(argv[i], "<<") == 0)
 		return (0);
 	matches = ft_count_matches(argv[i + 1]);
-	// printf("Wildcard matches for '%s': %d\n", argv[i + 1], matches);
-	// printf("Has wildcards: %d\n", ft_has_wildcards(argv[i + 1]));
 	if (ft_has_wildcards(argv[i + 1]) && matches != 1)
 		return (1);
 	return (0);

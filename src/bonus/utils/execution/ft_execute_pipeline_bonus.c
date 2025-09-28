@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 00:32:13 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 13:13:55 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 14:04:46 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,13 @@ int	ft_should_execute(t_cmd **current, t_data *data)
  * @returns 1 if the built-in was executed directly, 0 otherwise. /
  *          1 si el built-in fue ejecutado directamente, 0 en caso contrario.
  */
-static int	ft_execute_single_builtin(t_cmd **current, t_data **data)
+static int	ft_execute_single_builtin(t_cmd *current, t_data **data)
 {
-	if (ft_is_builtin(*current) && (*current)->infd == STDIN_FILENO
-		&& (*current)->outfd == STDOUT_FILENO && !(*current)->next
-		&& (*current)->has_error == 0)
+	if (ft_is_builtin(current) && current->infd == STDIN_FILENO
+		&& current->outfd == STDOUT_FILENO && !current->next
+		&& current->has_error == 0)
 	{
-		(*data)->last_exit_status = ft_exec_builtin(*current, data);
-		*current = (*current)->next;
+		(*data)->last_exit_status = ft_exec_builtin(current, data);
 		return (1);
 	}
 	return (0);
@@ -139,11 +138,6 @@ int	ft_execute_pipeline(t_cmd *cmd_list, t_data **data)
 {
 	t_cmd	*current;
 	pid_t	*pids;
-	t_cmd	*segment_start;
-	int		seg_len;
-	t_cmd	*it;
-	pid_t	pid;
-	int		status;
 
 	if (!cmd_list || !data || !*data)
 		return (-1);
@@ -155,64 +149,15 @@ int	ft_execute_pipeline(t_cmd *cmd_list, t_data **data)
 	{
 		if (ft_should_execute(&current, *data))
 			continue ;
-		if (current->op == OP_PIPE)
+		if (ft_execute_single_builtin(current, data))
 		{
-			segment_start = current;
-			seg_len = 0;
-			while (current && (current->op == OP_PIPE || seg_len == 0))
-			{
-				seg_len++;
-				current = current->next;
-				if (!current)
-					break ;
-			}
-			{
-				it = segment_start;
-				while (it && seg_len-- > 0)
-				{
-					if (ft_fork_and_exec(it, cmd_list, data, pids) == -1)
-					{
-						ft_finish_execution(pids, cmd_list, *data);
-						return ((*data)->last_exit_status);
-					}
-					it = it->next;
-				}
-			}
+			current = current->next;
 			continue ;
 		}
-		if (ft_execute_single_builtin(&current, data))
-			continue ;
+		if (ft_fork_and_exec(current, cmd_list, data, pids) == -1)
 		{
-			pid = fork();
-			if (pid == 0)
-			{
-				ft_setup_child_io(current, cmd_list);
-				if (current->has_error)
-					(*data)->last_exit_status = 1;
-				else if (ft_is_builtin(current))
-					(*data)->last_exit_status = ft_exec_builtin(current, data);
-				else
-					(*data)->last_exit_status = ft_exec_cmd(current);
-				exit((*data)->last_exit_status);
-			}
-			else if (pid > 0)
-			{
-				if (current->infd != STDIN_FILENO)
-					close(current->infd);
-				if (current->outfd != STDOUT_FILENO)
-					close(current->outfd);
-				waitpid(pid, &status, 0);
-				if (WIFEXITED(status))
-					(*data)->last_exit_status = WEXITSTATUS(status);
-				else if (WIFSIGNALED(status))
-					(*data)->last_exit_status = 128 + WTERMSIG(status);
-			}
-			else
-			{
-				perror("fork");
-				free(pids);
-				return ((*data)->last_exit_status);
-			}
+			ft_finish_execution(pids, cmd_list, *data);
+			return ((*data)->last_exit_status);
 		}
 		current = current->next;
 	}

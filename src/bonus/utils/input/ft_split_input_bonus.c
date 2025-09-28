@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 13:27:22 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 00:42:47 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 13:53:35 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int	ft_handle_token(const char *input, char **args, int *i, int *j)
 	int	start;
 
 	ft_skip_whitespace(input, i);
-	if (ft_strchr("<>|", input[*i]) && !ft_is_escaped(input, *i, 0, 0))
+	if (ft_strchr("<>|&", input[*i]) && !ft_is_escaped(input, *i, 0, 0))
 	{
 		args[*j] = ft_substr((char *)input, *i, 1 + (input[*i
 					+ 1] == input[*i]));
@@ -69,8 +69,8 @@ static int	ft_handle_token(const char *input, char **args, int *i, int *j)
 	else
 	{
 		start = *i;
-		while (input[*i] && (!ft_strchr("<>|", input[*i]) || is_in_quotes(input,
-					*i) || ft_is_escaped(input, *i, 0, 0))
+		while (input[*i] && (!ft_strchr("<>|&", input[*i])
+				|| is_in_quotes(input, *i) || ft_is_escaped(input, *i, 0, 0))
 			&& (!ft_isspace(input[*i]) || is_in_quotes(input, *i)))
 			*i += 1 + (input[*i] == '\\' && input[*i + 1]);
 		if (*i > start)
