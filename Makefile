@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:19:55 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/28 01:56:32 by agarcia          ###   ########.fr        #
+#    Updated: 2025/09/28 15:44:11 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,7 +83,7 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_close_unused_fds.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_finish_execution.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_execute_pipeline.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_handle_heredoc.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/heredoc/ft_handle_heredoc.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_is_builtin.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_setup_child_io.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/signals/ft_sigint_handler.c \
@@ -148,7 +148,7 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_close_unused_fds_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_finish_execution_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_execute_pipeline_bonus.c \
-	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_handle_heredoc_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/heredoc/ft_handle_heredoc_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_is_builtin_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_setup_child_io_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/signals/ft_sigint_handler_bonus.c \

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_handle_heredoc_bonus.c                          :+:      :+:    :+:   */
+/*   ft_handle_heredoc.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 12:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/27 22:27:16 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/28 15:55:24 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell_bonus.h"
+#include "../../minishell.h"
 
 /**
  * ENGLISH: Writes a line to the heredoc file descriptor, ensuring
@@ -42,6 +42,60 @@ static int	ft_write_heredoc_line(int fd, char *line, ssize_t nread)
 }
 
 /**
+ * ENGLISH: Processes a single line read from stdin for the heredoc.
+ *          Compares it to the delimiter and writes it to the heredoc
+ *          file descriptor if it doesn't match.
+ *
+ * SPANISH: Procesa una sola línea leída desde stdin para el heredoc.
+ *          La compara con el delimitador y la escribe en el descriptor
+ *          de archivo heredoc si no coincide.
+ *
+ * @param write_fd   The file descriptor to write heredoc lines to. /
+ *                   El descriptor de archivo donde escribir las líneas del
+ *                   heredoc.
+ *
+ * @param line       The line read from stdin. /
+ *                   La línea leída desde stdin.
+ *
+ * @param delimiter  The delimiter string to end heredoc input. /
+ *                   La cadena delimitadora para finalizar la entrada del
+ *                   heredoc.
+ *
+ * @returns 1 if the line matches the delimiter (end of heredoc), 0 otherwise. /
+ *          1 si la línea coincide con el delimitador (fin del heredoc), 0 en
+ *          caso contrario.
+ */
+static int	ft_process_heredoc_line(int write_fd, char *line,
+		const char *delimiter)
+{
+	char	*cmp;
+	size_t	nread;
+
+	nread = ft_strlen(line);
+	if (nread > 0 && line[nread - 1] == '\n')
+		cmp = ft_substr(line, 0, nread - 1);
+	else
+		cmp = ft_strdup(line);
+	if (!cmp)
+	{
+		free(line);
+		return (-1);
+	}
+	if (ft_strcmp(cmp, delimiter) == 0)
+	{
+		free(cmp);
+		free(line);
+		return (1);
+	}
+	free(cmp);
+	write(write_fd, line, nread);
+	if (nread > 0 && line[nread - 1] == '\n')
+		write(write_fd, "\n", 1);
+	free(line);
+	return (0);
+}
+
+/**
  * ENGLISH: Reads lines from stdin until the delimiter is found, writing each
  * 			line to the heredoc file descriptor.
  *
@@ -62,28 +116,18 @@ static int	ft_write_heredoc_line(int fd, char *line, ssize_t nread)
 static int	ft_read_heredoc_loop(int write_fd, const char *delimiter)
 {
 	char	*line;
-	size_t	len;
-	ssize_t	nread;
+	int		ret;
 
-	line = NULL;
-	len = 0;
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
 			write(1, HEREDOC_PROMPT, 9);
-		line = NULL;
-		nread = getline(&line, &len, stdin);
-		if (nread == -1 || !line)
+		line = ft_get_next_line(STDIN_FILENO);
+		if (!line)
 			break ;
-		if (nread > 0 && line[nread - 1] == '\n')
-			line[nread - 1] = '\0';
-		if (ft_strcmp(line, delimiter) == 0)
-		{
-			free(line);
+		ret = ft_process_heredoc_line(write_fd, line, delimiter);
+		if (ret != 0)
 			break ;
-		}
-		ft_write_heredoc_line(write_fd, line, nread);
-		free(line);
 	}
 	return (0);
 }
@@ -93,18 +137,19 @@ static int	ft_read_heredoc_loop(int write_fd, const char *delimiter)
  * reading input until the delimiter is found,
  * and returning the read end of the pipe.
  *
- * SPANISH: Maneja la funcionalidad heredoc creando un pipe, leyendo
- * la entrada hasta encontrar el delimitador,
- * y devolviendo el descriptor de lectura del pipe.
+ * SPANISH: Maneja la funcionalidad de heredoc creando una tubería,
+ * leyendo la entrada hasta que se encuentra el delimitador,
+ * y devolviendo el extremo de lectura de la tubería.
  *
- * @param delimiter   The delimiter string to end heredoc input. /
- *                    La cadena delimitadora para finalizar la entrada
- * 					del heredoc.
+ * @param delimiter  The delimiter string to end heredoc input. /
+ *                   La cadena delimitadora para finalizar la entrada del
+ *                   heredoc.
  *
- * @returns The file descriptor for reading heredoc content, or -1 on error. /
- *          El descriptor de archivo para leer el contenido del heredoc,
- * 			o -1 en caso de error.
+ * @returns The read end of the pipe on success, -1 on failure. /
+ *          El extremo de lectura de la tubería en caso de éxito, -1 en caso de
+ *          fallo.
  */
+
 int	ft_handle_heredoc(const char *delimiter)
 {
 	int	pipefd[2];
