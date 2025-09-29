@@ -332,7 +332,7 @@ main() {
     exit 3
   fi
 
-  echo "All tests passed." 
+  echo "All tests passed."
 }
 
 main "$@"
