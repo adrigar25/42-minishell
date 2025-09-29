@@ -9,9 +9,6 @@ minishell
 # Static Libraries
 *.a
 
-# Text Files
-*.txt
-
 # DS_Store
 .DS_Store/
 
@@ -21,5 +18,10 @@ minishell_bonus
 
 assets/welcome.txt
 
+# Logs
+logs/
+*.log
+
 # Tester
 minishell_tester/
+.minitest/
