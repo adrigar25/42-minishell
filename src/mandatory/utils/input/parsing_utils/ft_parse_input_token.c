@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_input_token.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:55:03 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 17:53:59 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/10/01 10:20:50 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,10 @@ int	ft_process_token(t_cmd **current_cmd, char **argv, int i, int *cmd_index)
 	if (ft_strcmp(argv[i], "|") == 0)
 		return (ft_process_pipe(current_cmd, cmd_index, (*current_cmd)->data),
 			i);
-	else if ((ft_strcmp(argv[i], "<") == 0 || ft_strcmp(argv[i], ">") == 0
-			|| ft_strcmp(argv[i], ">>") == 0 || ft_strcmp(argv[i], "<<") == 0)
+	else if ((!ft_strcmp(argv[i], "<") || !ft_strcmp(argv[i], ">")
+			|| !ft_strcmp(argv[i], ">>") || !ft_strcmp(argv[i], "<<"))
 		&& (*current_cmd)->has_error == 0)
-		return (ft_handle_redirection(*current_cmd, argv, i,
-				(*current_cmd)->data));
+		return (ft_redir(*current_cmd, argv, i));
 	else
 	{
 		clean_arg = ft_remove_quotes(argv[i]);

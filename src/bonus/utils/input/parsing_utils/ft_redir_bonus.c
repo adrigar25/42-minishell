@@ -1,16 +1,63 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_parse_input_redir_bonus.c                       :+:      :+:    :+:   */
+/*   ft_redir_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:51:26 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 18:13:14 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/10/01 10:20:54 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell_bonus.h"
+
+/**
+ * ENGLISH: Assigns a file descriptor to the command structure based on
+ *          the redirection type.
+ *
+ * SPANISH: Asigna un descriptor de archivo a la estructura del comando
+ *          según el tipo de redirección.
+ *
+ * @param cmd       Pointer to the command structure to update.
+ *                  Puntero a la estructura de comando a actualizar.
+ *
+ * @param filename  The filename for the redirection.
+ *                  El nombre del archivo para la redirección.
+ *
+ * @param type      The type of redirection ("<", ">", ">>", "<<").
+ *                  El tipo de redirección ("<", ">", ">>", "<<").
+ *
+ * @returns The file descriptor on success, -1 on error.
+ *          El descriptor de archivo en caso de éxito, -1 en caso de error.
+ */
+
+int	ft_assign_fd(t_cmd **cmd, char *filename, char *type)
+{
+	int	fd;
+
+	if (ft_strcmp(type, "<") == 0)
+		fd = ft_handle_infile(filename);
+	else if (!ft_strcmp(type, ">") || !ft_strcmp(type, ">>"))
+		fd = ft_handle_outfile(filename, 0 + (ft_strcmp(type, ">>") == 0));
+	else if (ft_strcmp(type, "<<") == 0)
+		return (ft_heredoc(filename));
+	if (fd == -1)
+		return (-1);
+	if (ft_strcmp(type, "<") == 0 || ft_strcmp(type, "<<") == 0)
+	{
+		if ((*cmd)->infd != STDIN_FILENO)
+			close((*cmd)->infd);
+		(*cmd)->infd = fd;
+	}
+	else
+	{
+		if ((*cmd)->outfd != STDOUT_FILENO)
+			close((*cmd)->outfd);
+		(*cmd)->outfd = fd;
+	}
+	return (fd);
+}
 
 /**
  * ENGLISH: Checks for ambiguous redirection scenarios.
@@ -77,29 +124,26 @@ static int	is_ambiguous_redir(char **argv, int i)
  *          El siguiente índice a procesar en el arreglo de argumentos
  *          después de manejar la redirección.
  */
-int	ft_handle_redirection(t_cmd *cmd, char **argv, int i, t_data *data)
+int	ft_redir(t_cmd *cmd, char **argv, int i)
 {
-	char	*clean_arg;
+	char	*redir;
 	int		fd;
 
 	if (is_ambiguous_redir(argv, i) == 1)
 	{
-		data->last_exit_status = ft_handle_error(12, 1, argv[i + 1], NULL);
+		cmd->data->last_exit_status = ft_handle_error(12, 1, argv[i + 1], NULL);
 		cmd->has_error = 1;
 		return (i + 2);
 	}
-	clean_arg = ft_remove_quotes(argv[i + 1]);
-	if (!clean_arg)
-		clean_arg = argv[i + 1];
-	fd = ft_get_fd_from_token(argv[i], clean_arg);
-	if (fd != -1)
-		ft_assign_fd(cmd, argv[i], fd);
-	else
+	redir = ft_remove_quotes(argv[i + 1]);
+	if (!redir)
+		redir = argv[i + 1];
+	if (ft_assign_fd(&cmd, redir, argv[i]) == -1)
 	{
-		data->last_exit_status = 1;
+		cmd->data->last_exit_status = 1;
 		cmd->has_error = 1;
 	}
-	if (clean_arg != argv[i + 1])
-		free(clean_arg);
+	if (redir != argv[i + 1])
+		free(redir);
 	return (i + 2);
 }

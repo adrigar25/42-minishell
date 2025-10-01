@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_bonus.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:59:15 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 17:51:45 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/10/01 10:22:48 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,13 @@
 # define ERROR_IS_A_DIRECTORY "minishell: %s: is a directory\n"
 # define ERROR_NO_SUCH_FILE "minishell: %s: No such file or directory\n"
 # define ERROR_SYNTAX \
-	"minishell: syntax error near unexpected token `newline'\n"
+"minishell: syntax error near unexpected token `newline'\n"
 # define ERROR_SYNTAX_PIPE \
-	"minishell: syntax error near unexpected token `|'\n"
+"minishell: syntax error near unexpected token `|'\n"
 # define ERROR_SYNTAX_REDIRECT \
-	"minishell: syntax error near unexpected token `>'\n"
+"minishell: syntax error near unexpected token `>'\n"
 # define ERROR_SYNTAX_TOKEN \
-	"minishell: syntax error near unexpected token `%s'\n"
+"minishell: syntax error near unexpected token `%s'\n"
 # define ERROR_TOO_MANY_ARGS "minishell: too many arguments\n"
 # define ERROR_HOME_NOT_SET "minishell: cd: HOME not set\n"
 # define ERROR_HEREDOC_DELIMITER "Error: missing delimiter for heredoc\n"
@@ -80,7 +80,7 @@
 # define ERROR_CD_FAIL "minishell: cd: %s: %s\n"
 # define ERROR_AMBIGUOUS_REDIRECT "minishell: %s: ambiguous redirect\n"
 # define ERROR_INVALID_IDENTIFIER \
-	"minishell: export: `%s': not a valid identifier\n"
+"minishell: export: `%s': not a valid identifier\n"
 # define ERROR_NUM_ARG_REQ "minishell: exit: %s: numeric argument required\n"
 
 // Heredoc
@@ -275,10 +275,8 @@ t_cmd				*ft_parse_input(char **argv, t_data *data);
 int					ft_append(char **dst, const char *src);
 t_cmd				*ft_create_cmd_node(int index);
 void				ft_add_arg_to_cmd(t_cmd *cmd, char *arg);
-int					ft_get_fd_from_token(char *token, char *filename);
-void				ft_assign_fd(t_cmd *cmd, char *token, int fd);
-int					ft_handle_redirection(t_cmd *cmd, char **argv, int i,
-						t_data *data);
+int					ft_assign_fd(t_cmd **cmd, char *filename, char *type);
+int					ft_redir(t_cmd *cmd, char **argv, int i);
 int					ft_process_op(t_cmd **current_cmd, char *arg,
 						int *cmd_index, t_data *data);
 int					ft_process_token(t_cmd **current_cmd, char **argv, int i,
@@ -333,7 +331,7 @@ int					ft_handle_builtins(t_cmd *cmd, t_data **data,
 int					ft_is_dot_or_dotdot(const char *name);
 
 // Heredoc
-int					ft_handle_heredoc(const char *delimiter);
+int					ft_heredoc(const char *delimiter);
 
 // Error handling
 int					ft_handle_error(int error_code, int exit_code, char *msg,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:59:15 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 18:06:41 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/09/29 18:58:17 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,10 +272,8 @@ t_cmd				*ft_parse_input(char **argv, t_data *data);
 int					ft_append(char **dst, const char *src);
 t_cmd				*ft_create_cmd_node(int index);
 void				ft_add_arg_to_cmd(t_cmd *cmd, char *arg);
-int					ft_get_fd_from_token(char *token, char *filename);
-void				ft_assign_fd(t_cmd *cmd, char *token, int fd);
-int					ft_handle_redirection(t_cmd *cmd, char **argv, int i,
-						t_data *data);
+int					ft_assign_fd(t_cmd **cmd, char *filename, char *type);
+int					ft_redir(t_cmd *cmd, char **argv, int i);
 int					ft_process_pipe(t_cmd **current_cmd, int *cmd_index,
 						t_data *data);
 int					ft_process_token(t_cmd **current_cmd, char **argv, int i,
@@ -319,7 +317,7 @@ int					ft_exit(t_cmd *cmd);
 int					ft_is_dot_or_dotdot(const char *name);
 
 // Heredoc
-int					ft_handle_heredoc(const char *delimiter);
+int					ft_heredoc(const char *delimiter);
 // Error handling
 int					ft_handle_error(int error_code, int exit_code, char *msg,
 						char *msg2);

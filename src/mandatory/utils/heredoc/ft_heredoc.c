@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_handle_heredoc.c                                :+:      :+:    :+:   */
+/*   ft_heredoc.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -121,7 +121,7 @@ static int	ft_read_heredoc_loop(int write_fd, const char *delimiter)
  *          fallo.
  */
 
-int	ft_handle_heredoc(const char *delimiter)
+int	ft_heredoc(const char *delimiter)
 {
 	int	pipefd[2];
 
