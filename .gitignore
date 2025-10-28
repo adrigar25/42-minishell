@@ -21,6 +21,7 @@ assets/welcome.txt
 # Logs
 logs/
 *.log
+touch/
 
 # Tester
 minishell_tester/
