@@ -3,20 +3,22 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
+#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 18:48:28 by adriescr          #+#    #+#              #
-#    Updated: 2025/09/29 18:58:50 by agarcia          ###   ########.fr        #
+#    Updated: 2025/10/28 16:45:59 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-# Compilation flags (use Homebrew readline/ncurses for macOS ARM64)
-CFLAGS = -I/opt/homebrew/opt/readline/include
+# Compiler flags
+CFLAGS = -Wall -Wextra -Werror
 
 # Linker flags (use Homebrew readline/ncurses for macOS ARM64)
-LDFLAGS = -L/opt/homebrew/opt/readline/lib -lreadline -lncurses
+READLINE_PREFIX = /opt/homebrew/opt/readline
+CPPFLAGS = -I$(READLINE_PREFIX)/include
+LDFLAGS = -L$(READLINE_PREFIX)/lib -lreadline -lhistory
 
 # Compilator
 CC = cc
@@ -189,25 +191,13 @@ $(NAME): $(MINISHELL_OBJS) $(MAIN_OBJECT)
 
 # Compile object files for mandatory
 $(OBJ_MANDATORY_DIR)/%.o: $(MANDATORY_DIR)/%.c
-
-
-
-
-
-
-
-
-
-
-
 	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 # Compile object files for bonus
 $(OBJ_BONUS_DIR)/%.o: $(BONUS_DIR)/%.c
-
 	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 # Compile the bonus project
 $(NAME)_bonus: $(MINISHELL_OBJS_BONUS) $(MAIN_OBJECT_BONUS)
@@ -222,9 +212,7 @@ bonus: $(LIB_NAME) $(NAME)_bonus
 	@echo "\033[35m$(NAME)_bonus executable is ready to use!\033[0m"
 
 # Clean up object files
-
 clean:
-
 	@rm -rf $(OBJ_DIR)
 	@$(MAKE) -C $(LIBFT_DIR) clean
 	@if [ $$? -eq 0 ]; then \

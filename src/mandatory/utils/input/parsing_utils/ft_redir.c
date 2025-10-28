@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_redir.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:51:26 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/29 18:58:17 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/10/28 16:21:08 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	ft_assign_fd(t_cmd **cmd, char *filename, char *type)
 {
 	int	fd;
 
+	fd = -1;
 	if (ft_strcmp(type, "<") == 0)
 		fd = ft_handle_infile(filename);
 	else if (!ft_strcmp(type, ">") || !ft_strcmp(type, ">>"))
@@ -72,7 +73,6 @@ int	ft_assign_fd(t_cmd **cmd, char *filename, char *type)
 int	ft_redir(t_cmd *cmd, char **argv, int i)
 {
 	char	*clean_arg;
-	int		fd;
 
 	clean_arg = ft_remove_quotes(argv[i + 1]);
 	if (!clean_arg)
