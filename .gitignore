@@ -5,6 +5,7 @@ minishell
 
 # Compiled Object Files
 *.o
+objs/
 
 # Static Libraries
 *.a
