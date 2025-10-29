@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/27 19:22:40 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/10/29 16:31:26 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,22 +81,6 @@ static int	ft_putarg_echo(char *arg, int flag_n, int outfd)
 }
 
 /**
- * ENGLISH: Implements the echo command, printing arguments to the specified
- * 			output file descriptor, handling the -n flag and spacing.
- *
- * SPANISH: Implementa el comando echo, imprimiendo argumentos en el
- * 			descriptor de archivo de salida especificado, manejando la
- * 			bandera -n y los espacios.
- *
- * @param cmd The command structure containing arguments and file descriptors. /
- *            La estructura de comando que contiene argumentos y descriptores
- * 				de archivo.
- *
- * @returns 0 on success, 1 on error. /
- *          0 en caso de éxito, 1 en caso de error.
- */
-
-/**
  * ENGLISH: Prints all arguments for the echo command, handling spacing
  * 			between arguments.
  *
@@ -109,9 +93,8 @@ static int	ft_putarg_echo(char *arg, int flag_n, int outfd)
  * 						descriptores de archivo.
  *
  * @param start_index The index to start printing arguments from. /
-
-	*                    El índice desde el cual comenzar a imprimir
-	los argumentos.
+ *                    El índice desde el cual comenzar a imprimir
+ *                    los argumentos.
  *
  * @param outfd       The file descriptor to write the output to. /
  *                    El descriptor de archivo donde escribir la salida.

@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 01:42:17 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 17:33:12 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/10/29 18:30:17 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,9 @@ int	ft_expand_wildcard(const char *pattern, char **matches, int max_matches)
 	entry = readdir(dir);
 	while (entry && count < max_matches)
 	{
-		if (entry->d_name[0] != '.' && ft_match_pattern(pattern, entry->d_name))
+		/* Skip hidden files unless the pattern explicitly starts with '.' */
+		if ((entry->d_name[0] != '.' || (pattern && pattern[0] == '.'))
+			&& ft_match_pattern(pattern, entry->d_name))
 		{
 			matches[count] = ft_strdup(entry->d_name);
 			if (!matches[count])

@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 01:42:19 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 17:21:30 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/10/29 18:30:17 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ int	ft_count_matches(const char *pattern)
 	entry = readdir(dir);
 	while (entry != NULL)
 	{
-		if (entry->d_name[0] != '.' && ft_match_pattern(pattern, entry->d_name))
+		/* Count hidden files only if pattern begins with '.' */
+		if ((entry->d_name[0] != '.' || (pattern && pattern[0] == '.'))
+			&& ft_match_pattern(pattern, entry->d_name))
 			count++;
 		entry = readdir(dir);
 	}

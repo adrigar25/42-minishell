@@ -6,11 +6,27 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 00:36:44 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 17:35:41 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/10/29 18:22:16 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
+
+/* helper: returns 1 if prev token is a redirection operator */
+static int	is_prev_redir(char **a, int idx)
+{
+	if (idx <= 0)
+		return (0);
+	if (ft_strcmp(a[idx - 1], "<") == 0)
+		return (1);
+	if (ft_strcmp(a[idx - 1], ">") == 0)
+		return (1);
+	if (ft_strcmp(a[idx - 1], ">>") == 0)
+		return (1);
+	if (ft_strcmp(a[idx - 1], "<<") == 0)
+		return (1);
+	return (0);
+}
 
 /**
  * ENGLISH: Handles wildcard expansion in the given argument array.
@@ -159,6 +175,49 @@ static int	ft_process_wildcard(char *arg, char **new_argv, int *new_argc)
  * @returns 0 on success, -1 on memory allocation failure. /
  *          0 en caso de éxito, -1 en caso de fallo de asignación de memoria.
  */
+static int	handle_heredoc_copy(char **argv, char **new_argv, int *i,
+				int *new_argc)
+{
+	if (copy_heredoc_arg(argv, new_argv, i, new_argc) == -1)
+	{
+		ft_free_matrix_size(new_argv, *new_argc);
+		return (-1);
+	}
+	return (0);
+}
+
+static int	handle_redir_wildcard(char *arg, char **new_argv, int *new_argc)
+{
+	int		matches;
+	char	**temp_matches;
+	int		t;
+
+	matches = ft_count_matches(arg);
+	if (matches == 1)
+	{
+		temp_matches = malloc(sizeof(char *) * matches);
+		if (!temp_matches)
+			return (-1);
+		matches = ft_expand_wildcard(arg, temp_matches, matches);
+		if (matches == 1)
+		{
+			new_argv[(*new_argc)++] = temp_matches[0];
+			free(temp_matches);
+			return (0);
+		}
+		if (matches > 0)
+		{
+			for (t = 0; t < matches; t++)
+				free(temp_matches[t]);
+		}
+		free(temp_matches);
+		new_argv[(*new_argc)++] = ft_strdup(arg);
+	}
+	else
+		new_argv[(*new_argc)++] = ft_strdup(arg);
+	return (0);
+}
+
 static int	expand_and_copy_args(char **argv, char **new_argv, t_data *data)
 {
 	int	i;
@@ -169,11 +228,22 @@ static int	expand_and_copy_args(char **argv, char **new_argv, t_data *data)
 	while (argv[i])
 	{
 		if (i > 0 && ft_strcmp(argv[i - 1], "<<") == 0)
-			if (copy_heredoc_arg(argv, new_argv, &i, &new_argc) == -1)
+		{
+			if (handle_heredoc_copy(argv, new_argv, &i, &new_argc) == -1)
 				return (-1);
+			continue;
+		}
 		if (ft_has_wildcards(argv[i]))
 		{
-			if (ft_process_wildcard(argv[i], new_argv, &new_argc) == -1)
+			if (is_prev_redir(argv, i))
+			{
+				if (handle_redir_wildcard(argv[i], new_argv, &new_argc) == -1)
+				{
+					ft_free_matrix_size(new_argv, new_argc);
+					return (-1);
+				}
+			}
+			else if (ft_process_wildcard(argv[i], new_argv, &new_argc) == -1)
 			{
 				ft_free_matrix_size(new_argv, new_argc);
 				return (-1);

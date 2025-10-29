@@ -6,7 +6,7 @@
 #    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 18:48:28 by adriescr          #+#    #+#              #
-#    Updated: 2025/10/28 16:45:59 by adriescr         ###   ########.fr        #
+#    Updated: 2025/10/29 16:43:16 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -241,5 +241,14 @@ re: fclean
 		echo "\033[31m❌ Error during recompilation!\033[0m"; \
 	fi
 
+re-bonus: fclean
+	@echo "\033[34m🔄 Recompiling bonus everything...\033[0m"
+	@$(MAKE) --always-make bonus
+	@if [ $$? -eq 0 ]; then \
+		echo "\033[38;5;208m🎉 Bonus recompilation completed successfully!\033[0m"; \
+	else \
+		echo "\033[31m❌ Error during bonus recompilation!\033[0m"; \
+	fi
+
 # Phony targets
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re bonus re-bonus

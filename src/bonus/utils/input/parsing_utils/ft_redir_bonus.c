@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_redir_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:51:26 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/01 10:20:54 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/10/29 16:20:53 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	ft_assign_fd(t_cmd **cmd, char *filename, char *type)
 {
 	int	fd;
 
+	fd = 0;
 	if (ft_strcmp(type, "<") == 0)
 		fd = ft_handle_infile(filename);
 	else if (!ft_strcmp(type, ">") || !ft_strcmp(type, ">>"))
@@ -127,7 +128,6 @@ static int	is_ambiguous_redir(char **argv, int i)
 int	ft_redir(t_cmd *cmd, char **argv, int i)
 {
 	char	*redir;
-	int		fd;
 
 	if (is_ambiguous_redir(argv, i) == 1)
 	{
