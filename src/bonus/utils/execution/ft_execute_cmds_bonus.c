@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execute_cmds_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 00:32:13 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 17:50:22 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/10/30 01:29:54 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,12 +178,14 @@ int	ft_execute_cmds(t_cmd *cmd_list, t_data **data)
 
 	if (!cmd_list || !data || !*data)
 		return (-1);
-	pids = malloc(sizeof(pid_t) * (*data)->cmd_count);
+	/* Use calloc so unused slots are zero; ft_wait_last checks pids[idx] > 0 */
+	pids = calloc((*data)->cmd_count, sizeof(pid_t));
 	if (!pids)
 		return (-1);
 	cmd = cmd_list;
 	while (cmd)
 	{
+		/* Do not mutate SHLVL here; each shell instance updates SHLVL on init */
 		if (ft_exec_cmd(cmd, cmd_list, data, pids) == -1)
 			return (ft_finish_execution(pids, cmd_list, *data));
 		if (!cmd->next || cmd->next->op != OP_PIPE)

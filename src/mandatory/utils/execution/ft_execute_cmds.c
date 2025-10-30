@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 16:35:40 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 16:16:48 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/10/30 01:25:21 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ int	ft_execute_cmds(t_cmd *cmd_list, t_data **data)
 	current = cmd_list;
 	while (current)
 	{
+		/* Do not mutate SHLVL here; each shell instance updates SHLVL on init */
 		if (ft_execute_single_builtin(current, data))
 		{
 			current = current->next;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:20:55 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/22 13:06:20 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/10/30 01:36:37 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ static char	*ft_extract_line(char **reminder)
 static int	ft_read_to_reminder(int fd, char **reminder)
 {
 	char	*buffer;
+	char	*joined;
 	int		bytes_read;
 
 	buffer = malloc(BUFFER_SIZE + 1);
@@ -70,12 +71,16 @@ static int	ft_read_to_reminder(int fd, char **reminder)
 	while (bytes_read > 0)
 	{
 		buffer[bytes_read] = '\0';
-		*reminder = ft_strjoin(*reminder, buffer);
-		if (!*reminder)
+		joined = ft_strjoin(*reminder, buffer);
+		if (!joined)
 		{
 			free(buffer);
+			free(*reminder);
+			*reminder = NULL;
 			return (-1);
 		}
+		free(*reminder);
+		*reminder = joined;
 		if (ft_strchr(*reminder, '\n'))
 			break ;
 		bytes_read = read(fd, buffer, BUFFER_SIZE);

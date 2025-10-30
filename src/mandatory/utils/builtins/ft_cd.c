@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 17:16:33 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/22 16:29:25 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/10/30 00:53:07 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,32 @@ static char	*ft_get_target_dir(char **argv, char **envp)
  */
 int	ft_cd(char **argv, char ***envp)
 {
+	int		prev;
 	char	*oldpwd;
 	char	*target_dir;
 
+	target_dir = NULL;
+	prev = 0;
 	if (!argv || !envp)
 		return (1);
-	target_dir = ft_get_target_dir(argv, *envp);
+	if (argv[1] && ft_strlen(argv[1]) == 1 && ft_strcmp(argv[1], "-") == 0)
+		prev = 1;
+	if (prev)
+		target_dir = ft_getenv("OLDPWD", *envp);
+	else
+		target_dir = ft_get_target_dir(argv, *envp);
 	if (!target_dir)
+	{
+		if (prev)
+			return (ft_handle_error(11, EXIT_FAILURE, "OLDPWD", "not set"));
 		return (ft_handle_error(8, EXIT_FAILURE, NULL, NULL));
-	if (chdir(target_dir) != 0)
+	}
+	if (chdir(target_dir) == 0)
+	{
+		if (prev)
+			printf("%s\n", target_dir);
+	}
+	else
 		return (ft_handle_error(11, EXIT_FAILURE, target_dir, strerror(errno)));
 	oldpwd = ft_getenv("PWD", *envp);
 	ft_update_pwd_env(oldpwd, target_dir, envp);
