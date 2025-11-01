@@ -6,11 +6,29 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/30 01:25:36 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/01 03:52:02 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/**
+ * ENGLISH: Releases all resources allocated by the shell before exiting.
+ *
+ * SPANISH: Libera todos los recursos asignados por el shell antes de salir.
+ */
+static void	ft_cleanup(t_data *data)
+{
+	if (data)
+	{
+		if (data->envp)
+			ft_free_matrix(data->envp);
+		free(data);
+	}
+	/* Readline history (safe to call even if not interactive) */
+	clear_history();
+	rl_clear_history();
+}
 
 /**
  * ENGLISH: Initializes the shell data structure with environment variables.
@@ -111,7 +129,6 @@ int	ft_minishell(char **envp, int debug)
 		cmd_list = ft_process_input(input, data, debug);
 		exit_status = ft_execute_cmds(cmd_list, &data);
 	}
-	ft_free_matrix(data->envp);
-	free(data);
+	ft_cleanup(data);
 	return (exit_status);
 }
