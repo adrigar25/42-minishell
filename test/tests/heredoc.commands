@@ -1,0 +1,5 @@
+echo heredoc
+echo "<< a | cat 🌼 "
+ls
+echo "ls | cat << a | echo hola | <<  a | << h cat > out | exit 🌼 "
+exit

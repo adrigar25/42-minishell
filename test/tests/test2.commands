@@ -1,0 +1,7 @@
+echo "# Another example test"
+echo "Test for pipes and redirection"
+echo "ls -l > /tmp/testfile 🌼"
+cat /tmp/testfile
+echo "rm /tmp/testfile"
+echo $USER
+exit
