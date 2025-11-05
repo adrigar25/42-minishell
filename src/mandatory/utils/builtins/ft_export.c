@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/05 19:11:45 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/05 19:18:28 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ static void	ft_print_exported_vars(char **envp)
 static int	ft_export_variable(const char *arg, char ***envp)
 {
 	char	*array[3];
+	int		ret;
 
 	if (!ft_is_valid_identifier(arg))
 		return (ft_handle_error(13, 1, NULL, NULL));
@@ -120,19 +121,15 @@ static int	ft_export_variable(const char *arg, char ***envp)
 	{
 		array[1] = ft_substr((char *)arg, 0, array[0] - arg);
 		array[2] = ft_strdup(array[0] + 1);
-		if (ft_setenv(array[1], array[2], envp) == 0)
-			return (0);
-		else
-			return (1);
+		ret = ft_setenv(array[1], array[2], envp);
+		free(array[1]);
+		free(array[2]);
+		return (ret);
 	}
 	else
 	{
-		if (ft_setenv((char *)arg, NULL, envp) == 0)
-			return (0);
-		else
-			return (1);
+		return (ft_setenv((char *)arg, NULL, envp));
 	}
-	return (0);
 }
 
 /**

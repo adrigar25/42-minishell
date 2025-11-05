@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/05 19:13:34 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/05 19:22:28 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,16 +102,17 @@ static void	ft_print_exported_vars(char **envp)
  * 			Devuelve 0 en caso de éxito, 1 en caso de error.
  *
  * @param arg  The argument string (NAME=value or NAME). /
- * 		   La cadena de argumentos (NOMBRE=valor o NOMBRE).
+ * 			La cadena de argumentos (NOMBRE=valor o NOMBRE).
  * @param envp The pointer to the environment variables array. /
- * 	   El puntero a la matriz de variables de entorno.
+ * 		El puntero a la matriz de variables de entorno.
  *
  * @return 0 on success, 1 on error. /
- * 		   0 en caso de éxito, 1 en caso de error.
+ * 			0 en caso de éxito, 1 en caso de error.
  */
 static int	ft_export_variable(const char *arg, char ***envp)
 {
 	char	*array[3];
+	int		ret;
 
 	if (!ft_is_valid_identifier(arg))
 		return (ft_handle_error(13, 1, NULL, NULL));
@@ -120,19 +121,15 @@ static int	ft_export_variable(const char *arg, char ***envp)
 	{
 		array[1] = ft_substr((char *)arg, 0, array[0] - arg);
 		array[2] = ft_strdup(array[0] + 1);
-		if (ft_setenv(array[1], array[2], envp) == 0)
-			return (0);
-		else
-			return (1);
+		ret = ft_setenv(array[1], array[2], envp);
+		free(array[1]);
+		free(array[2]);
+		return (ret);
 	}
 	else
 	{
-		if (ft_setenv((char *)arg, NULL, envp) == 0)
-			return (0);
-		else
-			return (1);
+		return (ft_setenv((char *)arg, NULL, envp));
 	}
-	return (0);
 }
 
 /**
