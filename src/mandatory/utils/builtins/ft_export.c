@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/30 00:52:46 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/05 19:11:45 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,6 @@ static int	ft_export_variable(const char *arg, char ***envp)
 	{
 		array[1] = ft_substr((char *)arg, 0, array[0] - arg);
 		array[2] = ft_strdup(array[0] + 1);
-		free(array[1]);
-		free(array[2]);
 		if (ft_setenv(array[1], array[2], envp) == 0)
 			return (0);
 		else
