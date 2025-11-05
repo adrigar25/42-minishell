@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execute_cmds.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 16:35:40 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/30 01:25:21 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/03 16:56:30 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ static int	ft_fork_and_exec(t_cmd *current, t_cmd *cmd_list, t_data **data,
 	if (pid == 0)
 	{
 		ft_setup_child_io(current, cmd_list);
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		if (current->has_error)
 			(*data)->last_exit_status = 1;
 		else if (ft_is_builtin(current))

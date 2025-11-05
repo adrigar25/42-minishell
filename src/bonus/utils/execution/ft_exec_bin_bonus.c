@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exec_cmd_bonus.c                                :+:      :+:    :+:   */
+/*   ft_exec_bin_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:06:20 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 16:13:50 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/04 12:27:12 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,9 @@ int	ft_exec_bin(t_cmd *cmd)
 		return (0);
 	if (ft_clean_argv(cmd->argv) == 0)
 		return (0);
+	/* If PATH is not set and command is not a path, mimic bash: show "No such file or directory" */
+	if (!ft_strchr(cmd->argv[0], '/') && !getenv("PATH"))
+		return (ft_handle_error(4, EXIT_COMMAND_NOT_FOUND, cmd->argv[0], NULL));
 	path = ft_get_cmd_path(cmd->argv[0]);
 	ret = ft_check_cmd_path(path, cmd->argv[0]);
 	if (ret)

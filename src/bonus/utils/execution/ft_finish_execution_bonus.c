@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_finish_execution_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 16:17:28 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/03 16:38:06 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ static void	ft_wait_for_children(pid_t *pids, int cmd_count,
 		int *last_exit_status)
 {
 	int	i;
+	int sig;
 	int	status;
 	int	executed_processes;
 
@@ -89,7 +90,17 @@ static void	ft_wait_for_children(pid_t *pids, int cmd_count,
 			if (WIFEXITED(status))
 				*last_exit_status = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
-				*last_exit_status = 128 + WTERMSIG(status);
+			{
+				sig = WTERMSIG(status);
+				*last_exit_status = 128 + sig;
+				if (sig == SIGQUIT)
+				{
+					if (WCOREDUMP(status))
+						printf("Quit (core dumped)\n");
+					else
+						printf("Quit\n");
+				}
+			}
 			executed_processes = 1;
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/29 16:31:26 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/03 16:45:29 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,14 +102,14 @@ static int	ft_putarg_echo(char *arg, int flag_n, int outfd)
  * @returns 0 on success, 1 on error. /
  *          0 en caso de éxito, 1 en caso de error.
  */
-static int	ft_print_echo_args(t_cmd cmd, int start_index, int outfd)
+static int	ft_print_echo_args(t_cmd cmd, int start_index, int outfd, int n_flag)
 {
 	int	i;
 
 	i = start_index;
 	while (cmd.argv[i])
 	{
-		if (ft_putarg_echo(cmd.argv[i], 0, outfd) == -1)
+	if (ft_putarg_echo(cmd.argv[i], n_flag, outfd) == -1)
 			return (1);
 		if (cmd.argv[i + 1] && cmd.argv[i + 1][0] != '\0' && ft_putchar_fd(' ',
 				outfd) == -1)
@@ -138,17 +138,26 @@ int	ft_echo(t_cmd cmd)
 {
 	int	n_flag;
 	int	start_index;
+	int j;
 
 	if (!cmd.argv || !cmd.argv[0] || cmd.outfd < 0)
 		return (1);
 	n_flag = 0;
 	start_index = 1;
-	if (cmd.argv[1] && cmd.argv[1][0] == '-' && cmd.argv[1][1] == 'n')
+	/* accept multiple -n flags (e.g. -n -nn -nnn) */
+	while (cmd.argv[start_index] && cmd.argv[start_index][0] == '-')
 	{
+		j = 1;
+		if (cmd.argv[start_index][j] == '\0')
+			break;
+		while (cmd.argv[start_index][j] == 'n')
+			j++;
+		if (cmd.argv[start_index][j] != '\0')
+			break;
 		n_flag = 1;
-		start_index = 2;
+		start_index++;
 	}
-	if (ft_print_echo_args(cmd, start_index, cmd.outfd) || (!n_flag
+	if (ft_print_echo_args(cmd, start_index, cmd.outfd, n_flag) || (!n_flag
 			&& ft_putchar_fd('\n', cmd.outfd) == -1))
 		return (1);
 	return (0);

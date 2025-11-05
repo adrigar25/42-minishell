@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execute_cmds_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 00:32:13 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/30 01:29:54 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/03 16:29:06 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,9 @@ static int	ft_fork_cmd(t_cmd *cmd, t_cmd *cmd_list, t_data **data, pid_t *pids)
 	if (pid == 0)
 	{
 		ft_setup_child_io(cmd, cmd_list);
+		/* restore default signal handlers so child responds to Ctrl-C and Ctrl-\\ */
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		if (cmd->has_error)
 			(*data)->last_exit_status = 1;
 		else if (ft_is_builtin(cmd))
