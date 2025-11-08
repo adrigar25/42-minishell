@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_read_input.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 16:26:59 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/08 01:51:55 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	ft_read_input(char **input, t_data *data)
 {
 	char	*prompt;
 
+	// size_t	len;
 	while (1)
 	{
 		if (data->isatty)
@@ -45,7 +46,16 @@ int	ft_read_input(char **input, t_data *data)
 			free(prompt);
 		}
 		else
+		{
 			*input = readline("minishell> ");
+			// *input = ft_get_next_line(STDIN_FILENO);
+			// if (*input)
+			// {
+			// 	len = ft_strlen(*input);
+			// 	if (len > 0 && (*input)[len - 1] == '\n')
+			// 		(*input)[len - 1] = '\0';
+			// }
+		}
 		if (!*input)
 			return (0);
 		if (**input)

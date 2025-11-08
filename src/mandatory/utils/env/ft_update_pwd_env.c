@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_update_pwd_env.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 13:00:34 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/22 16:34:47 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/06 17:41:56 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
  * @param oldpwd      The previous working directory to set as OLDPWD.
  *                    Can be NULL. /
  *                    El directorio de trabajo anterior para establecer
- *	 					como OLDPWD. Puede ser NULL.
+ *							como OLDPWD. Puede ser NULL.
  *
  * @param target_dir  The target directory to set as PWD if getcwd fails. /
  *                    El directorio objetivo para establecer como PWD si
@@ -31,20 +31,124 @@
  * @param envp        Pointer to the environment variable array. /
  *                    Puntero al array de variables de entorno.
  */
-void	ft_update_pwd_env(char *oldpwd, char *target_dir, char ***envp)
+/*
+ * Normalize a path string (must be absolute or will be treated as absolute
+ * when joined). This routine removes '.' components and resolves '..'
+ * syntactically without calling realpath, so it does not resolve symlinks.
+ */
+static char	*ft_normalize_path(const char *path)
 {
-	char	buf[4096];
+	char	**parts;
+	char	**stack;
+	int		i;
+	int		top;
+	char	*res;
+	char	*tmp;
 
-	if (getcwd(buf, sizeof(buf)))
+	if (!path)
+		return (NULL);
+	parts = ft_split(path, '/');
+	if (!parts)
+		return (ft_strdup("/"));
+	/* allocate stack with same size as parts */
+	i = 0;
+	while (parts[i])
+		i++;
+	stack = malloc(sizeof(char *) * (i + 1));
+	if (!stack)
 	{
-		if (oldpwd)
-			ft_setenv("OLDPWD", oldpwd, envp);
-		ft_setenv("PWD", buf, envp);
+		ft_free_matrix(parts);
+		return (ft_strdup("/"));
+	}
+	top = 0;
+	i = 0;
+	while (parts[i])
+	{
+		if (ft_strcmp(parts[i], ".") == 0)
+		{
+			/* skip */
+		}
+		else if (ft_strcmp(parts[i], "..") == 0)
+		{
+			if (top > 0)
+			{
+				free(stack[top - 1]);
+				top--;
+			}
+		}
+		else
+		{
+			stack[top++] = ft_strdup(parts[i]);
+		}
+		i++;
+	}
+	/* build result */
+	if (top == 0)
+	{
+		res = ft_strdup("/");
 	}
 	else
 	{
-		if (oldpwd)
-			ft_setenv("OLDPWD", oldpwd, envp);
-		ft_setenv("PWD", target_dir, envp);
+		res = ft_strdup("");
+		for (i = 0; i < top; i++)
+		{
+			tmp = ft_strjoin(res, "/");
+			free(res);
+			res = ft_strjoin(tmp, stack[i]);
+			free(tmp);
+		}
 	}
+	/* cleanup */
+	i = 0;
+	while (i < top)
+	{
+		free(stack[i]);
+		i++;
+	}
+	free(stack);
+	ft_free_matrix(parts);
+	return (res);
+}
+
+void	ft_update_pwd_env(char *oldpwd, char *target_dir, char ***envp)
+{
+	char	*newpwd;
+	char	*joined;
+	char	*tmp;
+		char buf[4096];
+
+	/* Prefer logical PWD update: if target_dir is absolute, normalize it;
+		if relative and oldpwd is present and absolute, join oldpwd + target_dir
+		and normalize. Fallback to getcwd() if anything fails. */
+	newpwd = NULL;
+	if (target_dir && target_dir[0] == '/')
+	{
+		newpwd = ft_normalize_path(target_dir);
+	}
+	else if (oldpwd && oldpwd[0] == '/')
+	{
+		joined = ft_strjoin(oldpwd, "/");
+		if (joined)
+		{
+			tmp = ft_strjoin(joined, target_dir ? target_dir : "");
+			free(joined);
+			if (tmp)
+			{
+				newpwd = ft_normalize_path(tmp);
+				free(tmp);
+			}
+		}
+	}
+	if (!newpwd)
+	{
+		/* Fallback: use getcwd to obtain a physical path */
+		if (getcwd(buf, sizeof(buf)))
+			newpwd = ft_strdup(buf);
+		else
+			newpwd = target_dir ? ft_strdup(target_dir) : ft_strdup("/");
+	}
+	if (oldpwd)
+		ft_setenv("OLDPWD", oldpwd, envp);
+	ft_setenv("PWD", newpwd, envp);
+	free(newpwd);
 }

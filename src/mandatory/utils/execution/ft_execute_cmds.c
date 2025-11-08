@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execute_cmds.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 16:35:40 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/03 16:56:30 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/07 15:47:38 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,6 @@ int	ft_execute_cmds(t_cmd *cmd_list, t_data **data)
 	current = cmd_list;
 	while (current)
 	{
-		/* Do not mutate SHLVL here; each shell instance updates SHLVL on init */
 		if (ft_execute_single_builtin(current, data))
 		{
 			current = current->next;

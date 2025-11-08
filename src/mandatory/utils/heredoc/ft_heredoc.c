@@ -87,7 +87,6 @@ static int	ft_process_heredoc_line(int write_fd, char *line,
 static int	ft_read_heredoc_loop(int write_fd, const char *delimiter)
 {
 	char	*line;
-	int		ret;
 
 	while (1)
 	{
@@ -96,8 +95,7 @@ static int	ft_read_heredoc_loop(int write_fd, const char *delimiter)
 		line = ft_get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;
-		ret = ft_process_heredoc_line(write_fd, line, delimiter);
-		if (ret != 0)
+		if (ft_process_heredoc_line(write_fd, line, delimiter) != 0)
 			break ;
 	}
 	return (0);

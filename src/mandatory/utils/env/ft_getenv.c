@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_getenv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 10:26:32 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 16:32:05 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/08 01:51:14 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,25 +29,18 @@
  */
 char	*ft_getenv(const char *name, char **envp)
 {
-	int		i;
-	char	*var;
+	size_t	i;
+	size_t	len;
 
 	if (!name || !envp)
 		return (NULL);
+	len = ft_strlen(name);
 	i = 0;
 	while (envp[i])
 	{
-		var = ft_strchr(envp[i], '=');
-		if (var)
-		{
-			if (ft_strncmp(envp[i], name, var - envp[i]) == 0)
-				return (var + 1);
-		}
-		else
-		{
-			if (ft_strcmp(envp[i], name) == 0)
-				return ("");
-		}
+		/* match exacto: name seguido de '=' */
+		if (ft_strncmp(envp[i], name, len) == 0 && envp[i][len] == '=')
+			return (&envp[i][len + 1]);
 		i++;
 	}
 	return (NULL);
