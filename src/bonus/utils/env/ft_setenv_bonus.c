@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_setenv_bonus.c                                  :+:      :+:    :+:   */
+/*   ft_setenv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 17:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/27 22:27:16 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/08 02:10:15 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
  *          If the variable exists, its value is updated. If it does not exist,
  *          a new variable is added to the array.
  *
- *	* SPANISH: Establece o actualiza una variable de entorno en el
- *		array de entorno.
- *	Si la variable existe, su valor se actualiza. Si no existe,
+ * SPANISH: Establece o actualiza una variable de entorno en el
+ *          array de entorno.
+ *          Si la variable existe, su valor se actualiza. Si no existe,
  *          se añade una nueva variable al array.
  *
  * @param name   The name of the environment variable to set or update. /

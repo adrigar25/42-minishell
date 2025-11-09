@@ -3,134 +3,92 @@
 /*                                                        :::      ::::::::   */
 /*   ft_remove_quotes_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:16:59 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 17:16:15 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/08 02:36:27 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell_bonus.h"
 
-/**
- * ENGLISH: Skips a quote character in the string and manages quote state.
- *
- * SPANISH: Omite un carácter de comilla en la cadena
- * y gestiona el estado de comillas.
- *
- * @param str        The input string. /
- *                   La cadena de entrada.
- *
- * @param i          Pointer to the current index in the string. /
- *                   Puntero al índice actual en la cadena.
- *
- * @param quote      Pointer to the current quote character. /
- *                   Puntero al carácter de comilla actual.
- *
- * @param in_quote   Pointer to the quote state (1 if inside quotes,
-	0 otherwise). /
-
-	*                   Puntero al estado de comillas
-	(1 si está dentro de comillas,0 en caso contrario).
- *
- * @returns 1 if a quote was skipped, 0 otherwise. /
- *          1 si se omitió una comilla, 0 en caso contrario.
- */
-static int	ft_skip_quote(const char *str, int *i, char *quote, int *in_quote)
+/* Devuelve 1 si en s hay una comilla 'quote' más adelante */
+static int	has_closing_quote(const char *s, char quote)
 {
-	if (!*in_quote && (str[*i] == '\'' || str[*i] == '"'))
+	while (*s)
 	{
-		*in_quote = 1;
-		*quote = str[*i];
-		return (1);
-	}
-	else if (*in_quote && str[*i] == *quote)
-	{
-		*in_quote = 0;
-		*quote = 0;
-		return (1);
+		if (*s == quote)
+			return (1);
+		s++;
 	}
 	return (0);
 }
 
-/**
- * ENGLISH: Calculates the length of the string without quotes.
- *
- * SPANISH: Calcula la longitud de la cadena sin comillas.
- *
- * @param str   The input string. /
- *              La cadena de entrada.
- *
- * @returns The length of the string without quotes. /
- *          La longitud de la cadena sin comillas.
- */
+/* Calcula la longitud resultante si se eliminan las comillas sintácticas
+   (solo se eliminan si existe la comilla de cierre correspondiente). */
 static int	ft_calc_unquoted_len(const char *str)
 {
 	int		i;
-	int		in_q;
-	char	q;
 	int		len;
+	char	q;
 
-	i = -1;
+	i = 0;
 	len = 0;
-	in_q = 0;
-	q = 0;
-	while (str[++i])
+	while (str[i])
 	{
-		if ((!in_q && (str[i] == '\'' || str[i] == '"')))
+		if ((str[i] == '\'' || str[i] == '"') && has_closing_quote(str + i + 1,
+				str[i]))
 		{
-			in_q = 1;
-			q = str[i];
-		}
-		else if (in_q && str[i] == q)
-		{
-			in_q = 0;
-			q = 0;
+			q = str[i++];
+			while (str[i] && str[i] != q)
+			{
+				len++;
+				i++;
+			}
+			if (str[i] == q)
+				i++;
 		}
 		else
+		{
 			len++;
+			i++;
+		}
 	}
 	return (len);
 }
 
-/**
- * ENGLISH: Removes quotes from the input string and
- *          returns a new string without quotes.
- *
- * SPANISH: Elimina las comillas de la cadena de entrada
- *          y devuelve una nueva cadena sin comillas.
- *
- * @param str   The input string with quotes. /
- *              La cadena de entrada con comillas.
- *
- * @returns A newly allocated string without quotes,
- *          or NULL on allocation failure. /
- *          Una cadena recién asignada sin comillas,
- *          o NULL en caso de fallo en la asignación.
- */
+/* Elimina las comillas sintácticas (si tienen pareja) y devuelve una nueva
+   cadena. Si no hay comilla de cierre, la comilla se mantiene como carácter. */
 char	*ft_remove_quotes(const char *str)
 {
 	int		i;
-	char	q;
-	char	*res;
 	int		j;
-	int		in_q;
+	int		unlen;
+	char	*q;
+	char	*res;
 
-	i = 0;
-	j = 0;
-	in_q = 0;
-	q = 0;
 	if (!str)
 		return (NULL);
-	res = malloc(ft_calc_unquoted_len(str) + 1);
+	unlen = ft_calc_unquoted_len(str);
+	res = malloc((size_t)unlen + 1);
 	if (!res)
 		return (NULL);
+	i = 0;
+	j = 0;
 	while (str[i])
 	{
-		if (!ft_skip_quote(str, &i, &q, &in_q))
-			res[j++] = str[i++];
+		if ((str[i] == '\'' || str[i] == '"') && has_closing_quote(str + i + 1,
+				str[i]))
+		{
+			q = (char *)&str[i];
+			i++; /* saltar comilla de apertura */
+			while (str[i] && str[i] != *q)
+				res[j++] = str[i++];
+			if (str[i] == *q)
+				i++; /* saltar comilla de cierre */
+		}
 		else
-			i++;
+			res[j++] = str[i++];
 	}
 	res[j] = '\0';
 	return (res);

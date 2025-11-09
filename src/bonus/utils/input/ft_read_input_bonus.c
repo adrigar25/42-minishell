@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/27 22:27:16 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/08 23:46:41 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 int	ft_read_input(char **input, t_data *data)
 {
 	char	*prompt;
+	size_t	len;
 
 	while (1)
 	{
@@ -45,7 +46,16 @@ int	ft_read_input(char **input, t_data *data)
 			free(prompt);
 		}
 		else
-			*input = readline("minishell> ");
+		{
+			// *input = readline("minishell> ");
+			*input = ft_get_next_line(STDIN_FILENO);
+			if (*input)
+			{
+				len = ft_strlen(*input);
+				if (len > 0 && (*input)[len - 1] == '\n')
+					(*input)[len - 1] = '\0';
+			}
+		}
 		if (!*input)
 			return (0);
 		if (**input)

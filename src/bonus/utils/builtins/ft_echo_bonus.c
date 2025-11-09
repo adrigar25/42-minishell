@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/03 16:46:53 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/08 02:11:59 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,9 @@
  */
 int	ft_handle_quoted_arg(char *arg, int *start, int *end)
 {
-	if (ft_is_quoted(arg))
-	{
-		*start = 1;
-		*end = ft_strlen(arg) - 1;
-		return (1);
-	}
+	/* After parsing and quote removal, arguments should be printed as-is.
+		Do not remove surrounding characters that may be literal quotes. */
+	(void)arg;
 	*start = 0;
 	*end = ft_strlen(arg);
 	return (0);
@@ -102,16 +99,17 @@ static int	ft_putarg_echo(char *arg, int flag_n, int outfd)
  * @returns 0 on success, 1 on error. /
  *          0 en caso de éxito, 1 en caso de error.
  */
-static int	ft_print_echo_args(t_cmd cmd, int start_index, int outfd, int n_flag)
+static int	ft_print_echo_args(t_cmd cmd, int start_index, int outfd,
+		int n_flag)
 {
 	int	i;
 
 	i = start_index;
 	while (cmd.argv[i])
 	{
-	if (ft_putarg_echo(cmd.argv[i], n_flag, outfd) == -1)
+		if (ft_putarg_echo(cmd.argv[i], n_flag, outfd) == -1)
 			return (1);
-		if (cmd.argv[i + 1] && cmd.argv[i + 1][0] != '\0' && ft_putchar_fd(' ',
+		if (cmd.argv[i][0] != '\0' && cmd.argv[i + 1] && ft_putchar_fd(' ',
 				outfd) == -1)
 			return (1);
 		i++;
@@ -138,7 +136,7 @@ int	ft_echo(t_cmd cmd)
 {
 	int	n_flag;
 	int	start_index;
-	int j;
+	int	j;
 
 	if (!cmd.argv || !cmd.argv[0] || cmd.outfd < 0)
 		return (1);
@@ -149,11 +147,11 @@ int	ft_echo(t_cmd cmd)
 	{
 		j = 1;
 		if (cmd.argv[start_index][j] == '\0')
-			break;
+			break ;
 		while (cmd.argv[start_index][j] == 'n')
 			j++;
 		if (cmd.argv[start_index][j] != '\0')
-			break;
+			break ;
 		n_flag = 1;
 		start_index++;
 	}

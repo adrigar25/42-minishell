@@ -3,33 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expansion_utils_bonus.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 17:11:23 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/08 02:13:04 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
 
 /**
- * ENGLISH: Copies a literal substring from the argument to the destination,
- * 		reallocating memory as needed.
+ * ENGLISH: Copies a literal substring from the argument string to the
+ *          destination string.
  *
- * SPANISH: Copia una subcadena literal del argumento a la
- * 		cadena de destino, realojando memoria según sea necesario.
+ * SPANISH: Copia una subcadena literal de la cadena de argumentos a la
+ *          cadena de destino.
  *
  * @param dst   Pointer to the destination string to append to. /
- * 			Puntero a la cadena de destino a la que se añadirá.
+ *              Puntero a la cadena de destino donde se añadirá.
+ *
  * @param arg   The argument string containing the literal substring. /
- * 			La cadena de argumentos que contiene la subcadena literal.
- * @param start The starting index of the literal substring in arg. /
- * 			El índice de inicio de la subcadena literal en arg.
- * @param end   The ending index (exclusive) of the literal substring in arg. /
- * 			El índice de fin (exclusivo) de la subcadena literal en arg
+ *              La cadena de argumentos que contiene la subcadena literal.
+ *
+ * @param start The starting index of the substring in the argument string. /
+ *              El índice inicial de la subcadena en la cadena de argumentos.
+ *
+ * @param end   The ending index (exclusive) of the substring in the
+ *              argument string. /
+ *              El índice final (exclusivo) de la subcadena en la cadena
+ *              de argumentos.
  *
  * @returns 1 on success, 0 on memory allocation failure. /
- * 			1 en caso de éxito, 0 en caso de fallo de asignación de memoria.
+ *          1 en caso de éxito, 0 en caso de fallo de asignación de memoria.
  */
 int	ft_copy_literal(char **dst, char *arg, int start, int end)
 {

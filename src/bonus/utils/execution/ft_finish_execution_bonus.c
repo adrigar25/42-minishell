@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_finish_execution_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/03 16:38:06 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/08 23:32:26 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,29 +76,49 @@ static void	ft_wait_for_children(pid_t *pids, int cmd_count,
 		int *last_exit_status)
 {
 	int	i;
-	int sig;
+	int	sig;
 	int	status;
 	int	executed_processes;
+	int	already_waited;
 
+	/* If ft_wait_last already waited some specific child PIDs it will set
+	** their slots to 0. In that case we must not overwrite the last exit
+	** status previously recorded for the last command in a pipeline. We
+	** detect that by checking for any zeroed entries before waiting. */
 	executed_processes = 0;
+	already_waited = 0;
+	i = 0;
+	while (i < cmd_count)
+	{
+		if (pids[i] == 0)
+		{
+			already_waited = 1;
+			break ;
+		}
+		i++;
+	}
+	i = 0;
 	i = 0;
 	while (i < cmd_count)
 	{
 		if (pids[i] > 0)
 		{
 			waitpid(pids[i], &status, 0);
-			if (WIFEXITED(status))
-				*last_exit_status = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
+			if (!already_waited)
 			{
-				sig = WTERMSIG(status);
-				*last_exit_status = 128 + sig;
-				if (sig == SIGQUIT)
+				if (WIFEXITED(status))
+					*last_exit_status = WEXITSTATUS(status);
+				else if (WIFSIGNALED(status))
 				{
-					if (WCOREDUMP(status))
-						printf("Quit (core dumped)\n");
-					else
-						printf("Quit\n");
+					sig = WTERMSIG(status);
+					*last_exit_status = 128 + sig;
+					if (sig == SIGQUIT)
+					{
+						if (WCOREDUMP(status))
+							printf("Quit (core dumped)\n");
+						else
+							printf("Quit\n");
+					}
 				}
 			}
 			executed_processes = 1;

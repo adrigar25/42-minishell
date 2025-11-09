@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_process_input_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 18:10:47 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/08 02:34:14 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ static int	ft_count_cmds(t_cmd *cmd_list)
  *          expansion, wildcard expansion, and parsing into commands.
  *
  * SPANISH: Procesa la cadena de entrada sin procesar en una lista enlazada de
- *          estructuras de comando. Maneja la división, verificación de sintaxis,
+ *          estructuras de comando. Maneja la división,
+	verificación de sintaxis,
  *          expansión de variables de entorno, expansión de comodines y análisis
  *          en comandos.
  *

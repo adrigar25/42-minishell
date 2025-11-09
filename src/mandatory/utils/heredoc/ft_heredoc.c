@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <stdio.h>
 
 /**
  * ENGLISH: Processes a single line read from stdin for the heredoc.
@@ -54,14 +55,16 @@ static int	ft_process_heredoc_line(int write_fd, char *line,
 	}
 	if (ft_strcmp(cmp, delimiter) == 0)
 	{
+		/* DEBUG: print the read line and delimiter to stderr (temporary) */
+		fprintf(stderr, "[HEREDOC DEBUG] cmp='%s' (len=%zu) delimiter='%s'\n",
+			cmp, nread > 0 && line[nread - 1] == '\n' ? nread - 1 : nread,
+			delimiter);
 		free(cmp);
 		free(line);
 		return (1);
 	}
 	free(cmp);
 	write(write_fd, line, nread);
-	if (nread > 0 && line[nread - 1] == '\n')
-		write(write_fd, "\n", 1);
 	free(line);
 	return (0);
 }
@@ -127,5 +130,6 @@ int	ft_heredoc(const char *delimiter)
 		return (-1);
 	ft_read_heredoc_loop(pipefd[1], delimiter);
 	close(pipefd[1]);
+	fprintf(stderr, "[HEREDOC DEBUG] finished, returning fd=%d\n", pipefd[0]);
 	return (pipefd[0]);
 }

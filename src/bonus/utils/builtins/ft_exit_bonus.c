@@ -60,13 +60,13 @@ long long	ft_atoll(const char *str)
  * @param cmd The command structure containing arguments. /
  *            La estructura de comando que contiene los argumentos.
  *
- * @returns This function does not return; it exits the program. /
+ * @returns This function does not return ; it exits the program. /
  *          Esta función no retorna; sale del programa.
  */
 int	ft_exit(t_cmd *cmd)
 {
-	char		**args;
-	int			array[2];
+	char	**args;
+	int		array[2];
 
 	args = cmd->argv;
 	if (!args)

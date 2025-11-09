@@ -121,6 +121,10 @@ int	ft_execute_cmds(t_cmd *cmd_list, t_data **data)
 	current = cmd_list;
 	while (current)
 	{
+			if (current && current->argv)
+				fprintf(stderr, "[EXEC DEBUG] cmd idx=%d argv0=%s infd=%d outfd=%d has_error=%d\n",
+					current->index, current->argv[0] ? current->argv[0] : "(null)", current->infd, current->outfd,
+					current->has_error);
 		if (ft_execute_single_builtin(current, data))
 		{
 			current = current->next;

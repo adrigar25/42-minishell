@@ -27,3 +27,5 @@ touch/
 # Tester
 minishell_tester/
 .minitest/
+test
+tests

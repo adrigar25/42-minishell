@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_input_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 18:57:27 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 18:10:40 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/08 02:33:02 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 	t_cmd	*current_cmd;
 	int		i;
 	int		cmd_index;
+	int		new_i;
 
 	if (!argv || data->argc == 0)
 		return (NULL);
@@ -51,7 +52,11 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 	i = 0;
 	while (i < data->argc)
 	{
-		i = ft_process_token(&current_cmd, argv, i, &cmd_index);
+		new_i = ft_process_token(&current_cmd, argv, i, &cmd_index);
+		if (new_i == i)
+			i++;
+		else
+			i = new_i + 1;
 	}
 	return (cmd_list);
 }

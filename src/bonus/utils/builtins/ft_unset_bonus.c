@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/27 22:27:16 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/08 02:12:30 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ static void	ft_remove_env_var(char *var, char ***envp)
 }
 
 /**
- * ENGLISH: Implements the unset builtin command to remove environment variables.
+
+	* ENGLISH: Implements the unset builtin command to remove environment variables.
  *
  * SPANISH: Implementa el comando builtin unset para eliminar variables
  * 			de entorno.
@@ -97,8 +98,7 @@ int	ft_unset(char **args, char ***envp)
 	{
 		if (!ft_is_valid_identifier(args[i]))
 		{
-			ft_fprintf(2,
-				"minishell: unset: `%s': not a valid identifier\n",
+			ft_fprintf(2, "minishell: unset: `%s': not a valid identifier\n",
 				args[i]);
 			return (1);
 		}

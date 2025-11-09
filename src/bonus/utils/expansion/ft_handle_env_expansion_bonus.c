@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/30 01:37:41 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/08 02:13:08 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ char	**ft_handle_env_expansion(char **argv, t_data *data)
 		i++;
 	}
 	new_argv[i] = NULL;
-	/* Free original argv on success to avoid leaks */
 	ft_free_matrix(argv);
 	return (new_argv);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_redir_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:51:26 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/29 16:20:53 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/08 23:40:41 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,13 @@ int	ft_redir(t_cmd *cmd, char **argv, int i)
 	{
 		cmd->data->last_exit_status = ft_handle_error(12, 1, argv[i + 1], NULL);
 		cmd->has_error = 1;
-		return (i + 2);
+		/*
+		** Match the mandatory version's return convention: return the index
+		** of the filename token (i + 1). The outer loop will advance to
+		** the token after that (i + 2). Returning i + 2 here caused the
+		** parser to skip the token that follows the redirection filename.
+		*/
+		return (i + 1);
 	}
 	redir = ft_remove_quotes(argv[i + 1]);
 	if (!redir)
@@ -143,7 +149,16 @@ int	ft_redir(t_cmd *cmd, char **argv, int i)
 		cmd->data->last_exit_status = 1;
 		cmd->has_error = 1;
 	}
+	else if (!ft_strcmp(argv[i], "<<"))
+	{
+		fprintf(stderr, "[HEREDOC DEBUG] assigned infile fd=%d for cmd idx=%d\n",
+			cmd->infd, cmd->index);
+	}
 	if (redir != argv[i + 1])
 		free(redir);
-	return (i + 2);
+	/*
+	** Return the index of the filename token so the caller's loop will
+	** advance to the next token after the filename. See comment above.
+	*/
+	return (i + 1);
 }

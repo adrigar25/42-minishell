@@ -82,6 +82,11 @@ int	ft_redir(t_cmd *cmd, char **argv, int i)
 		cmd->data->last_exit_status = 1;
 		cmd->has_error = 1;
 	}
+	else if (!ft_strcmp(argv[i], "<<"))
+	{
+		fprintf(stderr, "[HEREDOC DEBUG] assigned infile fd=%d for cmd idx=%d\n",
+			cmd->infd, cmd->index);
+	}
 	if (clean_arg != argv[i + 1])
 		free(clean_arg);
 	return (i + 1);

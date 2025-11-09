@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/28 00:36:11 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 00:36:11 by agarcia          ###   ########.fr       */
+/*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
+/*   Updated: 2025/11/08 02:12:23 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,24 @@ int	ft_pwd(t_cmd cmd)
 	char	cwd[1024];
 	char	*output;
 	int		len;
+	char	*pwd_env;
 
+	pwd_env = NULL;
+	if (cmd.data && cmd.data->envp)
+		pwd_env = ft_getenv("PWD", cmd.data->envp);
+	if (pwd_env && pwd_env[0] == '/')
+	{
+		len = ft_strlen(pwd_env);
+		output = malloc(len + 2);
+		if (!output)
+			return (1);
+		ft_strcpy(output, pwd_env);
+		output[len] = '\n';
+		output[len + 1] = '\0';
+		write(cmd.outfd, output, len + 1);
+		free(output);
+		return (0);
+	}
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
 		len = ft_strlen(cwd);

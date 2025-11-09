@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execute_cmds_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 00:32:13 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/03 16:29:06 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/09 01:08:13 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,11 @@ int	ft_execute_cmds(t_cmd *cmd_list, t_data **data)
 	cmd = cmd_list;
 	while (cmd)
 	{
+		if (cmd && cmd->argv)
+			fprintf(stderr,
+				"[EXEC DEBUG] cmd idx=%d argv0=%s infd=%d outfd=%d has_error=%d op=%d\n",
+				cmd->index, cmd->argv[0] ? cmd->argv[0] : "(null)", cmd->infd,
+				cmd->outfd, cmd->has_error, cmd->op);
 		/* Do not mutate SHLVL here; each shell instance updates SHLVL on init */
 		if (ft_exec_cmd(cmd, cmd_list, data, pids) == -1)
 			return (ft_finish_execution(pids, cmd_list, *data));

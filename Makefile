@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 18:48:28 by adriescr          #+#    #+#              #
-#    Updated: 2025/11/08 01:56:59 by agarcia          ###   ########.fr        #
+#    Updated: 2025/11/08 23:42:59 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -200,15 +200,15 @@ $(OBJ_BONUS_DIR)/%.o: $(BONUS_DIR)/%.c
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 # Compile the bonus project
-$(NAME): $(MINISHELL_OBJS_BONUS) $(MAIN_OBJECT_BONUS)
-	@$(CC) $(CFLAGS) $(MINISHELL_OBJS_BONUS) $(MAIN_OBJECT_BONUS) $(LIB_NAME) $(LDFLAGS) -o $(NAME)
+$(NAME)_bonus: $(MINISHELL_OBJS_BONUS) $(MAIN_OBJECT_BONUS)
+	@$(CC) $(CFLAGS) $(MINISHELL_OBJS_BONUS) $(MAIN_OBJECT_BONUS) $(LIB_NAME) $(LDFLAGS) -o $(NAME)_bonus
 	@if [ $$? -eq 0 ]; then \
 		echo "\033[32m✅ Bonus compilation completed successfully!\033[0m"; \
 	else \
 		echo "\033[31m❌ Error during bonus compilation!\033[0m"; \
 	fi
 
-bonus: $(LIB_NAME) $(NAME)
+bonus: $(LIB_NAME) $(NAME)_bonus
 	@echo "\033[35m$(NAME)_bonus executable is ready to use!\033[0m"
 
 # Clean up object files

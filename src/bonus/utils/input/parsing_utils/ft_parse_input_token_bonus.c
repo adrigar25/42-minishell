@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:55:03 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/01 10:20:38 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/08 23:32:26 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,14 @@ int	ft_process_token(t_cmd **current_cmd, char **argv, int i, int *cmd_index)
 	if (!ft_strcmp(argv[i], "|") || !ft_strcmp(argv[i], "||")
 		|| !ft_strcmp(argv[i], "&&") || !ft_strcmp(argv[i], "&"))
 	{
+		/*
+		** The mandatory version returns the current index after processing
+		** an operator so the caller increments by one. Returning i+1 here
+		** caused the outer loop to skip the token following the operator
+		** (it did i = new_i + 1). To keep consistent behavior, return i.
+		*/
 		ft_process_op(current_cmd, argv[i], cmd_index, (*current_cmd)->data);
-		return (i + 1);
+		return (i);
 	}
 	else if ((!ft_strcmp(argv[i], "<") || !ft_strcmp(argv[i], ">")
 			|| !ft_strcmp(argv[i], ">>") || !ft_strcmp(argv[i], "<<"))
@@ -54,9 +60,10 @@ int	ft_process_token(t_cmd **current_cmd, char **argv, int i, int *cmd_index)
 	else
 	{
 		clean_arg = ft_remove_quotes(argv[i]);
-		if (clean_arg)
-			ft_add_arg_to_cmd(*current_cmd, clean_arg);
-		return (i + 1);
+		if (!clean_arg)
+			return (i);
+		ft_add_arg_to_cmd(*current_cmd, clean_arg);
+		return (i);
 	}
 	return (i + 1);
 }

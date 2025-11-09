@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_input_op_bonus.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:52:24 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 17:42:18 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/09 00:10:55 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ int	ft_process_op(t_cmd **current_cmd, char *arg, int *cmd_index, t_data *data)
 	{
 		if (ft_handle_pipe(current_cmd, pipefd) == -1)
 			return (-1);
-		(*current_cmd)->outfd = pipefd[1];
 		new_cmd->infd = pipefd[0];
 	}
 	*current_cmd = new_cmd;
