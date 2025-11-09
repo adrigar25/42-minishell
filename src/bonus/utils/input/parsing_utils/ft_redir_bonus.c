@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:51:26 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/09 12:20:58 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/09 13:50:42 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ static int	is_ambiguous_redir(char **argv, int i)
 int	ft_redir(t_cmd *cmd, char **argv, int i)
 {
 	char	*redir;
+	int		fd_ret;
 
 	if (is_ambiguous_redir(argv, i) == 1)
 	{
@@ -153,7 +154,7 @@ int	ft_redir(t_cmd *cmd, char **argv, int i)
 			free(redir);
 		return (i + 1);
 	}
-	int fd_ret = ft_assign_fd(&cmd, redir, argv[i]);
+	fd_ret = ft_assign_fd(&cmd, redir, argv[i]);
 	if (fd_ret == -2)
 	{
 		if (redir != argv[i + 1])

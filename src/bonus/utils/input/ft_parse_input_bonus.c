@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 18:57:27 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/09 13:07:19 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/09 13:50:43 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 	int		new_i;
 	int		end;
 	int		j;
+	int		ret;
+	t_cmd	*tmp;
+	t_cmd	*tmp;
 
 	if (!argv || data->argc == 0)
 		return (NULL);
@@ -63,13 +66,13 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 		{
 			if (argv[j] && ft_strcmp(argv[j], "<<") == 0 && argv[j + 1])
 			{
-				int ret = ft_redir(current_cmd, argv, j);
+				ret = ft_redir(current_cmd, argv, j);
 				if (ret == -1)
 				{
 					/* heredoc aborted by SIGINT: free partial list and return NULL */
 					while (cmd_list)
 					{
-						t_cmd *tmp = cmd_list->next;
+						tmp = cmd_list->next;
 						ft_free_matrix(cmd_list->argv);
 						free(cmd_list);
 						cmd_list = tmp;
@@ -93,7 +96,7 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 			/* heredoc abort: free partial list and return NULL */
 			while (cmd_list)
 			{
-				t_cmd *tmp = cmd_list->next;
+				tmp = cmd_list->next;
 				ft_free_matrix(cmd_list->argv);
 				free(cmd_list);
 				cmd_list = tmp;

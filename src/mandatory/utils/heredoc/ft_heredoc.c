@@ -101,13 +101,13 @@ static int	ft_process_heredoc_line(int write_fd, char *line,
  *          0 en caso de éxito.
  */
 static int	ft_read_heredoc_loop(int write_fd, const char *delimiter,
-	t_data *data, int expand)
+		t_data *data, int expand)
 {
-    char	*line;
+	char	*line;
 
 	/* Use ft_get_next_line for heredoc input even in interactive mode to
-	   avoid readline state conflicts between processes. Print the heredoc
-	   prompt manually when running in a tty to preserve user feedback. */
+		avoid readline state conflicts between processes. Print the heredoc
+		prompt manually when running in a tty to preserve user feedback. */
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
@@ -146,6 +146,7 @@ int	ft_heredoc(const char *delimiter, t_data *data, int expand)
 	int		pipefd[2];
 	pid_t	pid;
 	int		status;
+		struct termios orig_term;
 
 	if (pipe(pipefd) == -1)
 		return (-1);
@@ -154,12 +155,11 @@ int	ft_heredoc(const char *delimiter, t_data *data, int expand)
 		heredoc in the current process to avoid losing buffered stdin data. */
 	if (data && data->isatty)
 	{
-		struct termios orig_term;
 		if (tcgetattr(STDIN_FILENO, &orig_term) == -1)
 			; /* non-fatal: continue without restoring if it fails */
 		/* Ignore SIGINT in parent while child reads heredoc so only the
-		   heredoc child receives Ctrl+C and parent doesn't print prompt
-		   via the sigint handler (avoids duplicate main prompt). */
+			heredoc child receives Ctrl+C and parent doesn't print prompt
+			via the sigint handler (avoids duplicate main prompt). */
 		signal(SIGINT, SIG_IGN);
 		pid = fork();
 		if (pid < 0)
@@ -193,7 +193,7 @@ int	ft_heredoc(const char *delimiter, t_data *data, int expand)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		/* If child was terminated by SIGINT, print newline so prompt
-		   appears on a fresh line (we ignored SIGINT in parent). */
+			appears on a fresh line (we ignored SIGINT in parent). */
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 		{
 			close(pipefd[0]);

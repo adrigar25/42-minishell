@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:51:26 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/09 12:20:59 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/09 13:50:42 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,20 +73,21 @@ int	ft_assign_fd(t_cmd **cmd, char *filename, char *type)
 int	ft_redir(t_cmd *cmd, char **argv, int i)
 {
 	char	*clean_arg;
+	int		fd_ret;
 
 	clean_arg = ft_remove_quotes(argv[i + 1]);
 	if (!clean_arg)
 		clean_arg = argv[i + 1];
 	/* If a previous redirection set has_error, avoid trying to open files
-	   for normal redirections (>, >>, <). Still process heredoc (<<). This
-	   ensures we consume the filename token but don't emit duplicate errors. */
+		for normal redirections (>, >>, <). Still process heredoc (<<). This
+		ensures we consume the filename token but don't emit duplicate errors. */
 	if (cmd->has_error == 1 && ft_strcmp(argv[i], "<<") != 0)
 	{
 		if (clean_arg != argv[i + 1])
 			free(clean_arg);
 		return (i + 1);
 	}
-	int fd_ret = ft_assign_fd(&cmd, clean_arg, argv[i]);
+	fd_ret = ft_assign_fd(&cmd, clean_arg, argv[i]);
 	if (fd_ret == -2)
 	{
 		/* heredoc was aborted by SIGINT: signal parser to abort input */

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 18:57:27 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/09 13:04:05 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/09 13:50:43 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 	int		new_i;
 	int		end;
 	int		j;
+	int		ret;
+	t_cmd	*tmp;
+	t_cmd	*tmp;
 
 	if (!argv || data->argc == 0)
 		return (NULL);
@@ -62,16 +65,17 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 		{
 			if (argv[j] && ft_strcmp(argv[j], "<<") == 0 && argv[j + 1])
 			{
-				/* Process heredoc in pre-scan. If ft_redir returns -1 it means the
-				   heredoc was aborted (SIGINT) and we must abort parsing and return
-				   NULL so the caller drops the whole input line (single Ctrl+C). */
-				int ret = ft_redir(current_cmd, argv, j);
+				/* Process heredoc in pre-scan. If ft_redir returns
+					-1 it means the
+					heredoc was aborted (SIGINT) and we must abort parsing and return
+					NULL so the caller drops the whole input line (single Ctrl+C). */
+				ret = ft_redir(current_cmd, argv, j);
 				if (ret == -1)
 				{
 					/* free partially built command list */
 					while (cmd_list)
 					{
-						t_cmd *tmp = cmd_list->next;
+						tmp = cmd_list->next;
 						ft_free_matrix(cmd_list->argv);
 						free(cmd_list);
 						cmd_list = tmp;
@@ -89,24 +93,24 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 			i++;
 		if (i >= data->argc)
 			break ;
-			new_i = ft_process_token(&current_cmd, argv, i, &cmd_index);
-			if (new_i == -1)
+		new_i = ft_process_token(&current_cmd, argv, i, &cmd_index);
+		if (new_i == -1)
+		{
+			/* heredoc aborted via Ctrl+C: free partially built command list and
+				return NULL so the caller (ft_process_input) will drop the line. */
+			while (cmd_list)
 			{
-				/* heredoc aborted via Ctrl+C: free partially built command list and
-				   return NULL so the caller (ft_process_input) will drop the line. */
-				while (cmd_list)
-				{
-					t_cmd *tmp = cmd_list->next;
-					ft_free_matrix(cmd_list->argv);
-					free(cmd_list);
-					cmd_list = tmp;
-				}
-				return (NULL);
+				tmp = cmd_list->next;
+				ft_free_matrix(cmd_list->argv);
+				free(cmd_list);
+				cmd_list = tmp;
 			}
-			if (new_i == i)
-				i++;
-			else
-				i = new_i + 1;
+			return (NULL);
+		}
+		if (new_i == i)
+			i++;
+		else
+			i = new_i + 1;
 	}
 	return (cmd_list);
 }

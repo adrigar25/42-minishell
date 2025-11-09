@@ -103,14 +103,14 @@ static int	ft_process_heredoc_line(int write_fd, char *line,
  *          0 en caso de éxito.
  */
 static int	ft_read_heredoc_loop(int write_fd, const char *delimiter,
-	t_data *data, int expand)
+		t_data *data, int expand)
 {
-    char	*line;
-    int		ret;
+	char	*line;
+	int		ret;
 
 	/* Always use ft_get_next_line for heredoc input to avoid readline
-	   state conflicts. Print the heredoc prompt manually when running in a
-	   tty so the user sees a prompt. */
+		state conflicts. Print the heredoc prompt manually when running in a
+		tty so the user sees a prompt. */
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
@@ -148,12 +148,12 @@ int	ft_heredoc(const char *delimiter, t_data *data, int expand)
 	int		pipefd[2];
 	pid_t	pid;
 	int		status;
+		struct termios orig_term;
 
 	if (pipe(pipefd) == -1)
 		return (-1);
 	if (data && data->isatty)
 	{
-		struct termios orig_term;
 		if (tcgetattr(STDIN_FILENO, &orig_term) == -1)
 			;
 		signal(SIGINT, SIG_IGN);
