@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/08 23:46:41 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/09 13:10:53 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ int	ft_read_input(char **input, t_data *data)
 		}
 		else
 		{
-			// *input = readline("minishell> ");
+			/* Non-interactive: use ft_get_next_line to read from stdin so the
+				shell can be driven from a script or redirected input (no tty). */
 			*input = ft_get_next_line(STDIN_FILENO);
 			if (*input)
 			{

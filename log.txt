@@ -1,0 +1,1019 @@
+
+#include "../../minishell.h"
+#include <stdio.h>
+
+
+static int	ft_process_heredoc_line(int write_fd, char *line,
+		const char *delimiter, t_data *data, int expand)
+{
+	char	*cmp;
+	size_t	nread;
+	char	*expanded;
+
+	nread = ft_strlen(line);
+	if (nread > 0 && line[nread - 1] == '\n')
+		cmp = ft_substr(line, 0, nread - 1);
+	else
+		cmp = ft_strdup(line);
+	if (!cmp)
+	{
+		free(line);
+		return (-1);
+	}
+	if (ft_strcmp(cmp, delimiter) == 0)
+	{
+		free(cmp);
+		free(line);
+		return (1);
+	}
+	free(cmp);
+	if (expand)
+	{
+		expanded = NULL;
+		if (!ft_process_arg(&expanded, line, data))
+		{
+			free(line);
+			return (-1);
+		}
+		if (expanded)
+		{
+			write(write_fd, expanded, ft_strlen(expanded));
+			free(expanded);
+		}
+	}
+	else
+		write(write_fd, line, nread);
+	free(line);
+	return (0);
+}
+
+
+static int	ft_read_heredoc_loop(int write_fd, const char *delimiter,
+		t_data *data, int expand)
+{
+	char	*line;
+	char	*expanded;
+
+	if (isatty(STDIN_FILENO))
+	{
+		while (1)
+		{
+			line = readline(HEREDOC_PROMPT);
+			if (!line)
+				break ;
+			if (ft_strcmp(line, delimiter) == 0)
+			{
+				free(line);
+				break ;
+			}
+			if (expand)
+			{
+				expanded = NULL;
+				if (!ft_process_arg(&expanded, line, data))
+				{
+					free(line);
+					return (-1);
+				}
+				if (expanded)
+				{
+					line = expanded;
+				}
+			}
+			write(write_fd, line, ft_strlen(line));
+			write(write_fd, "\n", 1);
+			free(line);
+		}
+		return (0);
+	}
+	while (1)
+	{
+		if (isatty(STDIN_FILENO))
+			write(1, HEREDOC_PROMPT, 9);
+		line = ft_get_next_line(STDIN_FILENO);
+		if (!line)
+			break ;
+		if (ft_process_heredoc_line(write_fd, line, delimiter, data,
+				expand) != 0)
+			break ;
+	}
+	return (0);
+}
+
+
+
+int	ft_heredoc(const char *delimiter, t_data *data, int expand)
+{
+	int		pipefd[2];
+	pid_t	pid;
+	int		status;
+
+	if (pipe(pipefd) == -1)
+		return (-1);
+	/* If interactive (tty), fork a child to read heredoc so signals are
+		handled cleanly by the child. For non-tty (scripted) input, read
+		heredoc in the current process to avoid losing buffered stdin data. */
+	if (data && data->isatty)
+	{
+		pid = fork();
+		if (pid < 0)
+		{
+			close(pipefd[0]);
+			close(pipefd[1]);
+			return (-1);
+		}
+		if (pid == 0)
+		{
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
+			close(pipefd[0]);
+			ft_read_heredoc_loop(pipefd[1], delimiter, data, expand);
+			close(pipefd[1]);
+			exit(0);
+		}
+		close(pipefd[1]);
+		if (waitpid(pid, &status, 0) == -1)
+		{
+			close(pipefd[0]);
+			return (-1);
+		}
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		{
+			close(pipefd[0]);
+			return (-1);
+		}
+		return (pipefd[0]);
+	}
+	/* non-tty: read heredoc inline so parent's buffered input is consumed
+		in order and heredoc lines are not lost */
+	ft_read_heredoc_loop(pipefd[1], delimiter, data, expand);
+	close(pipefd[1]);
+	return (pipefd[0]);
+}
+
+#include "../../minishell.h"
+
+static int	ft_is_redir(const char *s)
+{
+	if (!s)
+		return (0);
+	return (ft_strcmp(s, "<") == 0 || ft_strcmp(s, ">") == 0 || ft_strcmp(s,
+			">>") == 0 || ft_strcmp(s, "<<") == 0);
+}
+
+
+static int	ft_is_logical_op(const char *s)
+{
+	if (!s)
+		return (0);
+	return (ft_strcmp(s, "||") == 0 || ft_strcmp(s, "&&") == 0);
+}
+
+static int	ft_is_pipe_like(const char *s)
+{
+	if (!s)
+		return (0);
+	return (ft_strcmp(s, "|") == 0 || ft_is_logical_op(s) || ft_strcmp(s,
+			"&") == 0);
+}
+int	ft_check_input_syntax(char **argv, int argc)
+{
+	int	i;
+
+	if (!argv || argc == 0)
+		return (0);
+	if (!ft_strcmp(argv[0], "|") || !ft_strcmp(argv[0], "&")
+		|| ft_is_logical_op(argv[0]))
+		return (ft_handle_error(6, 2, argv[0], NULL));
+	i = 0;
+	while (i < argc)
+	{
+		if ((ft_is_pipe_like(argv[i]) || ft_is_redir(argv[i])) && i == argc - 1)
+			return (ft_handle_error(5, 2, NULL, NULL));
+		if (i + 1 < argc)
+		{
+			if (ft_is_pipe_like(argv[i]) && ft_is_pipe_like(argv[i + 1]))
+				return (ft_handle_error(6, 2, argv[i + 1], NULL));
+			if (ft_is_redir(argv[i]) && (ft_is_pipe_like(argv[i + 1])
+					|| ft_is_redir(argv[i + 1])))
+				return (ft_handle_error(6, 2, argv[i + 1], NULL));
+		}
+		i++;
+	}
+	return (0);
+}
+
+#include "../../minishell.h"
+
+t_cmd	*ft_parse_input(char **argv, t_data *data)
+{
+	t_cmd	*cmd_list;
+	t_cmd	*current_cmd;
+	int		i;
+	int		cmd_index;
+	int		new_i;
+	int		end;
+	int		j;
+
+	if (!argv || data->argc == 0)
+		return (NULL);
+	cmd_index = 0;
+	cmd_list = ft_create_cmd_node(cmd_index);
+	if (!cmd_list)
+		return (NULL);
+	current_cmd = cmd_list;
+	current_cmd->data = data;
+	i = 0;
+	while (i < data->argc)
+	{
+		/* Debug: dump tokens for this round */
+		{
+			int x = i;
+			fprintf(stderr, "[PARSE] tokens from %d: ", i);
+			while (x < data->argc && argv[x])
+			{
+				fprintf(stderr, "%s ", argv[x]);
+				x++;
+			}
+			fprintf(stderr, "\n");
+		}
+		/* Pre-scan this command's tokens and process any heredocs (<<)
+			before opening regular files. This matches bash behavior where
+			here-documents are read before other redirections. */
+		end = i;
+		while (end < data->argc && ft_strcmp(argv[end], "|") != 0)
+			end++;
+		j = i;
+		while (j < end)
+		{
+			if (argv[j] && ft_strcmp(argv[j], "<<") == 0 && argv[j + 1])
+			{
+				/* process heredoc and mark tokens as consumed */
+				ft_redir(current_cmd, argv, j);
+				argv[j] = NULL;
+				argv[j + 1] = NULL;
+				j += 2;
+			}
+			else
+				j++;
+		}
+		new_i = ft_process_token(&current_cmd, argv, i, &cmd_index);
+		if (new_i == i)
+			i++;
+		else
+			i = new_i + 1;
+	}
+	return (cmd_list);
+}
+
+#include "../../minishell.h"
+
+static int	ft_count_cmds(t_cmd *cmd_list)
+{
+	int		count;
+	t_cmd	*head;
+
+	count = 0;
+	head = cmd_list;
+	while (head && ++count)
+		head = head->next;
+	return (count);
+}
+
+
+t_cmd	*ft_process_input(char *input, t_data *data, int debug)
+{
+	char	**argv;
+	t_cmd	*cmd_list;
+
+	data->argc = ft_count_args(input);
+	argv = ft_split_input(input, data->argc);
+	free(input);
+	if (ft_check_input_syntax(argv, data->argc))
+	{
+		ft_free_matrix(argv);
+		data->last_exit_status = 2;
+		return (NULL);
+	}
+	argv = ft_handle_env_expansion(argv, data);
+	cmd_list = ft_parse_input(argv, data);
+	if (debug && cmd_list && argv)
+		ft_show_debug(argv, data->argc, argv, cmd_list);
+	ft_free_matrix(argv);
+	data->cmd_count = ft_count_cmds(cmd_list);
+	return (cmd_list);
+}
+
+#include "../../minishell.h"
+
+
+int	ft_read_input(char **input, t_data *data)
+{
+	char	*prompt;
+	size_t	len;
+
+	// size_t	len;
+	while (1)
+	{
+		if (data->isatty)
+		{
+			prompt = ft_generate_prompt(data->envp);
+			*input = readline(prompt);
+			free(prompt);
+		}
+		else
+		{
+			/* Non-interactive: use ft_get_next_line to read from stdin so the
+				shell can be driven from a script or redirected input (no tty). */
+			*input = ft_get_next_line(STDIN_FILENO);
+			if (*input)
+			{
+				len = ft_strlen(*input);
+				if (len > 0 && (*input)[len - 1] == '\n')
+					(*input)[len - 1] = '\0';
+			}
+		}
+		if (!*input)
+			return (0);
+		if (**input)
+		{
+			if (data->isatty)
+				add_history(*input);
+			return (1);
+		}
+		free(*input);
+	}
+}
+
+#include "../../minishell.h"
+
+int	is_in_quotes(const char *input, int pos)
+{
+	int		i;
+	int		in_q;
+	char	q;
+
+	i = 0;
+	in_q = 0;
+	q = 0;
+	while (i <= pos && input[i])
+	{
+		if (!in_q && (input[i] == '\'' || input[i] == '"'))
+		{
+			in_q = 1;
+			q = input[i];
+		}
+		else if (in_q && input[i] == q)
+		{
+			in_q = 0;
+			q = 0;
+		}
+		i++;
+	}
+	return (in_q);
+}
+
+
+static int	ft_is_escaped(const char *input, int pos, int in_q)
+{
+	int	count;
+
+	if (in_q)
+		return (0);
+	count = 0;
+	pos--;
+	while (pos >= 0 && input[pos] == '\\')
+	{
+		count++;
+		pos--;
+	}
+	return (count % 2);
+}
+
+
+static int	ft_handle_token(const char *input, char **args, int *i, int *j)
+{
+	int	start;
+
+	ft_skip_whitespace(input, i);
+	if (ft_strchr("<>|", input[*i]) && !ft_is_escaped(input, *i, 0))
+	{
+		args[*j] = ft_substr((char *)input, *i, 1 + (input[*i
+					+ 1] == input[*i]));
+		*j += 1;
+		*i += 1 + (input[*i + 1] == input[*i]);
+	}
+	else
+	{
+		start = *i;
+		while (input[*i] && (!ft_strchr("<>|", input[*i]) || is_in_quotes(input,
+					*i) || ft_is_escaped(input, *i, 0))
+			&& (!ft_isspace(input[*i]) || is_in_quotes(input, *i)))
+			*i += 1 + (input[*i] == '\\' && input[*i + 1]);
+		if (*i > start)
+		{
+			args[*j] = ft_substr((char *)input, start, *i - start);
+			*j += 1;
+		}
+	}
+	return (0);
+}
+
+char	**ft_split_input(const char *input, int argc)
+{
+	char	**args;
+	int		i;
+	int		j;
+
+	args = malloc(sizeof(char *) * (argc + 1));
+	if (!args)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (input[i] && j < argc)
+		ft_handle_token(input, args, &i, &j);
+	args[j] = NULL;
+	return (args);
+}
+
+#include "../../minishell.h"
+
+static int	ft_clean_argv(char **argv)
+{
+	int	i;
+	int	j;
+
+	if (!argv)
+		return (0);
+	i = 0;
+	j = 0;
+	while (argv[i])
+	{
+		if (ft_strlen(argv[i]) > 0)
+		{
+			if (i != j)
+				argv[j] = argv[i];
+			j++;
+		}
+		i++;
+	}
+	argv[j] = NULL;
+	return (j);
+}
+
+static int	ft_check_cmd_path(const char *path, const char *cmd_name)
+{
+	struct stat	file_stat;
+
+	if (!path)
+		return (ft_handle_error(1, EXIT_COMMAND_NOT_FOUND, (char *)cmd_name,
+				NULL));
+	if (stat(path, &file_stat) == -1)
+		return (ft_handle_error(4, EXIT_COMMAND_NOT_FOUND, (char *)cmd_name,
+				NULL));
+	if (S_ISDIR(file_stat.st_mode))
+		return (ft_handle_error(3, EXIT_PERMISSION_DENIED, (char *)cmd_name,
+				NULL));
+	if (access(path, X_OK) == -1)
+		return (ft_handle_error(2, EXIT_PERMISSION_DENIED, (char *)cmd_name,
+				NULL));
+	return (0);
+}
+
+
+int	ft_exec_bin(t_cmd *cmd)
+{
+	char	*path;
+	int		ret;
+
+	if (!cmd)
+		return (1);
+	if (!cmd->argv)
+		return (0);
+	if (ft_clean_argv(cmd->argv) == 0)
+		return (0);
+	if (!ft_strchr(cmd->argv[0], '/') && !getenv("PATH"))
+		return (ft_handle_error(4, EXIT_COMMAND_NOT_FOUND, cmd->argv[0], NULL));
+	path = ft_get_cmd_path(cmd->argv[0]);
+	ret = ft_check_cmd_path(path, cmd->argv[0]);
+	if (ret)
+	{
+		free(path);
+		return (ret);
+	}
+	execve(path, cmd->argv, cmd->data->envp);
+	perror("minishell: execve");
+	free(path);
+	return (EXIT_FAILURE);
+}
+
+#include "../../minishell.h"
+
+
+int	ft_exec_builtin(t_cmd *cmd, t_data **data)
+{
+	if (ft_strcmp(cmd->argv[0], "echo") == 0)
+		return (ft_echo(*cmd));
+	if (ft_strcmp(cmd->argv[0], "cd") == 0)
+		return (ft_cd(cmd->argv, &(*data)->envp));
+	if (ft_strcmp(cmd->argv[0], "pwd") == 0)
+		return (ft_pwd(*cmd));
+	if (ft_strcmp(cmd->argv[0], "export") == 0)
+		return (ft_export(cmd->argv, &(*data)->envp));
+	if (ft_strcmp(cmd->argv[0], "unset") == 0)
+		return (ft_unset(cmd->argv, &(*data)->envp));
+	if (ft_strcmp(cmd->argv[0], "env") == 0)
+		return (ft_env(*cmd, (*data)->envp));
+	if (ft_strcmp(cmd->argv[0], "exit") == 0)
+		ft_exit(cmd);
+	return (-1);
+}
+
+#include "../../minishell.h"
+
+static int	ft_execute_single_builtin(t_cmd *current, t_data **data)
+{
+	if (ft_is_builtin(current) && current->infd == STDIN_FILENO
+		&& current->outfd == STDOUT_FILENO && !current->next
+		&& current->has_error == 0)
+	{
+		(*data)->last_exit_status = ft_exec_builtin(current, data);
+		return (1);
+	}
+	return (0);
+}
+
+static int	ft_fork_and_exec(t_cmd *current, t_cmd *cmd_list, t_data **data,
+		pid_t *pids)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		ft_setup_child_io(current, cmd_list);
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		if (current->has_error)
+			(*data)->last_exit_status = 1;
+		else if (ft_is_builtin(current))
+			(*data)->last_exit_status = ft_exec_builtin(current, data);
+		else
+			(*data)->last_exit_status = ft_exec_bin(current);
+		exit((*data)->last_exit_status);
+	}
+	else if (pid > 0)
+	{
+		pids[current->index] = pid;
+		if (current->infd != STDIN_FILENO)
+			close(current->infd);
+		if (current->outfd != STDOUT_FILENO)
+			close(current->outfd);
+		return (0);
+	}
+	else
+		return (perror("fork"), -1);
+}
+
+
+int	ft_execute_cmds(t_cmd *cmd_list, t_data **data)
+{
+	t_cmd	*current;
+	pid_t	*pids;
+
+	if (!cmd_list || !data || !*data)
+		return (-1);
+	pids = malloc(sizeof(pid_t) * (*data)->cmd_count);
+	if (!pids)
+		return (-1);
+	current = cmd_list;
+	while (current)
+	{
+		/* Debug: print command argv and fds */
+		if (current->argv)
+		{
+			int k = 0;
+			fprintf(stderr, "[DBG] cmd idx=%d infd=%d outfd=%d argv=", current->index, current->infd, current->outfd);
+			while (current->argv[k])
+			{
+				fprintf(stderr, "%s ", current->argv[k]);
+				k++;
+			}
+			fprintf(stderr, "\n");
+		}
+		if (ft_execute_single_builtin(current, data))
+		{
+			current = current->next;
+			continue ;
+		}
+		if (ft_fork_and_exec(current, cmd_list, data, pids) == -1)
+		{
+			ft_finish_execution(pids, cmd_list, *data);
+			return ((*data)->last_exit_status);
+		}
+		current = current->next;
+	}
+	ft_finish_execution(pids, cmd_list, *data);
+	return ((*data)->last_exit_status);
+}
+
+#include "../../minishell.h"
+
+static void	ft_free_cmd_list(t_cmd *cmd_list)
+{
+	t_cmd	*tmp;
+
+	while (cmd_list)
+	{
+		tmp = cmd_list->next;
+		ft_free_matrix(cmd_list->argv);
+		free(cmd_list);
+		cmd_list = tmp;
+	}
+}
+
+
+static void	ft_close_fds(t_cmd *cmd_list)
+{
+	t_cmd	*current;
+
+	current = cmd_list;
+	while (current)
+	{
+		if (current->infd != STDIN_FILENO)
+			close(current->infd);
+		if (current->outfd != STDOUT_FILENO)
+			close(current->outfd);
+		current = current->next;
+	}
+}
+
+
+static void	ft_wait_for_children(pid_t *pids, int cmd_count,
+		int *last_exit_status)
+{
+	int	i;
+	int	status;
+	int	executed_processes;
+
+	executed_processes = 0;
+	i = 0;
+	while (i < cmd_count)
+	{
+		if (pids[i] > 0)
+		{
+			waitpid(pids[i], &status, 0);
+			if (WIFEXITED(status))
+				*last_exit_status = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+			{
+				int sig = WTERMSIG(status);
+				*last_exit_status = 128 + sig;
+				if (sig == SIGQUIT)
+				{
+					if (WCOREDUMP(status))
+						dprintf(2, "Quit (core dumped)\n");
+					else
+						dprintf(2, "Quit\n");
+				}
+			}
+			executed_processes = 1;
+		}
+		i++;
+	}
+	if (!executed_processes)
+		*last_exit_status = *last_exit_status;
+}
+
+
+int	ft_finish_execution(pid_t *pids, t_cmd *cmd_list, t_data *data)
+{
+	int	last_exit_status;
+
+	last_exit_status = data->last_exit_status;
+	ft_close_fds(cmd_list);
+	ft_wait_for_children(pids, data->cmd_count, &last_exit_status);
+	data->last_exit_status = last_exit_status;
+	free(pids);
+	ft_free_cmd_list(cmd_list);
+	cmd_list = NULL;
+	return (last_exit_status);
+}
+
+#include "../../minishell.h"
+
+
+char	*ft_get_cmd_path(char *cmd)
+{
+	char	*temp;
+	char	**paths;
+	char	*path;
+	int		i;
+
+	if (ft_strchr(cmd, '/'))
+		return (ft_strdup(cmd));
+	paths = ft_split(getenv("PATH"), ':');
+	i = 0;
+	while (paths[i])
+	{
+		temp = ft_strjoin(paths[i], "/");
+		path = ft_strjoin(temp, cmd);
+		free(temp);
+		if (access(path, X_OK) == 0)
+		{
+			ft_free_matrix(paths);
+			return (path);
+		}
+		free(path);
+		i++;
+	}
+	ft_free_matrix(paths);
+	return (NULL);
+}
+
+#include "../../minishell.h"
+
+/**
+ * ENGLISH: Checks if the given command is a built-in shell command.
+ *
+ * SPANISH: Verifica si el comando dado es un comando interno del shell.
+ *
+ * @param current   The current command to check. /
+ *                  El comando actual a verificar.
+ *
+ * @returns 1 if the command is a built-in, 0 otherwise. /
+ *          1 si el comando es un built-in, 0 en caso contrario.
+ */
+int	ft_is_builtin(t_cmd *current)
+{
+	char	*cmd;
+
+	if (!current || !current->argv || !current->argv[0])
+		return (0);
+	cmd = current->argv[0];
+	if (ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "cd") == 0
+		|| ft_strcmp(cmd, "pwd") == 0 || ft_strcmp(cmd, "export") == 0
+		|| ft_strcmp(cmd, "unset") == 0 || ft_strcmp(cmd, "exit") == 0)
+		return (1);
+	return (0);
+}
+
+#include "../../minishell.h"
+
+
+void	ft_setup_child_io(t_cmd *current, t_cmd *cmd_list)
+{
+	t_cmd	*cmd;
+
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGPIPE, SIG_DFL);
+	if (current->infd != STDIN_FILENO)
+		dup2(current->infd, STDIN_FILENO);
+	if (current->outfd != STDOUT_FILENO)
+		dup2(current->outfd, STDOUT_FILENO);
+	cmd = cmd_list;
+	while (cmd)
+	{
+		if (cmd != current)
+		{
+			if (cmd->infd != STDIN_FILENO && cmd->infd != current->infd
+				&& cmd->infd != current->outfd)
+				close(cmd->infd);
+			if (cmd->outfd != STDOUT_FILENO && cmd->outfd != current->infd
+				&& cmd->outfd != current->outfd)
+				close(cmd->outfd);
+		}
+		cmd = cmd->next;
+	}
+}
+
+#include "../../../minishell.h"
+
+t_cmd	*ft_create_cmd_node(int index)
+{
+	t_cmd	*new_cmd;
+
+	new_cmd = malloc(sizeof(t_cmd));
+	if (!new_cmd)
+		return (NULL);
+	new_cmd->argv = NULL;
+	new_cmd->infd = STDIN_FILENO;
+	new_cmd->outfd = STDOUT_FILENO;
+	new_cmd->has_error = 0;
+	new_cmd->index = index;
+	new_cmd->next = NULL;
+	return (new_cmd);
+}
+
+void	ft_add_arg_to_cmd(t_cmd *cmd, char *arg)
+{
+	int		count;
+	char	**new_argv;
+
+	if (!cmd->argv)
+	{
+		cmd->argv = malloc(2 * sizeof(char *));
+		if (!cmd->argv)
+			return ;
+		cmd->argv[0] = arg;
+		cmd->argv[1] = NULL;
+		return ;
+	}
+	count = ft_count_arg(cmd->argv);
+	new_argv = malloc((count + 2) * sizeof(char *));
+	if (!new_argv)
+		return ;
+	ft_copy_args(cmd->argv, new_argv);
+	new_argv[count] = arg;
+	new_argv[count + 1] = NULL;
+	free(cmd->argv);
+	cmd->argv = new_argv;
+}
+
+#include "../../../minishell.h"
+
+int	ft_process_pipe(t_cmd **current_cmd, int *cmd_index, t_data *data)
+{
+	int		pipefd[2];
+	t_cmd	*new_cmd;
+
+	if (pipe(pipefd) == -1)
+		return (-1);
+	new_cmd = ft_create_cmd_node(*cmd_index + 1);
+	if (!new_cmd)
+		return (-1);
+	(*cmd_index)++;
+	(*current_cmd)->next = new_cmd;
+	new_cmd->data = data;
+	if ((*current_cmd)->outfd == STDOUT_FILENO)
+		(*current_cmd)->outfd = pipefd[1];
+	else
+		close(pipefd[1]);
+	new_cmd->infd = pipefd[0];
+	*current_cmd = new_cmd;
+	return (0);
+}
+
+#include "../../../minishell.h"
+
+
+int	ft_process_token(t_cmd **current_cmd, char **argv, int i, int *cmd_index)
+{
+	char	*clean_arg;
+
+	if (!argv[i])
+		return (i);
+	fprintf(stderr, "[TOKEN] processing index %d token='%s'\n", i, argv[i]);
+	if (ft_strcmp(argv[i], "|") == 0)
+		return (ft_process_pipe(current_cmd, cmd_index, (*current_cmd)->data),
+			i);
+	else if (!ft_strcmp(argv[i], "<") || !ft_strcmp(argv[i], ">")
+		|| !ft_strcmp(argv[i], ">>") || !ft_strcmp(argv[i], "<<"))
+		return (ft_redir(*current_cmd, argv, i));
+	else
+	{
+		clean_arg = ft_remove_quotes(argv[i]);
+		fprintf(stderr, "[TOKEN] clean_arg='%s'\n", clean_arg ? clean_arg : "(null)");
+		if (!clean_arg)
+			return (i);
+		ft_add_arg_to_cmd(*current_cmd, clean_arg);
+		return (i);
+	}
+}
+
+#include "../../../minishell.h"
+
+
+int	ft_assign_fd(t_cmd **cmd, char *filename, char *type)
+{
+	int	fd;
+
+	fd = -1;
+	if (ft_strcmp(type, "<") == 0)
+		fd = ft_handle_infile(filename);
+	else if (!ft_strcmp(type, ">") || !ft_strcmp(type, ">>"))
+		fd = ft_handle_outfile(filename, 0 + (ft_strcmp(type, ">>") == 0));
+	else if (ft_strcmp(type, "<<") == 0)
+		fd = ft_heredoc(filename, (*cmd)->data, 1);
+	if (fd == -1)
+		return (-1);
+	if (ft_strcmp(type, "<") == 0 || ft_strcmp(type, "<<") == 0)
+	{
+		if ((*cmd)->infd != STDIN_FILENO)
+			close((*cmd)->infd);
+		(*cmd)->infd = fd;
+	}
+	else
+	{
+		if ((*cmd)->outfd != STDOUT_FILENO)
+			close((*cmd)->outfd);
+		(*cmd)->outfd = fd;
+	}
+	return (fd);
+}
+
+
+int	ft_redir(t_cmd *cmd, char **argv, int i)
+{
+	char	*clean_arg;
+
+	clean_arg = ft_remove_quotes(argv[i + 1]);
+	if (!clean_arg)
+		clean_arg = argv[i + 1];
+	/* If a previous redirection set has_error, avoid trying to open files
+	   for normal redirections (>, >>, <). Still process heredoc (<<). This
+	   ensures we consume the filename token but don't emit duplicate errors. */
+	if (cmd->has_error == 1 && ft_strcmp(argv[i], "<<") != 0)
+	{
+		if (clean_arg != argv[i + 1])
+			free(clean_arg);
+		return (i + 1);
+	}
+	if (ft_assign_fd(&cmd, clean_arg, argv[i]) == -1)
+	{
+		cmd->data->last_exit_status = 1;
+		cmd->has_error = 1;
+	}
+	if (clean_arg != argv[i + 1])
+		free(clean_arg);
+	return (i + 1);
+}
+
+#include "../../../minishell.h"
+
+static int	has_closing_quote(const char *s, char quote)
+{
+	while (*s)
+	{
+		if (*s == quote)
+			return (1);
+		s++;
+	}
+	return (0);
+}
+
+static int	ft_calc_unquoted_len(const char *str)
+{
+	int		i;
+	int		len;
+	char	q;
+
+	i = 0;
+	len = 0;
+	while (str[i])
+	{
+		if ((str[i] == '\'' || str[i] == '"') && has_closing_quote(str + i + 1,
+				str[i]))
+		{
+			q = str[i++];
+			while (str[i] && str[i] != q)
+			{
+				len++;
+				i++;
+			}
+			if (str[i] == q)
+				i++;
+		}
+		else
+		{
+			len++;
+			i++;
+		}
+	}
+	return (len);
+}
+
+char	*ft_remove_quotes(const char *str)
+{
+	int		i;
+	int		j;
+	int		unlen;
+	char	*q;
+	char	*res;
+
+	if (!str)
+		return (NULL);
+	unlen = ft_calc_unquoted_len(str);
+	res = malloc((size_t)unlen + 1);
+	if (!res)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if ((str[i] == '\'' || str[i] == '"') && has_closing_quote(str + i + 1,
+				str[i]))
+		{
+			q = (char *)&str[i];
+			i++; /* saltar comilla de apertura */
+			while (str[i] && str[i] != *q)
+				res[j++] = str[i++];
+			if (str[i] == *q)
+				i++; /* saltar comilla de cierre */
+		}
+		else
+			res[j++] = str[i++];
+	}
+	res[j] = '\0';
+	return (res);
+}

@@ -12,6 +12,7 @@
 
 #include "../../minishell_bonus.h"
 #include <stdio.h>
+#include <termios.h>
 
 /**
  * ENGLISH: Processes a single line read from stdin for the heredoc.
@@ -38,10 +39,11 @@
  *          caso contrario.
  */
 static int	ft_process_heredoc_line(int write_fd, char *line,
-		const char *delimiter)
+		const char *delimiter, t_data *data, int expand)
 {
 	char	*cmp;
 	size_t	nread;
+	char	*expanded;
 
 	nread = ft_strlen(line);
 	if (nread > 0 && line[nread - 1] == '\n')
@@ -55,10 +57,6 @@ static int	ft_process_heredoc_line(int write_fd, char *line,
 	}
 	if (ft_strcmp(cmp, delimiter) == 0)
 	{
-		/* DEBUG: print the read line and delimiter to stderr (temporary) */
-		fprintf(stderr, "[HEREDOC DEBUG] cmp='%s' (len=%zu) delimiter='%s'\n",
-			cmp, nread > 0 && line[nread - 1] == '\n' ? nread - 1 : nread,
-			delimiter);
 		free(cmp);
 		free(line);
 		return (1);
@@ -66,7 +64,22 @@ static int	ft_process_heredoc_line(int write_fd, char *line,
 	free(cmp);
 	/* ft_get_next_line returns the line including the trailing '\n' when present,
 		so write the buffer as-is and do not append an extra newline. */
-	write(write_fd, line, nread);
+	if (expand)
+	{
+		expanded = NULL;
+		if (!ft_process_arg(&expanded, line, data))
+		{
+			free(line);
+			return (-1);
+		}
+		if (expanded)
+		{
+			write(write_fd, expanded, ft_strlen(expanded));
+			free(expanded);
+		}
+	}
+	else
+		write(write_fd, line, nread);
 	free(line);
 	return (0);
 }
@@ -89,19 +102,23 @@ static int	ft_process_heredoc_line(int write_fd, char *line,
  * @returns 0 on success. /
  *          0 en caso de éxito.
  */
-static int	ft_read_heredoc_loop(int write_fd, const char *delimiter)
+static int	ft_read_heredoc_loop(int write_fd, const char *delimiter,
+	t_data *data, int expand)
 {
-	char	*line;
-	int		ret;
+    char	*line;
+    int		ret;
 
+	/* Always use ft_get_next_line for heredoc input to avoid readline
+	   state conflicts. Print the heredoc prompt manually when running in a
+	   tty so the user sees a prompt. */
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
-			write(1, HEREDOC_PROMPT, 9);
+			write(1, HEREDOC_PROMPT, ft_strlen(HEREDOC_PROMPT));
 		line = ft_get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;
-		ret = ft_process_heredoc_line(write_fd, line, delimiter);
+		ret = ft_process_heredoc_line(write_fd, line, delimiter, data, expand);
 		if (ret == 1)
 			break ;
 	}
@@ -126,14 +143,56 @@ static int	ft_read_heredoc_loop(int write_fd, const char *delimiter)
  *          fallo.
  */
 
-int	ft_heredoc(const char *delimiter)
+int	ft_heredoc(const char *delimiter, t_data *data, int expand)
 {
-	int	pipefd[2];
+	int		pipefd[2];
+	pid_t	pid;
+	int		status;
 
 	if (pipe(pipefd) == -1)
 		return (-1);
-	ft_read_heredoc_loop(pipefd[1], delimiter);
+	if (data && data->isatty)
+	{
+		struct termios orig_term;
+		if (tcgetattr(STDIN_FILENO, &orig_term) == -1)
+			;
+		signal(SIGINT, SIG_IGN);
+		pid = fork();
+		if (pid < 0)
+		{
+			close(pipefd[0]);
+			close(pipefd[1]);
+			return (-1);
+		}
+		if (pid == 0)
+		{
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
+			close(pipefd[0]);
+			ft_read_heredoc_loop(pipefd[1], delimiter, data, expand);
+			close(pipefd[1]);
+			exit(0);
+		}
+		close(pipefd[1]);
+		if (waitpid(pid, &status, 0) == -1)
+		{
+			close(pipefd[0]);
+			return (-1);
+		}
+		/* restore parent handler and terminal state */
+		signal(SIGINT, sigint_handler);
+		tcsetattr(STDIN_FILENO, TCSANOW, &orig_term);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		{
+			close(pipefd[0]);
+			write(1, "\n", 1);
+			return (-2);
+		}
+		return (pipefd[0]);
+	}
+	ft_read_heredoc_loop(pipefd[1], delimiter, data, expand);
 	close(pipefd[1]);
-	fprintf(stderr, "[HEREDOC DEBUG] finished, returning fd=%d\n", pipefd[0]);
 	return (pipefd[0]);
 }

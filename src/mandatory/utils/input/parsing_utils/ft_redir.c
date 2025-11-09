@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_redir.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:51:26 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/28 16:21:08 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/09 12:20:59 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	ft_assign_fd(t_cmd **cmd, char *filename, char *type)
 	else if (!ft_strcmp(type, ">") || !ft_strcmp(type, ">>"))
 		fd = ft_handle_outfile(filename, 0 + (ft_strcmp(type, ">>") == 0));
 	else if (ft_strcmp(type, "<<") == 0)
-		return (ft_heredoc(filename));
+		fd = ft_heredoc(filename, (*cmd)->data, 1);
 	if (fd == -1)
 		return (-1);
 	if (ft_strcmp(type, "<") == 0 || ft_strcmp(type, "<<") == 0)
@@ -77,15 +77,27 @@ int	ft_redir(t_cmd *cmd, char **argv, int i)
 	clean_arg = ft_remove_quotes(argv[i + 1]);
 	if (!clean_arg)
 		clean_arg = argv[i + 1];
-	if (ft_assign_fd(&cmd, clean_arg, argv[i]) == -1)
+	/* If a previous redirection set has_error, avoid trying to open files
+	   for normal redirections (>, >>, <). Still process heredoc (<<). This
+	   ensures we consume the filename token but don't emit duplicate errors. */
+	if (cmd->has_error == 1 && ft_strcmp(argv[i], "<<") != 0)
+	{
+		if (clean_arg != argv[i + 1])
+			free(clean_arg);
+		return (i + 1);
+	}
+	int fd_ret = ft_assign_fd(&cmd, clean_arg, argv[i]);
+	if (fd_ret == -2)
+	{
+		/* heredoc was aborted by SIGINT: signal parser to abort input */
+		if (clean_arg != argv[i + 1])
+			free(clean_arg);
+		return (-1);
+	}
+	if (fd_ret == -1)
 	{
 		cmd->data->last_exit_status = 1;
 		cmd->has_error = 1;
-	}
-	else if (!ft_strcmp(argv[i], "<<"))
-	{
-		fprintf(stderr, "[HEREDOC DEBUG] assigned infile fd=%d for cmd idx=%d\n",
-			cmd->infd, cmd->index);
 	}
 	if (clean_arg != argv[i + 1])
 		free(clean_arg);

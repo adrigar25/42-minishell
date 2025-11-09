@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:59:15 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/03 16:23:12 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/09 01:54:18 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,12 +312,13 @@ int					ft_export(char **args, char ***envp);
 int					ft_unset(char **args, char ***envp);
 int					ft_env(t_cmd cmd, char **envp);
 int					ft_exit(t_cmd *cmd);
+int					ft_heredoc(const char *delimiter, t_data *data, int expand);
 
 // Utils
 int					ft_is_dot_or_dotdot(const char *name);
 
 // Heredoc
-int					ft_heredoc(const char *delimiter);
+// int					ft_heredoc(const char *delimiter);
 // Error handling
 int					ft_handle_error(int error_code, int exit_code, char *msg,
 						char *msg2);

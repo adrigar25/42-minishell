@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:55:03 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/08 23:32:26 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/09 12:20:55 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,8 @@ int	ft_process_token(t_cmd **current_cmd, char **argv, int i, int *cmd_index)
 		ft_process_op(current_cmd, argv[i], cmd_index, (*current_cmd)->data);
 		return (i);
 	}
-	else if ((!ft_strcmp(argv[i], "<") || !ft_strcmp(argv[i], ">")
-			|| !ft_strcmp(argv[i], ">>") || !ft_strcmp(argv[i], "<<"))
-		&& (*current_cmd)->has_error == 0)
+	else if (!ft_strcmp(argv[i], "<") || !ft_strcmp(argv[i], ">")
+		|| !ft_strcmp(argv[i], ">>") || !ft_strcmp(argv[i], "<<"))
 		return (ft_redir(*current_cmd, argv, i));
 	else
 	{
