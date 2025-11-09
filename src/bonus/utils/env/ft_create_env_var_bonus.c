@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_create_env_var.c                                :+:      :+:    :+:   */
+/*   ft_create_env_var_bonus.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 15:42:56 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/08 02:10:03 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/09 14:11:02 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 /**
 
-	* ENGLISH: Creates a new environment variable string in the format "NAME=VALUE".
+	* ENGLISH: 	Creates a new environment variable string
+				in the format "NAME=VALUE".
  *
  * SPANISH: Crea una nueva cadena de variable de entorno en el formato
  * 			"NOMBRE=VALOR".

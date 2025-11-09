@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 00:32:13 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/09 01:32:39 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/09 14:10:01 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ static int	ft_fork_cmd(t_cmd *cmd, t_cmd *cmd_list, t_data **data, pid_t *pids)
 	if (pid == 0)
 	{
 		ft_setup_child_io(cmd, cmd_list);
-		/* restore default signal handlers so child responds to Ctrl-C and Ctrl-\\ */
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		if (cmd->has_error)
@@ -181,14 +180,12 @@ int	ft_execute_cmds(t_cmd *cmd_list, t_data **data)
 
 	if (!cmd_list || !data || !*data)
 		return (-1);
-	/* Use calloc so unused slots are zero; ft_wait_last checks pids[idx] > 0 */
 	pids = calloc((*data)->cmd_count, sizeof(pid_t));
 	if (!pids)
 		return (-1);
 	cmd = cmd_list;
 	while (cmd)
 	{
-		/* Do not mutate SHLVL here; each shell instance updates SHLVL on init */
 		if (ft_exec_cmd(cmd, cmd_list, data, pids) == -1)
 			return (ft_finish_execution(pids, cmd_list, *data));
 		if (!cmd->next || cmd->next->op != OP_PIPE)

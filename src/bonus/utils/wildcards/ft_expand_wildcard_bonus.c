@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expand_wildcard_bonus.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 01:42:17 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/29 18:30:17 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/09 14:14:54 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,77 @@ int	ft_expand_wildcard(const char *pattern, char **matches, int max_matches)
 	DIR				*dir;
 	struct dirent	*entry;
 	int				count;
+	char			*dirpath;
+	const char		*base_pattern;
+	size_t			plen;
+	const char		*slash = NULL;
+	char			*tmp;
 
-	dir = opendir(".");
-	if (!dir)
+	if (!pattern)
 		return (0);
+	{
+		plen = ft_strlen(pattern);
+		while (plen > 0)
+		{
+			if (pattern[plen - 1] == '/')
+			{
+				slash = pattern + (plen - 1);
+				break ;
+			}
+			plen--;
+		}
+		if (slash)
+		{
+			dirpath = ft_substr((char *)pattern, 0, (size_t)(slash - pattern));
+			base_pattern = slash + 1;
+		}
+		else
+		{
+			dirpath = ft_strdup(".");
+			base_pattern = pattern;
+		}
+	}
+	dir = opendir(dirpath);
+	if (!dir)
+	{
+		free(dirpath);
+		return (0);
+	}
 	count = 0;
 	entry = readdir(dir);
 	while (entry && count < max_matches)
 	{
-		/* Skip hidden files unless the pattern explicitly starts with '.' */
-		if ((entry->d_name[0] != '.' || (pattern && pattern[0] == '.'))
-			&& ft_match_pattern(pattern, entry->d_name))
+		if ((entry->d_name[0] != '.' || (base_pattern
+					&& base_pattern[0] == '.'))
+			&& ft_match_pattern(base_pattern, entry->d_name))
 		{
-			matches[count] = ft_strdup(entry->d_name);
+			if (ft_strcmp(dirpath, ".") == 0)
+				matches[count] = ft_strdup(entry->d_name);
+			else
+			{
+				matches[count] = ft_strjoin(dirpath, "/");
+				if (!matches[count])
+				{
+					closedir(dir);
+					free(dirpath);
+					return (count);
+				}
+				{
+					tmp = matches[count];
+					matches[count] = ft_strjoin(tmp, entry->d_name);
+					free(tmp);
+					if (!matches[count])
+					{
+						closedir(dir);
+						free(dirpath);
+						return (count);
+					}
+				}
+			}
 			if (!matches[count])
 			{
 				closedir(dir);
+				free(dirpath);
 				return (count);
 			}
 			count++;
@@ -62,5 +117,6 @@ int	ft_expand_wildcard(const char *pattern, char **matches, int max_matches)
 		entry = readdir(dir);
 	}
 	closedir(dir);
+	free(dirpath);
 	return (count);
 }

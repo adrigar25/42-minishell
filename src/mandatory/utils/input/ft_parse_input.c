@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 18:57:27 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/09 13:50:43 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/09 14:06:27 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 	int		j;
 	int		ret;
 	t_cmd	*tmp;
-	t_cmd	*tmp;
 
 	if (!argv || data->argc == 0)
 		return (NULL);
@@ -56,7 +55,6 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 	i = 0;
 	while (i < data->argc)
 	{
-		// Pre-scan heredocs
 		end = i;
 		while (end < data->argc && argv[end] && ft_strcmp(argv[end], "|") != 0)
 			end++;
@@ -65,14 +63,9 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 		{
 			if (argv[j] && ft_strcmp(argv[j], "<<") == 0 && argv[j + 1])
 			{
-				/* Process heredoc in pre-scan. If ft_redir returns
-					-1 it means the
-					heredoc was aborted (SIGINT) and we must abort parsing and return
-					NULL so the caller drops the whole input line (single Ctrl+C). */
 				ret = ft_redir(current_cmd, argv, j);
 				if (ret == -1)
 				{
-					/* free partially built command list */
 					while (cmd_list)
 					{
 						tmp = cmd_list->next;
@@ -96,8 +89,6 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 		new_i = ft_process_token(&current_cmd, argv, i, &cmd_index);
 		if (new_i == -1)
 		{
-			/* heredoc aborted via Ctrl+C: free partially built command list and
-				return NULL so the caller (ft_process_input) will drop the line. */
 			while (cmd_list)
 			{
 				tmp = cmd_list->next;

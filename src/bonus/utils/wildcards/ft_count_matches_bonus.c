@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_count_matches_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 01:42:19 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/29 18:30:17 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/09 14:12:48 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,52 @@ int	ft_count_matches(const char *pattern)
 	DIR				*dir;
 	struct dirent	*entry;
 	int				count;
+	char			*dirpath;
+	const char		*base_pattern;
+	size_t			plen;
+	const char		*slash = NULL;
 
 	count = 0;
-	dir = opendir(".");
-	if (!dir)
+	if (!pattern)
 		return (0);
+	{
+		plen = ft_strlen(pattern);
+		while (plen > 0)
+		{
+			if (pattern[plen - 1] == '/')
+			{
+				slash = pattern + (plen - 1);
+				break ;
+			}
+			plen--;
+		}
+		if (slash)
+		{
+			dirpath = ft_substr((char *)pattern, 0, (size_t)(slash - pattern));
+			base_pattern = slash + 1;
+		}
+		else
+		{
+			dirpath = ft_strdup(".");
+			base_pattern = pattern;
+		}
+	}
+	dir = opendir(dirpath);
+	if (!dir)
+	{
+		free(dirpath);
+		return (0);
+	}
 	entry = readdir(dir);
 	while (entry != NULL)
 	{
-		/* Count hidden files only if pattern begins with '.' */
-		if ((entry->d_name[0] != '.' || (pattern && pattern[0] == '.'))
-			&& ft_match_pattern(pattern, entry->d_name))
+		if ((entry->d_name[0] != '.' || (base_pattern
+					&& base_pattern[0] == '.'))
+			&& ft_match_pattern(base_pattern, entry->d_name))
 			count++;
 		entry = readdir(dir);
 	}
 	closedir(dir);
+	free(dirpath);
 	return (count);
 }

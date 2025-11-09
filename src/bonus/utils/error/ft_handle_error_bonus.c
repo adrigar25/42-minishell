@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 16:27:37 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/30 00:51:40 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/09 14:05:25 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,12 @@ static void	print_redir_errors(int code, char *msg)
  */
 int	ft_handle_error(int error_code, int exit_code, char *msg, char *msg2)
 {
-	/* 1-4: ejecución */
 	if (error_code >= 1 && error_code <= 4)
 		print_exec_errors(error_code, msg);
-	/* 5-6: sintaxis */
 	else if (error_code >= 5 && error_code <= 6)
 		print_syntax_errors(error_code, msg);
-	/* 9,10,12: redirecciones (heredoc y ambiguous) */
 	else if (error_code == 9 || error_code == 10 || error_code == 12)
 		print_redir_errors(error_code, msg);
-	/* 7,8,11,13,14: builtins/env */
 	else if (error_code == 7 || error_code == 8 || error_code == 11
 		|| error_code == 13 || error_code == 14)
 		print_builtin_env_errors(error_code, msg, msg2);

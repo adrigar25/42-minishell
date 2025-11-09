@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_update_pwd_env_bonus.c                           :+:      :+:    :+:   */
+/*   ft_update_pwd_env_bonus.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/22 13:00:34 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/08 02:10:24 by agarcia          ###   ########.fr       */
+/*   Created: 2025/11/09 14:11:33 by agarcia           #+#    #+#             */
+/*   Updated: 2025/11/09 14:18:55 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ static char	*ft_normalize_path(const char *path)
 	parts = ft_split(path, '/');
 	if (!parts)
 		return (ft_strdup("/"));
-	/* allocate stack with same size as parts */
 	i = 0;
 	while (parts[i])
 		i++;
@@ -66,7 +65,8 @@ static char	*ft_normalize_path(const char *path)
 	{
 		if (ft_strcmp(parts[i], ".") == 0)
 		{
-			/* skip */
+			i++;
+			continue ;
 		}
 		else if (ft_strcmp(parts[i], "..") == 0)
 		{
@@ -82,7 +82,6 @@ static char	*ft_normalize_path(const char *path)
 		}
 		i++;
 	}
-	/* build result */
 	if (top == 0)
 	{
 		res = ft_strdup("/");
@@ -90,15 +89,16 @@ static char	*ft_normalize_path(const char *path)
 	else
 	{
 		res = ft_strdup("");
-		for (i = 0; i < top; i++)
+		i = 0;
+		while (i < top)
 		{
 			tmp = ft_strjoin(res, "/");
 			free(res);
 			res = ft_strjoin(tmp, stack[i]);
 			free(tmp);
+			i++;
 		}
 	}
-	/* cleanup */
 	i = 0;
 	while (i < top)
 	{
@@ -117,9 +117,6 @@ void	ft_update_pwd_env(char *oldpwd, char *target_dir, char ***envp)
 	char	*tmp;
 	char	buf[4096];
 
-	/* Prefer logical PWD update: if target_dir is absolute, normalize it;
-		if relative and oldpwd is present and absolute, join oldpwd + target_dir
-		and normalize. Fallback to getcwd() if anything fails. */
 	newpwd = NULL;
 	if (target_dir && target_dir[0] == '/')
 	{
@@ -130,7 +127,10 @@ void	ft_update_pwd_env(char *oldpwd, char *target_dir, char ***envp)
 		joined = ft_strjoin(oldpwd, "/");
 		if (joined)
 		{
-			tmp = ft_strjoin(joined, target_dir ? target_dir : "");
+			if (target_dir)
+				tmp = ft_strjoin(joined, target_dir);
+			else
+				tmp = ft_strdup(joined);
 			free(joined);
 			if (tmp)
 			{
@@ -141,11 +141,15 @@ void	ft_update_pwd_env(char *oldpwd, char *target_dir, char ***envp)
 	}
 	if (!newpwd)
 	{
-		/* Fallback: use getcwd to obtain a physical path */
 		if (getcwd(buf, sizeof(buf)))
 			newpwd = ft_strdup(buf);
 		else
-			newpwd = target_dir ? ft_strdup(target_dir) : ft_strdup("/");
+		{
+			if (target_dir)
+				newpwd = ft_strdup(target_dir);
+			else
+				newpwd = ft_strdup("/");
+		}
 	}
 	if (oldpwd)
 		ft_setenv("OLDPWD", oldpwd, envp);

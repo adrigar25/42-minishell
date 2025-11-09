@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:55:03 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/09 12:20:55 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/09 14:12:04 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,6 @@ int	ft_process_token(t_cmd **current_cmd, char **argv, int i, int *cmd_index)
 	if (!ft_strcmp(argv[i], "|") || !ft_strcmp(argv[i], "||")
 		|| !ft_strcmp(argv[i], "&&") || !ft_strcmp(argv[i], "&"))
 	{
-		/*
-		** The mandatory version returns the current index after processing
-		** an operator so the caller increments by one. Returning i+1 here
-		** caused the outer loop to skip the token following the operator
-		** (it did i = new_i + 1). To keep consistent behavior, return i.
-		*/
 		ft_process_op(current_cmd, argv[i], cmd_index, (*current_cmd)->data);
 		return (i);
 	}

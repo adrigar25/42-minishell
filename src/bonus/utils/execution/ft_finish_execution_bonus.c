@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/08 23:32:26 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/09 14:06:39 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,6 @@ static void	ft_wait_for_children(pid_t *pids, int cmd_count,
 	int	executed_processes;
 	int	already_waited;
 
-	/* If ft_wait_last already waited some specific child PIDs it will set
-	** their slots to 0. In that case we must not overwrite the last exit
-	** status previously recorded for the last command in a pipeline. We
-	** detect that by checking for any zeroed entries before waiting. */
-	executed_processes = 0;
 	already_waited = 0;
 	i = 0;
 	while (i < cmd_count)

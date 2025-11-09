@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/08 02:11:59 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/09 14:13:28 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@
  */
 int	ft_handle_quoted_arg(char *arg, int *start, int *end)
 {
-	/* After parsing and quote removal, arguments should be printed as-is.
-		Do not remove surrounding characters that may be literal quotes. */
 	(void)arg;
 	*start = 0;
 	*end = ft_strlen(arg);
@@ -142,7 +140,6 @@ int	ft_echo(t_cmd cmd)
 		return (1);
 	n_flag = 0;
 	start_index = 1;
-	/* accept multiple -n flags (e.g. -n -nn -nnn) */
 	while (cmd.argv[start_index] && cmd.argv[start_index][0] == '-')
 	{
 		j = 1;

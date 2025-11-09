@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:51:26 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/09 13:50:42 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/09 14:19:42 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,20 +134,11 @@ int	ft_redir(t_cmd *cmd, char **argv, int i)
 	{
 		cmd->data->last_exit_status = ft_handle_error(12, 1, argv[i + 1], NULL);
 		cmd->has_error = 1;
-		/*
-		** Match the mandatory version's return convention: return the index
-		** of the filename token (i + 1). The outer loop will advance to
-		** the token after that (i + 2). Returning i + 2 here caused the
-		** parser to skip the token that follows the redirection filename.
-		*/
 		return (i + 1);
 	}
 	redir = ft_remove_quotes(argv[i + 1]);
 	if (!redir)
 		redir = argv[i + 1];
-	/* If a previous redirection set has_error, avoid trying to open files
-		for normal redirections (>, >>, <). Still process heredoc (<<). This
-		ensures we consume the filename token but don't emit duplicate errors. */
 	if (cmd->has_error == 1 && ft_strcmp(argv[i], "<<") != 0)
 	{
 		if (redir != argv[i + 1])
@@ -159,7 +150,7 @@ int	ft_redir(t_cmd *cmd, char **argv, int i)
 	{
 		if (redir != argv[i + 1])
 			free(redir);
-		return (i + 1 == 0 ? -1 : -1);
+		return (-1);
 	}
 	if (fd_ret == -1)
 	{
@@ -168,9 +159,5 @@ int	ft_redir(t_cmd *cmd, char **argv, int i)
 	}
 	if (redir != argv[i + 1])
 		free(redir);
-	/*
-	** Return the index of the filename token so the caller's loop will
-	** advance to the next token after the filename. See comment above.
-	*/
 	return (i + 1);
 }

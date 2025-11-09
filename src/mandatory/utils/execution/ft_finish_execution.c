@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_finish_execution.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/03 16:29:03 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/09 14:02:58 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ static void	ft_wait_for_children(pid_t *pids, int cmd_count,
 	int	i;
 	int	status;
 	int	executed_processes;
+	int	sig;
 
 	executed_processes = 0;
 	i = 0;
@@ -90,7 +91,7 @@ static void	ft_wait_for_children(pid_t *pids, int cmd_count,
 				*last_exit_status = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
 			{
-				int sig = WTERMSIG(status);
+				sig = WTERMSIG(status);
 				*last_exit_status = 128 + sig;
 				if (sig == SIGQUIT)
 				{

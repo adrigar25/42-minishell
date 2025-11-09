@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/30 01:25:21 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/09 14:15:12 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@
  */
 static int	ft_init_data(t_data **data, char **envp)
 {
-		char *val;
-		int lvl;
-		char *newlvl;
+	char	*val;
+	int		lvl;
+	char	*newlvl;
 
 	*data = malloc(sizeof(t_data));
 	if (!*data)
@@ -44,7 +44,6 @@ static int	ft_init_data(t_data **data, char **envp)
 		return (1);
 	}
 	(*data)->isatty = isatty(STDIN_FILENO);
-	/* Update SHLVL for this shell instance */
 	{
 		val = ft_getenv("SHLVL", (*data)->envp);
 		if (val && ft_is_number(val))

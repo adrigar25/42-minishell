@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/07 15:46:20 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/09 14:05:39 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static void	ft_cleanup(t_data *data)
 			ft_free_matrix(data->envp);
 		free(data);
 	}
-	/* Readline history (safe to call even if not interactive) */
 	clear_history();
 	rl_clear_history();
 }
@@ -62,7 +61,6 @@ static int	ft_init_data(t_data **data, char **envp)
 		return (1);
 	}
 	(*data)->isatty = isatty(STDIN_FILENO);
-	/* Update SHLVL for this shell instance */
 	{
 		val = ft_getenv("SHLVL", (*data)->envp);
 		if (val && ft_is_number(val))

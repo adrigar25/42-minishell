@@ -143,10 +143,10 @@ static int	ft_read_heredoc_loop(int write_fd, const char *delimiter,
 
 int	ft_heredoc(const char *delimiter, t_data *data, int expand)
 {
-	int		pipefd[2];
-	pid_t	pid;
-	int		status;
-		struct termios orig_term;
+	int				pipefd[2];
+	pid_t			pid;
+	int				status;
+	struct termios	orig_term;
 
 	if (pipe(pipefd) == -1)
 		return (-1);

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/06 17:41:51 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/09 14:28:15 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,28 +42,23 @@ int	ft_pwd(t_cmd cmd)
 		if (!output)
 			return (1);
 		ft_strcpy(output, pwd_env);
-		output[len] = '\n';
-		output[len + 1] = '\0';
-		write(cmd.outfd, output, len + 1);
-		free(output);
-		return (0);
 	}
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
+	else if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
 		len = ft_strlen(cwd);
 		output = malloc(len + 2);
 		if (!output)
 			return (1);
 		ft_strcpy(output, cwd);
-		output[len] = '\n';
-		output[len + 1] = '\0';
-		write(cmd.outfd, output, len + 1);
-		free(output);
-		return (0);
 	}
 	else
 	{
 		perror("minishell: pwd");
 		return (1);
 	}
+	output[len] = '\n';
+	output[len + 1] = '\0';
+	write(cmd.outfd, output, len + 1);
+	free(output);
+	return (0);
 }

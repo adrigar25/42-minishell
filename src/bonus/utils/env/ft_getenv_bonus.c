@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_getenv.c                                        :+:      :+:    :+:   */
+/*   ft_getenv_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 10:26:32 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/08 02:10:07 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/09 14:10:44 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ char	*ft_getenv(const char *name, char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		/* match exacto: name seguido de '=' */
 		if (ft_strncmp(envp[i], name, len) == 0 && envp[i][len] == '=')
 			return (&envp[i][len + 1]);
 		i++;

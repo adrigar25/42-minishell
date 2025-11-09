@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_handle_wildcards_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 00:36:44 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/29 18:22:16 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/09 14:23:03 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,10 @@ static int	is_prev_redir(char **a, int idx)
  *          from the current directory, while preserving heredoc delimiters.
  *
  * SPANISH: Maneja la expansión de comodines en el arreglo de argumentos dado.
- *          Expande los argumentos que contienen comodines en nombres de archivos
- *          coincidentes del directorio actual, preservando los delimitadores
- *          heredoc.
+ *
+ *          Expande los argumentos que contienen comodines en
+ * 			nombres de archivos coincidentes del directorio actual,
+ * 			preservando los delimitadores heredoc.
  *
  * @param argv  The original argument array. /
  *              El arreglo de argumentos original.
@@ -80,8 +81,9 @@ static int	count_total_args(char **argv)
  * ENGLISH: Copies the heredoc delimiter argument to the new argument array
  *          without expanding it.
  *
- * SPANISH: Copia el argumento delimitador heredoc al nuevo arreglo de argumentos
- *          sin expandirlo.
+
+	* SPANISH: 	Copia el argumento delimitador heredoc al
+				nuevo arreglo de argumentos sin expandirlo.
  *
  * @param argv      The original argument array. /
  *                  El arreglo de argumentos original.
@@ -92,7 +94,8 @@ static int	count_total_args(char **argv)
  * @param i         Pointer to the current index in the original array. /
  *                  Puntero al índice actual en el arreglo original.
  *
- * @param new_argc  Pointer to the current count of arguments in the new array. /
+ * @param new_argc  Pointer to the current count of arguments in the new array.
+	/
  *                  Puntero al conteo actual de argumentos en el nuevo arreglo.
  *
  * @returns 0 on success, -1 on memory allocation failure. /
@@ -123,7 +126,8 @@ static int	copy_heredoc_arg(char **argv, char **new_argv, int *i,
  * @param new_argv  The new argument array being constructed. /
  *                  El nuevo arreglo de argumentos que se está construyendo.
  *
- * @param new_argc  Pointer to the current count of arguments in the new array. /
+ * @param new_argc  Pointer to the current count of arguments in the new array.
+	/
  *                  Puntero al conteo actual de argumentos en el nuevo arreglo.
  *
  * @returns 0 on success, -1 on memory allocation failure. /
@@ -176,7 +180,7 @@ static int	ft_process_wildcard(char *arg, char **new_argv, int *new_argc)
  *          0 en caso de éxito, -1 en caso de fallo de asignación de memoria.
  */
 static int	handle_heredoc_copy(char **argv, char **new_argv, int *i,
-				int *new_argc)
+		int *new_argc)
 {
 	if (copy_heredoc_arg(argv, new_argv, i, new_argc) == -1)
 	{
@@ -207,8 +211,12 @@ static int	handle_redir_wildcard(char *arg, char **new_argv, int *new_argc)
 		}
 		if (matches > 0)
 		{
-			for (t = 0; t < matches; t++)
+			t = 0;
+			while (t < matches)
+			{
 				free(temp_matches[t]);
+				t++;
+			}
 		}
 		free(temp_matches);
 		new_argv[(*new_argc)++] = ft_strdup(arg);
@@ -231,7 +239,7 @@ static int	expand_and_copy_args(char **argv, char **new_argv, t_data *data)
 		{
 			if (handle_heredoc_copy(argv, new_argv, &i, &new_argc) == -1)
 				return (-1);
-			continue;
+			continue ;
 		}
 		if (ft_has_wildcards(argv[i]))
 		{
@@ -264,9 +272,11 @@ static int	expand_and_copy_args(char **argv, char **new_argv, t_data *data)
  *          from the current directory, while preserving heredoc delimiters.
  *
  * SPANISH: Maneja la expansión de comodines en el arreglo de argumentos dado.
- *          Expande los argumentos que contienen comodines en nombres de archivos
- *          coincidentes del directorio actual, preservando los delimitadores
- *          heredoc.
+ *
+ *          Expande los argumentos que contienen
+ *			comodines en nombres de archivos coincidentes del
+ *			directorio actual, preservando
+ * 			os delimitadoresheredoc.
  *
  * @param argv  The original argument array. /
  *              El arreglo de argumentos original.

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:16:59 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/08 02:36:27 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/09 14:12:22 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,11 @@ char	*ft_remove_quotes(const char *str)
 				str[i]))
 		{
 			q = (char *)&str[i];
-			i++; /* saltar comilla de apertura */
+			i++;
 			while (str[i] && str[i] != *q)
 				res[j++] = str[i++];
 			if (str[i] == *q)
-				i++; /* saltar comilla de cierre */
+				i++;
 		}
 		else
 			res[j++] = str[i++];

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/08 01:05:09 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/09 14:10:20 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,6 @@ int	ft_echo(t_cmd cmd)
 		return (1);
 	n_flag = 0;
 	start_index = 1;
-	/* accept multiple -n flags (e.g. -n -nn -nnn) */
 	while (cmd.argv[start_index] && cmd.argv[start_index][0] == '-')
 	{
 		j = 1;
