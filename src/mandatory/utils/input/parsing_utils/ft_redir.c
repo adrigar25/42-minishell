@@ -3,14 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_redir.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:51:26 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/09 14:04:27 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/11 15:58:03 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
+
+/**
+ * ENGLISH: Frees the cleaned argument if it was dynamically allocated.
+ *
+ * SPANISH: Libera el argumento limpiado si fue asignado dinámicamente.
+ *
+ * @param clean_arg The cleaned argument string.
+ *                  La cadena de argumento limpiada.
+ *
+ * @param argv      The original argv array.
+ *                  El array argv original.
+ *
+ * @param i         The current index in argv.
+ *                  El índice actual en argv.
+ */
+static void	ft_clean_buffer(char *clean_arg, char **argv, int i)
+{
+	if (clean_arg != argv[i + 1])
+		free(clean_arg);
+}
 
 /**
  * ENGLISH: Assigns a file descriptor to the command structure based on
@@ -80,15 +100,13 @@ int	ft_redir(t_cmd *cmd, char **argv, int i)
 		clean_arg = argv[i + 1];
 	if (cmd->has_error == 1 && ft_strcmp(argv[i], "<<") != 0)
 	{
-		if (clean_arg != argv[i + 1])
-			free(clean_arg);
+		ft_clean_buffer(clean_arg, argv, i);
 		return (i + 1);
 	}
 	fd_ret = ft_assign_fd(&cmd, clean_arg, argv[i]);
 	if (fd_ret == -2)
 	{
-		if (clean_arg != argv[i + 1])
-			free(clean_arg);
+		ft_clean_buffer(clean_arg, argv, i);
 		return (-1);
 	}
 	if (fd_ret == -1)
@@ -96,7 +114,6 @@ int	ft_redir(t_cmd *cmd, char **argv, int i)
 		cmd->data->last_exit_status = 1;
 		cmd->has_error = 1;
 	}
-	if (clean_arg != argv[i + 1])
-		free(clean_arg);
+	ft_clean_buffer(clean_arg, argv, i);
 	return (i + 1);
 }

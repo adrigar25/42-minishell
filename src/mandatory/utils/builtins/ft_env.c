@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 13:31:36 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/13 17:43:06 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@
  */
 int	ft_env(t_cmd cmd, char **envp)
 {
-	int	i;
+	int		i;
+	size_t	len;
 
 	if (!envp)
 		return (1);
@@ -37,7 +38,12 @@ int	ft_env(t_cmd cmd, char **envp)
 	while (envp[i])
 	{
 		if (ft_strchr(envp[i], '='))
-			dprintf(cmd.outfd, "%s\n", envp[i]);
+		{
+			len = ft_strlen(envp[i]);
+			if (len)
+				write(cmd.outfd, envp[i], len);
+			write(cmd.outfd, "\n", 1);
+		}
 		i++;
 	}
 	return (0);

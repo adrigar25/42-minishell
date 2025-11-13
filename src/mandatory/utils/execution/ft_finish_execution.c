@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_finish_execution.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/09 14:02:58 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/13 17:05:42 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,27 +58,27 @@ static void	ft_close_fds(t_cmd *cmd_list)
 	}
 }
 
-/**
- * ENGLISH: Waits for all child processes to finish and updates the last exit
- * 			status.
- *
- * SPANISH: Espera a que todos los procesos hijos terminen y actualiza el último
- * 			estado de salida.
- *
- * @param pids               Array of process IDs of the child processes. /
- *                           Array de IDs de proceso de los procesos hijos.
- * @param cmd_count         Number of commands (child processes). /
- *                           Número de comandos (procesos hijos).
- * @param last_exit_status  Pointer to store the last exit status. /
- *                           Puntero para almacenar el último estado de salida.
- */
+static void	ft_handle_signaled(int status, int *last_exit_status)
+{
+	int	sig;
+
+	sig = WTERMSIG(status);
+	*last_exit_status = 128 + sig;
+	if (sig == SIGQUIT)
+	{
+		if (WCOREDUMP(status))
+			ft_putstr_fd("Quit (core dumped)\n", 2);
+		else
+			ft_putstr_fd("Quit\n", 2);
+	}
+}
+
 static void	ft_wait_for_children(pid_t *pids, int cmd_count,
 		int *last_exit_status)
 {
 	int	i;
 	int	status;
 	int	executed_processes;
-	int	sig;
 
 	executed_processes = 0;
 	i = 0;
@@ -90,45 +90,14 @@ static void	ft_wait_for_children(pid_t *pids, int cmd_count,
 			if (WIFEXITED(status))
 				*last_exit_status = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
-			{
-				sig = WTERMSIG(status);
-				*last_exit_status = 128 + sig;
-				if (sig == SIGQUIT)
-				{
-					if (WCOREDUMP(status))
-						dprintf(2, "Quit (core dumped)\n");
-					else
-						dprintf(2, "Quit\n");
-				}
-			}
+				ft_handle_signaled(status, last_exit_status);
 			executed_processes = 1;
 		}
 		i++;
 	}
-	if (!executed_processes)
-		*last_exit_status = *last_exit_status;
+	(void)executed_processes;
 }
 
-/**
- * ENGLISH: Finalizes the execution of commands by closing file descriptors,
- *          waiting for child processes, updating the last exit status,
- *          freeing allocated memory, and resetting the command list pointer.
- *
- * SPANISH: Finaliza la ejecución de comandos cerrando descriptores de archivo,
- *          esperando a los procesos hijos, actualizando el último estado
- * 			de salida, liberando memoria asignada y reiniciando el puntero
- * 			de la lista de comandos.
- * @param last_exit_status The exit status of the last executed command. /
- *                         El estado de salida del último comando ejecutado.
- * @param pids       Array of process IDs of the child processes. /
- *                   Array de IDs de proceso de los procesos hijos.
- * @param cmd_list   Pointer to the head of the command list. /
- *                   Puntero al inicio de la lista de comandos.
- * @param data       Pointer to the data structure containing environment
- *                   and status info. /
- *                   Puntero a la estructura de datos que contiene información
- *                   del entorno y estado.
- */
 int	ft_finish_execution(pid_t *pids, t_cmd *cmd_list, t_data *data)
 {
 	int	last_exit_status;

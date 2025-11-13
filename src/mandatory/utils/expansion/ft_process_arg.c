@@ -3,33 +3,72 @@
 /*                                                        :::      ::::::::   */
 /*   ft_process_arg.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/07 23:45:43 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/13 16:25:34 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-/**
- * Procesa una cadena de argumento, expandiendo variables de entorno y `$?`.
- * Si una expansión falla o no existe:
- *   - Si el argumento estaba entre comillas → se expande a vacío ("").
- *   - Si no estaba entre comillas → se omite (sin espacio extra).
- */
+static int	process_dollar(char **dst, char *arg, int *j, t_data *data)
+{
+	int	ret;
+	int	arg_len;
+
+	arg_len = ft_strlen(arg);
+	if (arg[*j + 1] == '"' && ft_strchr(arg + *j + 2, '\''))
+	{
+		(*j)++;
+		return (0);
+	}
+	if (arg[*j + 1] == '?')
+	{
+		if (!ft_expand_exit_status(dst, j, data))
+			return (-1);
+		return (1);
+	}
+	ret = ft_expand_env_var(dst, arg, j, data);
+	if (ret == 0 && !(arg[0] == '"' && arg[arg_len - 1] == '"'))
+		return (0);
+	if (ret == -1)
+		return (-1);
+	return (1);
+}
+
+static int	process_segment(char **dst, char *arg, int *j, t_data *data)
+{
+	int	start;
+	int	res;
+
+	start = *j;
+	while (arg[*j] && arg[*j] != '$')
+		(*j)++;
+	if (*j > start)
+	{
+		if (!ft_copy_literal(dst, arg, start, *j))
+			return (-1);
+	}
+	if (arg[*j] == '$')
+	{
+		res = process_dollar(dst, arg, j, data);
+		if (res == -1)
+			return (-1);
+		if (res == 0)
+			return (0);
+	}
+	return (1);
+}
+
 int	ft_process_arg(char **dst, char *arg, t_data *data)
 {
 	int	j;
-	int	in_double_quotes;
-	int	in_single_quotes;
 	int	ret;
-	int	start;
 
-	j = 0;
-	in_double_quotes = (arg[0] == '"' && arg[ft_strlen(arg) - 1] == '"');
-	in_single_quotes = (arg[0] == '\'' && arg[ft_strlen(arg) - 1] == '\'');
-	if (in_single_quotes)
+	if (!arg)
+		return (0);
+	if (arg[0] == '\'' && arg[ft_strlen(arg) - 1] == '\'')
 	{
 		*dst = ft_substr(arg, 0, ft_strlen(arg));
 		return (*dst != NULL);
@@ -37,34 +76,14 @@ int	ft_process_arg(char **dst, char *arg, t_data *data)
 	*dst = ft_strdup("");
 	if (!*dst)
 		return (0);
+	j = 0;
 	while (arg[j])
 	{
-		start = j;
-		while (arg[j] && arg[j] != '$')
-			j++;
-		if (j > start && !ft_copy_literal(dst, arg, start, j))
+		ret = process_segment(dst, arg, &j, data);
+		if (ret == -1)
 			return (0);
-		if (arg[j] == '$')
-		{
-			if (arg[j + 1] == '"' && ft_strchr(arg + j + 2, '\''))
-			{
-				j++;
-				continue ;
-			}
-			if (arg[j + 1] == '?')
-			{
-				if (!ft_expand_exit_status(dst, &j, data))
-					return (0);
-			}
-			else
-			{
-				ret = ft_expand_env_var(dst, arg, &j, data);
-				if (ret == 0 && !in_double_quotes)
-					continue ;
-				if (ret == -1)
-					return (0);
-			}
-		}
+		if (ret == 0)
+			continue ;
 	}
 	return (1);
 }

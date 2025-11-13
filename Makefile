@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
+#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 18:48:28 by adriescr          #+#    #+#              #
-#    Updated: 2025/11/09 16:20:01 by agarcia          ###   ########.fr        #
+#    Updated: 2025/11/13 18:04:36 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ MAIN_SOURCE_BONUS = $(BONUS_DIR)/main_bonus.c
 # Source files
 MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/ft_minishell.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_cleanup.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_msg_start.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_search_file/ft_is_dot_or_dotdot.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_search_file/ft_search_file.c \
@@ -63,6 +64,9 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/input/ft_parse_input.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_parse_input_node.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_redir.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_skip_nulls.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_find_segment_end.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_has_closing_quote.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_parse_input_pipe.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_parse_input_token.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_remove_quotes.c \
@@ -76,6 +80,7 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_create_env_var.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_update_existing_env.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_update_pwd_env.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/env/ft_normalize_path.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/redirections/ft_handle_infile.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/redirections/ft_handle_outfile.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_exec_bin.c \
@@ -83,6 +88,7 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_finish_execution.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_execute_cmds.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/heredoc/ft_heredoc.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/heredoc/ft_process_heredoc_line.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_is_builtin.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_setup_child_io.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_exec_builtin.c \

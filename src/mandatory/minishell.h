@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:59:15 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/09 01:54:18 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/13 18:06:43 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
+# include <stdio.h>
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <termios.h>
 # include <unistd.h>
 
 /*
@@ -210,6 +212,21 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
+typedef struct s_hdoc_ctx
+{
+	t_data			*data;
+	int				expand;
+}					t_hdoc_ctx;
+
+typedef struct s_parse_ctx
+{
+	t_cmd			**current_cmd;
+	char			**argv;
+	t_data			*data;
+	int				*i;
+	int				*cmd_index;
+}					t_parse_ctx;
+
 /*
 ** ===================================================================
 **                        FUNCTIONS
@@ -217,6 +234,7 @@ typedef struct s_cmd
 */
 
 int					ft_minishell(char **envp, int debug);
+void				ft_cleanup(t_data *data);
 
 // Search for a file in the current directory and subdirectories.
 char				*ft_search_file(const char *dir, const char *filename);
@@ -269,6 +287,7 @@ char				*ft_remove_quotes(const char *str);
 // Parsing
 
 t_cmd				*ft_parse_input(char **argv, t_data *data);
+int					ft_has_closing_quote(const char *s, char quote);
 int					ft_append(char **dst, const char *src);
 t_cmd				*ft_create_cmd_node(int index);
 void				ft_add_arg_to_cmd(t_cmd *cmd, char *arg);
@@ -278,6 +297,8 @@ int					ft_process_pipe(t_cmd **current_cmd, int *cmd_index,
 						t_data *data);
 int					ft_process_token(t_cmd **current_cmd, char **argv, int i,
 						int *cmd_index);
+int					ft_skip_nulls(char **argv, int argc, int i);
+int					ft_find_segment_end(char **argv, int argc, int start);
 
 // ENV
 
@@ -290,6 +311,7 @@ int					ft_update_existing_env(char *name, char *value,
 						char **envp);
 void				ft_update_pwd_env(char *oldpwd, char *target_dir,
 						char ***envp);
+char				*ft_normalize_path(const char *path);
 
 // DEBUG
 
@@ -312,13 +334,14 @@ int					ft_export(char **args, char ***envp);
 int					ft_unset(char **args, char ***envp);
 int					ft_env(t_cmd cmd, char **envp);
 int					ft_exit(t_cmd *cmd);
-int					ft_heredoc(const char *delimiter, t_data *data, int expand);
 
 // Utils
 int					ft_is_dot_or_dotdot(const char *name);
 
 // Heredoc
-// int					ft_heredoc(const char *delimiter);
+int					ft_heredoc(const char *delimiter, t_data *data, int expand);
+int					ft_process_heredoc_line(int write_fd, char *line,
+						const char *delimiter, t_hdoc_ctx *ctx);
 // Error handling
 int					ft_handle_error(int error_code, int exit_code, char *msg,
 						char *msg2);

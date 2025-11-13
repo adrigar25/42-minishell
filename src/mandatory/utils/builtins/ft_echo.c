@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/09 14:10:20 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/11 16:09:00 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@
  */
 int	ft_handle_quoted_arg(char *arg, int *start, int *end)
 {
-	/* After parsing and quote removal, arguments should be printed as-is.
-		Do not remove surrounding characters that may be literal quotes. */
 	(void)arg;
 	*start = 0;
 	*end = ft_strlen(arg);

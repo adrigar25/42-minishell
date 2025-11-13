@@ -6,7 +6,7 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Custom shell path (project root /minishell)
-CUSTOM_SHELL="$SCRIPT_DIR/../minishell_bonus"
+CUSTOM_SHELL="$SCRIPT_DIR/../minishell"
 
 # Directory containing test cases (project_root/tests)
 TEST_DIR="$SCRIPT_DIR/tests"
@@ -36,12 +36,12 @@ for test_file in "${tests[@]}"; do
     custom_output=$(mktemp)
     bash_output=$(mktemp)
     echo "🍓 Running test: $test_name"
-    
+
     # Run the commands in the custom shell and capture the output
     "$CUSTOM_SHELL" < "$test_file" > "$custom_output" 2>&1 &
     # Run the commands in bash and capture the output
     bash < "$test_file" > "$bash_output" 2>&1
-    
+
     # Wait for the custom shell to finish
     #wait
     sleep 1

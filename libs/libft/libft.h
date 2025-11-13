@@ -6,22 +6,22 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:22:52 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/22 14:47:06 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/13 17:07:42 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# include <fcntl.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdarg.h>
-# include <string.h>
 # include <errno.h>
+# include <fcntl.h>
 # include <limits.h>
 # include <signal.h>
+# include <stdarg.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <unistd.h>
 
 # define BUFFER_SIZE 1024
 # define RESET_COLOR "\033[0m"
@@ -53,6 +53,7 @@ int				ft_is_quoted(const char *arg);
 int				ft_is_numeric(const char *str);
 int				ft_count_arg(char **args);
 char			**ft_copy_args(char **src, char **dst);
+int				ft_matrix_size(char **matrix);
 
 // Especial functions
 unsigned int	ft_simple_rand(unsigned int *seed);
@@ -65,10 +66,8 @@ int				ft_open_file_write(const char *filename, int append);
 int				ft_print_file(char *filename, char *color);
 // Print utils
 int				ft_putstr_error(const char *str);
-int				ft_print_escaped_newline(const char *arg, int *i,
-					int outfd);
-int				ft_print_arg_content(char *arg, int start, int end,
-					int outfd);
+int				ft_print_escaped_newline(const char *arg, int *i, int outfd);
+int				ft_print_arg_content(char *arg, int start, int end, int outfd);
 int				ft_putstr(const char *str);
 int				ft_putchar(char c);
 int				ft_putchar_error(char c);

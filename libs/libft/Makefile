@@ -6,7 +6,7 @@
 #    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:25:07 by adriescr          #+#    #+#              #
-#    Updated: 2025/10/28 17:10:10 by adriescr         ###   ########.fr        #
+#    Updated: 2025/11/13 17:07:20 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,6 +77,7 @@ MY_LIBFT = \
 	ft_is_numeric.c \
 	ft_count_arg.c \
 	ft_copy_args.c \
+	ft_matrix_size.c \
 	$(GET_NEXT_LINE_DIR)/get_next_line.c \
 	$(FILE_UTILS) \
 	$(PRINT_UTILS) \

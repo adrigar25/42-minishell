@@ -3,14 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:56:05 by adriescr          #+#    #+#             */
-/*   Updated: 2025/10/30 01:43:46 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/09 17:15:12 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+static char	*alloc_join(size_t len1, size_t len2)
+{
+	char	*p;
+
+	p = malloc(len1 + len2 + 1);
+	return (p);
+}
+
+static void	copy_and_advance(char *dst, const char *src, size_t *pos)
+{
+	size_t	i;
+
+	if (!src)
+		return ;
+	i = 0;
+	while (src[i])
+		dst[(*pos)++] = src[i++];
+}
 
 /**
  * ENGLISH: Joins two strings into a new string.
@@ -29,7 +48,6 @@ char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*new_str;
 	size_t	i;
-	size_t	j;
 	size_t	len1;
 	size_t	len2;
 
@@ -40,21 +58,12 @@ char	*ft_strjoin(char *s1, char *s2)
 	else
 		len1 = 0;
 	len2 = ft_strlen(s2);
-	new_str = malloc(len1 + len2 + 1);
+	new_str = alloc_join(len1, len2);
 	if (!new_str)
 		return (NULL);
 	i = 0;
-	if (s1)
-	{
-		while (i < len1)
-		{
-			new_str[i] = s1[i];
-			i++;
-		}
-	}
-	j = 0;
-	while (j < len2)
-		new_str[i++] = s2[j++];
+	copy_and_advance(new_str, s1, &i);
+	copy_and_advance(new_str, s2, &i);
 	new_str[i] = '\0';
 	return (new_str);
 }

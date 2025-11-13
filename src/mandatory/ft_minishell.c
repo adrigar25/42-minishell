@@ -3,86 +3,73 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/09 14:05:39 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/13 17:47:56 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * ENGLISH: Releases all resources allocated by the shell before exiting.
- *
- * SPANISH: Libera todos los recursos asignados por el shell antes de salir.
- */
-static void	ft_cleanup(t_data *data)
+static int	alloc_data(t_data **data)
 {
-	if (data)
-	{
-		if (data->envp)
-			ft_free_matrix(data->envp);
-		free(data);
-	}
-	clear_history();
-	rl_clear_history();
-}
-
-/**
- * ENGLISH: Initializes the shell data structure with environment variables.
- *
- * SPANISH: Inicializa la estructura de datos del shell con las variables
- * 			de entorno.
- *
- * @param data   Pointer to the shell data structure to initialize. /
- *               Puntero a la estructura de datos del shell a inicializar.
- *
- * @param envp   The environment variables. /
- *               Las variables de entorno.
- *
- * @returns 0 on success, 1 on failure. /
- *          0 en caso de éxito, 1 en caso de error.
- */
-static int	ft_init_data(t_data **data, char **envp)
-{
-	char	*val;
-	int		lvl;
-	char	*newlvl;
-
 	*data = malloc(sizeof(t_data));
 	if (!*data)
 		return (1);
 	(*data)->last_exit_status = 0;
+	(*data)->envp = NULL;
+	(*data)->isatty = 0;
+	return (0);
+}
+
+static int	init_envp(t_data **data, char **envp)
+{
 	(*data)->envp = ft_dupenv(envp);
 	if (!(*data)->envp)
 	{
 		free(*data);
 		return (1);
 	}
-	(*data)->isatty = isatty(STDIN_FILENO);
+	return (0);
+}
+
+static void	update_shlvl(t_data *data)
+{
+	char	*val;
+	int		lvl;
+	char	*newlvl;
+
+	val = ft_getenv("SHLVL", data->envp);
+	if (val && ft_is_number(val))
+		lvl = ft_atoi(val);
+	else
+		lvl = 0;
+	if (lvl < 0)
+		lvl = 0;
+	else if (lvl >= 1000)
+		lvl = 1;
+	else
+		lvl = lvl + 1;
+	newlvl = ft_itoa(lvl);
+	if (newlvl)
 	{
-		val = ft_getenv("SHLVL", (*data)->envp);
-		if (val && ft_is_number(val))
-			lvl = ft_atoi(val);
+		if (ft_getenv("SHLVL", data->envp))
+			ft_update_existing_env("SHLVL", newlvl, data->envp);
 		else
-			lvl = 0;
-		if (lvl < 0)
-			lvl = 0;
-		else if (lvl >= 1000)
-			lvl = 1;
-		else
-			lvl = lvl + 1;
-		newlvl = ft_itoa(lvl);
-		if (newlvl)
-		{
-			if (ft_getenv("SHLVL", (*data)->envp))
-				ft_update_existing_env("SHLVL", newlvl, (*data)->envp);
-			else
-				ft_setenv("SHLVL", newlvl, &((*data)->envp));
-			free(newlvl);
-		}
+			ft_setenv("SHLVL", newlvl, &(data->envp));
+		free(newlvl);
 	}
+}
+
+static int	ft_init_data(t_data **data, char **envp)
+{
+	if (alloc_data(data))
+		return (1);
+	if (init_envp(data, envp))
+		return (1);
+	(*data)->isatty = isatty(STDIN_FILENO);
+	update_shlvl(*data);
 	return (0);
 }
 

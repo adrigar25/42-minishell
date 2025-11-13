@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:20:55 by adriescr          #+#    #+#             */
-/*   Updated: 2025/10/30 01:36:37 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/09 16:56:18 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,32 +58,51 @@ static char	*ft_extract_line(char **reminder)
  * @returns 1 on success, -1 on failure. /
  *          1 en caso de éxito, -1 en caso de error.
  */
+static char	*ft_alloc_buffer(void)
+{
+	char	*buffer;
+
+	buffer = malloc(BUFFER_SIZE + 1);
+	return (buffer);
+}
+
+static int	ft_append_to_reminder(char **reminder, char *buffer)
+{
+	char	*joined;
+
+	joined = ft_strjoin(*reminder, buffer);
+	if (!joined)
+	{
+		free(*reminder);
+		*reminder = NULL;
+		return (-1);
+	}
+	free(*reminder);
+	*reminder = joined;
+	return (0);
+}
+
 static int	ft_read_to_reminder(int fd, char **reminder)
 {
 	char	*buffer;
-	char	*joined;
 	int		bytes_read;
+	int		res;
 
-	buffer = malloc(BUFFER_SIZE + 1);
+	buffer = ft_alloc_buffer();
 	if (!buffer)
 		return (-1);
-	bytes_read = read(fd, buffer, BUFFER_SIZE);
-	while (bytes_read > 0)
+	bytes_read = 0;
+	while (1)
 	{
-		buffer[bytes_read] = '\0';
-		joined = ft_strjoin(*reminder, buffer);
-		if (!joined)
-		{
-			free(buffer);
-			free(*reminder);
-			*reminder = NULL;
-			return (-1);
-		}
-		free(*reminder);
-		*reminder = joined;
-		if (ft_strchr(*reminder, '\n'))
-			break ;
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read < 0)
+			return (free(buffer), -1);
+		buffer[bytes_read] = '\0';
+		res = ft_append_to_reminder(reminder, buffer);
+		if (res < 0)
+			return (free(buffer), -1);
+		if (ft_strchr(*reminder, '\n') || bytes_read == 0)
+			break ;
 	}
 	free(buffer);
 	return (bytes_read);
