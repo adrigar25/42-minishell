@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/09 16:22:00 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/13 17:26:33 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 int	ft_read_input(char **input, t_data *data)
 {
 	char	*prompt;
-	size_t	len;
+	//size_t	len;
 
 	while (1)
 	{
@@ -47,13 +47,14 @@ int	ft_read_input(char **input, t_data *data)
 		}
 		else
 		{
-			*input = ft_get_next_line(STDIN_FILENO);
-			if (*input)
-			{
-				len = ft_strlen(*input);
-				if (len > 0 && (*input)[len - 1] == '\n')
-					(*input)[len - 1] = '\0';
-			}
+			*input = readline("minishell> ");
+			// *input = ft_get_next_line(STDIN_FILENO);
+			// if (*input)
+			// {
+			// 	len = ft_strlen(*input);
+			// 	if (len > 0 && (*input)[len - 1] == '\n')
+			// 		(*input)[len - 1] = '\0';
+			// }
 		}
 		if (!*input)
 			return (0);

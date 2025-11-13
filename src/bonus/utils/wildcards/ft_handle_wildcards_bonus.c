@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 00:36:44 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/09 14:23:03 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/13 17:45:13 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,40 +78,6 @@ static int	count_total_args(char **argv)
 }
 
 /**
- * ENGLISH: Copies the heredoc delimiter argument to the new argument array
- *          without expanding it.
- *
-
-	* SPANISH: 	Copia el argumento delimitador heredoc al
-				nuevo arreglo de argumentos sin expandirlo.
- *
- * @param argv      The original argument array. /
- *                  El arreglo de argumentos original.
- *
- * @param new_argv  The new argument array being constructed. /
- *                  El nuevo arreglo de argumentos que se está construyendo.
- *
- * @param i         Pointer to the current index in the original array. /
- *                  Puntero al índice actual en el arreglo original.
- *
- * @param new_argc  Pointer to the current count of arguments in the new array.
-	/
- *                  Puntero al conteo actual de argumentos en el nuevo arreglo.
- *
- * @returns 0 on success, -1 on memory allocation failure. /
- *          0 en caso de éxito, -1 en caso de fallo de asignación de memoria.
- *
- * 		(Always returns 0 in current implementation.)
- */
-static int	copy_heredoc_arg(char **argv, char **new_argv, int *i,
-		int *new_argc)
-{
-	new_argv[(*new_argc)++] = ft_strdup(argv[*i]);
-	(*i)++;
-	return (0);
-}
-
-/**
  * ENGLISH: Processes a single argument containing wildcards,
  *          expanding it into matching filenames and adding them to the new
  *          array.
@@ -160,36 +126,6 @@ static int	ft_process_wildcard(char *arg, char **new_argv, int *new_argc)
 	return (0);
 }
 
-/**
- * ENGLISH: Expands and copies arguments from the original array to the new
- *          array, handling wildcards and heredoc delimiters.
- *
- * SPANISH: Expande y copia argumentos del arreglo original al nuevo arreglo,
- *          manejando comodines y delimitadores heredoc.
- *
- * @param argv      The original argument array. /
- *                  El arreglo de argumentos original.
- *
- * @param new_argv  The new argument array being constructed. /
- *                  El nuevo arreglo de argumentos que se está construyendo.
- *
- * @param data      The data structure containing relevant information. /
- *                  La estructura de datos que contiene información relevante.
- *
- * @returns 0 on success, -1 on memory allocation failure. /
- *          0 en caso de éxito, -1 en caso de fallo de asignación de memoria.
- */
-static int	handle_heredoc_copy(char **argv, char **new_argv, int *i,
-		int *new_argc)
-{
-	if (copy_heredoc_arg(argv, new_argv, i, new_argc) == -1)
-	{
-		ft_free_matrix_size(new_argv, *new_argc);
-		return (-1);
-	}
-	return (0);
-}
-
 static int	handle_redir_wildcard(char *arg, char **new_argv, int *new_argc)
 {
 	int		matches;
@@ -204,25 +140,16 @@ static int	handle_redir_wildcard(char *arg, char **new_argv, int *new_argc)
 			return (-1);
 		matches = ft_expand_wildcard(arg, temp_matches, matches);
 		if (matches == 1)
-		{
 			new_argv[(*new_argc)++] = temp_matches[0];
-			free(temp_matches);
-			return (0);
-		}
-		if (matches > 0)
+		if (matches > 1)
 		{
-			t = 0;
-			while (t < matches)
-			{
+			t = -1;
+			while (t++ < matches)
 				free(temp_matches[t]);
-				t++;
-			}
 		}
 		free(temp_matches);
-		new_argv[(*new_argc)++] = ft_strdup(arg);
 	}
-	else
-		new_argv[(*new_argc)++] = ft_strdup(arg);
+	new_argv[(*new_argc)++] = ft_strdup(arg);
 	return (0);
 }
 
@@ -231,16 +158,10 @@ static int	expand_and_copy_args(char **argv, char **new_argv, t_data *data)
 	int	i;
 	int	new_argc;
 
-	i = 0;
+	i = -1;
 	new_argc = 0;
-	while (argv[i])
+	while (argv[i++])
 	{
-		if (i > 0 && ft_strcmp(argv[i - 1], "<<") == 0)
-		{
-			if (handle_heredoc_copy(argv, new_argv, &i, &new_argc) == -1)
-				return (-1);
-			continue ;
-		}
 		if (ft_has_wildcards(argv[i]))
 		{
 			if (is_prev_redir(argv, i))
@@ -259,7 +180,6 @@ static int	expand_and_copy_args(char **argv, char **new_argv, t_data *data)
 		}
 		else
 			new_argv[new_argc++] = ft_strdup(argv[i]);
-		i++;
 	}
 	new_argv[new_argc] = NULL;
 	data->argc = new_argc;
