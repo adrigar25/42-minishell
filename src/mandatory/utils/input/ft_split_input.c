@@ -3,91 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 00:33:34 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 18:12:15 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/16 14:14:03 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-/**
- * ENGLISH: Checks if a position in the input string is within quotes.
- *
- * SPANISH: Verifica si una posición en la cadena de entrada está dentro
- *          de comillas.
- *
- * @param input The input string to check.
- *               La cadena de entrada a verificar.
- *
- * @param pos   The position to check.
- *               La posición a verificar.
- *
- * @returns 1 if the position is within quotes, 0 otherwise.
- *          1 si la posición está dentro de comillas, 0 en caso contrario.
- */
-int	is_in_quotes(const char *input, int pos)
-{
-	int		i;
-	int		in_q;
-	char	q;
-
-	i = 0;
-	in_q = 0;
-	q = 0;
-	while (i <= pos && input[i])
-	{
-		if (!in_q && (input[i] == '\'' || input[i] == '"'))
-		{
-			in_q = 1;
-			q = input[i];
-		}
-		else if (in_q && input[i] == q)
-		{
-			in_q = 0;
-			q = 0;
-		}
-		i++;
-	}
-	return (in_q);
-}
-
-/**
- * ENGLISH: Checks if a character at a given position is escaped by a backslash.
- *
- * SPANISH: Verifica si un carácter en una posición dada está escapado por
- *          una barra invertida.
- *
- * @param input The input string to check.
- *               La cadena de entrada a verificar.
- *
- * @param pos   The position of the character to check.
- *               La posición del carácter a verificar.
- *
- * @param in_q  Flag indicating if currently inside quotes
- *               (1 if inside, 0 if not).
- *               Bandera que indica si actualmente está dentro de comillas
- *               (1 si está dentro, 0 si no).
- *
- * @returns 1 if the character is escaped, 0 otherwise.
- *          1 si el carácter está escapado, 0 en caso contrario.
- */
-static int	ft_is_escaped(const char *input, int pos, int in_q)
-{
-	int	count;
-
-	if (in_q)
-		return (0);
-	count = 0;
-	pos--;
-	while (pos >= 0 && input[pos] == '\\')
-	{
-		count++;
-		pos--;
-	}
-	return (count % 2);
-}
 
 /**
  * ENGLISH: Handles token extraction from the input string,
@@ -116,7 +39,7 @@ static int	ft_handle_token(const char *input, char **args, int *i, int *j)
 	int	start;
 
 	ft_skip_whitespace(input, i);
-	if (ft_strchr("<>|", input[*i]) && !ft_is_escaped(input, *i, 0))
+	if (ft_strchr("<>|", input[*i]) && !ft_is_escaped(input, *i))
 	{
 		args[*j] = ft_substr((char *)input, *i, 1 + (input[*i
 					+ 1] == input[*i]));
@@ -126,9 +49,9 @@ static int	ft_handle_token(const char *input, char **args, int *i, int *j)
 	else
 	{
 		start = *i;
-		while (input[*i] && (!ft_strchr("<>|", input[*i]) || is_in_quotes(input,
-					*i) || ft_is_escaped(input, *i, 0))
-			&& (!ft_isspace(input[*i]) || is_in_quotes(input, *i)))
+		while (input[*i] && (!ft_strchr("<>|", input[*i])
+				|| ft_is_in_quotes(input, *i) || ft_is_escaped(input, *i))
+			&& (!ft_isspace(input[*i]) || ft_is_in_quotes(input, *i)))
 			*i += 1 + (input[*i] == '\\' && input[*i + 1]);
 		if (*i > start)
 		{

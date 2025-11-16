@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 18:57:27 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/13 18:09:14 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/16 22:22:42 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,86 +25,62 @@ static void	free_cmd_list(t_cmd *cmd_list)
 	}
 }
 
-static int	handle_heredocs(t_cmd *current_cmd, char **argv, int start, int end)
+static int	ft_is_redir(char *token)
 {
-	int	j;
-	int	ret;
-
-	j = start;
-	while (j < end)
-	{
-		if (argv[j] && ft_strcmp(argv[j], "<<") == 0 && argv[j + 1])
-		{
-			ret = ft_redir(current_cmd, argv, j);
-			if (ret == -1)
-				return (-1);
-			argv[j] = NULL;
-			argv[j + 1] = NULL;
-			j += 2;
-			continue ;
-		}
-		j++;
-	}
-	return (0);
+	return (!ft_strcmp(token, "<") || !ft_strcmp(token, ">")
+		|| !ft_strcmp(token, ">>") || !ft_strcmp(token, "<<"));
 }
 
-static int	process_segment(t_parse_ctx *ctx)
-{
-	int	end;
-	int	new_i;
-
-	end = ft_find_segment_end(ctx->argv, ctx->data->argc, *ctx->i);
-	if (handle_heredocs(*ctx->current_cmd, ctx->argv, *ctx->i, end) == -1)
-		return (-1);
-	*ctx->i = ft_skip_nulls(ctx->argv, ctx->data->argc, *ctx->i);
-	if (*ctx->i >= ctx->data->argc)
-		return (1);
-	new_i = ft_process_token(ctx->current_cmd, ctx->argv, *ctx->i,
-			ctx->cmd_index);
-	if (new_i == -1)
-		return (-1);
-	if (new_i == *ctx->i)
-		(*ctx->i)++;
-	else
-		*ctx->i = new_i + 1;
-	return (0);
-}
-
-static t_cmd	*init_parse_state(t_data *data, t_cmd **current_cmd, int *i,
+static int	ft_process_segment(t_cmd **current_cmd, t_data *data, int *i,
 		int *cmd_index)
 {
-	t_cmd	*cmd_list;
+	int	ret;
 
-	*cmd_index = 0;
-	cmd_list = ft_create_cmd_node(*cmd_index);
-	if (!cmd_list)
-		return (NULL);
-	*current_cmd = cmd_list;
-	cmd_list->data = data;
-	*i = 0;
-	return (cmd_list);
+	if (data->argv[*i] != NULL)
+	{
+		if (*i >= data->argc)
+			return (ERROR);
+		if (ft_strcmp(data->argv[*i], "|") == 0)
+		{
+			if (ft_process_pipe(current_cmd, cmd_index,
+					(*current_cmd)->data) == ERROR)
+				return (ERROR);
+		}
+		else if (ft_is_redir(data->argv[*i]))
+		{
+			ret = ft_redir(*current_cmd, data->argv, *i);
+			if (ret == -1)
+				return (ERROR);
+			*i = ret;
+		}
+		else
+			ft_add_arg_to_cmd(*current_cmd, ft_remove_quotes(data->argv[*i]));
+	}
+	(*i)++;
+	return (SUCCESS);
 }
 
-t_cmd	*ft_parse_input(char **argv, t_data *data)
+t_cmd	*ft_parse_input(t_data *data)
 {
-	t_cmd		*cmd_list;
-	t_cmd		*current_cmd;
-	int			i[3];
-	t_parse_ctx	ctx;
+	t_cmd	*cmd_list;
+	t_cmd	*current_cmd;
+	int		i;
+	int		cmd_index;
+	int		ret;
 
-	if (!argv || !data || data->argc == 0)
+	i = 0;
+	cmd_index = 0;
+	ret = 0;
+	if (!data->argv || !data || data->argc == 0)
 		return (NULL);
-	cmd_list = init_parse_state(data, &current_cmd, &i[0], &i[1]);
+	cmd_list = ft_create_cmd_node(0);
 	if (!cmd_list)
 		return (NULL);
-	while (i[0] < data->argc)
-	{
-		ctx = (t_parse_ctx){&current_cmd, argv, data, &i[0], &i[1]};
-		i[2] = process_segment(&ctx);
-		if (i[2] == 1)
-			break ;
-	}
-	if (i[2] == -1)
+	current_cmd = cmd_list;
+	cmd_list->data = data;
+	while (i < data->argc && ret == SUCCESS)
+		ret = ft_process_segment(&current_cmd, data, &i, &cmd_index);
+	if (ret == ERROR)
 	{
 		free_cmd_list(cmd_list);
 		return (NULL);

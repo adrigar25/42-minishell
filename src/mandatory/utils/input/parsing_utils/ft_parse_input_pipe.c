@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_input_pipe.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:52:24 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 17:53:45 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/16 19:38:17 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ int	ft_process_pipe(t_cmd **current_cmd, int *cmd_index, t_data *data)
 	t_cmd	*new_cmd;
 
 	if (pipe(pipefd) == -1)
-		return (-1);
+		return (ERROR);
 	new_cmd = ft_create_cmd_node(*cmd_index + 1);
 	if (!new_cmd)
-		return (-1);
+		return (ERROR);
 	(*cmd_index)++;
 	(*current_cmd)->next = new_cmd;
 	new_cmd->data = data;
@@ -52,5 +52,5 @@ int	ft_process_pipe(t_cmd **current_cmd, int *cmd_index, t_data *data)
 		close(pipefd[1]);
 	new_cmd->infd = pipefd[0];
 	*current_cmd = new_cmd;
-	return (0);
+	return (SUCCESS);
 }

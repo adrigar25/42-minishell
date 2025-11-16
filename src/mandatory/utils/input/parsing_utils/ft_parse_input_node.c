@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_input_node.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:51:29 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 17:53:32 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/16 19:30:06 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ void	ft_add_arg_to_cmd(t_cmd *cmd, char *arg)
 	int		count;
 	char	**new_argv;
 
+	if (!cmd || !arg)
+		return ;
 	if (!cmd->argv)
 	{
 		cmd->argv = malloc(2 * sizeof(char *));

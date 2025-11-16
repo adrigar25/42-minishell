@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expansion_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 17:59:20 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/16 21:09:30 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,9 @@
  *              El índice final (exclusivo) de la subcadena en la cadena
  *              de argumentos.
  *
- * @returns 1 on success, 0 on memory allocation failure. /
- *          1 en caso de éxito, 0 en caso de fallo de asignación de memoria.
+ * @returns SUCCESS (0) on success, ERROR (1) on memory allocation failure. /
+ *          SUCCESS (0) en caso de éxito,
+	ERROR (1) en caso de fallo de asignación de memoria.
  */
 int	ft_copy_literal(char **dst, char *arg, int start, int end)
 {
@@ -42,15 +43,15 @@ int	ft_copy_literal(char **dst, char *arg, int start, int end)
 	char	*temp;
 
 	if (end <= start)
-		return (1);
+		return (SUCCESS);
 	literal = ft_substr(arg, start, end - start);
 	if (!literal)
-		return (0);
+		return (ERROR);
 	temp = *dst;
 	*dst = ft_strjoin(temp, literal);
 	free(temp);
 	free(literal);
 	if (!*dst)
-		return (0);
-	return (1);
+		return (ERROR);
+	return (SUCCESS);
 }

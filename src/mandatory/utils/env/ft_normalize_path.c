@@ -37,7 +37,7 @@ static int	ft_build_stack(char **parts, char **stack)
 			stack[i[1]++] = ft_strdup(parts[i[0]]);
 		i[0]++;
 	}
-	return (i[1] < 0);
+	return (i[1]);
 }
 
 static char	*build_path_from_stack(char **stack, int top)

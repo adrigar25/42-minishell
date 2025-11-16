@@ -3,36 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/13 17:47:56 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/16 21:17:38 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	alloc_data(t_data **data)
-{
-	*data = malloc(sizeof(t_data));
-	if (!*data)
-		return (1);
-	(*data)->last_exit_status = 0;
-	(*data)->envp = NULL;
-	(*data)->isatty = 0;
-	return (0);
-}
-
-static int	init_envp(t_data **data, char **envp)
-{
-	(*data)->envp = ft_dupenv(envp);
-	if (!(*data)->envp)
-	{
-		free(*data);
-		return (1);
-	}
-	return (0);
-}
 
 static void	update_shlvl(t_data *data)
 {
@@ -52,22 +30,26 @@ static void	update_shlvl(t_data *data)
 	else
 		lvl = lvl + 1;
 	newlvl = ft_itoa(lvl);
-	if (newlvl)
-	{
-		if (ft_getenv("SHLVL", data->envp))
-			ft_update_existing_env("SHLVL", newlvl, data->envp);
-		else
-			ft_setenv("SHLVL", newlvl, &(data->envp));
-		free(newlvl);
-	}
+	if (!newlvl)
+		return ;
+	if (val)
+		ft_update_existing_env("SHLVL", newlvl, data->envp);
+	else
+		ft_setenv("SHLVL", newlvl, &(data->envp));
+	free(newlvl);
 }
 
 static int	ft_init_data(t_data **data, char **envp)
 {
-	if (alloc_data(data))
+	*data = calloc(1, sizeof **data);
+	if (!*data)
 		return (1);
-	if (init_envp(data, envp))
+	(*data)->envp = ft_dupenv(envp);
+	if (!(*data)->envp)
+	{
+		free(*data);
 		return (1);
+	}
 	(*data)->isatty = isatty(STDIN_FILENO);
 	update_shlvl(*data);
 	return (0);
@@ -103,12 +85,12 @@ int	ft_minishell(char **envp, int debug)
 	t_data	*data;
 	int		exit_status;
 
+	exit_status = 0;
 	if (ft_init_data(&data, envp))
-		return (1);
+		return (ERROR);
 	if (data->isatty)
 		ft_msg_start();
 	ft_init_signals();
-	exit_status = 0;
 	while (ft_read_input(&input, data))
 	{
 		cmd_list = ft_process_input(input, data, debug);

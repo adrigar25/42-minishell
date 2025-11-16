@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:25:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/27 20:41:28 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/16 20:44:19 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	ft_check_input_syntax(char **argv, int argc)
 	int	i;
 
 	if (!argv || argc == 0)
-		return (0);
+		return (SUCCESS);
 	if (!ft_strcmp(argv[0], "|") || !ft_strcmp(argv[0], "&")
 		|| ft_is_logical_op(argv[0]))
 		return (ft_handle_error(6, 2, argv[0], NULL));
@@ -108,13 +108,12 @@ int	ft_check_input_syntax(char **argv, int argc)
 			return (ft_handle_error(5, 2, NULL, NULL));
 		if (i + 1 < argc)
 		{
-			if (ft_is_pipe_like(argv[i]) && ft_is_pipe_like(argv[i + 1]))
-				return (ft_handle_error(6, 2, argv[i + 1], NULL));
-			if (ft_is_redir(argv[i]) && (ft_is_pipe_like(argv[i + 1])
-					|| ft_is_redir(argv[i + 1])))
+			if ((ft_is_pipe_like(argv[i]) && ft_is_pipe_like(argv[i + 1]))
+				|| (ft_is_redir(argv[i]) && (ft_is_pipe_like(argv[i + 1])
+						|| ft_is_redir(argv[i + 1]))))
 				return (ft_handle_error(6, 2, argv[i + 1], NULL));
 		}
 		i++;
 	}
-	return (0);
+	return (SUCCESS);
 }

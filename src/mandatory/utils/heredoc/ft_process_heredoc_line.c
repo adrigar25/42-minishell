@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_process_heredoc_line.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 17:41:00 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/13 17:42:22 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/16 16:41:21 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,11 @@ static int	hdoc_write_expanded_or_original(int write_fd, char *line,
 
 	if (ctx->expand)
 	{
-		expanded = NULL;
-		if (!ft_process_arg(&expanded, line, ctx->data))
+		expanded = ft_process_arg(line, ctx->data);
+		if (!expanded)
 			return (-1);
-		if (expanded)
-		{
-			write(write_fd, expanded, ft_strlen(expanded));
-			free(expanded);
-		}
+		write(write_fd, expanded, ft_strlen(expanded));
+		free(expanded);
 	}
 	else
 		write(write_fd, line, ft_strlen(line));

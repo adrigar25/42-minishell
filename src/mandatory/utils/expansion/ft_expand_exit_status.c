@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expand_exit_status.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 17:59:08 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/16 20:50:14 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ int	ft_expand_exit_status(char **dst, int *j, t_data *data)
 
 	temp = ft_itoa(data->last_exit_status);
 	if (!temp)
-		return (0);
-	if (!ft_append(dst, temp))
+		return (ERROR);
+	if (ft_append(dst, temp) == ERROR)
 	{
 		free(temp);
-		return (0);
+		return (ERROR);
 	}
 	free(temp);
 	(*j) += 2;
-	return (1);
+	return (SUCCESS);
 }

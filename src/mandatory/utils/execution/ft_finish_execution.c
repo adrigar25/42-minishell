@@ -3,23 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_finish_execution.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/13 17:05:42 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/16 16:49:29 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-/**
- * ENGLISH: Frees the memory allocated for the command list.
- *
- * SPANISH: Libera la memoria asignada para la lista de comandos.
- *
- * @param cmd_list   Pointer to the head of the command list. /
- *                   Puntero al inicio de la lista de comandos.
- */
+/*
+** Frees the memory allocated for the command list.
+*/
 static void	ft_free_cmd_list(t_cmd *cmd_list)
 {
 	t_cmd	*tmp;
@@ -78,9 +73,7 @@ static void	ft_wait_for_children(pid_t *pids, int cmd_count,
 {
 	int	i;
 	int	status;
-	int	executed_processes;
 
-	executed_processes = 0;
 	i = 0;
 	while (i < cmd_count)
 	{
@@ -91,11 +84,9 @@ static void	ft_wait_for_children(pid_t *pids, int cmd_count,
 				*last_exit_status = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
 				ft_handle_signaled(status, last_exit_status);
-			executed_processes = 1;
 		}
 		i++;
 	}
-	(void)executed_processes;
 }
 
 int	ft_finish_execution(pid_t *pids, t_cmd *cmd_list, t_data *data)
@@ -109,5 +100,10 @@ int	ft_finish_execution(pid_t *pids, t_cmd *cmd_list, t_data *data)
 	free(pids);
 	ft_free_cmd_list(cmd_list);
 	cmd_list = NULL;
+	if (data && data->argv)
+	{
+		ft_free_matrix(data->argv);
+		data->argv = NULL;
+	}
 	return (last_exit_status);
 }

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/13 21:15:21 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/17 00:44:50 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ static char	*read_interactive(t_data *data)
 	return (input);
 }
 
-/*
 static char	*read_noninteractive(void)
 {
 	char	*input;
@@ -38,7 +37,7 @@ static char	*read_noninteractive(void)
 	}
 	return (input);
 }
-*/
+
 int	ft_read_input(char **input, t_data *data)
 {
 	while (1)
@@ -46,7 +45,7 @@ int	ft_read_input(char **input, t_data *data)
 		if (data->isatty)
 			*input = read_interactive(data);
 		else
-			*input = readline("minishell> ");
+			*input = read_noninteractive();
 		if (!*input)
 			return (0);
 		if (**input)

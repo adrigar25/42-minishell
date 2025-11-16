@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
+#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 18:48:28 by adriescr          #+#    #+#              #
-#    Updated: 2025/11/13 18:04:36 by adriescr         ###   ########.fr        #
+#    Updated: 2025/11/16 20:38:37 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,6 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_search_file/ft_search_in_dir.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_search_file/ft_search_in_subdirs.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_search_file/ft_build_path.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_count_args.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/ft_free_matrix.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/error/ft_handle_error.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/input/ft_read_input.c \
@@ -64,12 +63,10 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/input/ft_parse_input.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_parse_input_node.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_redir.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_skip_nulls.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_find_segment_end.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_has_closing_quote.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_parse_input_pipe.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_parse_input_token.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_remove_quotes.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/input/ft_count_args.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/debug/ft_show_debug.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/prompt/ft_get_directory_path.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/prompt/ft_generate_prompt.c \
@@ -107,6 +104,9 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/expansion/ft_process_arg.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/expansion/ft_handle_env_expansion.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/expansion/ft_append.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/input/escape/ft_is_escaped.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/input/escape/ft_is_in_quotes.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/input/ft_token_helpers.c \
 
 MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/ft_minishell_bonus.c \

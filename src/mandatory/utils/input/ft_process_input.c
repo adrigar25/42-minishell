@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 21:35:42 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/08 00:54:50 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/16 18:05:36 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,23 +66,27 @@ static int	ft_count_cmds(t_cmd *cmd_list)
  */
 t_cmd	*ft_process_input(char *input, t_data *data, int debug)
 {
-	char	**argv;
+	char	**orig_argv;
+	char	**expanded_argv;
 	t_cmd	*cmd_list;
 
 	data->argc = ft_count_args(input);
-	argv = ft_split_input(input, data->argc);
+	orig_argv = ft_split_input(input, data->argc);
 	free(input);
-	if (ft_check_input_syntax(argv, data->argc))
+	if (ft_check_input_syntax(orig_argv, data->argc) != SUCCESS)
 	{
-		ft_free_matrix(argv);
+		if (orig_argv)
+			ft_free_matrix(orig_argv);
 		data->last_exit_status = 2;
 		return (NULL);
 	}
-	argv = ft_handle_env_expansion(argv, data);
-	cmd_list = ft_parse_input(argv, data);
-	if (debug && cmd_list && argv)
-		ft_show_debug(argv, data->argc, argv, cmd_list);
-	ft_free_matrix(argv);
+	expanded_argv = ft_handle_env_expansion(orig_argv, data);
+	if (expanded_argv != orig_argv)
+		ft_free_matrix(orig_argv);
+	data->argv = expanded_argv;
+	cmd_list = ft_parse_input(data);
+	if (debug)
+		ft_show_debug(cmd_list);
 	data->cmd_count = ft_count_cmds(cmd_list);
 	return (cmd_list);
 }

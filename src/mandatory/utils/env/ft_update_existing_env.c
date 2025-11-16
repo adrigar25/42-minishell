@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_update_existing_env.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:02:26 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/22 16:33:15 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/16 22:18:43 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
  *          0 si la variable fue actualizada, 1 si no se encontró, -1
  * 			en caso de error.
  */
+
 int	ft_update_existing_env(char *name, char *value, char **envp)
 {
 	int		i;
@@ -45,11 +46,12 @@ int	ft_update_existing_env(char *name, char *value, char **envp)
 		if (ft_strncmp(envp[i], name, name_len) == 0
 			&& (envp[i][name_len] == '=' || envp[i][name_len] == '\0'))
 		{
-			free(envp[i]);
 			new_var = ft_create_env_var(name, value);
 			if (!new_var)
 				return (-1);
-			envp[i] = new_var;
+			free(envp[i]);
+			envp[i] = ft_strdup(new_var);
+			free(new_var);
 			return (0);
 		}
 		i++;
