@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 20:29:05 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/16 20:29:06 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/17 00:48:57 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	ft_assign_fd(t_cmd **cmd, char *filename, char *type)
 	else if (!ft_strcmp(type, ">") || !ft_strcmp(type, ">>"))
 		fd = ft_handle_outfile(filename, 0 + (ft_strcmp(type, ">>") == 0));
 	else if (ft_strcmp(type, "<<") == 0)
-		fd = ft_heredoc(filename, (*cmd)->data, 1);
+		fd = ft_heredoc(filename, (*cmd)->data);
 	if (fd == -1)
 		return (-1);
 	if (ft_strcmp(type, "<") == 0 || ft_strcmp(type, "<<") == 0)

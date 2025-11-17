@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 01:25:02 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/16 22:45:24 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/17 00:52:52 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,9 +114,9 @@ int		ft_exit(t_cmd *cmd);
 int		ft_is_dot_or_dotdot(const char *name);
 
 /* Heredoc */
-int		ft_heredoc(const char *delimiter, t_data *data, int expand);
+int		ft_heredoc(const char *delimiter, t_data *data);
 int		ft_process_heredoc_line(int write_fd, char *line, const char *delimiter,
-			t_hdoc_ctx *ctx);
+			t_data *data);
 
 /* Error handling */
 int		ft_handle_error(int error_code, int exit_code, char *msg, char *msg2);

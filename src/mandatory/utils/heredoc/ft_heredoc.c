@@ -13,10 +13,9 @@
 #include "../../minishell.h"
 
 static int	ft_read_heredoc_loop(int write_fd, const char *delimiter,
-		t_data *data, int expand)
+		t_data *data)
 {
-	char		*line;
-	t_hdoc_ctx	ctx;
+	char	*line;
 
 	while (1)
 	{
@@ -25,21 +24,19 @@ static int	ft_read_heredoc_loop(int write_fd, const char *delimiter,
 		line = ft_get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;
-		ctx.data = data;
-		ctx.expand = expand;
-		if (ft_process_heredoc_line(write_fd, line, delimiter, &ctx) != 0)
+		if (ft_process_heredoc_line(write_fd, line, delimiter, data) != 0)
 			break ;
 	}
 	return (0);
 }
 
-int	ft_heredoc(const char *delimiter, t_data *data, int expand)
+int	ft_heredoc(const char *delimiter, t_data *data)
 {
 	int	pipefd[2];
 
 	if (pipe(pipefd) == -1)
 		return (-1);
-	ft_read_heredoc_loop(pipefd[1], delimiter, data, expand);
+	ft_read_heredoc_loop(pipefd[1], delimiter, data);
 	close(pipefd[1]);
 	return (pipefd[0]);
 }

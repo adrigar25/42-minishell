@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 01:25:08 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/16 16:30:39 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/17 00:52:05 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,5 @@ typedef struct s_cmd
 	t_data			*data;
 	struct s_cmd	*next;
 }					t_cmd;
-
-typedef struct s_hdoc_ctx
-{
-	t_data			*data;
-	int				expand;
-}					t_hdoc_ctx;
 
 #endif /* MINISHELL_TYPES_H */
