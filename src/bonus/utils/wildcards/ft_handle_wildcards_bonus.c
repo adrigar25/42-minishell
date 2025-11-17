@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 00:36:44 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/13 17:45:13 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/17 21:45:48 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,9 +158,9 @@ static int	expand_and_copy_args(char **argv, char **new_argv, t_data *data)
 	int	i;
 	int	new_argc;
 
-	i = -1;
+	i = 0;
 	new_argc = 0;
-	while (argv[i++])
+	while (argv[i])
 	{
 		if (ft_has_wildcards(argv[i]))
 		{
@@ -180,6 +180,7 @@ static int	expand_and_copy_args(char **argv, char **new_argv, t_data *data)
 		}
 		else
 			new_argv[new_argc++] = ft_strdup(argv[i]);
+		i++;
 	}
 	new_argv[new_argc] = NULL;
 	data->argc = new_argc;
