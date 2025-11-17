@@ -6,14 +6,15 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/27 22:27:16 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/17 21:59:40 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
 
 /**
- * ENGLISH: Counts the number of arguments in a NULL-terminated array of strings.
+
+	* ENGLISH: Counts the number of arguments in a NULL-terminated array of strings.
  *
  * SPANISH: Cuenta el número de argumentos en un arreglo de cadenas
  * 			terminado en NULL.
@@ -70,7 +71,8 @@ static void	ft_show_argv(char *title, char *prefix, char **argv, int argc)
 /**
  * ENGLISH: Displays the details of a linked list of command structures.
  *
- * SPANISH: Muestra los detalles de una lista enlazada de estructuras de comando.
+
+	* SPANISH: Muestra los detalles de una lista enlazada de estructuras de comando.
  *
  * @param cmd_list   The head of the linked list of command structures.
  *                   La cabeza de la lista enlazada de estructuras de comando.
@@ -104,7 +106,8 @@ static void	ft_show_cmd_list(t_cmd *cmd_list)
  *          argumentos expandidos y estructuras de comando parseadas.
  *
  * @param argv           The original argument array received by the shell. /
- *                       El arreglo original de argumentos recibido por el shell.
+
+	*                       El arreglo original de argumentos recibido por el shell.
  *
  * @param argc           The number of arguments in the original array. /
  *                       El número de argumentos en el arreglo original.
@@ -117,31 +120,18 @@ static void	ft_show_cmd_list(t_cmd *cmd_list)
  * @param cmd_list       The linked list of parsed command structures. /
  *                       La lista enlazada de estructuras de comando parseadas.
  */
-void	ft_show_debug(char **argv, int argc, char **expanded_argv,
-		t_cmd *cmd_list)
+void	ft_show_debug(t_cmd *cmd_list)
 {
-	int	i;
-
+	(void)cmd_list;
+	if (!cmd_list)
+	{
+		printf("\033[38;5;208m========== DEBUG INFO ==========\033[0m\n");
+		printf("\n\033[34mNo commands parsed.\033[0m\n");
+		printf("\033[38;5;208m================================\033[0m\n\n");
+		return ;
+	}
 	printf("\033[38;5;208m========== DEBUG INFO ==========\033[0m\n");
-	if (argv)
-	{
-		printf("\033[34mArgumentos recibidos:\033[0m\n");
-		i = 0;
-		while (i < argc)
-		{
-			printf("  argv[%d]: %s\n", i, argv[i]);
-			i++;
-		}
-	}
-	if (expanded_argv)
-	{
-		printf("\n\033[34mArgumentos después de expandir:\033[0m\n");
-		ft_show_argv("Expanded argv", "expanded_argv", expanded_argv, argc);
-	}
-	if (cmd_list)
-	{
-		printf("\n\033[34mComandos parseados:\033[0m\n");
-		ft_show_cmd_list(cmd_list);
-	}
+	printf("\n\033[34mComandos parseados:\033[0m\n");
+	ft_show_cmd_list(cmd_list);
 	printf("\033[38;5;208m================================\033[0m\n\n");
 }

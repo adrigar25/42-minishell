@@ -6,11 +6,46 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/17 21:42:24 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/17 22:32:50 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_bonus.h"
+
+/**
+ * ENGLISH: Updates the SHLVL environment variable.
+ *
+ * SPANISH: Actualiza la variable de entorno SHLVL.
+ *
+ * @param data   Pointer to the shell data structure. /
+ *               Puntero a la estructura de datos del shell.
+ */
+static void	update_shlvl(t_data *data)
+{
+	char	*val;
+	int		lvl;
+	char	*newlvl;
+
+	val = ft_getenv("SHLVL", data->envp);
+	if (val && ft_is_number(val))
+		lvl = ft_atoi(val);
+	else
+		lvl = 0;
+	if (lvl < 0)
+		lvl = 0;
+	else if (lvl >= 1000)
+		lvl = 1;
+	else
+		lvl = lvl + 1;
+	newlvl = ft_itoa(lvl);
+	if (!newlvl)
+		return ;
+	if (val)
+		ft_update_existing_env("SHLVL", newlvl, data->envp);
+	else
+		ft_setenv("SHLVL", newlvl, &(data->envp));
+	free(newlvl);
+}
 
 /**
  * ENGLISH: Initializes the shell data structure with environment variables.
@@ -29,14 +64,9 @@
  */
 static int	ft_init_data(t_data **data, char **envp)
 {
-	char	*val;
-	int		lvl;
-	char	*newlvl;
-
-	*data = malloc(sizeof(t_data));
+	*data = calloc(1, sizeof **data);
 	if (!*data)
 		return (1);
-	(*data)->last_exit_status = 0;
 	(*data)->envp = ft_dupenv(envp);
 	if (!(*data)->envp)
 	{
@@ -44,28 +74,7 @@ static int	ft_init_data(t_data **data, char **envp)
 		return (1);
 	}
 	(*data)->isatty = isatty(STDIN_FILENO);
-	{
-		val = ft_getenv("SHLVL", (*data)->envp);
-		if (val && ft_is_number(val))
-			lvl = ft_atoi(val);
-		else
-			lvl = 0;
-		if (lvl < 0)
-			lvl = 0;
-		else if (lvl >= 1000)
-			lvl = 1;
-		else
-			lvl = lvl + 1;
-		newlvl = ft_itoa(lvl);
-		if (newlvl)
-		{
-			if (ft_getenv("SHLVL", (*data)->envp))
-				ft_update_existing_env("SHLVL", newlvl, (*data)->envp);
-			else
-				ft_setenv("SHLVL", newlvl, &((*data)->envp));
-			free(newlvl);
-		}
-	}
+	update_shlvl(*data);
 	return (0);
 }
 
@@ -99,18 +108,17 @@ int	ft_minishell(char **envp, int debug)
 	t_data	*data;
 	int		exit_status;
 
+	exit_status = 0;
 	if (ft_init_data(&data, envp))
-		return (1);
+		return (ERROR);
 	if (data->isatty)
 		ft_msg_start();
 	ft_init_signals();
-	exit_status = 0;
 	while (ft_read_input(&input, data))
 	{
 		cmd_list = ft_process_input(input, data, debug);
 		exit_status = ft_execute_cmds(cmd_list, &data);
 	}
-	ft_free_matrix(data->envp);
-	free(data);
+	ft_cleanup(data);
 	return (exit_status);
 }

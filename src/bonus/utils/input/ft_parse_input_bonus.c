@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 18:57:27 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/17 21:42:57 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/17 21:59:38 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
  *          Un puntero a la cabeza de la lista enlazada de estructuras de
  *          comando, o NULL en caso de error.
  */
-t_cmd	*ft_parse_input(char **argv, t_data *data)
+t_cmd	*ft_parse_input(t_data *data)
 {
 	t_cmd	*cmd_list;
 	t_cmd	*current_cmd;
@@ -44,9 +44,11 @@ t_cmd	*ft_parse_input(char **argv, t_data *data)
 	int		j;
 	int		ret;
 	t_cmd	*tmp;
+	char	**argv;
 
-	if (!argv || data->argc == 0)
+	if (!data->argv || !data || data->argc == 0)
 		return (NULL);
+	argv = data->argv;
 	cmd_index = 0;
 	cmd_list = ft_create_cmd_node(cmd_index);
 	if (!cmd_list)

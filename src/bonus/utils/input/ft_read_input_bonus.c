@@ -6,11 +6,56 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/17 21:44:42 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/17 22:44:34 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
+
+/**
+ * ENGLISH: Reads input in interactive mode with a generated prompt.
+ *
+ * SPANISH: Lee la entrada en modo interactivo con un prompt generado.
+ *
+ * @param data   Pointer to the shell data structure. /
+ *               Puntero a la estructura de datos del shell.
+ *
+ * @returns The input string or NULL on EOF. /
+ *          La cadena de entrada o NULL en EOF.
+ */
+static char	*read_interactive(t_data *data)
+{
+	char	*prompt;
+	char	*input;
+
+	prompt = ft_generate_prompt(data->envp);
+	input = readline(prompt);
+	free(prompt);
+	return (input);
+}
+
+/**
+ * ENGLISH: Reads input in non-interactive mode using get_next_line.
+ *
+ * SPANISH: Lee la entrada en modo no interactivo usando get_next_line.
+ *
+ * @returns The input string or NULL on EOF. /
+ *          La cadena de entrada o NULL en EOF.
+ */
+// static char	*read_noninteractive(void)
+// {
+// 	char	*input;
+// 	size_t	len;
+
+// 	input = ft_get_next_line(STDIN_FILENO);
+// 	if (input)
+// 	{
+// 		len = ft_strlen(input);
+// 		if (len > 0 && input[len - 1] == '\n')
+// 			input[len - 1] = '\0';
+// 	}
+// 	return (input);
+// }
 
 /**
  * ENGLISH: Reads input from the user, displaying a prompt if in interactive
@@ -34,21 +79,12 @@
  */
 int	ft_read_input(char **input, t_data *data)
 {
-	char	*prompt;
-
-	// size_t	len;
 	while (1)
 	{
 		if (data->isatty)
-		{
-			prompt = ft_generate_prompt(data->envp);
-			*input = readline(prompt);
-			free(prompt);
-		}
+			*input = read_interactive(data);
 		else
-		{
 			*input = readline("minishell> ");
-		}
 		if (!*input)
 			return (0);
 		if (**input)

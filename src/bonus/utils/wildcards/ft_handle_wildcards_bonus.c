@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 00:36:44 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/17 21:45:48 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/17 21:59:39 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,6 +224,10 @@ char	**ft_handle_wildcards(char **argv, t_data *data)
 	if (!new_argv)
 		return (argv);
 	if (expand_and_copy_args(argv, new_argv, data) == -1)
+	{
+		free(new_argv);
 		return (argv);
+	}
+	ft_free_matrix(argv);
 	return (new_argv);
 }

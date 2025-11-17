@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/09 14:06:39 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/17 21:59:41 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,5 +154,10 @@ int	ft_finish_execution(pid_t *pids, t_cmd *cmd_list, t_data *data)
 	free(pids);
 	ft_free_cmd_list(cmd_list);
 	cmd_list = NULL;
+	if (data && data->argv)
+	{
+		ft_free_matrix(data->argv);
+		data->argv = NULL;
+	}
 	return (last_exit_status);
 }
