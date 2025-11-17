@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/08 02:13:08 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/17 23:14:49 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,18 @@ char	**ft_handle_env_expansion(char **argv, t_data *data)
 	new_argv = malloc(sizeof(char *) * (data->argc + 1));
 	if (!new_argv)
 		return (argv);
-	i = 0;
-	while (argv[i])
+	i = -1;
+	while (argv[++i])
 	{
-		new_argv[i] = ft_strdup("");
-		if (!new_argv[i] || !ft_process_arg(&new_argv[i], argv[i], data))
+		if (i > 0 && ft_strcmp(argv[i - 1], "<<") == 0)
+			new_argv[i] = ft_strdup(argv[i]);
+		else
+			new_argv[i] = ft_process_arg(argv[i], data);
+		if (!new_argv[i])
 		{
 			ft_free_matrix(new_argv);
 			return (argv);
 		}
-		i++;
 	}
 	new_argv[i] = NULL;
 	ft_free_matrix(argv);

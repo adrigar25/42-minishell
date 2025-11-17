@@ -6,43 +6,12 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/17 21:59:41 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/17 23:34:18 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
 
-/**
- * ENGLISH: Frees the memory allocated for the command list.
- *
- * SPANISH: Libera la memoria asignada para la lista de comandos.
- *
- * @param cmd_list   Pointer to the head of the command list. /
- *                   Puntero al inicio de la lista de comandos.
- */
-static void	ft_free_cmd_list(t_cmd *cmd_list)
-{
-	t_cmd	*tmp;
-
-	while (cmd_list)
-	{
-		tmp = cmd_list->next;
-		ft_free_matrix(cmd_list->argv);
-		free(cmd_list);
-		cmd_list = tmp;
-	}
-}
-
-/**
- * ENGLISH: Closes file descriptors for all commands in the list except standard
- * 			input/output.
- *
- * SPANISH: Cierra los descriptores de archivo de todos los comandos en la lista
- * 			excepto la entrada/salida estándar.
- *
- * @param cmd_list   Pointer to the head of the command list. /
- *                   Puntero al inicio de la lista de comandos.
- */
 static void	ft_close_fds(t_cmd *cmd_list)
 {
 	t_cmd	*current;
@@ -58,41 +27,43 @@ static void	ft_close_fds(t_cmd *cmd_list)
 	}
 }
 
-/**
- * ENGLISH: Waits for all child processes to finish and updates the last exit
- * 			status.
- *
- * SPANISH: Espera a que todos los procesos hijos terminen y actualiza el último
- * 			estado de salida.
- *
- * @param pids               Array of process IDs of the child processes. /
- *                           Array de IDs de proceso de los procesos hijos.
- * @param cmd_count         Number of commands (child processes). /
- *                           Número de comandos (procesos hijos).
- * @param last_exit_status  Pointer to store the last exit status. /
- *                           Puntero para almacenar el último estado de salida.
- */
-static void	ft_wait_for_children(pid_t *pids, int cmd_count,
-		int *last_exit_status)
+static void	ft_handle_signaled(int status, int *last_exit_status)
+{
+	int	sig;
+
+	sig = WTERMSIG(status);
+	*last_exit_status = 128 + sig;
+	if (sig == SIGQUIT)
+	{
+		if (WCOREDUMP(status))
+			ft_putstr_fd("Quit (core dumped)\n", 2);
+		else
+			ft_putstr_fd("Quit\n", 2);
+	}
+}
+
+static int	ft_check_already_waited(pid_t *pids, int cmd_count)
 {
 	int	i;
-	int	sig;
-	int	status;
-	int	executed_processes;
-	int	already_waited;
 
-	already_waited = 0;
 	i = 0;
 	while (i < cmd_count)
 	{
 		if (pids[i] == 0)
-		{
-			already_waited = 1;
-			break ;
-		}
+			return (1);
 		i++;
 	}
-	i = 0;
+	return (0);
+}
+
+static void	ft_wait_for_children(pid_t *pids, int cmd_count,
+		int *last_exit_status)
+{
+	int	i;
+	int	status;
+	int	already_waited;
+
+	already_waited = ft_check_already_waited(pids, cmd_count);
 	i = 0;
 	while (i < cmd_count)
 	{
@@ -104,24 +75,11 @@ static void	ft_wait_for_children(pid_t *pids, int cmd_count,
 				if (WIFEXITED(status))
 					*last_exit_status = WEXITSTATUS(status);
 				else if (WIFSIGNALED(status))
-				{
-					sig = WTERMSIG(status);
-					*last_exit_status = 128 + sig;
-					if (sig == SIGQUIT)
-					{
-						if (WCOREDUMP(status))
-							printf("Quit (core dumped)\n");
-						else
-							printf("Quit\n");
-					}
-				}
+					ft_handle_signaled(status, last_exit_status);
 			}
-			executed_processes = 1;
 		}
 		i++;
 	}
-	if (!executed_processes)
-		*last_exit_status = *last_exit_status;
 }
 
 /**
@@ -145,14 +103,23 @@ static void	ft_wait_for_children(pid_t *pids, int cmd_count,
  */
 int	ft_finish_execution(pid_t *pids, t_cmd *cmd_list, t_data *data)
 {
-	int	last_exit_status;
+	int		last_exit_status;
+	t_cmd	*current;
 
 	last_exit_status = data->last_exit_status;
 	ft_close_fds(cmd_list);
 	ft_wait_for_children(pids, data->cmd_count, &last_exit_status);
 	data->last_exit_status = last_exit_status;
 	free(pids);
-	ft_free_cmd_list(cmd_list);
+	current = cmd_list;
+	while (current)
+	{
+		if (current->infd != STDIN_FILENO)
+			close(current->infd);
+		if (current->outfd != STDOUT_FILENO)
+			close(current->outfd);
+		current = current->next;
+	}
 	cmd_list = NULL;
 	if (data && data->argv)
 	{

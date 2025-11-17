@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/17 21:59:40 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/17 23:04:39 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 /**
 
-	* ENGLISH: Counts the number of arguments in a NULL-terminated array of strings.
+	* ENGLISH: 	Counts the number of arguments
+	* 			in a NULL-terminated array of strings.
  *
  * SPANISH: Cuenta el número de argumentos en un arreglo de cadenas
  * 			terminado en NULL.
@@ -72,10 +73,12 @@ static void	ft_show_argv(char *title, char *prefix, char **argv, int argc)
  * ENGLISH: Displays the details of a linked list of command structures.
  *
 
-	* SPANISH: Muestra los detalles de una lista enlazada de estructuras de comando.
+	* SPANISH: 	Muestra los detalles de una lista enlazada de
+	*			estructuras de comando.
  *
- * @param cmd_list   The head of the linked list of command structures.
- *                   La cabeza de la lista enlazada de estructuras de comando.
+ * @param cmd_list  	The head of the linked list of command structures.
+ *                  	La cabeza de la lista enlazada de
+ * 						estructuras de comando.
  */
 static void	ft_show_cmd_list(t_cmd *cmd_list)
 {
@@ -107,7 +110,8 @@ static void	ft_show_cmd_list(t_cmd *cmd_list)
  *
  * @param argv           The original argument array received by the shell. /
 
-	*                       El arreglo original de argumentos recibido por el shell.
+	*                       El arreglo original de argumentos recibido
+	* 						por el shell.
  *
  * @param argc           The number of arguments in the original array. /
  *                       El número de argumentos en el arreglo original.

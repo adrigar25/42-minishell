@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_should_execute_bonus.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 16:19:59 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 17:10:31 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/17 23:43:02 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@
 int	ft_should_execute(t_cmd **current, t_data *data)
 {
 	if (!current || !data)
-		return (0);
+		return (SUCCESS);
 	if (((*current)->op == OP_OR && data->last_exit_status == EXIT_SUCCESS)
 		|| ((*current)->op == OP_AND && data->last_exit_status != EXIT_SUCCESS))
 	{
 		*current = (*current)->next;
-		return (1);
+		return (ERROR);
 	}
-	return (0);
+	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/17 21:43:04 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/18 00:05:56 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,45 +25,75 @@
  * @returns 0 on success, 1 on error. /
  *          0 en caso de éxito, 1 en caso de error.
  */
-int	ft_pwd(t_cmd cmd)
+static char	*get_pwd_from_env(t_data *data)
+{
+	char	*pwd_env;
+	char	*out;
+	int		len;
+
+	if (!data || !data->envp)
+		return (NULL);
+	pwd_env = ft_getenv("PWD", data->envp);
+	if (!pwd_env || pwd_env[0] != '/')
+		return (NULL);
+	len = ft_strlen(pwd_env);
+	out = malloc(len + 1);
+	if (!out)
+		return (NULL);
+	ft_strcpy(out, pwd_env);
+	return (out);
+}
+
+static char	*get_cwd_alloc(void)
 {
 	char	cwd[1024];
-	char	*output;
+	char	*out;
 	int		len;
-	char	*pwd_env;
 
-	pwd_env = NULL;
-	if (cmd.data && cmd.data->envp)
-		pwd_env = ft_getenv("PWD", cmd.data->envp);
-	if (pwd_env && pwd_env[0] == '/')
+	if (getcwd(cwd, sizeof(cwd)) == NULL)
+		return (NULL);
+	len = ft_strlen(cwd);
+	out = malloc(len + 1);
+	if (!out)
+		return (NULL);
+	ft_strcpy(out, cwd);
+	return (out);
+}
+
+static int	write_pwd_and_free(t_cmd cmd, char *pwd)
+{
+	char	*buf;
+	int		len;
+
+	if (!pwd)
+		return (1);
+	len = ft_strlen(pwd);
+	buf = malloc(len + 2);
+	if (!buf)
 	{
-		len = ft_strlen(pwd_env);
-		output = malloc(len + 2);
-		if (!output)
-			return (1);
-		ft_strcpy(output, pwd_env);
-		output[len] = '\n';
-		output[len + 1] = '\0';
-		write(cmd.outfd, output, len + 1);
-		free(output);
-		return (0);
+		free(pwd);
+		return (1);
 	}
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
-	{
-		len = ft_strlen(cwd);
-		output = malloc(len + 2);
-		if (!output)
-			return (1);
-		ft_strcpy(output, cwd);
-		output[len] = '\n';
-		output[len + 1] = '\0';
-		write(cmd.outfd, output, len + 1);
-		free(output);
-		return (0);
-	}
-	else
+	ft_strcpy(buf, pwd);
+	buf[len] = '\n';
+	buf[len + 1] = '\0';
+	write(cmd.outfd, buf, len + 1);
+	free(buf);
+	free(pwd);
+	return (0);
+}
+
+int	ft_pwd(t_cmd cmd)
+{
+	char	*pwd;
+
+	pwd = get_pwd_from_env(cmd.data);
+	if (!pwd)
+		pwd = get_cwd_alloc();
+	if (!pwd)
 	{
 		perror("minishell: pwd");
 		return (1);
 	}
+	return (write_pwd_and_free(cmd, pwd));
 }

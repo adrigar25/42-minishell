@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/17 21:59:37 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/17 22:55:52 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,30 +39,34 @@ static int	ft_count_cmds(t_cmd *cmd_list)
 }
 
 /**
- * ENGLISH: Processes the raw input string into a linked list of command
- *          structures.
- *          It handles splitting, syntax checking, environment variable
- *          expansion, wildcard expansion, and parsing into commands.
+ * ENGLISH: Processes the input string to create a command list.
+ *          This includes counting arguments, splitting input,
+ *          checking for syntax errors, handling environment variable expansion,
+ *          wildcard expansion (bonus feature), parsing the input into commands,
+ *          and optionally showing debug information.
  *
- * SPANISH: Procesa la cadena de entrada sin procesar en una lista enlazada de
- *          estructuras de comando. Maneja la división,
-	verificación de sintaxis,
- *          expansión de variables de entorno, expansión de comodines y análisis
- *          en comandos.
+ * SPANISH: Procesa la cadena de entrada para crear una lista de comandos.
+ *          Esto incluye contar argumentos, dividir la entrada,
+ *          comprobar errores de sintaxis, manejar la expansión de variables
+ *          de entorno, expansión de comodines (característica bonus),
+ *          analizar la entrada en comandos y opcionalmente mostrar
+ *          información de depuración.
  *
- * @param input The raw input string from the user. /
- *              La cadena de entrada sin procesar del usuario.
+ * @param input   The input command string. /
+ *                La cadena de comando de entrada.
  *
- * @param data  Pointer to the shell data structure. /
- *              Puntero a la estructura de datos del shell.
+ * @param data    Pointer to the data structure containing environment
+ *                and status info. /
+ *                Puntero a la estructura de datos que contiene información
+ *                del entorno y estado.
  *
- * @param debug Flag to enable debug output. /
- *              Bandera para habilitar la salida de depuración.
+ * @param debug   Flag to indicate if debug information should be shown. /
+ *                Indicador para indicar si se debe mostrar información
+ *                de depuración.
  *
- * @returns A pointer to the head of the linked list of command structures,
- *          or NULL on failure. /
- *          Un puntero a la cabeza de la lista enlazada de estructuras de
- *          comando, o NULL en caso de error.
+ * @returns A pointer to the head of the command list, or NULL on error. /
+ *          Un puntero al inicio de la lista de comandos, o NULL
+ *          en caso de error.
  */
 t_cmd	*ft_process_input(char *input, t_data *data, int debug)
 {
@@ -85,7 +89,7 @@ t_cmd	*ft_process_input(char *input, t_data *data, int debug)
 	final_argv = ft_handle_wildcards(expanded_argv, data);
 	data->argv = final_argv;
 	cmd_list = ft_parse_input(data);
-	if (debug && cmd_list)
+	if (debug)
 		ft_show_debug(cmd_list);
 	data->cmd_count = ft_count_cmds(cmd_list);
 	return (cmd_list);

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 17:16:33 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/08 02:11:54 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/18 00:02:11 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,10 @@ static char	*ft_get_target_dir(char **argv, char **envp)
 int	ft_cd(char **argv, char ***envp)
 {
 	int		prev;
-	char	*oldpwd;
 	char	*target_dir;
 
 	target_dir = NULL;
 	prev = 0;
-	if (!argv || !envp)
-		return (1);
 	if (argv[1] && ft_strlen(argv[1]) == 1 && ft_strcmp(argv[1], "-") == 0)
 		prev = 1;
 	if (prev)
@@ -81,7 +78,5 @@ int	ft_cd(char **argv, char ***envp)
 	}
 	else
 		return (ft_handle_error(11, EXIT_FAILURE, target_dir, strerror(errno)));
-	oldpwd = ft_getenv("PWD", *envp);
-	ft_update_pwd_env(oldpwd, target_dir, envp);
-	return (0);
+	return (ft_update_pwd_env(ft_getenv("PWD", *envp), target_dir, envp), 0);
 }

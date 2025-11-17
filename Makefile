@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 18:48:28 by adriescr          #+#    #+#              #
-#    Updated: 2025/11/17 19:59:56 by agarcia          ###   ########.fr        #
+#    Updated: 2025/11/18 00:10:05 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -109,6 +109,7 @@ MINISHELL_SRCS = \
 
 MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/ft_minishell_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/ft_cleanup_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/ft_msg_start_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/ft_search_file/ft_is_dot_or_dotdot_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/ft_search_file/ft_search_file_bonus.c \
@@ -128,6 +129,7 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_parse_input_op_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_parse_input_token_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_remove_quotes_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_has_closing_quote_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/wildcards/ft_handle_wildcards_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/wildcards/ft_count_matches_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/wildcards/ft_expand_wildcard_bonus.c \
@@ -144,6 +146,7 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_create_env_var_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_update_existing_env_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_update_pwd_env_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/env/ft_normalize_path_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/redirections/ft_handle_infile_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/redirections/ft_handle_outfile_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_exec_bin_bonus.c \

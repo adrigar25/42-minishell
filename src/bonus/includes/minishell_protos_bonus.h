@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 23:55:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/17 22:40:10 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/18 00:11:18 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*ft_build_path(const char *dir, const char *entry);
 int		ft_copy_literal(char **dst, char *arg, int start, int end);
 int		ft_expand_exit_status(char **dst, int *j, t_data *data);
 int		ft_expand_env_var(char **dst, char *arg, int *j, t_data *data);
-int		ft_process_arg(char **dst, char *arg, t_data *data);
+char	*ft_process_arg(char *arg, t_data *data);
 char	**ft_handle_env_expansion(char **argv, t_data *data);
 
 /* Execution */
@@ -72,6 +72,7 @@ int		ft_process_op(t_cmd **current_cmd, char *arg, int *cmd_index,
 			t_data *data);
 int		ft_process_token(t_cmd **current_cmd, char **argv, int i,
 			int *cmd_index);
+int		ft_has_closing_quote(const char *s, char quote);
 
 /* ENV */
 char	*ft_create_env_var(char *name, char *value);
@@ -81,6 +82,7 @@ char	**ft_realloc_envp(char **envp, int new_size);
 int		ft_setenv(char *name, char *value, char ***envp);
 int		ft_update_existing_env(char *name, char *value, char **envp);
 void	ft_update_pwd_env(char *oldpwd, char *target_dir, char ***envp);
+char	*ft_normalize_path(const char *path);
 
 /* Debug */
 void	ft_show_debug(t_cmd *cmd_list);
@@ -117,7 +119,7 @@ int		ft_handle_builtins(t_cmd *cmd, t_data **data, t_cmd *cmd_list,
 int		ft_is_dot_or_dotdot(const char *name);
 
 /* Heredoc */
-int		ft_heredoc(const char *delimiter, t_data *data, int expand);
+int		ft_heredoc(const char *delimiter, t_data *data);
 
 /* Error handling */
 int		ft_handle_error(int error_code, int exit_code, char *msg, char *msg2);

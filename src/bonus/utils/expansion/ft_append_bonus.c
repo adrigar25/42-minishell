@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 00:51:17 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/08 02:12:54 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/17 23:14:50 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ int	ft_append(char **dst, const char *src)
 	char	*temp;
 
 	if (!dst || !src)
-		return (0);
+		return (ERROR);
 	temp = *dst;
 	*dst = ft_strjoin(temp, (char *)src);
 	free(temp);
 	if (!*dst)
-		return (0);
-	return (1);
+		return (ERROR);
+	return (SUCCESS);
 }
