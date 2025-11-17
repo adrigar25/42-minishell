@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:59:15 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/16 01:31:55 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/17 15:44:11 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "includes/minishell_common.h"
 # include "includes/minishell_macros.h"
 # include "includes/minishell_types.h"
+/* Functions minishell / Funciones de la minishell */
 # include "includes/minishell_protos.h"
 
 #endif /* MINISHELL_H */
