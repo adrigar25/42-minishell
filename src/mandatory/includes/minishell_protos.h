@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_protos.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 01:25:02 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/17 15:43:11 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/17 20:00:09 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,6 @@ int		ft_is_dot_or_dotdot(const char *name);
 
 /* Heredoc */
 int		ft_heredoc(const char *delimiter, t_data *data);
-int		ft_process_heredoc_line(int write_fd, char *line, const char *delimiter,
-			t_data *data);
 
 /* Error handling */
 int		ft_handle_error(int error_code, int exit_code, char *msg, char *msg2);

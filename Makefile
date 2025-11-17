@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 18:48:28 by adriescr          #+#    #+#              #
-#    Updated: 2025/11/16 20:38:37 by agarcia          ###   ########.fr        #
+#    Updated: 2025/11/17 19:59:56 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -85,7 +85,6 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_finish_execution.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_execute_cmds.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/heredoc/ft_heredoc.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/heredoc/ft_process_heredoc_line.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_is_builtin.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_setup_child_io.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/execution/ft_exec_builtin.c \
