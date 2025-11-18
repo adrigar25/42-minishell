@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 23:55:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/17 22:40:08 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/18 09:32:43 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@
 // Error messages
 # define ERROR_COMMAND_NOT_FOUND "minishell: %s: command not found\n"
 # define ERROR_PERMISSION_DENIED "minishell: Permission denied\n"
-# define ERROR_IS_A_DIRECTORY "minishell: %s: is a directory\n"
+# define ERROR_IS_A_DIRECTORY "minishell: %s: Is a directory\n"
 # define ERROR_NO_SUCH_FILE "minishell: %s: No such file or directory\n"
 # define ERROR_SYNTAX \
 	"minishell: \

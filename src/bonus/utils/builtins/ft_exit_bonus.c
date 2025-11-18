@@ -83,7 +83,7 @@ int	ft_exit(t_cmd *cmd)
 	else if (array[0] > 2)
 		exit(ft_handle_error(7, EXIT_FAILURE, NULL, NULL));
 	else if (!ft_is_numeric(args[1]))
-		exit(ft_handle_error(14, 255, NULL, NULL));
+		exit(ft_handle_error(14, 2, NULL, NULL));
 	else
 		exit((int)(ft_atoll(args[1]) % 256));
 	return (0);

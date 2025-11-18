@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/17 23:34:18 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/18 11:21:03 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,23 +103,13 @@ static void	ft_wait_for_children(pid_t *pids, int cmd_count,
  */
 int	ft_finish_execution(pid_t *pids, t_cmd *cmd_list, t_data *data)
 {
-	int		last_exit_status;
-	t_cmd	*current;
+	int	last_exit_status;
 
 	last_exit_status = data->last_exit_status;
 	ft_close_fds(cmd_list);
 	ft_wait_for_children(pids, data->cmd_count, &last_exit_status);
 	data->last_exit_status = last_exit_status;
 	free(pids);
-	current = cmd_list;
-	while (current)
-	{
-		if (current->infd != STDIN_FILENO)
-			close(current->infd);
-		if (current->outfd != STDOUT_FILENO)
-			close(current->outfd);
-		current = current->next;
-	}
 	cmd_list = NULL;
 	if (data && data->argv)
 	{

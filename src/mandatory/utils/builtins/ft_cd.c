@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 17:16:33 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/11 16:14:48 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/18 10:11:29 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ int	ft_cd(char **argv, char ***envp)
 	char	*target_dir;
 
 	target_dir = NULL;
-	prev = 0;
-	if (argv[1] && ft_strlen(argv[1]) == 1 && ft_strcmp(argv[1], "-") == 0)
-		prev = 1;
+	if (argv[1] && argv[2])
+		return (ft_handle_error(7, EXIT_FAILURE, NULL, NULL));
+	prev = (argv[1] && ft_strlen(argv[1]) == 1 && ft_strcmp(argv[1], "-") == 0);
 	if (prev)
 		target_dir = ft_getenv("OLDPWD", *envp);
 	else

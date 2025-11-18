@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/18 01:44:54 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/18 11:30:26 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,20 @@ static char	*read_interactive(t_data *data)
 	return (input);
 }
 
-static char	*read_noninteractive(void)
-{
-	char	*input;
-	size_t	len;
+// static char	*read_noninteractive(void)
+// {
+// 	char	*input;
+// 	size_t	len;
 
-	input = ft_get_next_line(STDIN_FILENO);
-	if (input)
-	{
-		len = ft_strlen(input);
-		if (len > 0 && input[len - 1] == '\n')
-			input[len - 1] = '\0';
-	}
-	return (input);
-}
+// 	input = ft_get_next_line(STDIN_FILENO);
+// 	if (input)
+// 	{
+// 		len = ft_strlen(input);
+// 		if (len > 0 && input[len - 1] == '\n')
+// 			input[len - 1] = '\0';
+// 	}
+// 	return (input);
+// }
 
 int	ft_read_input(char **input, t_data *data)
 {
@@ -45,7 +45,7 @@ int	ft_read_input(char **input, t_data *data)
 		if (data->isatty)
 			*input = read_interactive(data);
 		else
-			*input = read_noninteractive();
+			*input = readline("minishell> ");
 		if (!*input)
 			return (0);
 		if (**input)
