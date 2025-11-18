@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 23:55:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/17 22:40:09 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/18 01:28:16 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,19 @@ typedef struct s_cmd
 	t_data			*data;
 	struct s_cmd	*next;
 }					t_cmd;
+
+/**
+ * ENGLISH: Data structure for wildcard expansion operations.
+ *
+ * SPANISH: Estructura de datos para operaciones de expansión de comodines.
+ */
+typedef struct s_expand_data
+{
+	char			**matches;
+	const char		*dirpath;
+	const char		*base_pattern;
+	int				max_matches;
+	int				count;
+}					t_expand_data;
 
 #endif /* MINISHELL_TYPES_BONUS_H */

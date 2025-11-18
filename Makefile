@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 18:48:28 by adriescr          #+#    #+#              #
-#    Updated: 2025/11/18 00:10:05 by agarcia          ###   ########.fr        #
+#    Updated: 2025/11/18 01:31:20 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -131,6 +131,7 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_remove_quotes_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_has_closing_quote_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/wildcards/ft_handle_wildcards_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/wildcards/ft_wildcard_helpers_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/wildcards/ft_count_matches_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/wildcards/ft_expand_wildcard_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/wildcards/ft_has_wildcards_bonus.c \

@@ -6,117 +6,105 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 01:42:17 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/09 14:14:54 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/18 01:33:36 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
 
-/**
- * ENGLISH: Expands a wildcard pattern by finding matching files in the current
- *          directory and storing them in the provided matches array.
- *
- * SPANISH: Expande un patrón comodín buscando archivos coincidentes en el
- *          directorio actual y almacenándolos en el arreglo de coincidencias
- *          proporcionado.
- *
- * @param pattern      The wildcard pattern to match files against. /
- *                     El patrón comodín para coincidir con los archivos.
- *
- * @param matches      An array to store the matching file names. /
- *                     Un arreglo para almacenar los nombres de archivos
- *                     coincidentes.
- *
- * @param max_matches  The maximum number of matches to store in the array. /
- *                     El número máximo de coincidencias para almacenar en el
- *                     arreglo.
- *
- * @returns The number of matches found and stored in the array. /
- *          El número de coincidencias encontradas y almacenadas en el arreglo.
- */
-int	ft_expand_wildcard(const char *pattern, char **matches, int max_matches)
+static const char	*find_last_slash(const char *pattern)
 {
-	DIR				*dir;
-	struct dirent	*entry;
-	int				count;
-	char			*dirpath;
-	const char		*base_pattern;
-	size_t			plen;
-	const char		*slash = NULL;
-	char			*tmp;
+	size_t	plen;
 
-	if (!pattern)
-		return (0);
+	plen = ft_strlen(pattern);
+	while (plen > 0)
 	{
-		plen = ft_strlen(pattern);
-		while (plen > 0)
-		{
-			if (pattern[plen - 1] == '/')
-			{
-				slash = pattern + (plen - 1);
-				break ;
-			}
-			plen--;
-		}
-		if (slash)
-		{
-			dirpath = ft_substr((char *)pattern, 0, (size_t)(slash - pattern));
-			base_pattern = slash + 1;
-		}
-		else
-		{
-			dirpath = ft_strdup(".");
-			base_pattern = pattern;
-		}
+		if (pattern[plen - 1] == '/')
+			return (pattern + (plen - 1));
+		plen--;
 	}
-	dir = opendir(dirpath);
-	if (!dir)
+	return (NULL);
+}
+
+static void	get_dir_and_pattern(const char *pattern, char **dirpath,
+		const char **base_pattern)
+{
+	const char	*slash;
+
+	slash = find_last_slash(pattern);
+	if (slash)
 	{
-		free(dirpath);
-		return (0);
+		*dirpath = ft_substr((char *)pattern, 0, (size_t)(slash - pattern));
+		*base_pattern = slash + 1;
 	}
-	count = 0;
+	else
+	{
+		*dirpath = ft_strdup(".");
+		*base_pattern = pattern;
+	}
+}
+
+static char	*build_path(const char *dirpath, const char *name)
+{
+	char	*tmp;
+	char	*result;
+
+	if (ft_strcmp(dirpath, ".") == 0)
+		return (ft_strdup((char *)name));
+	tmp = ft_strjoin((char *)dirpath, "/");
+	if (!tmp)
+		return (NULL);
+	result = ft_strjoin(tmp, (char *)name);
+	free(tmp);
+	return (result);
+}
+
+static int	expand_loop(DIR *dir, t_expand_data *data)
+{
+	struct dirent	*entry;
+	int				result;
+
+	data->count = 0;
 	entry = readdir(dir);
-	while (entry && count < max_matches)
+	while (entry && data->count < data->max_matches)
 	{
-		if ((entry->d_name[0] != '.' || (base_pattern
-					&& base_pattern[0] == '.'))
-			&& ft_match_pattern(base_pattern, entry->d_name))
+		if ((entry->d_name[0] != '.' || (data->base_pattern
+					&& data->base_pattern[0] == '.'))
+			&& ft_match_pattern(data->base_pattern, entry->d_name))
 		{
-			if (ft_strcmp(dirpath, ".") == 0)
-				matches[count] = ft_strdup(entry->d_name);
+			data->matches[data->count] = build_path(data->dirpath,
+					entry->d_name);
+			if (!data->matches[data->count])
+				result = -1;
 			else
-			{
-				matches[count] = ft_strjoin(dirpath, "/");
-				if (!matches[count])
-				{
-					closedir(dir);
-					free(dirpath);
-					return (count);
-				}
-				{
-					tmp = matches[count];
-					matches[count] = ft_strjoin(tmp, entry->d_name);
-					free(tmp);
-					if (!matches[count])
-					{
-						closedir(dir);
-						free(dirpath);
-						return (count);
-					}
-				}
-			}
-			if (!matches[count])
-			{
-				closedir(dir);
-				free(dirpath);
-				return (count);
-			}
-			count++;
+				result = data->count + 1;
+			if (result == -1)
+				return (data->count);
+			data->count = result;
 		}
 		entry = readdir(dir);
 	}
+	return (data->count);
+}
+
+int	ft_expand_wildcard(const char *pattern, char **matches, int max_matches)
+{
+	DIR				*dir;
+	t_expand_data	data;
+
+	if (!pattern)
+		return (0);
+	get_dir_and_pattern(pattern, (char **)&data.dirpath, &data.base_pattern);
+	dir = opendir(data.dirpath);
+	if (!dir)
+	{
+		free((char *)data.dirpath);
+		return (0);
+	}
+	data.matches = matches;
+	data.max_matches = max_matches;
+	data.count = expand_loop(dir, &data);
 	closedir(dir);
-	free(dirpath);
-	return (count);
+	free((char *)data.dirpath);
+	return (data.count);
 }

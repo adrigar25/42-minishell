@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 23:55:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/18 00:11:18 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/18 01:35:31 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,10 @@ int		ft_expand_wildcard(const char *pattern, char **matches,
 			int max_matches);
 void	ft_sort_strings(char **arr, int size);
 char	**ft_handle_wildcards(char **argv, t_data *data);
+int		is_prev_redir(char **a, int idx);
+int		is_prev_heredoc(char **a, int idx);
+int		count_total_args(char **argv);
+int		ft_process_wildcard(char *arg, char **new_argv, int *new_argc);
 
 /* Signals */
 void	sigint_handler(int sig);
