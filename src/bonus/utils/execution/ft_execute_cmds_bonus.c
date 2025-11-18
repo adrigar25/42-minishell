@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 00:32:13 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/18 00:14:51 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/18 00:35:18 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,22 +83,21 @@ int	ft_execute_cmds(t_cmd *cmd_list, t_data **data)
 	pid_t	*pids;
 
 	if (!cmd_list || !data || !*data)
-		return (ERROR);
+		return ((*data)->last_exit_status);
 	pids = calloc((*data)->cmd_count, sizeof(pid_t));
 	if (!pids)
 		return (ERROR);
 	current = cmd_list;
 	while (current)
 	{
-		if (ft_should_execute(&current, *data) == SUCCESS)
-		{
-			if (ft_can_exec_builtin_direct(current))
-				(*data)->last_exit_status = ft_exec_builtin(current, data);
-			else if (ft_fork_exec(current, cmd_list, data, pids) == ERROR)
-				break ;
-			if (!current->next || current->next->op != OP_PIPE)
-				ft_wait_last(data, pids, current->index);
-		}
+		if (ft_should_execute(&current, *data) == ERROR)
+			continue ;
+		if (ft_can_exec_builtin_direct(current))
+			(*data)->last_exit_status = ft_exec_builtin(current, data);
+		else if (ft_fork_exec(current, cmd_list, data, pids) == ERROR)
+			break ;
+		if (!current->next || current->next->op != OP_PIPE)
+			ft_wait_last(data, pids, current->index);
 		current = current->next;
 	}
 	ft_finish_execution(pids, cmd_list, *data);

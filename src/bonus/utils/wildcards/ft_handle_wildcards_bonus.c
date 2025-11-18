@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 00:36:44 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/18 00:18:38 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/18 01:18:55 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /* helper: returns 1 if prev token is a redirection operator */
 static int	is_prev_redir(char **a, int idx)
 {
-	if (idx <= 0)
+	if (idx == 0)
 		return (0);
 	if (ft_strcmp(a[idx - 1], "<") == 0)
 		return (1);
@@ -23,6 +23,13 @@ static int	is_prev_redir(char **a, int idx)
 		return (1);
 	if (ft_strcmp(a[idx - 1], ">>") == 0)
 		return (1);
+	return (0);
+}
+
+static int	is_prev_heredoc(char **a, int idx)
+{
+	if (idx == 0)
+		return (0);
 	if (ft_strcmp(a[idx - 1], "<<") == 0)
 		return (1);
 	return (0);
@@ -126,30 +133,31 @@ static int	ft_process_wildcard(char *arg, char **new_argv, int *new_argc)
 	return (0);
 }
 
-static int	handle_redir_wildcard(char *arg, char **new_argv, int *new_argc)
+static int	handle_redir_wildcard(char *arg, char **new_argv, int *new_argc,
+		t_data *data)
 {
 	int		matches;
 	char	**temp_matches;
-	int		t;
 
 	matches = ft_count_matches(arg);
-	if (matches == 1)
+	if (matches != 1)
 	{
-		temp_matches = malloc(sizeof(char *) * matches);
-		if (!temp_matches)
-			return (-1);
-		matches = ft_expand_wildcard(arg, temp_matches, matches);
-		if (matches == 1)
-			new_argv[(*new_argc)++] = temp_matches[0];
-		if (matches > 1)
+		if (matches != 0)
 		{
-			t = -1;
-			while (t++ < matches)
-				free(temp_matches[t]);
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(arg, 2);
+			ft_putstr_fd(": ambiguous redirect\n", 2);
+			data->last_exit_status = 1;
 		}
-		free(temp_matches);
+		new_argv[(*new_argc)++] = ft_strdup(arg);
+		return (0);
 	}
-	new_argv[(*new_argc)++] = ft_strdup(arg);
+	temp_matches = malloc(sizeof(char *) * matches);
+	if (!temp_matches)
+		return (-1);
+	ft_expand_wildcard(arg, temp_matches, matches);
+	new_argv[(*new_argc)++] = temp_matches[0];
+	free(temp_matches);
 	return (0);
 }
 
@@ -162,19 +170,14 @@ static int	expand_and_copy_args(char **argv, char **new_argv, t_data *data)
 	new_argc = 0;
 	while (argv[i])
 	{
-		if (ft_has_wildcards(argv[i]))
+		if (ft_has_wildcards(argv[i]) && !is_prev_heredoc(argv, i))
 		{
-			if (is_prev_redir(argv, i))
+			if ((is_prev_redir(argv, i) && handle_redir_wildcard(argv[i],
+						new_argv, &new_argc, data) == -1)
+				|| (!is_prev_redir(argv, i) && ft_process_wildcard(argv[i],
+						new_argv, &new_argc) == -1))
 			{
-				if (handle_redir_wildcard(argv[i], new_argv, &new_argc) == -1)
-				{
-					ft_free_matrix_size(new_argv, new_argc);
-					return (-1);
-				}
-			}
-			else if (ft_process_wildcard(argv[i], new_argv, &new_argc) == -1)
-			{
-				ft_free_matrix_size(new_argv, new_argc);
+				ft_free_matrix(new_argv);
 				return (-1);
 			}
 		}
@@ -188,30 +191,32 @@ static int	expand_and_copy_args(char **argv, char **new_argv, t_data *data)
 }
 
 /**
- * ENGLISH: Handles wildcard expansion in the given argument array.
- *          It expands arguments containing wildcards into matching filenames
- *          from the current directory, while preserving heredoc delimiters.
- *
- * SPANISH: Maneja la expansión de comodines en el arreglo de argumentos dado.
- *
- *          Expande los argumentos que contienen
- *			comodines en nombres de archivos coincidentes del
- *			directorio actual, preservando
- * 			os delimitadoresheredoc.
- *
- * @param argv  The original argument array. /
- *              El arreglo de argumentos original.
- *
- * @param data  Pointer to the shell data structure. /
- *              Puntero a la estructura de datos del shell.
- *
- * @returns A new argument array with wildcards expanded, or the original array
- *          on failure. The caller is responsible for freeing the returned
- *          array. /
- *          Un nuevo arreglo de argumentos con los comodines expandidos,
- *          o el arreglo original en caso de fallo. El llamador es responsable
- *          de liberar el arreglo retornado.
- */
+	* ENGLISH: Handles wildcard expansion in the given argument array.
+	*          It expands arguments containing wildcards into matching filenames
+	*          from the current directory,
+		while preserving heredoc delimiters.
+	*
+	* SPANISH: Maneja la expansión de comodines en el arreglo de argumentos dado.
+	*
+	*          Expande los argumentos que contienen
+	*			comodines en nombres de archivos coincidentes del
+	*			directorio actual, preservando
+	* 			os delimitadoresheredoc.
+	*
+	* @param argv  The original argument array. /
+	*              El arreglo de argumentos original.
+	*
+	* @param data  Pointer to the shell data structure. /
+	*              Puntero a la estructura de datos del shell.
+	*
+	* @returns A new argument array with wildcards expanded,
+		or the original array
+	*          on failure. The caller is responsible for freeing the returned
+	*          array. /
+	*          Un nuevo arreglo de argumentos con los comodines expandidos,
+	*          o el arreglo original en caso de fallo. El llamador es responsable
+	*          de liberar el arreglo retornado.
+	*/
 char	**ft_handle_wildcards(char **argv, t_data *data)
 {
 	int		total_args;

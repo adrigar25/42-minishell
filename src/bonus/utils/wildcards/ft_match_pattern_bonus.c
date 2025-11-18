@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_match_pattern_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 01:46:11 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/29 17:05:45 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/18 01:22:55 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,32 +37,36 @@
  */
 int	ft_match_pattern(const char *pattern, const char *filename)
 {
-	const char	*p = pattern;
-	const char	*s = filename;
-	const char	*star = NULL;
-	const char	*ss = NULL;
+	const char	*pat;
+	const char	*str;
+	const char	*last_star;
+	const char	*str_backup;
 
-	while (*s)
+	pat = pattern;
+	str = filename;
+	last_star = NULL;
+	str_backup = NULL;
+	while (*str)
 	{
-		if (*p == '?' || *p == *s)
+		if (*pat == '?' || *pat == *str)
 		{
-			p++;
-			s++;
+			pat++;
+			str++;
 		}
-		else if (*p == '*')
+		else if (*pat == '*')
 		{
-			star = p++;
-			ss = s;
+			last_star = pat++;
+			str_backup = str;
 		}
-		else if (star)
+		else if (last_star)
 		{
-			p = star + 1;
-			s = ++ss;
+			pat = last_star + 1;
+			str = ++str_backup;
 		}
 		else
 			return (0);
 	}
-	while (*p == '*')
-		p++;
-	return (*p == '\0');
+	while (*pat == '*')
+		pat++;
+	return (*pat == '\0');
 }

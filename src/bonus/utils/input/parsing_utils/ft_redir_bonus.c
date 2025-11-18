@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 20:29:05 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/18 00:04:58 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/18 01:06:34 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,13 @@ int	ft_redir(t_cmd *cmd, char **argv, int i)
 		clean_arg = argv[i + 1];
 	if (cmd->has_error == 1 && ft_strcmp(argv[i], "<<") != 0)
 	{
+		ft_clean_buffer(clean_arg, argv, i);
+		return (i + 1);
+	}
+	if (ft_strcmp(clean_arg, "*") == 0 && cmd->data->last_exit_status == 1
+		&& ft_strcmp(argv[i], "<<") != 0)
+	{
+		cmd->has_error = 1;
 		ft_clean_buffer(clean_arg, argv, i);
 		return (i + 1);
 	}
