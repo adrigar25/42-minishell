@@ -1,64 +1,96 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_heredoc.c                                :+:      :+:    :+:   */
+/*   ft_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 12:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 18:05:39 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/18 17:42:14 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <readline/history.h>
+#include <readline/readline.h>
 
-int	ft_process_heredoc_line(int write_fd, char *line, const char *delimiter,
-		t_data *data)
+static int	hdoc_process(int fd, char *line, const char *del, t_data *data)
 {
-	char	*expanded;
-	int		has_nl;
+	char	*exp;
+	int		nl;
 
-	has_nl = (line[ft_strlen(line) - 1] == '\n');
-	if (ft_strncmp(line, delimiter, ft_strlen(line) - has_nl) == 0
-		&& ft_strlen(line) - has_nl == ft_strlen(delimiter))
+	nl = (line[ft_strlen(line) - 1] == '\n');
+	if (!ft_strncmp(line, del, ft_strlen(line) - nl) && ft_strlen(line)
+		- nl == ft_strlen(del))
 	{
 		free(line);
 		return (1);
 	}
-	expanded = ft_process_arg(line, data);
-	if (!expanded)
-		return (-1);
-	write(write_fd, expanded, ft_strlen(expanded));
-	free(expanded);
-	free(line);
-	return (0);
+	exp = ft_process_arg(line, data);
+	if (!exp)
+		return (free(line), -1);
+	write(fd, exp, ft_strlen(exp));
+	write(fd, "\n", 1);
+	free(exp);
+	return (free(line), 0);
 }
 
-static int	ft_read_heredoc_loop(int write_fd, const char *delimiter,
-		t_data *data)
+static int	hdoc_loop(int fd, const char *del, t_data *data)
 {
 	char	*line;
 
 	while (1)
 	{
-		if (isatty(STDIN_FILENO))
-			write(1, HEREDOC_PROMPT, ft_strlen(HEREDOC_PROMPT));
-		line = ft_get_next_line(STDIN_FILENO);
+		line = readline(HEREDOC_PROMPT);
 		if (!line)
-			break ;
-		if (ft_process_heredoc_line(write_fd, line, delimiter, data) != 0)
+			return (-1);
+		if (hdoc_process(fd, line, del, data) != 0)
 			break ;
 	}
 	return (0);
 }
 
-int	ft_heredoc(const char *delimiter, t_data *data)
+static void	hdoc_child(int fd, const char *del, t_data *data)
 {
-	int	pipefd[2];
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	hdoc_loop(fd, del, data);
+	close(fd);
+	_exit(0);
+}
+
+static int	hdoc_parent(pid_t pid, int rd, int wr, t_data *data)
+{
+	int	status;
+
+	close(wr);
+	waitpid(pid, &status, 0);
+	ft_init_signals();
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	{
+		close(rd);
+		write(1, "\n", 1);
+		data->last_exit_status = 130;
+		return (-1);
+	}
+	return (rd);
+}
+
+int	ft_heredoc(const char *del, t_data *data)
+{
+	int		pipefd[2];
+	pid_t	pid;
 
 	if (pipe(pipefd) == -1)
 		return (-1);
-	ft_read_heredoc_loop(pipefd[1], delimiter, data);
-	close(pipefd[1]);
-	return (pipefd[0]);
+	signal(SIGINT, SIG_IGN);
+	pid = fork();
+	if (pid < 0)
+		return (close(pipefd[0]), close(pipefd[1]), -1);
+	if (pid == 0)
+	{
+		close(pipefd[0]);
+		hdoc_child(pipefd[1], del, data);
+	}
+	return (hdoc_parent(pid, pipefd[0], pipefd[1], data));
 }

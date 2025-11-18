@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 18:57:27 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/16 22:22:42 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/18 16:46:44 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	ft_process_segment(t_cmd **current_cmd, t_data *data, int *i,
 				return (ERROR);
 			*i = ret;
 		}
-		else
+		else if (data->argv[*i] && data->argv[*i][0] != '\0')
 			ft_add_arg_to_cmd(*current_cmd, ft_remove_quotes(data->argv[*i]));
 	}
 	(*i)++;
