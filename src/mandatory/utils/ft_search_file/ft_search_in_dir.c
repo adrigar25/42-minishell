@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_search_in_dir.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:26:48 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/22 16:13:01 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/19 20:02:58 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static char	*search_file_in_entries(DIR *d, const char *dir,
  *          La ruta completa al archivo si se encuentra, o NULL si
  *          no se encuentra.
  */
-char	*ft_search_in_dir(const char *dir, const char *filename)
+char	*ft_search_in_dir(const char *dir, const char *filename, char **envp)
 {
 	DIR		*d;
 	char	*result;
@@ -88,6 +88,6 @@ char	*ft_search_in_dir(const char *dir, const char *filename)
 	result = search_file_in_entries(d, dir, filename);
 	closedir(d);
 	if (!result)
-		result = ft_search_in_subdirs(dir, filename);
+		result = ft_search_in_subdirs(dir, filename, envp);
 	return (result);
 }

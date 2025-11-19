@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_msg_start.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 20:58:40 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/22 14:59:44 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/19 20:01:07 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@
  * @returns Always returns 0. /
  *          Siempre retorna 0.
  */
-int	ft_msg_start(void)
+int	ft_msg_start(char **envp)
 {
 	char	*welcome_msg;
 
-	welcome_msg = ft_search_file(NULL, "welcome.txt");
+	welcome_msg = ft_search_file(NULL, "welcome.txt", envp);
 	ft_putstr("\x1B" "c");
 	if (welcome_msg)
 	{

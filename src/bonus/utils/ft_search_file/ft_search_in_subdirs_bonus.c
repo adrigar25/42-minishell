@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_search_in_subdirs_bonus.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:24:06 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/28 18:09:27 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/19 19:59:49 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 	o NULL si no se encuentra.
  */
 static char	*ft_search_in_subdir_utils(const char *dir, const char *entry_name,
-		const char *filename)
+		const char *filename, char **envp)
 {
 	char	*sub_path;
 	char	*result;
@@ -42,7 +42,7 @@ static char	*ft_search_in_subdir_utils(const char *dir, const char *entry_name,
 	if (subdir)
 	{
 		closedir(subdir);
-		result = ft_search_file(sub_path, filename);
+		result = ft_search_file(sub_path, filename, envp);
 	}
 	free(sub_path);
 	return (result);
@@ -68,7 +68,7 @@ static char	*ft_search_in_subdir_utils(const char *dir, const char *entry_name,
  *          La ruta completa al archivo si se encuentra,
 	o NULL si no se encuentra.
  */
-static char	*ft_search_entries(DIR *d, const char *dir, const char *filename)
+static char	*ft_search_entries(DIR *d, const char *dir, const char *filename, char **envp)
 {
 	struct dirent	*entry;
 	char			*result;
@@ -82,7 +82,7 @@ static char	*ft_search_entries(DIR *d, const char *dir, const char *filename)
 			entry = readdir(d);
 			continue ;
 		}
-		result = ft_search_in_subdir_utils(dir, entry->d_name, filename);
+		result = ft_search_in_subdir_utils(dir, entry->d_name, filename, envp);
 		if (result)
 			break ;
 		entry = readdir(d);
@@ -107,7 +107,7 @@ static char	*ft_search_entries(DIR *d, const char *dir, const char *filename)
  *          La ruta completa al archivo si se encuentra,
 	o NULL si no se encuentra.
  */
-char	*ft_search_in_subdirs(const char *dir, const char *filename)
+char	*ft_search_in_subdirs(const char *dir, const char *filename, char **envp)
 {
 	DIR		*d;
 	char	*result;
@@ -116,7 +116,7 @@ char	*ft_search_in_subdirs(const char *dir, const char *filename)
 	d = opendir(dir);
 	if (!d)
 		return (NULL);
-	result = ft_search_entries(d, dir, filename);
+	result = ft_search_entries(d, dir, filename, envp);
 	closedir(d);
 	return (result);
 }

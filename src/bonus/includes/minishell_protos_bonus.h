@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 23:55:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/19 19:02:01 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/19 20:04:56 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ int		ft_minishell(char **envp, int debug);
 void	ft_cleanup(t_data *data);
 
 /* Search */
-char	*ft_search_file(const char *dir, const char *filename);
-char	*ft_search_in_subdirs(const char *dir, const char *filename);
-char	*ft_search_in_dir(const char *dir, const char *filename);
+char	*ft_search_file(const char *dir, const char *filename, char **envp);
+char	*ft_search_in_subdirs(const char *dir, const char *filename, char **envp);
+char	*ft_search_in_dir(const char *dir, const char *filename, char **envp);
 char	*ft_build_path(const char *dir, const char *entry);
 
 /* Expansion */
@@ -45,7 +45,7 @@ char	*ft_get_directory_path(char **envp);
 char	*ft_generate_prompt(char **envp);
 
 /* Init */
-int		ft_msg_start(void);
+int		ft_msg_start(char **envp);
 
 /* Arg counting */
 int		ft_count_args(const char *cmd);

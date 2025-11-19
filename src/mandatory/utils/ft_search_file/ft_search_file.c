@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_search_file.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:22:57 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/22 16:22:17 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/19 20:03:23 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@
  *          La ruta completa al archivo si se encuentra, o NULL si
  * 			no se encuentra.
  */
-char	*ft_search_file(const char *dir, const char *filename)
+char	*ft_search_file(const char *dir, const char *filename, char **envp)
 {
 	const char	*start_dir;
 
 	if (dir)
 		start_dir = dir;
 	else
-		start_dir = getenv("PWD");
-	return (ft_search_in_dir(start_dir, filename));
+		start_dir = ft_getenv("PWD", envp);
+	return (ft_search_in_dir(start_dir, filename, envp));
 }
