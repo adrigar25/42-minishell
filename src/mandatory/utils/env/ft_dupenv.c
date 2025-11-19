@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:00:26 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/19 17:44:41 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/19 18:43:55 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ char	**ft_dupenv(char **envp)
 	envp_cpy = malloc((i + 1) * sizeof(char *));
 	if (!envp_cpy)
 		return (NULL);
-	i = 0;
-	while (envp[i])
+	i = -1;
+	while (envp[++i])
 	{
 		envp_cpy[i] = ft_strdup(envp[i]);
 		if (!envp_cpy[i])
@@ -49,7 +49,6 @@ char	**ft_dupenv(char **envp)
 			free(envp_cpy);
 			return (NULL);
 		}
-		i++;
 	}
 	envp_cpy[i] = NULL;
 	return (envp_cpy);

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 01:25:04 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/18 09:32:46 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/19 18:50:02 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,9 @@ syntax error near unexpected token `%s'\n"
 # define ERROR_HEREDOC_DELIMITER "Error: missing delimiter for heredoc\n"
 # define ERROR_HEREDOC_PROCESS "Error processing heredoc\n"
 # define ERROR_CD_FAIL "minishell: cd: %s: %s\n"
+# define ERROR_CD_GETCWD \
+	"cd: error retrieving current directory: getcwd: \
+cannot access parent directories: %s\n"
 # define ERROR_AMBIGUOUS_REDIRECT "minishell: %s: ambiguous redirect\n"
 # define ERROR_INVALID_IDENTIFIER \
 	"minishell: export: `%s': \

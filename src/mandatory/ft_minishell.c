@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/19 18:22:42 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/19 18:57:01 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@ static char	**ft_init_env(void)
 {
 	char	**env;
 	char	*cwd;
+	int		i;
 
-	env = malloc(sizeof *env * 5);
+	i = 3;
+	env = malloc(sizeof(*env) * 5);
 	if (!env)
 		return (NULL);
 	cwd = getcwd(NULL, 0);
@@ -30,17 +32,13 @@ static char	**ft_init_env(void)
 		env[0] = ft_strdup("PWD=/");
 	env[1] = ft_strdup("SHLVL=0");
 	env[2] = ft_strdup("_=/usr/bin/env");
+	env[3] = ft_strdup("PATH=/usr/local/bin:/usr/bin:/bin:./usr/sbin:/sbin:.");
 	env[4] = NULL;
-	if (!env[0] || !env[1] || !env[2] || !env[3])
-	{
-		free(env[0]);
-		free(env[1]);
-		free(env[2]);
-		free(env[3]);
-		free(env);
-		return (NULL);
-	}
-	return (env);
+	if (env[0] || env[1] || env[2] || env[3])
+		return (env);
+	while (i >= 0)
+		free(env[i--]);
+	return (free(env), NULL);
 }
 
 static void	update_shlvl(t_data *data)

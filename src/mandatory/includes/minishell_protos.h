@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 01:25:02 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/19 18:40:30 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/19 18:47:29 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ char	*ft_getenv(const char *name, char **envp);
 char	**ft_realloc_envp(char **envp, int new_size);
 int		ft_setenv(char *name, char *value, char ***envp);
 int		ft_update_existing_env(char *name, char *value, char **envp);
-void	ft_update_pwd_env(char *oldpwd, char *target_dir, char ***envp, int normalize);
+void	ft_update_pwd_env(char *oldpwd, char *target_dir, char ***envp, int n);
 char	*ft_normalize_path(const char *path);
 
 /* Debug */

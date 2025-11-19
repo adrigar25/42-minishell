@@ -6,20 +6,41 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/17 22:32:50 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/19 19:00:47 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_bonus.h"
 
-/**
- * ENGLISH: Updates the SHLVL environment variable.
- *
- * SPANISH: Actualiza la variable de entorno SHLVL.
- *
- * @param data   Pointer to the shell data structure. /
- *               Puntero a la estructura de datos del shell.
- */
+static char	**ft_init_env(void)
+{
+	char	**env;
+	char	*cwd;
+	int		i;
+
+	i = 3;
+	env = malloc(sizeof(*env) * 5);
+	if (!env)
+		return (NULL);
+	cwd = getcwd(NULL, 0);
+	if (cwd)
+	{
+		env[0] = ft_strjoin("PWD=", cwd);
+		free(cwd);
+	}
+	else
+		env[0] = ft_strdup("PWD=/");
+	env[1] = ft_strdup("SHLVL=0");
+	env[2] = ft_strdup("_=/usr/bin/env");
+	env[3] = ft_strdup("PATH=/usr/local/bin:/usr/bin:/bin:./usr/sbin:/sbin:.");
+	env[4] = NULL;
+	if (env[0] || env[1] || env[2] || env[3])
+		return (env);
+	while (i >= 0)
+		free(env[i--]);
+	return (free(env), NULL);
+}
+
 static void	update_shlvl(t_data *data)
 {
 	char	*val;
@@ -47,27 +68,14 @@ static void	update_shlvl(t_data *data)
 	free(newlvl);
 }
 
-/**
- * ENGLISH: Initializes the shell data structure with environment variables.
- *
- * SPANISH: Inicializa la estructura de datos del shell con las variables
- * 			de entorno.
- *
- * @param data   Pointer to the shell data structure to initialize. /
- *               Puntero a la estructura de datos del shell a inicializar.
- *
- * @param envp   The environment variables. /
- *               Las variables de entorno.
- *
- * @returns 0 on success, 1 on failure. /
- *          0 en caso de éxito, 1 en caso de error.
- */
 static int	ft_init_data(t_data **data, char **envp)
 {
 	*data = calloc(1, sizeof **data);
 	if (!*data)
 		return (1);
 	(*data)->envp = ft_dupenv(envp);
+	if (!(*data)->envp)
+		(*data)->envp = ft_init_env();
 	if (!(*data)->envp)
 	{
 		free(*data);

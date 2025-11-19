@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 17:16:33 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/19 18:40:30 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/19 18:54:10 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,31 @@ static char	*ft_get_target_dir(char **argv, char **envp)
 		return (argv[1]);
 }
 
+static int	ft_check_getcwd_error(void)
+{
+	char	*check_cwd;
+
+	check_cwd = getcwd(NULL, 0);
+	if (!check_cwd)
+	{
+		ft_fprintf(2, ERROR_CD_GETCWD, strerror(errno));
+		return (0);
+	}
+	free(check_cwd);
+	return (1);
+}
+
+static int	ft_handle_chdir_success(char *target_dir, int prev, char ***envp)
+{
+	int	should_normalize;
+
+	if (prev)
+		printf("%s\n", target_dir);
+	should_normalize = ft_check_getcwd_error();
+	return (ft_update_pwd_env(ft_getenv("PWD", *envp), target_dir, envp,
+			should_normalize), 0);
+}
+
 /**
  * ENGLISH: Changes the current working directory to the target directory.
  *
@@ -56,10 +81,7 @@ int	ft_cd(char **argv, char ***envp)
 {
 	int		prev;
 	char	*target_dir;
-		char *check_cwd;
-		int should_normalize;
 
-	target_dir = NULL;
 	if (argv[1] && argv[2])
 		return (ft_handle_error(7, EXIT_FAILURE, NULL, NULL));
 	prev = (argv[1] && ft_strlen(argv[1]) == 1 && ft_strcmp(argv[1], "-") == 0);
@@ -74,23 +96,7 @@ int	ft_cd(char **argv, char ***envp)
 		return (ft_handle_error(8, EXIT_FAILURE, NULL, NULL));
 	}
 	if (chdir(target_dir) == 0)
-	{
-		if (prev)
-			printf("%s\n", target_dir);
-		check_cwd = getcwd(NULL, 0);
-		should_normalize = 1;
-		if (!check_cwd)
-		{
-			ft_fprintf(2, "cd: error retrieving current directory: getcwd: ");
-			ft_fprintf(2, "cannot access parent directories: %s\n",
-				strerror(errno));
-			should_normalize = 0;
-		}
-		else
-			free(check_cwd);
-		return (ft_update_pwd_env(ft_getenv("PWD", *envp), target_dir, envp,
-				should_normalize), 0);
-	}
+		return (ft_handle_chdir_success(target_dir, prev, envp));
 	else
 		return (ft_handle_error(11, EXIT_FAILURE, target_dir, strerror(errno)));
 }

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 23:55:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/18 01:35:31 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/19 19:02:01 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*ft_process_arg(char *arg, t_data *data);
 char	**ft_handle_env_expansion(char **argv, t_data *data);
 
 /* Execution */
-char	*ft_get_cmd_path(char *cmd);
+char	*ft_get_cmd_path(char *cmd, char **envp);
 int		ft_finish_execution(pid_t *pids, t_cmd *cmd_list, t_data *data);
 void	ft_setup_child_io(t_cmd *current, t_cmd *cmd_list);
 int		ft_exec_builtin(t_cmd *cmd, t_data **data);
@@ -81,7 +81,7 @@ char	*ft_getenv(const char *name, char **envp);
 char	**ft_realloc_envp(char **envp, int new_size);
 int		ft_setenv(char *name, char *value, char ***envp);
 int		ft_update_existing_env(char *name, char *value, char **envp);
-void	ft_update_pwd_env(char *oldpwd, char *target_dir, char ***envp);
+void	ft_update_pwd_env(char *oldpwd, char *target_dir, char ***envp, int n);
 char	*ft_normalize_path(const char *path);
 
 /* Debug */

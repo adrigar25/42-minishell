@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 16:30:20 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/19 18:40:30 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/19 18:43:24 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ char	*ft_get_cmd_path(char *cmd, char **envp)
 	paths = ft_split(ft_getenv("PATH", envp), ':');
 	if (!paths)
 		return (NULL);
-	i = 0;
-	while (paths[i])
+	i = -1;
+	while (paths[++i])
 	{
 		temp = ft_strjoin(paths[i], "/");
 		path = ft_strjoin(temp, cmd);
@@ -50,7 +50,6 @@ char	*ft_get_cmd_path(char *cmd, char **envp)
 			return (path);
 		}
 		free(path);
-		i++;
 	}
 	ft_free_matrix(paths);
 	return (NULL);

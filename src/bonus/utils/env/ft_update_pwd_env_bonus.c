@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/09 14:04:05 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/18 00:08:29 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/19 19:10:18 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static char	*resolve_abs_target(const char *target_dir)
 }
 
 static char	*resolve_relative_from_old(const char *oldpwd,
-		const char *target_dir)
+		const char *target_dir, int normalize)
 {
 	char	*joined;
 	char	*tmp;
@@ -38,9 +38,13 @@ static char	*resolve_relative_from_old(const char *oldpwd,
 	free(joined);
 	if (!tmp)
 		return (NULL);
-	normalized = ft_normalize_path(tmp);
-	free(tmp);
-	return (normalized);
+	if (normalize)
+	{
+		normalized = ft_normalize_path(tmp);
+		free(tmp);
+		return (normalized);
+	}
+	return (tmp);
 }
 
 static char	*fallback_newpwd(const char *target_dir)
@@ -54,14 +58,15 @@ static char	*fallback_newpwd(const char *target_dir)
 	return (ft_strdup("/"));
 }
 
-void	ft_update_pwd_env(char *oldpwd, char *target_dir, char ***envp)
+void	ft_update_pwd_env(char *oldpwd, char *target_dir, char ***envp,
+		int normalize)
 {
 	char	*newpwd;
 
 	newpwd = NULL;
 	newpwd = resolve_abs_target(target_dir);
 	if (!newpwd)
-		newpwd = resolve_relative_from_old(oldpwd, target_dir);
+		newpwd = resolve_relative_from_old(oldpwd, target_dir, normalize);
 	if (!newpwd)
 		newpwd = fallback_newpwd(target_dir);
 	if (oldpwd)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_get_cmd_path_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 16:30:20 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 18:09:15 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/19 18:59:36 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
  *          La ruta completa al comando si se encuentra, o NULL en caso
  *           contrario.
  */
-char	*ft_get_cmd_path(char *cmd)
+char	*ft_get_cmd_path(char *cmd, char **envp)
 {
 	char	*temp;
 	char	**paths;
@@ -35,9 +35,11 @@ char	*ft_get_cmd_path(char *cmd)
 
 	if (ft_strchr(cmd, '/'))
 		return (ft_strdup(cmd));
-	paths = ft_split(getenv("PATH"), ':');
-	i = 0;
-	while (paths[i])
+	paths = ft_split(ft_getenv("PATH", envp), ':');
+	if (!paths)
+		return (NULL);
+	i = -1;
+	while (paths[++i])
 	{
 		temp = ft_strjoin(paths[i], "/");
 		path = ft_strjoin(temp, cmd);
@@ -48,7 +50,6 @@ char	*ft_get_cmd_path(char *cmd)
 			return (path);
 		}
 		free(path);
-		i++;
 	}
 	ft_free_matrix(paths);
 	return (NULL);

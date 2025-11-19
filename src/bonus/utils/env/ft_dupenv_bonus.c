@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_dupenv.c                                        :+:      :+:    :+:   */
+/*   ft_dupenv_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:00:26 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/08 02:09:58 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/19 19:00:55 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,16 @@ char	**ft_dupenv(char **envp)
 	char	**envp_cpy;
 	int		i;
 
+	if (!envp || !envp[0])
+		return (NULL);
 	i = 0;
 	while (envp[i])
 		i++;
 	envp_cpy = malloc((i + 1) * sizeof(char *));
 	if (!envp_cpy)
 		return (NULL);
-	i = 0;
-	while (envp[i])
+	i = -1;
+	while (envp[++i])
 	{
 		envp_cpy[i] = ft_strdup(envp[i]);
 		if (!envp_cpy[i])
@@ -47,7 +49,6 @@ char	**ft_dupenv(char **envp)
 			free(envp_cpy);
 			return (NULL);
 		}
-		i++;
 	}
 	envp_cpy[i] = NULL;
 	return (envp_cpy);
