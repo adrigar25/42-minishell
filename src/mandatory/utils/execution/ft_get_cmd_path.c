@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 16:30:20 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/19 18:08:08 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/19 18:40:30 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,6 @@ char	*ft_get_cmd_path(char *cmd, char **envp)
 	if (ft_strchr(cmd, '/'))
 		return (ft_strdup(cmd));
 	paths = ft_split(ft_getenv("PATH", envp), ':');
-	for (int j = 0; paths[j] != NULL; j++)
-	{
-		printf("  %s\n", paths[j]);
-	}
 	if (!paths)
 		return (NULL);
 	i = 0;

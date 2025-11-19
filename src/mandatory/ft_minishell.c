@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/19 17:48:29 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/19 18:22:42 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ static char	**ft_init_env(void)
 		env[0] = ft_strdup("PWD=/");
 	env[1] = ft_strdup("SHLVL=0");
 	env[2] = ft_strdup("_=/usr/bin/env");
-	env[3] = ft_strdup("PATH=/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.");
 	env[4] = NULL;
 	if (!env[0] || !env[1] || !env[2] || !env[3])
 	{
