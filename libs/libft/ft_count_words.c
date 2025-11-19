@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_count_words.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 13:23:07 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/22 12:53:03 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/19 17:59:12 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ size_t	ft_count_words(const char *s, char c)
 	size_t	count;
 	int		i;
 
+	if (!s)
+		return (0);
 	count = 0;
 	i = 0;
 	while (s[i])

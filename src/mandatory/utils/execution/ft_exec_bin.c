@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exec_bin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:06:20 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/04 12:27:18 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/19 18:00:28 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,9 @@ int	ft_exec_bin(t_cmd *cmd)
 		return (0);
 	if (ft_clean_argv(cmd->argv) == 0)
 		return (0);
-	if (!ft_strchr(cmd->argv[0], '/') && !getenv("PATH"))
+	if (!ft_strchr(cmd->argv[0], '/') && !ft_getenv("PATH", cmd->data->envp))
 		return (ft_handle_error(4, EXIT_COMMAND_NOT_FOUND, cmd->argv[0], NULL));
-	path = ft_get_cmd_path(cmd->argv[0]);
+	path = ft_get_cmd_path(cmd->argv[0], cmd->data->envp);
 	ret = ft_check_cmd_path(path, cmd->argv[0]);
 	if (ret)
 	{

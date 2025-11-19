@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 21:45:58 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/22 12:53:57 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/19 17:59:13 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ char	**ft_split(char const *s, char c)
 	size_t	vars[4];
 	char	**res;
 
+	if (!s)
+		return (NULL);
 	vars[0] = 0;
 	vars[1] = 0;
 	vars[2] = ft_count_words(s, c);

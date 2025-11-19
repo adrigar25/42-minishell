@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_dupenv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:00:26 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/22 14:16:15 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/19 17:44:41 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ char	**ft_dupenv(char **envp)
 	char	**envp_cpy;
 	int		i;
 
+	if (!envp || !envp[0])
+		return (NULL);
 	i = 0;
 	while (envp[i])
 		i++;

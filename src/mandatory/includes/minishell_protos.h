@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 01:25:02 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/17 20:00:09 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/19 17:50:05 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		ft_is_escaped(const char *s, int pos);
 char	**ft_handle_env_expansion(char **argv, t_data *data);
 
 /* Execution */
-char	*ft_get_cmd_path(char *cmd);
+char	*ft_get_cmd_path(char *cmd, char **envp);
 int		ft_finish_execution(pid_t *pids, t_cmd *cmd_list, t_data *data);
 void	ft_setup_child_io(t_cmd *current, t_cmd *cmd_list);
 int		ft_exec_builtin(t_cmd *cmd, t_data **data);

@@ -6,11 +6,43 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/16 21:17:38 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/19 17:48:29 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	**ft_init_env(void)
+{
+	char	**env;
+	char	*cwd;
+
+	env = malloc(sizeof *env * 5);
+	if (!env)
+		return (NULL);
+	cwd = getcwd(NULL, 0);
+	if (cwd)
+	{
+		env[0] = ft_strjoin("PWD=", cwd);
+		free(cwd);
+	}
+	else
+		env[0] = ft_strdup("PWD=/");
+	env[1] = ft_strdup("SHLVL=0");
+	env[2] = ft_strdup("_=/usr/bin/env");
+	env[3] = ft_strdup("PATH=/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.");
+	env[4] = NULL;
+	if (!env[0] || !env[1] || !env[2] || !env[3])
+	{
+		free(env[0]);
+		free(env[1]);
+		free(env[2]);
+		free(env[3]);
+		free(env);
+		return (NULL);
+	}
+	return (env);
+}
 
 static void	update_shlvl(t_data *data)
 {
@@ -45,6 +77,8 @@ static int	ft_init_data(t_data **data, char **envp)
 	if (!*data)
 		return (1);
 	(*data)->envp = ft_dupenv(envp);
+	if (!(*data)->envp)
+		(*data)->envp = ft_init_env();
 	if (!(*data)->envp)
 	{
 		free(*data);
