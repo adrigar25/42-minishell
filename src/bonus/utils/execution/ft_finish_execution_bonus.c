@@ -27,6 +27,19 @@ static void	ft_close_fds(t_cmd *cmd_list)
 	}
 }
 
+static void	ft_free_cmd_list(t_cmd *cmd_list)
+{
+	t_cmd *tmp;
+
+	while (cmd_list)
+	{
+		tmp = cmd_list->next;
+		ft_free_matrix(cmd_list->argv);
+		free(cmd_list);
+		cmd_list = tmp;
+	}
+}
+
 static void	ft_handle_signaled(int status, int *last_exit_status)
 {
 	int	sig;
@@ -110,6 +123,7 @@ int	ft_finish_execution(pid_t *pids, t_cmd *cmd_list, t_data *data)
 	ft_wait_for_children(pids, data->cmd_count, &last_exit_status);
 	data->last_exit_status = last_exit_status;
 	free(pids);
+	ft_free_cmd_list(cmd_list);
 	cmd_list = NULL;
 	if (data && data->argv)
 	{

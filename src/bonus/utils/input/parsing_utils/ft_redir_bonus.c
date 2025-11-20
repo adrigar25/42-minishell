@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 20:29:05 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/20 18:57:56 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/20 19:22:52 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,60 +70,11 @@ int	ft_assign_fd(t_cmd **cmd, char *filename, char *type)
  * @returns 1 if the token is a redirection operator, 0 otherwise.
  *          1 si el token es un operador de redirección, 0 en caso contrario.
  */
-static int	ft_is_ambiguous_redirect(char *filename)
-{
-	int	i;
-
-	if (!filename || !filename[0])
-		return (1);
-	i = 0;
-	while (filename[i])
-	{
-		if (filename[i] == ' ' || filename[i] == '\t')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-static int	ft_check_ambiguous(t_cmd *cmd, char **argv, int i,
-		char *expanded_arg)
-{
-	char	*clean_arg;
-	char	*original_arg;
-
-	original_arg = argv[i + 1];
-	clean_arg = ft_remove_quotes(argv[i + 1]);
-	if (!clean_arg)
-		clean_arg = argv[i + 1];
-	if (ft_strcmp(argv[i], "<<") != 0 && ((!original_arg || !expanded_arg)
-			|| ft_strcmp(original_arg, expanded_arg) != 0)
-		&& ft_is_ambiguous_redirect(expanded_arg))
-	{
-		if (clean_arg != argv[i + 1])
-			free(clean_arg);
-		ft_fprintf(2, ERROR_AMBIGUOUS_REDIRECT, original_arg);
-		cmd->data->last_exit_status = 1;
-		cmd->has_error = 1;
-		free(expanded_arg);
-		return (1);
-	}
-	if (clean_arg != argv[i + 1])
-		free(clean_arg);
-	return (0);
-}
-
-static int	ft_handle_fd_error(t_cmd *cmd, int fd_ret)
-{
-	if (fd_ret == -2)
-		return (-1);
-	if (fd_ret == -1)
-	{
-		cmd->data->last_exit_status = 1;
-		cmd->has_error = 1;
-	}
-	return (0);
-}
+/* declarations: implemented in ft_redir_error_bonus.c */
+int	ft_is_ambiguous_redirect(char *filename);
+int	ft_check_ambiguous(t_cmd *cmd, char **argv, int i, char *expanded_arg);
+int	ft_handle_fd_error(t_cmd *cmd, int fd_ret);
+int	ft_handle_wildcard_sentinel(t_cmd *cmd, char *expanded_arg);
 
 int	ft_redir(t_cmd *cmd, char **argv, int i)
 {
@@ -132,14 +83,8 @@ int	ft_redir(t_cmd *cmd, char **argv, int i)
 	int		fd_ret;
 
 	expanded_arg = ft_process_arg(argv[i + 1], cmd->data);
-	if (ft_strncmp(expanded_arg, "!NOFILE!", 8) == 0 || ft_strcmp(expanded_arg,
-			"!AMB_REDIRECT!") == 0)
-	{
-		cmd->data->last_exit_status = 1;
-		cmd->has_error = 1;
-		return (ft_handle_error(4, -1, expanded_arg + 8, NULL),
-			free(expanded_arg), i++);
-	}
+	if (ft_handle_wildcard_sentinel(cmd, expanded_arg))
+		return (i++);
 	if (ft_check_ambiguous(cmd, argv, i, expanded_arg))
 		return (i++);
 	if (cmd->has_error == 1 && ft_strcmp(argv[i], "<<") != 0)

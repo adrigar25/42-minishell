@@ -38,6 +38,7 @@ t_cmd	*ft_create_cmd_node(int index)
 	new_cmd->infd = STDIN_FILENO;
 	new_cmd->outfd = STDOUT_FILENO;
 	new_cmd->has_error = 0;
+	new_cmd->op = 0;
 	new_cmd->index = index;
 	new_cmd->next = NULL;
 	return (new_cmd);

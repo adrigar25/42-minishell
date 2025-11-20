@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 18:48:28 by adriescr          #+#    #+#              #
-#    Updated: 2025/11/20 15:44:04 by agarcia          ###   ########.fr        #
+#    Updated: 2025/11/20 19:22:54 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -127,6 +127,7 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/ft_parse_input_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_parse_input_node_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_redir_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_redir_error_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_parse_input_op_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_parse_input_token_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_remove_quotes_bonus.c \

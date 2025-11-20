@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 23:55:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/20 15:41:47 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/20 19:23:27 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,10 @@ void	ft_show_debug(t_cmd *cmd_list);
 /* Redirections */
 int		ft_handle_infile(char *filename);
 int		ft_handle_outfile(char *filename, int append);
+int		ft_is_ambiguous_redirect(char *filename);
+int		ft_check_ambiguous(t_cmd *cmd, char **argv, int i, char *expanded_arg);
+int		ft_handle_fd_error(t_cmd *cmd, int fd_ret);
+int		ft_handle_wildcard_sentinel(t_cmd *cmd, char *expanded_arg);
 
 /* Wildcards */
 int		ft_match_pattern(const char *pattern, const char *filename);
