@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/20 15:38:13 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/20 19:48:59 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,22 @@
 
 static int	ft_expand_var(char **dst, char *arg, int *j, t_data *data)
 {
-	if (arg[*j + 1] == '"' && ft_strchr(arg + *j + 2, '\''))
+	int	start;
+	int	end;
+
+	if (arg[*j + 1] == '"')
 	{
-		(*j)++;
-		return (SUCCESS);
+		start = *j + 2;
+		end = start;
+		while (arg[end] && arg[end] != '"')
+			end++;
+		if (arg[end] == '"')
+		{
+			if (ft_copy_literal(dst, arg, start, end) == ERROR)
+				return (ERROR);
+			*j = end + 1;
+			return (SUCCESS);
+		}
 	}
 	if (arg[*j + 1] == '?')
 		return (ft_expand_exit_status(dst, j, data));
