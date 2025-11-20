@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_check_input_syntax_bonus.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:25:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 17:16:34 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/20 18:49:10 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,11 @@ int	ft_check_input_syntax(char **argv, int argc)
 		return (0);
 	if (!ft_strcmp(argv[0], "|") || !ft_strcmp(argv[0], "&")
 		|| ft_is_logical_op(argv[0]))
+	{
 		return (ft_handle_error(6, 2, argv[0], NULL));
-	i = 0;
-	while (i < argc)
+	}
+	i = -1;
+	while (++i < argc)
 	{
 		if ((ft_is_pipe_like(argv[i]) || ft_is_redir(argv[i])) && i == argc - 1)
 			return (ft_handle_error(5, 2, NULL, NULL));
@@ -114,7 +116,6 @@ int	ft_check_input_syntax(char **argv, int argc)
 					|| ft_is_redir(argv[i + 1])))
 				return (ft_handle_error(6, 2, argv[i + 1], NULL));
 		}
-		i++;
 	}
 	return (0);
 }

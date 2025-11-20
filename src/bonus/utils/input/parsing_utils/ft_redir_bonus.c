@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 20:29:05 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/20 15:48:47 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/20 18:57:56 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,14 @@ int	ft_redir(t_cmd *cmd, char **argv, int i)
 	int		fd_ret;
 
 	expanded_arg = ft_process_arg(argv[i + 1], cmd->data);
+	if (ft_strncmp(expanded_arg, "!NOFILE!", 8) == 0 || ft_strcmp(expanded_arg,
+			"!AMB_REDIRECT!") == 0)
+	{
+		cmd->data->last_exit_status = 1;
+		cmd->has_error = 1;
+		return (ft_handle_error(4, -1, expanded_arg + 8, NULL),
+			free(expanded_arg), i++);
+	}
 	if (ft_check_ambiguous(cmd, argv, i, expanded_arg))
 		return (i++);
 	if (cmd->has_error == 1 && ft_strcmp(argv[i], "<<") != 0)

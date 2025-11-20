@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/20 15:18:09 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/20 17:03:31 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ int	ft_minishell(char **envp, int debug)
 	if (ft_init_data(&data, envp))
 		return (ERROR);
 	if (data->isatty)
-		ft_msg_start(envp);
+		ft_msg_start(data->envp);
 	ft_init_signals();
 	while (ft_read_input(&input, data))
 		exit_status = ft_process_lines(input, &data, debug);

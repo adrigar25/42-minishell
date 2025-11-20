@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 00:36:44 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/18 01:29:57 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/20 18:32:00 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,17 @@ static int	handle_redir_wildcard(char *arg, char **new_argv, int *new_argc,
 	matches = ft_count_matches(arg);
 	if (matches != 1)
 	{
-		if (matches != 0)
+		if (matches == 0)
 		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(arg, 2);
-			ft_putstr_fd(": ambiguous redirect\n", 2);
-			data->last_exit_status = 1;
+			new_argv[(*new_argc)++] = ft_strjoin("!NOFILE!", arg);
 		}
-		new_argv[(*new_argc)++] = ft_strdup(arg);
+		else if (matches != 0)
+		{
+			ft_fprintf(2, ERROR_AMBIGUOUS_REDIRECT, arg);
+			data->last_exit_status = 1;
+			new_argv[(*new_argc)++] = ft_strdup("!AMB_REDIRECT!");
+			return (0);
+		}
 		return (0);
 	}
 	temp_matches = malloc(sizeof(char *) * matches);
@@ -36,8 +39,7 @@ static int	handle_redir_wildcard(char *arg, char **new_argv, int *new_argc,
 		return (-1);
 	ft_expand_wildcard(arg, temp_matches, matches);
 	new_argv[(*new_argc)++] = temp_matches[0];
-	free(temp_matches);
-	return (0);
+	return (free(temp_matches), 0);
 }
 
 static int	expand_and_copy_args(char **argv, char **new_argv, t_data *data)

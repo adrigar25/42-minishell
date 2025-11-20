@@ -60,10 +60,10 @@ static int	count_exit_args(char **args)
 	return (count);
 }
 
-static void	handle_too_many_args(void)
+static void	handle_non_numeric_arg(char *arg)
 {
 	ft_fprintf(2, "exit\n");
-	ft_handle_error(7, EXIT_FAILURE, NULL, NULL);
+	exit(ft_handle_error(14, 2, arg, NULL));
 }
 
 static void	exit_with_numeric_code(char *arg)
@@ -99,12 +99,12 @@ int	ft_exit(t_cmd *cmd)
 	if (argc == 1)
 		exit(0);
 	else if (argc > 2)
-		handle_too_many_args();
-	else if (!ft_is_numeric(args[1]))
 	{
 		ft_fprintf(2, "exit\n");
-		exit(ft_handle_error(14, 2, args[1], NULL));
+		return (ft_handle_error(7, EXIT_FAILURE, NULL, NULL));
 	}
+	else if (!ft_is_numeric(args[1]))
+		handle_non_numeric_arg(args[1]);
 	else
 		exit_with_numeric_code(args[1]);
 	return (0);

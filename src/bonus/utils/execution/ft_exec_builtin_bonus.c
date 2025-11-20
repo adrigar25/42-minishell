@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 16:43:33 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/27 22:27:16 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/20 18:04:05 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,6 @@ int	ft_exec_builtin(t_cmd *cmd, t_data **data)
 	if (ft_strcmp(cmd->argv[0], "env") == 0)
 		return (ft_env(*cmd, (*data)->envp));
 	if (ft_strcmp(cmd->argv[0], "exit") == 0)
-		ft_exit(cmd);
+		return (ft_exit(cmd));
 	return (-1);
 }

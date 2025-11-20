@@ -101,7 +101,7 @@ int	ft_exit(t_cmd *cmd)
 	else if (argc > 2)
 	{
 		ft_fprintf(2, "exit\n");
-		ft_handle_error(7, EXIT_FAILURE, NULL, NULL);
+		return (ft_handle_error(7, EXIT_FAILURE, NULL, NULL));
 	}
 	else if (!ft_is_numeric(args[1]))
 		handle_non_numeric_arg(args[1]);
