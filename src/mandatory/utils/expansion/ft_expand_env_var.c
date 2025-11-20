@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/16 21:05:45 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/20 00:39:21 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,13 @@ int	ft_expand_env_var(char **dst, char *arg, int *j, t_data *data)
 	char	*env_name;
 	char	*env_value;
 
-	(*j)++;
-	if (arg[*j] == '\'' || arg[*j] == '"')
+	if (!arg[*j + 1] || arg[*j + 1] == '\'' || arg[*j + 1] == '"'
+		|| arg[*j + 1] == ' ' || arg[*j + 1] == '\t')
+	{
+		(*j)++;
 		return (ft_append(dst, "$"));
+	}
+	(*j)++;
 	start = *j;
 	while (arg[*j] && (ft_isalnum(arg[*j]) || arg[*j] == '_'))
 		(*j)++;

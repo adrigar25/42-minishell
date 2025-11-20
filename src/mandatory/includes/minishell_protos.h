@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 01:25:02 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/19 20:03:08 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/20 14:47:33 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	ft_cleanup(t_data *data);
 
 /* search */
 char	*ft_search_file(const char *dir, const char *filename, char **envp);
-char	*ft_search_in_subdirs(const char *dir, const char *filename, char **envp);
+char	*ft_search_in_subdirs(const char *dir, const char *filename,
+			char **envp);
 char	*ft_search_in_dir(const char *dir, const char *filename, char **envp);
 char	*ft_build_path(const char *dir, const char *entry);
 
@@ -27,6 +28,7 @@ char	*ft_build_path(const char *dir, const char *entry);
 int		ft_copy_literal(char **dst, char *arg, int start, int end);
 int		ft_expand_exit_status(char **dst, int *j, t_data *data);
 int		ft_expand_env_var(char **dst, char *arg, int *j, t_data *data);
+int		ft_expand_pid(char **dst, int *j, t_data *data);
 char	*ft_process_arg(char *arg, t_data *data);
 int		ft_is_escaped(const char *s, int pos);
 char	**ft_handle_env_expansion(char **argv, t_data *data);

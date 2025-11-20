@@ -6,11 +6,22 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/17 00:43:43 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/19 23:52:58 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+static int	ft_prev_redir(char **argv, int i)
+{
+	if (i == 0)
+		return (0);
+	if (ft_strcmp(argv[i - 1], "<<") == 0 || ft_strcmp(argv[i - 1], "<") == 0
+		|| ft_strcmp(argv[i - 1], ">") == 0 || ft_strcmp(argv[i - 1],
+			">>") == 0)
+		return (1);
+	return (0);
+}
 
 /**
  * ENGLISH: Handles environment variable expansion for an array of argument
@@ -47,7 +58,7 @@ char	**ft_handle_env_expansion(char **argv, t_data *data)
 	i = -1;
 	while (argv[++i])
 	{
-		if (i > 0 && ft_strcmp(argv[i - 1], "<<") == 0)
+		if (ft_prev_redir(argv, i))
 			new_argv[i] = ft_strdup(argv[i]);
 		else
 			new_argv[i] = ft_process_arg(argv[i], data);

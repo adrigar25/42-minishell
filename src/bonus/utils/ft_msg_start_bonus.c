@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 20:58:40 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/19 20:03:52 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/20 15:48:42 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ft_msg_start(char **envp)
 {
 	char	*welcome_msg;
 
-	welcome_msg = ft_search_file(NULL, "welcome_bonus.txt",envp);
+	welcome_msg = ft_search_file(NULL, "welcome_bonus.txt", envp);
 	ft_putstr("\x1B" "c");
 	if (welcome_msg)
 	{

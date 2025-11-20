@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:24:06 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/19 19:59:49 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/20 15:45:11 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ static char	*ft_search_in_subdir_utils(const char *dir, const char *entry_name,
  *          La ruta completa al archivo si se encuentra,
 	o NULL si no se encuentra.
  */
-static char	*ft_search_entries(DIR *d, const char *dir, const char *filename, char **envp)
+static char	*ft_search_entries(DIR *d, const char *dir, const char *filename,
+		char **envp)
 {
 	struct dirent	*entry;
 	char			*result;
@@ -107,7 +108,8 @@ static char	*ft_search_entries(DIR *d, const char *dir, const char *filename, ch
  *          La ruta completa al archivo si se encuentra,
 	o NULL si no se encuentra.
  */
-char	*ft_search_in_subdirs(const char *dir, const char *filename, char **envp)
+char	*ft_search_in_subdirs(const char *dir, const char *filename,
+		char **envp)
 {
 	DIR		*d;
 	char	*result;

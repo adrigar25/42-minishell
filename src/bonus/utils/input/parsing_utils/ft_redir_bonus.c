@@ -6,31 +6,11 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 20:29:05 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/18 01:36:54 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/20 15:48:47 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell_bonus.h"
-
-/**
- * ENGLISH: Frees the cleaned argument if it was dynamically allocated.
- *
- * SPANISH: Libera el argumento limpiado si fue asignado dinámicamente.
- *
- * @param clean_arg The cleaned argument string.
- *                  La cadena de argumento limpiada.
- *
- * @param argv      The original argv array.
- *                  El array argv original.
- *
- * @param i         The current index in argv.
- *                  El índice actual en argv.
- */
-static void	ft_clean_buffer(char *clean_arg, char **argv, int i)
-{
-	if (clean_arg != argv[i + 1])
-		free(clean_arg);
-}
 
 /**
  * ENGLISH: Assigns a file descriptor to the command structure based on
@@ -90,43 +70,80 @@ int	ft_assign_fd(t_cmd **cmd, char *filename, char *type)
  * @returns 1 if the token is a redirection operator, 0 otherwise.
  *          1 si el token es un operador de redirección, 0 en caso contrario.
  */
-static int	handle_error_cases(t_cmd *cmd, char **argv, int i, char *clean_arg)
+static int	ft_is_ambiguous_redirect(char *filename)
 {
-	int	is_ambiguous;
+	int	i;
 
-	is_ambiguous = (ft_strcmp(clean_arg, "*") == 0
-			&& cmd->data->last_exit_status == 1);
-	if (ft_strcmp(argv[i], "<<") != 0 && (cmd->has_error == 1 || is_ambiguous))
-	{
-		if (is_ambiguous)
-			cmd->has_error = 1;
-		ft_clean_buffer(clean_arg, argv, i);
+	if (!filename || !filename[0])
 		return (1);
+	i = 0;
+	while (filename[i])
+	{
+		if (filename[i] == ' ' || filename[i] == '\t')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+static int	ft_check_ambiguous(t_cmd *cmd, char **argv, int i,
+		char *expanded_arg)
+{
+	char	*clean_arg;
+	char	*original_arg;
+
+	original_arg = argv[i + 1];
+	clean_arg = ft_remove_quotes(argv[i + 1]);
+	if (!clean_arg)
+		clean_arg = argv[i + 1];
+	if (ft_strcmp(argv[i], "<<") != 0 && ((!original_arg || !expanded_arg)
+			|| ft_strcmp(original_arg, expanded_arg) != 0)
+		&& ft_is_ambiguous_redirect(expanded_arg))
+	{
+		if (clean_arg != argv[i + 1])
+			free(clean_arg);
+		ft_fprintf(2, ERROR_AMBIGUOUS_REDIRECT, original_arg);
+		cmd->data->last_exit_status = 1;
+		cmd->has_error = 1;
+		free(expanded_arg);
+		return (1);
+	}
+	if (clean_arg != argv[i + 1])
+		free(clean_arg);
+	return (0);
+}
+
+static int	ft_handle_fd_error(t_cmd *cmd, int fd_ret)
+{
+	if (fd_ret == -2)
+		return (-1);
+	if (fd_ret == -1)
+	{
+		cmd->data->last_exit_status = 1;
+		cmd->has_error = 1;
 	}
 	return (0);
 }
 
 int	ft_redir(t_cmd *cmd, char **argv, int i)
 {
+	char	*expanded_arg;
 	char	*clean_arg;
 	int		fd_ret;
 
-	clean_arg = ft_remove_quotes(argv[i + 1]);
+	expanded_arg = ft_process_arg(argv[i + 1], cmd->data);
+	if (ft_check_ambiguous(cmd, argv, i, expanded_arg))
+		return (i++);
+	if (cmd->has_error == 1 && ft_strcmp(argv[i], "<<") != 0)
+		return (free(expanded_arg), i++);
+	clean_arg = ft_remove_quotes(expanded_arg);
 	if (!clean_arg)
-		clean_arg = argv[i + 1];
-	if (handle_error_cases(cmd, argv, i, clean_arg))
-		return (i + 1);
+		clean_arg = expanded_arg;
 	fd_ret = ft_assign_fd(&cmd, clean_arg, argv[i]);
-	if (fd_ret == -2)
-	{
-		ft_clean_buffer(clean_arg, argv, i);
+	if (clean_arg != expanded_arg)
+		free(clean_arg);
+	free(expanded_arg);
+	if (ft_handle_fd_error(cmd, fd_ret) == -1)
 		return (-1);
-	}
-	if (fd_ret == -1)
-	{
-		cmd->data->last_exit_status = 1;
-		cmd->has_error = 1;
-	}
-	ft_clean_buffer(clean_arg, argv, i);
 	return (i + 1);
 }

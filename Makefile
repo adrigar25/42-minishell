@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 18:48:28 by adriescr          #+#    #+#              #
-#    Updated: 2025/11/18 01:31:20 by agarcia          ###   ########.fr        #
+#    Updated: 2025/11/20 15:44:04 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,6 +67,9 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_parse_input_pipe.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_remove_quotes.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/input/ft_count_args.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/input/escape/ft_is_escaped.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/input/escape/ft_is_in_quotes.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/input/ft_token_helpers.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/debug/ft_show_debug.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/prompt/ft_get_directory_path.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/prompt/ft_generate_prompt.c \
@@ -100,12 +103,10 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/expansion/ft_expansion_utils.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/expansion/ft_expand_exit_status.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/expansion/ft_expand_env_var.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/expansion/ft_expand_pid.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/expansion/ft_process_arg.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/expansion/ft_handle_env_expansion.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/expansion/ft_append.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/input/escape/ft_is_escaped.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/input/escape/ft_is_in_quotes.c \
-	$(MANDATORY_DIR)/$(UTILS_DIR)/input/ft_token_helpers.c \
 
 MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/ft_minishell_bonus.c \
@@ -130,6 +131,9 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_parse_input_token_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_remove_quotes_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_has_closing_quote_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/input/escape/ft_is_escaped_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/input/escape/ft_is_in_quotes_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/input/ft_token_helpers_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/wildcards/ft_handle_wildcards_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/wildcards/ft_wildcard_helpers_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/wildcards/ft_count_matches_bonus.c \
@@ -171,6 +175,7 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_expansion_utils_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_expand_exit_status_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_expand_env_var_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_expand_pid_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_process_arg_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_handle_env_expansion_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_append_bonus.c \

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/05 19:18:28 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/19 23:10:09 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ static int	ft_export_variable(const char *arg, char ***envp)
 	int		ret;
 
 	if (!ft_is_valid_identifier(arg))
-		return (ft_handle_error(13, 1, NULL, NULL));
+		return (ft_handle_error(13, 1, (char *)arg, NULL));
 	array[0] = ft_strchr(arg, '=');
 	if (array[0])
 	{

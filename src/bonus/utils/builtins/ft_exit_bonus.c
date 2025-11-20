@@ -50,6 +50,30 @@ long long	ft_atoll(const char *str)
 	return (result * sign);
 }
 
+static int	count_exit_args(char **args)
+{
+	int	count;
+
+	count = 0;
+	while (args[count])
+		count++;
+	return (count);
+}
+
+static void	handle_too_many_args(void)
+{
+	ft_fprintf(2, "exit\n");
+	ft_handle_error(7, EXIT_FAILURE, NULL, NULL);
+}
+
+static void	exit_with_numeric_code(char *arg)
+{
+	long long	exit_code;
+
+	exit_code = ft_atoll(arg);
+	exit((int)(exit_code % 256));
+}
+
 /**
  * ENGLISH: Implements the exit command, handling optional numeric arguments
  * 			and error cases.
@@ -66,25 +90,22 @@ long long	ft_atoll(const char *str)
 int	ft_exit(t_cmd *cmd)
 {
 	char	**args;
-	int		array[2];
+	int		argc;
 
 	args = cmd->argv;
 	if (!args)
 		exit(0);
-	array[0] = 0;
-	array[1] = 0;
-	while (args[array[1]])
-	{
-		array[0]++;
-		array[1]++;
-	}
-	if (array[0] == 1)
+	argc = count_exit_args(args);
+	if (argc == 1)
 		exit(0);
-	else if (array[0] > 2)
-		exit(ft_handle_error(7, EXIT_FAILURE, NULL, NULL));
+	else if (argc > 2)
+		handle_too_many_args();
 	else if (!ft_is_numeric(args[1]))
-		exit(ft_handle_error(14, 2, NULL, NULL));
+	{
+		ft_fprintf(2, "exit\n");
+		exit(ft_handle_error(14, 2, args[1], NULL));
+	}
 	else
-		exit((int)(ft_atoll(args[1]) % 256));
+		exit_with_numeric_code(args[1]);
 	return (0);
 }

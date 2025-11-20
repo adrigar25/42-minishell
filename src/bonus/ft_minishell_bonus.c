@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/19 20:04:49 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/20 15:33:55 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,10 +109,34 @@ static int	ft_init_data(t_data **data, char **envp)
  * @returns The exit status of the last executed command. /
  *          El estado de salida del último comando ejecutado.
  */
+
+static int	ft_process_lines(char *input, t_data **data, int debug)
+{
+	char	**lines;
+	int		i;
+	int		exit_status;
+	t_cmd	*cmd_list;
+
+	lines = ft_split(input, '\n');
+	free(input);
+	if (!lines)
+		return (ERROR);
+	i = -1;
+	exit_status = 0;
+	while (lines[++i])
+	{
+		if (lines[i][0] != '\0')
+		{
+			cmd_list = ft_process_input(ft_strdup(lines[i]), *data, debug);
+			exit_status = ft_execute_cmds(cmd_list, data);
+		}
+	}
+	return (ft_free_matrix(lines), exit_status);
+}
+
 int	ft_minishell(char **envp, int debug)
 {
 	char	*input;
-	t_cmd	*cmd_list;
 	t_data	*data;
 	int		exit_status;
 
@@ -123,10 +147,7 @@ int	ft_minishell(char **envp, int debug)
 		ft_msg_start(envp);
 	ft_init_signals();
 	while (ft_read_input(&input, data))
-	{
-		cmd_list = ft_process_input(input, data, debug);
-		exit_status = ft_execute_cmds(cmd_list, &data);
-	}
+		exit_status = ft_process_lines(input, &data, debug);
 	ft_cleanup(data);
 	return (exit_status);
 }

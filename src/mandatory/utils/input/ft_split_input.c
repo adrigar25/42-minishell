@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 00:33:34 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/16 14:14:03 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/20 15:11:40 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ static int	ft_handle_token(const char *input, char **args, int *i, int *j)
 	int	start;
 
 	ft_skip_whitespace(input, i);
-	if (ft_strchr("<>|", input[*i]) && !ft_is_escaped(input, *i))
+	if (ft_strchr("<>|", input[*i]) && !ft_is_escaped(input, *i)
+		&& !ft_is_in_quotes(input, *i))
 	{
 		args[*j] = ft_substr((char *)input, *i, 1 + (input[*i
 					+ 1] == input[*i]));

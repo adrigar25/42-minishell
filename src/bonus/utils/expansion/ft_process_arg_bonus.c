@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/17 23:10:56 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/20 15:38:13 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static int	ft_expand_var(char **dst, char *arg, int *j, t_data *data)
 	}
 	if (arg[*j + 1] == '?')
 		return (ft_expand_exit_status(dst, j, data));
+	if (arg[*j + 1] == '$')
+		return (ft_expand_pid(dst, j, data));
 	return (ft_expand_env_var(dst, arg, j, data));
 }
 
