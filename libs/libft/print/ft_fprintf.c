@@ -6,20 +6,47 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 14:29:30 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 13:04:34 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:46:55 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-static int	print_int(int fd, int v)
+/**
+ * ENGLISH: Prints an integer to the specified file descriptor.
+ * 		Returns the number of characters printed.
+ * SPANISH: Imprime un entero en el descriptor de archivo
+ * 		especificado. Devuelve el número de caracteres impresos.
+ *
+ * @param fd   The file descriptor to write to. /
+ * 			El descriptor de archivo al que escribir.
+ * @param number    The integer to print. / El entero a imprimir.
+ *
+ * @returns The number of characters printed. /
+ *          El número de caracteres impresos.
+ */
+static int	print_int(int fd, int number)
 {
-	return (ft_putnbr_fd((long)v, fd));
+	return (ft_putnbr_fd((long)number, fd));
 }
 
-static int	print_uint(int fd, unsigned int v)
+/**
+ * ENGLISH: Prints an unsigned integer to the specified file descriptor.
+ * 		Returns the number of characters printed.
+ * SPANISH: Imprime un entero sin signo en el descriptor de archivo
+ * 		especificado. Devuelve el número de caracteres impresos.
+ *
+ * @param fd   The file descriptor to write to. /
+ * 			El descriptor de archivo al que escribir.
+ * @param number    The unsigned integer to print.
+ *			/ El entero sin signo a imprimir.
+ *
+ * @returns The number of characters printed. /
+ *          El número de caracteres impresos.
+ */
+static int	print_uint(int fd, unsigned int number)
 {
-	return (ft_putnbr_fd((long)v, fd));
+	return (ft_putnbr_fd((long)number, fd));
 }
 
 /**
@@ -80,7 +107,7 @@ static int	handle_format(int fd, char spec, va_list *ap)
  *              La cadena de formato que contiene el texto y los especificadores
  *              de formato.
  *
- * @param ...   Additional arguments to be formatted and printed. /
+ * @param ... Additional arguments to be formatted and printed. /
  *              Argumentos adicionales que serán formateados e impresos.
  *
  * @returns The total number of characters written. /

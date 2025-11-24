@@ -6,28 +6,31 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 20:09:15 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/22 12:52:57 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:19:35 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 /**
- * ENGLISH: Calculates the factorial of a given number.
+ * ENGLISH: Converts a string to an integer.
+ * 			It handles optional leading whitespace, an optional '+' or '-' sign,
+ * 			and numeric digits. The conversion stops at the first non-digit
+ * 			character.
+ * SPANISH: Convierte una cadena a un entero.
+ * 			Procesa espacios en blanco iniciales opcionales, un signo '+' o '-'
+ * 			opcional, y dígitos numéricos. La conversión se detiene en el primer
+ * 			caracter que no sea un dígito.
  *
- * SPANISH: Calcula el factorial de un número dado.
+ * @param str The string to convert. / La cadena a convertir.
  *
- * @param n   The number to calculate the factorial for. /
- *            El número para calcular el factorial.
- *
- * @returns The factorial of the given number. /
- *          El factorial del número dado.
+ * @return The converted integer value. / El valor entero convertido.
  */
 int	ft_atoi(const char *str)
 {
-	int		result;
-	int		sign;
-	int		i;
+	int	result;
+	int	sign;
+	int	i;
 
 	result = 0;
 	sign = 1;

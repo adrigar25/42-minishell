@@ -6,24 +6,22 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:01:01 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/28 16:58:11 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:21:10 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 /**
- * ENGLISH: Counts the number of environment variables in a
- * 			NULL-terminated array.
+ * ENGLISH: Counts the number of arguments in a NULL-terminated array of
+ * 			strings.
+ * SPANISH: Cuenta el número de argumentos en un array de cadenas terminado
+ *			en NULL.
  *
- * SPANISH: Cuenta el número de variables de entorno en un arreglo
- * 			terminado en NULL.
+ * @param args The NULL-terminated array of strings.
+ *			/ El array de cadenas terminado en NULL.
  *
- * @param envp   The NULL-terminated array of environment variable strings. /
- *               El arreglo de cadenas de variables de entorno terminado en NULL.
- *
- * @returns The number of environment variables in the array. /
- *          El número de variables de entorno en el arreglo.
+ * @return The number of arguments. / El número de argumentos.
  */
 int	ft_count_arg(char **args)
 {

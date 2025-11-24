@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:17:18 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/22 12:54:04 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:26:44 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  *
  * SPANISH: Localiza la primera ocurrencia de un carácter en una cadena.
  *
- * @param s   The string to search. /
+ * @param str   The string to search. /
  *            La cadena a buscar.
  * @param c   The character to find. /
  *            El carácter a encontrar.
@@ -26,13 +26,13 @@
  * 			if not found. / Un puntero a la primera ocurrencia del carácter,
  * 			o NULL si no se encuentra.
  */
-char	*ft_strchr(const char *s, int c)
+char	*ft_strchr(const char *str, int c)
 {
-	while (*s)
+	while (*str)
 	{
-		if (*s == (char)c)
-			return ((char *)s);
-		s++;
+		if (*str == (char)c)
+			return ((char *)str);
+		str++;
 	}
 	return (NULL);
 }

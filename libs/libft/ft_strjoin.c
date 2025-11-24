@@ -6,20 +6,26 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:56:05 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/09 17:15:12 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:35:27 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char	*alloc_join(size_t len1, size_t len2)
-{
-	char	*p;
-
-	p = malloc(len1 + len2 + 1);
-	return (p);
-}
-
+/**
+ * ENGLISH: Helper function to copy a string into a destination buffer.
+ * 		It advances the position index accordingly.
+ *
+ * SPANISH: Función auxiliar para copiar una cadena en un búfer de destino.
+ * 		Avanza el índice de posición en consecuencia.
+ *
+ * @param dst   The destination buffer. /
+ *              El búfer de destino.
+ * @param src   The source string. /
+ *              La cadena fuente.
+ * @param pos   Pointer to the current position index in the destination buffer.
+ *              / Puntero al índice de posición actual en el búfer de destino.
+ */
 static void	copy_and_advance(char *dst, const char *src, size_t *pos)
 {
 	size_t	i;
@@ -36,34 +42,33 @@ static void	copy_and_advance(char *dst, const char *src, size_t *pos)
  *
  * SPANISH: Une dos cadenas en una nueva cadena.
  *
- * @param s1  The first string. /
+ * @param str1  The first string. /
  *				La primera cadena.
- * @param s2  The second string. /
+ * @param str2  The second string. /
  *				La segunda cadena.
  *
- * @returns A pointer to the new string, or NULL on failure. /
- *				Un puntero a la nueva cadena, o NULL en caso de error.
+ * @returns A pointer to the newly allocated joined string, or NULL on failure.
+ *          / Un puntero a la nueva cadena unida asignada dinámicamente,
+ *          o NULL en caso de error.
  */
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin(char *str1, char *str2)
 {
 	char	*new_str;
 	size_t	i;
 	size_t	len1;
 	size_t	len2;
 
-	if (!s2)
-		return (NULL);
-	if (s1)
-		len1 = ft_strlen(s1);
-	else
-		len1 = 0;
-	len2 = ft_strlen(s2);
-	new_str = alloc_join(len1, len2);
+	if (!str2)
+		return (str1);
+	if (str1)
+		len1 = ft_strlen(str1);
+	len2 = ft_strlen(str2);
+	new_str = malloc(len1 + len2 + 1);
 	if (!new_str)
 		return (NULL);
 	i = 0;
-	copy_and_advance(new_str, s1, &i);
-	copy_and_advance(new_str, s2, &i);
+	copy_and_advance(new_str, str1, &i);
+	copy_and_advance(new_str, str2, &i);
 	new_str[i] = '\0';
 	return (new_str);
 }
