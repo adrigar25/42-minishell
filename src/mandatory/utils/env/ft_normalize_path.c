@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 16:44:59 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/24 18:07:45 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/24 18:15:00 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ static char	*build_path_from_stack(char **stack, int top)
  * @returns The normalized file path as a string. /
  * 			La ruta de archivo normalizada como cadena.
  */
-char	*ft_normalize_path(const char *path)
+char	*ft_normalize_path(char *path)
 {
 	char	**parts;
 	char	**stack;
