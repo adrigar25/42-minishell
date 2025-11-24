@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_types_bonus.h                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 23:55:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/24 17:55:44 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 18:24:49 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,30 +80,5 @@ typedef struct s_cmd
 	t_data			*data;
 	struct s_cmd	*next;
 }					t_cmd;
-
-/**
- * ENGLISH: Data structure for wildcard expansion operations.
- *
- * SPANISH: Estructura de datos para operaciones de expansión de comodines.
- *
- * @member matches       Array of matched strings. /
- * 						Array de cadenas coincidentes.
- * @member dirpath       The directory path where the expansion is performed. /
- * 						La ruta del directorio donde se realiza la expansión.
- * @member base_pattern  The base pattern used for matching. /
- * 						El patrón base utilizado para la coincidencia.
- * @member max_matches   The maximum number of matches to store. /
- * 						El número máximo de coincidencias para almacenar.
- * @member count         The current count of matches found. /
- * 						El conteo actual de coincidencias encontradas.
- */
-typedef struct s_expand_data
-{
-	char			**matches;
-	const char		*dirpath;
-	const char		*base_pattern;
-	int				max_matches;
-	int				count;
-}					t_expand_data;
 
 #endif /* MINISHELL_TYPES_BONUS_H */

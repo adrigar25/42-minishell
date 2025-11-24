@@ -3,40 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_show_debug_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:30:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/17 23:04:39 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 18:30:44 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
-
-/**
-
-	* ENGLISH: 	Counts the number of arguments
-	* 			in a NULL-terminated array of strings.
- *
- * SPANISH: Cuenta el número de argumentos en un arreglo de cadenas
- * 			terminado en NULL.
- *
- * @param argv   The NULL-terminated array of strings.
- *               El arreglo de cadenas terminado en NULL.
- *
- * @returns The number of arguments in the array.
- *          El número de argumentos en el arreglo.
- */
-static int	ft_count_args_from_array(char **argv)
-{
-	int	count;
-
-	count = 0;
-	if (!argv)
-		return (0);
-	while (argv[count])
-		count++;
-	return (count);
-}
 
 /**
  * ENGLISH: Displays the contents of an argument array with a title and prefix.
@@ -91,7 +65,7 @@ static void	ft_show_cmd_list(t_cmd *cmd_list)
 		printf("cmd: \n");
 		arg_count = 0;
 		if (curr->argv)
-			arg_count = ft_count_args_from_array(curr->argv);
+			arg_count = ft_count_arg(curr->argv);
 		ft_show_argv("  argv", "argv", curr->argv, arg_count);
 		printf("  fd_in: %d, fd_out: %d\n", curr->infd, curr->outfd);
 		printf("  has_error: %d\n", curr->has_error);

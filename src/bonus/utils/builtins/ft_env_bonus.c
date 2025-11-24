@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/08 02:12:05 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 18:28:46 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 int	ft_env(t_cmd cmd, char **envp)
 {
 	int	i;
+	int	len;
 
 	if (!envp)
 		return (1);
@@ -37,7 +38,12 @@ int	ft_env(t_cmd cmd, char **envp)
 	while (envp[i])
 	{
 		if (ft_strchr(envp[i], '='))
-			dprintf(cmd.outfd, "%s\n", envp[i]);
+		{
+			len = ft_strlen(envp[i]);
+			if (len)
+				write(cmd.outfd, envp[i], len);
+			write(cmd.outfd, "\n", 1);
+		}
 		i++;
 	}
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_redir_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 20:29:05 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/20 19:22:52 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 18:43:53 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,22 +60,24 @@ int	ft_assign_fd(t_cmd **cmd, char *filename, char *type)
 }
 
 /**
- * ENGLISH: Checks if a token is a redirection operator.
+ * ENGLISH: Handles a redirection operator in the command's argument list.
  *
- * SPANISH: Verifica si un token es un operador de redirección.
+ * SPANISH: Maneja un operador de redirección en la lista de argumentos
+ *          del comando.
  *
- * @param token The token to check.
- *              El token a verificar.
+ * @param cmd   Pointer to the command structure. /
+ *              Puntero a la estructura del comando.
  *
- * @returns 1 if the token is a redirection operator, 0 otherwise.
- *          1 si el token es un operador de redirección, 0 en caso contrario.
+ * @param argv  The array of argument strings. /
+ *              El arreglo de cadenas de argumentos.
+ *
+ * @param i     The current index in the argument array. /
+ *              El índice actual en el arreglo de argumentos.
+ *
+ * @returns The next index to process in the argument array, or -1 on error. /
+ *          El siguiente índice a procesar en el arreglo de argumentos,
+ *          o -1 en caso de error.
  */
-/* declarations: implemented in ft_redir_error_bonus.c */
-int	ft_is_ambiguous_redirect(char *filename);
-int	ft_check_ambiguous(t_cmd *cmd, char **argv, int i, char *expanded_arg);
-int	ft_handle_fd_error(t_cmd *cmd, int fd_ret);
-int	ft_handle_wildcard_sentinel(t_cmd *cmd, char *expanded_arg);
-
 int	ft_redir(t_cmd *cmd, char **argv, int i)
 {
 	char	*expanded_arg;

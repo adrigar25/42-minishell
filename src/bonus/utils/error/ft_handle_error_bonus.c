@@ -3,15 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   ft_handle_error_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 16:27:37 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/09 14:05:25 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 18:35:34 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../mandatory/minishell.h"
 
+/**
+ * ENGLISH: Prints execution-related error messages based on the provided code.
+ *
+ * SPANISH: Imprime mensajes de error relacionados con la ejecución según el
+ *          código proporcionado.
+ *
+ * @param code   The error code indicating the type of execution error. /
+ *               El código de error que indica el tipo de error de ejecución.
+ *
+ * @param msg    The message argument for formatting the error message. /
+ *               El argumento de mensaje para formatear el mensaje de error.
+ */
 static void	print_exec_errors(int code, char *msg)
 {
 	if (code == 1)
@@ -24,6 +36,17 @@ static void	print_exec_errors(int code, char *msg)
 		ft_fprintf(2, ERROR_NO_SUCH_FILE, msg);
 }
 
+/**
+ * ENGLISH: Prints syntax-related error messages based on the provided code.
+ *
+ * SPANISH: Imprime mensajes de error relacionados con la sintaxis según el
+ *          código proporcionado.
+ *
+ * @param code   The error code indicating the type of syntax error. /
+ *               El código de error que indica el tipo de error de sintaxis.
+ * @param msg    The message argument for formatting the error message. /
+ *               El argumento de mensaje para formatear el mensaje de error.
+ */
 static void	print_syntax_errors(int code, char *msg)
 {
 	if (code == 5)
@@ -32,6 +55,26 @@ static void	print_syntax_errors(int code, char *msg)
 		ft_fprintf(2, ERROR_SYNTAX_TOKEN, msg);
 }
 
+/**
+ * ENGLISH: Prints built-in command and environment-related error messages
+ *          based on the provided code.
+ *
+ * SPANISH: Imprime mensajes de error relacionados con comandos integrados y
+ *          el entorno según el código proporcionado.
+ *
+ * @param code   The error code indicating the type of built-in or environment
+ *               error. /
+ *               El código de error que indica el tipo de error de comando
+ *               integrado o de entorno.
+ *
+ * @param msg    The first message argument for formatting the error message. /
+ *               El primer argumento de mensaje para formatear el mensaje de
+ *               error.
+ *
+ * @param msg2   The second message argument for formatting the error message. /
+ *               El segundo argumento de mensaje para formatear el mensaje de
+ *               error.
+ */
 static void	print_builtin_env_errors(int code, char *msg, char *msg2)
 {
 	if (code == 7)
@@ -46,6 +89,20 @@ static void	print_builtin_env_errors(int code, char *msg, char *msg2)
 		ft_fprintf(2, ERROR_NUM_ARG_REQ, msg);
 }
 
+/**
+ * ENGLISH: Prints redirection-related error messages based on the provided
+ * code.
+ *
+ * SPANISH: Imprime mensajes de error relacionados con redirecciones según el
+ * código proporcionado.
+ *
+ * @param code   The error code indicating the type of redirection error. /
+ *               El código de error que indica el tipo de error de
+ *               redirección.
+ *
+ * @param msg    The message argument for formatting the error message. /
+ *               El argumento de mensaje para formatear el mensaje de error.
+ */
 static void	print_redir_errors(int code, char *msg)
 {
 	if (code == 9)

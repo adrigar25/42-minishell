@@ -6,24 +6,31 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 14:20:19 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/28 17:32:55 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/24 18:57:55 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell_bonus.h"
 
 /**
- * ENGLISH: Counts the number of arguments in a command string,
- *          considering quotes, escaped characters, and operators.
+ * ENGLISH: Determines if the character at the given position is escaped.
  *
- * SPANISH: Cuenta el número de argumentos en una cadena de comando,
- *          considerando comillas, caracteres escapados y operadores.
+ * SPANISH: Determina si el carácter en la posición dada está escapado.
  *
- * @param cmd   The command string to analyze. /
- *              La cadena de comando a analizar.
+ * @param cmd        The command string. /
+ *                   La cadena de comando.
  *
- * @returns The number of arguments in the command string. /
- *          El número de argumentos en la cadena de comando.
+ * @param pos        The position of the character to check. /
+ *                   La posición del carácter a comprobar.
+ *
+ * @param in_quote   Indicates if we are inside a quote. /
+ *                   Indica si estamos dentro de una comilla.
+ *
+ * @param quote_char The character of the quote we are in. /
+ *                   El carácter de la comilla en la que estamos.
+ *
+ * @returns 1 if the character is escaped, 0 otherwise. /
+ *          1 si el carácter está escapado, 0 en caso contrario.
  */
 int	is_escaped(const char *cmd, int pos, int in_quote, char quote_char)
 {

@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/11 16:09:00 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/24 18:27:02 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,17 +82,17 @@ static int	ft_putarg_echo(char *arg, int flag_n, int outfd)
  * SPANISH: Imprime todos los argumentos para el comando echo, manejando
  * 			los espacios entre argumentos.
  *
- * @param cmd         The command structure containing arguments and file
- * 						descriptors. /
- *                    La estructura de comando que contiene argumentos y
- * 						descriptores de archivo.
- *
+ * @param cmd         The command structure containing arguments. /
+ * 			La estructura de comando que contiene los argumentos.
  * @param start_index The index to start printing arguments from. /
- *                    El índice desde el cual comenzar a imprimir
- *                    los argumentos.
- *
+ * 					El índice desde el cual comenzar a imprimir los
+ * 					argumentos.
  * @param outfd       The file descriptor to write the output to. /
- *                    El descriptor de archivo donde escribir la salida.
+ * 					El descriptor de archivo donde escribir la salida.
+ * @param n_flag      If set to 1, indicates that the -n flag is
+ * 				active (no trailing newline). /
+ * 				Si se establece en 1, indica que la bandera -n está
+ * 				activa (sin nueva línea final).
  *
  * @returns 0 on success, 1 on error. /
  *          0 en caso de éxito, 1 en caso de error.

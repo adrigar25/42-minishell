@@ -3,31 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   ft_search_in_subdirs_bonus.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:24:06 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/20 15:45:11 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 18:41:10 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
 
 /**
- * ENGLISH: Searches for a file with the given filename
- * 		in subdirectories of the specified directory.
+ * ENGLISH: Helper function to search for a file in a subdirectory.
  *
- * SPANISH: Busca un archivo con el nombre dado en los
- * 		subdirectorios del directorio especificado.
+ * SPANISH: Función auxiliar para buscar un archivo en un
+ * 		subdirectorio.
  *
- * @param dir       The directory to search in. /
- *                  El directorio donde buscar.
- *
- * @param filename  The name of the file to search for. /
- *                  El nombre del archivo a buscar.
+ * @param dir         The parent directory path. /
+ *                    La ruta del directorio padre.
+ * @param entry_name  The name of the subdirectory entry. /
+ *                    El nombre de la entrada del subdirectorio.
+ * @param filename    The name of the file to search for. /
+ *                    El nombre del archivo a buscar.
+ * @param envp        The environment variables. /
+ *                    Las variables de entorno.
  *
  * @returns The full path to the file if found, or NULL if not found. /
  *          La ruta completa al archivo si se encuentra,
-	o NULL si no se encuentra.
+ *          o NULL si no se encuentra.
  */
 static char	*ft_search_in_subdir_utils(const char *dir, const char *entry_name,
 		const char *filename, char **envp)
@@ -64,9 +66,12 @@ static char	*ft_search_in_subdir_utils(const char *dir, const char *entry_name,
  * @param filename  The name of the file to search for. /
  *                  El nombre del archivo a buscar.
  *
+ * @param envp      The environment variables array. /
+ * 				El array de variables de entorno.
+ *
  * @returns The full path to the file if found, or NULL if not found. /
  *          La ruta completa al archivo si se encuentra,
-	o NULL si no se encuentra.
+ *          o NULL si no se encuentra.
  */
 static char	*ft_search_entries(DIR *d, const char *dir, const char *filename,
 		char **envp)
@@ -104,9 +109,12 @@ static char	*ft_search_entries(DIR *d, const char *dir, const char *filename,
  * @param filename  The name of the file to search for. /
  *                  El nombre del archivo a buscar.
  *
+ * @param envp      The environment variables array. /
+ * 				El array de variables de entorno.
+ *
  * @returns The full path to the file if found, or NULL if not found. /
  *          La ruta completa al archivo si se encuentra,
-	o NULL si no se encuentra.
+ *          o NULL si no se encuentra.
  */
 char	*ft_search_in_subdirs(const char *dir, const char *filename,
 		char **envp)

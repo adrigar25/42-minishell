@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 17:16:33 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/19 18:58:55 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 18:25:46 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,15 @@ static char	*ft_get_target_dir(char **argv, char **envp)
 		return (argv[1]);
 }
 
+/**
+ * ENGLISH: Checks for errors when retrieving the current working directory.
+ *
+ * SPANISH: Verifica si hay errores al recuperar el directorio de trabajo
+ * 			actual.
+ *
+ * @returns 1 if no error, 0 if there was an error.
+ *          1 si no hay error, 0 si hubo un error.
+ */
 static int	ft_check_getcwd_error(void)
 {
 	char	*check_cwd;

@@ -3,15 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   ft_handle_env_expansion_bonus.c                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/20 16:14:56 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 18:39:45 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
 
+/**
+ * ENGLISH: Checks if the previous argument is a redirection operator.
+ *
+ * SPANISH: Verifica si el argumento anterior es un operador de redirección.
+ *
+ * @param argv  The array of argument strings. /
+ *              El arreglo de cadenas de argumentos.
+ *
+ * @param i     The current index in the argument array. /
+ *              El índice actual en el arreglo de argumentos.
+ *
+ * @returns 1 if the previous argument is a redirection operator, 0 otherwise. /
+ *          1 si el argumento anterior es un operador de redirección, 0 en
+ *          caso contrario.
+ */
 static int	ft_prev_redir(char **argv, int i)
 {
 	if (i == 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_search_file_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:22:57 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/19 20:05:12 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 18:40:11 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@
  *
  * @param filename  The name of the file to search for. /
  *                  El nombre del archivo a buscar.
+ *
+ * @param envp      The environment variables array. /
+ * 				El array de variables de entorno.
  *
  * @returns The full path to the file if found, or NULL if not found. /
  *          La ruta completa al archivo si se encuentra, o NULL si

@@ -6,14 +6,15 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 01:42:11 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/28 17:30:35 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/24 18:57:06 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
 
 /**
- * ENGLISH: Sorts an array of strings in lexicographical order using bubble sort.
+ * ENGLISH: Sorts an array of strings in lexicographical order using bubble
+ * sort.
  *
  * SPANISH: Ordena un arreglo de cadenas en orden lexicográfico usando
  *          el método de burbuja.

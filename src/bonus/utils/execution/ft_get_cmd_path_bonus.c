@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_get_cmd_path_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 16:30:20 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/19 18:59:36 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 18:37:54 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
  *
  * @param cmd   The command to search for. /
  *              El comando a buscar.
+ * @param envp  The environment variables array. /
+ * 			El array de variables de entorno.
  *
  * @returns The full path to the command if found, or NULL otherwise. /
  *          La ruta completa al comando si se encuentra, o NULL en caso

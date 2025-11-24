@@ -3,15 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   ft_finish_execution_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/20 19:49:44 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 18:37:42 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
 
+/**
+ * ENGLISH: Closes all file descriptors in the command list that are not
+ *          standard input/output.
+ *
+ * SPANISH: Cierra todos los descriptores de archivo en la lista de comandos
+ *          que no son la entrada/salida estándar.
+ *
+ * @param cmd_list   The list of commands. /
+ *                   La lista de comandos.
+ */
 static void	ft_close_fds(t_cmd *cmd_list)
 {
 	t_cmd	*current;
@@ -27,6 +37,19 @@ static void	ft_close_fds(t_cmd *cmd_list)
 	}
 }
 
+/**
+ * ENGLISH: Handles the case when a child process is terminated by a signal,
+ *          updating the last exit status and printing appropriate messages.
+ *
+ * SPANISH: Maneja el caso cuando un proceso hijo es terminado por una señal,
+ *          actualizando el último estado de salida e imprimiendo mensajes
+ *          apropiados.
+ *
+ * @param status               The status code returned by waitpid. /
+ *                             El código de estado devuelto por waitpid.
+ * @param last_exit_status     Pointer to the last exit status to update. /
+ *                             Puntero al último estado de salida a actualizar.
+ */
 static void	ft_handle_signaled(int status, int *last_exit_status)
 {
 	int	sig;
@@ -42,6 +65,19 @@ static void	ft_handle_signaled(int status, int *last_exit_status)
 	}
 }
 
+/**
+ * ENGLISH: Checks if all child processes have already been waited for.
+ *
+ * SPANISH: Verifica si todos los procesos hijos ya han sido esperados.
+ *
+ * @param pids         Array of process IDs of the child processes. /
+ *                     Array de IDs de proceso de los procesos hijos.
+ * @param cmd_count    The number of commands (and thus child processes). /
+ *                     El número de comandos (y por lo tanto de procesos hijos).
+ *
+ * @returns 1 if all processes have been waited for, 0 otherwise. /
+ *          1 si todos los procesos han sido esperados, 0 en caso contrario.
+ */
 static int	ft_check_already_waited(pid_t *pids, int cmd_count)
 {
 	int	i;
@@ -56,6 +92,21 @@ static int	ft_check_already_waited(pid_t *pids, int cmd_count)
 	return (0);
 }
 
+/**
+ * ENGLISH: Waits for all child processes to finish and updates the last exit
+ *          status based on the last process that finished.
+ *
+ * SPANISH: Espera a que todos los procesos hijos terminen y actualiza el
+ *          último estado de salida basado en el último proceso que terminó.
+ *
+ * @param pids               Array of process IDs of the child processes. /
+ *                           Array de IDs de proceso de los procesos hijos.
+ * @param cmd_count          The number of commands (and thus child processes).
+ *                           / El número de comandos (y por lo tanto de procesos
+ *                           hijos).
+ * @param last_exit_status   Pointer to the last exit status to update. /
+ *                           Puntero al último estado de salida a actualizar.
+ */
 static void	ft_wait_for_children(pid_t *pids, int cmd_count,
 		int *last_exit_status)
 {

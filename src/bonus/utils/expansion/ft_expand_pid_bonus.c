@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expand_pid_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 00:35:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/20 15:38:16 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 18:39:33 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,14 @@ static char	*ft_extract_pid_from_line(char *line)
 }
 
 /**
- * ENGLISH: Executes ps command in child process.
+ * ENGLISH: Executes the ps command to list processes.
  *
- * SPANISH: Ejecuta el comando ps en el proceso hijo.
+ * SPANISH: Ejecuta el comando ps para listar procesos.
+ *
+ * @param pipefd The pipe file descriptors.
+ *               Los descriptores de archivo de la tubería.
+ * @param envp   The environment variables array.
+ *               El array de variables de entorno.
  */
 static void	ft_exec_ps_command(int pipefd[2], char **envp)
 {
@@ -64,9 +69,17 @@ static void	ft_exec_ps_command(int pipefd[2], char **envp)
 }
 
 /**
- * ENGLISH: Finds the line containing minishell in ps output.
+ * ENGLISH: Finds the line containing "minishell" in the ps output buffer.
  *
- * SPANISH: Encuentra la línea que contiene minishell en la salida de ps.
+ * SPANISH: Encuentra la línea que contiene "minishell" en el buffer de
+ *          salida de ps.
+ *
+ * @param buffer The ps output buffer.
+ *               El buffer de salida de ps.
+ *
+ * @returns Pointer to the start of the minishell line, or NULL if not found.
+ *          Puntero al inicio de la línea de minishell,
+ *          o NULL si no se encuentra.
  */
 static char	*ft_find_minishell_line(char *buffer)
 {
@@ -86,6 +99,9 @@ static char	*ft_find_minishell_line(char *buffer)
  * ENGLISH: Gets the PID of the current minishell process using ps.
  *
  * SPANISH: Obtiene el PID del proceso minishell actual usando ps.
+ *
+ * @param data The shell data structure. /
+ *              La estructura de datos del shell.
  *
  * @returns A string containing the PID, or NULL on error.
  *          Un string con el PID, o NULL en caso de error.
@@ -128,6 +144,9 @@ static char	*ft_get_minishell_pid(t_data *data)
  *
  * @param j   Pointer to current position in the argument.
  *            Puntero a la posición actual en el argumento.
+ *
+ * @param data The shell data structure. /
+ * 			La estructura de datos del shell.
  *
  * @returns SUCCESS on success, FAILURE on error.
  *          SUCCESS en caso de éxito, FAILURE en caso de error.

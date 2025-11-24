@@ -3,15 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   ft_redir_error_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:23:16 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/20 19:35:39 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 18:45:00 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell_bonus.h"
 
+/**
+ * ENGLISH: Checks if the given filename for redirection is ambiguous.
+ *
+ * SPANISH: Verifica si el nombre de archivo dado para la redirección es
+ *          ambiguo.
+ *
+ * @param filename  The filename to check. /
+ *                  El nombre del archivo a verificar.
+ *
+ * @returns 1 if the filename is ambiguous, 0 otherwise. /
+ *          1 si el nombre del archivo es ambiguo, 0 en caso contrario.
+ */
 int	ft_is_ambiguous_redirect(char *filename)
 {
 	int	i;
@@ -28,6 +40,29 @@ int	ft_is_ambiguous_redirect(char *filename)
 	return (0);
 }
 
+/**
+ * ENGLISH: Checks for ambiguous redirection errors and updates the command
+ *          structure accordingly.
+ *
+ * SPANISH: Verifica errores de redirección ambiguos y actualiza la
+ *          estructura del comando en consecuencia.
+ *
+ * @param cmd           Pointer to the command structure. /
+ *                      Puntero a la estructura del comando.
+ *
+ * @param argv          The array of argument strings. /
+ *                      El arreglo de cadenas de argumentos.
+ *
+ * @param i             The current index in the argument array. /
+ *                      El índice actual en el arreglo de argumentos.
+ *
+ * @param expanded_arg  The expanded argument string. /
+ *                      La cadena de argumento expandida.
+ *
+ * @returns 1 if an ambiguous redirection error is found, 0 otherwise. /
+ *          1 si se encuentra un error de redirección ambiguo, 0 en caso
+ *          contrario.
+ */
 int	ft_check_ambiguous(t_cmd *cmd, char **argv, int i, char *expanded_arg)
 {
 	char	*clean_arg;
@@ -54,6 +89,22 @@ int	ft_check_ambiguous(t_cmd *cmd, char **argv, int i, char *expanded_arg)
 	return (0);
 }
 
+/**
+ * ENGLISH: Handles file descriptor errors during redirection setup.
+ *
+ * SPANISH: Maneja errores de descriptores de archivo durante la
+ *          configuración de redirecciones.
+ *
+ * @param cmd      Pointer to the command structure. /
+ *                 Puntero a la estructura del comando.
+ *
+ * @param fd_ret   The return value from the file descriptor assignment. /
+ *                 El valor de retorno de la asignación del descriptor
+ *                 de archivo.
+ *
+ * @returns -1 on critical error, 0 otherwise. /
+ *          -1 en caso de error crítico, 0 en caso contrario.
+ */
 int	ft_handle_fd_error(t_cmd *cmd, int fd_ret)
 {
 	if (fd_ret == -2)
@@ -66,6 +117,21 @@ int	ft_handle_fd_error(t_cmd *cmd, int fd_ret)
 	return (0);
 }
 
+/**
+ * ENGLISH: Handles wildcard sentinel values in expanded arguments
+ *          during redirection processing.
+ *
+ * SPANISH: Maneja valores centinela de comodines en argumentos expandidos
+ *          durante el procesamiento de redirecciones.
+ *
+ * @param cmd           Pointer to the command structure. /
+ *                      Puntero a la estructura del comando.
+ * @param expanded_arg  The expanded argument string. /
+ * 					La cadena de argumento expandida.
+ *
+ * @returns 1 if a wildcard sentinel is found, 0 otherwise. /
+ *          1 si se encuentra un centinela de comodín, 0 en caso contrario.
+ */
 int	ft_handle_wildcard_sentinel(t_cmd *cmd, char *expanded_arg)
 {
 	if (!expanded_arg)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/09 14:11:19 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 18:30:17 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,8 @@ static void	ft_remove_env_var(char *var, char ***envp)
 }
 
 /**
-
-	* ENGLISH: 	Implements the unset builtin command to
-				remove environment variables.
+ * ENGLISH: Implements the unset builtin command to remove environment
+ * 			variables.
  *
  * SPANISH: Implementa el comando builtin unset para eliminar variables
  * 			de entorno.

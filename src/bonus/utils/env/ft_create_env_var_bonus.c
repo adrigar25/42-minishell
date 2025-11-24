@@ -3,19 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_create_env_var_bonus.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 15:42:56 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/09 14:11:02 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 18:31:20 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
 
 /**
-
-	* ENGLISH: 	Creates a new environment variable string
-				in the format "NAME=VALUE".
+ * ENGLISH: Creates a new environment variable string in the format
+ * 			"NAME=VALUE".
  *
  * SPANISH: Crea una nueva cadena de variable de entorno en el formato
  * 			"NOMBRE=VALOR".

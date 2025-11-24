@@ -3,15 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_input_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 18:57:27 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/17 23:02:44 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 18:48:38 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
 
+/**
+ * ENGLISH: Frees the memory allocated for the command list.
+ *
+ * SPANISH: Libera la memoria asignada para la lista de comandos.
+ *
+ * @param cmd_list The command list to free. /
+ *                 La lista de comandos a liberar.
+ */
 static void	free_cmd_list(t_cmd *cmd_list)
 {
 	t_cmd	*tmp;
@@ -25,18 +33,58 @@ static void	free_cmd_list(t_cmd *cmd_list)
 	}
 }
 
+/**
+ * ENGLISH: Checks if the token is a redirection operator.
+ *
+ * SPANISH: Comprueba si el token es un operador de redirección.
+ *
+ * @param token The token to check. /
+ *              El token a comprobar.
+ * @returns     1 if it is a redirection operator, 0 otherwise. /
+ *              1 si es un operador de redirección, 0 en caso contrario.
+ */
 static int	ft_is_redir(char *token)
 {
 	return (!ft_strcmp(token, "<") || !ft_strcmp(token, ">")
 		|| !ft_strcmp(token, ">>") || !ft_strcmp(token, "<<"));
 }
 
+/**
+ * ENGLISH: Checks if the token is a command operator (|, ||, &&).
+ *
+ * SPANISH: Comprueba si el token es un operador de comando (|, ||, &&).
+ *
+ * @param token The token to check. /
+ *              El token a comprobar.
+ * @returns     1 if it is a command operator, 0 otherwise. /
+ *              1 si es un operador de comando, 0 en caso contrario.
+ */
 static int	ft_is_operator(char *token)
 {
 	return (!ft_strcmp(token, "|") || !ft_strcmp(token, "||")
 		|| !ft_strcmp(token, "&&"));
 }
 
+/**
+ * ENGLISH: Processes a segment of the input arguments.
+ *          Handles operators, redirections, and arguments.
+ *
+ * SPANISH: Procesa un segmento de los argumentos de entrada.
+ *          Maneja operadores, redirecciones y argumentos.
+ *
+ * @param current_cmd Pointer to the current command node. /
+ * 					Puntero al nodo de comando actual.
+ * @param data        Shell data structure with argv array and argc count. /
+ * 				Estructura de datos del shell con el array argv y el conteo
+ * 				argc.
+ * @param i           Pointer to the current index in argv. /
+ * 				Puntero al índice actual en argv.
+ * @param cmd_index   Pointer to the current command index. /
+ * 				Puntero al índice actual del comando.
+ *
+ * @returns           SUCCESS on success, ERROR on failure. /
+ * 					SUCCESS en caso de éxito, ERROR en caso de fallo.
+ */
 static int	ft_process_segment(t_cmd **current_cmd, t_data *data, int *i,
 		int *cmd_index)
 {
@@ -67,16 +115,15 @@ static int	ft_process_segment(t_cmd **current_cmd, t_data *data, int *i,
 }
 
 /**
- * Parses input arguments into a command list structure.
- * Handles pipes (|), logical operators (&&, ||), and redirections.
- * Each command node contains arguments, file descriptors, and operator type.
+ * ENGLISH: Parses the input arguments into a linked list of command structures.
+ * 		Handles operators, redirections, and arguments.
  *
- * Analiza los argumentos de entrada en una estructura de lista de comandos.
- * Maneja pipes (|), operadores lógicos (&&, ||) y redirecciones.
- * Cada nodo de comando contiene argumentos, descriptores de archivo y tipo
- * de operador.
+ * SPANISH: Analiza los argumentos de entrada en una lista enlazada de
+ * 		estructuras de comando.
+ * 		Maneja operadores, redirecciones y argumentos.
  *
  * @param data  Shell data structure with argv array and argc count.
+ *
  * @returns     Pointer to command list head, or NULL on error.
  */
 t_cmd	*ft_parse_input(t_data *data)

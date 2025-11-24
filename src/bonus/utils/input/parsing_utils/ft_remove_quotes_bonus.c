@@ -3,15 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   ft_remove_quotes_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:16:59 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/24 17:55:11 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 18:46:39 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell_bonus.h"
 
+/**
+ * ENGLISH: Handles quoted sections of the string, updating the index and
+ *          returning the length of the quoted content.
+ *
+ * SPANISH: Maneja secciones entre comillas de la cadena, actualizando el
+ *          índice y devolviendo la longitud del contenido entre comillas.
+ *
+ * @param str   The input string. /
+ *              La cadena de entrada.
+ * @param i     Pointer to the current index in the string. /
+ * 			Puntero al índice actual en la cadena.
+ *
+ * @returns The length of the quoted content. /
+ *          La longitud del contenido entre comillas.
+ */
 static int	handle_quoted(const char *str, int *i)
 {
 	int		len;
@@ -29,6 +44,17 @@ static int	handle_quoted(const char *str, int *i)
 	return (len);
 }
 
+/**
+ * ENGLISH: Calculates the length of the string after removing quotes.
+ *
+ * SPANISH: Calcula la longitud de la cadena después de eliminar las comillas.
+ *
+ * @param str   The input string. /
+ *              La cadena de entrada.
+ *
+ * @returns The length of the unquoted string. /
+ *          La longitud de la cadena sin comillas.
+ */
 static int	ft_calc_unquoted_len(const char *str)
 {
 	int	i;
@@ -50,6 +76,22 @@ static int	ft_calc_unquoted_len(const char *str)
 	return (len);
 }
 
+/**
+ * ENGLISH: Copies a quoted section from the input string to the result
+ *          string, removing the surrounding quotes.
+ *
+ * SPANISH: Copia una sección entre comillas de la cadena de entrada a la
+ *          cadena de resultado, eliminando las comillas que la rodean.
+ *
+ * @param str The input string with potential quotes. /
+ *            La cadena de entrada con posibles comillas.
+ * @param i   Pointer to the current index in the input string. /
+ *            Puntero al índice actual en la cadena de entrada.
+ * @param res The result string where the unquoted section will be copied. /
+ *            La cadena de resultado donde se copiará la sección sin comillas.
+ * @param j   Pointer to the current index in the result string. /
+ *            Puntero al índice actual en la cadena de resultado.
+ */
 static void	copy_quoted(const char *str, int *i, char *res, int *j)
 {
 	char	q;
@@ -71,11 +113,45 @@ static void	copy_quoted(const char *str, int *i, char *res, int *j)
 		(*i)++;
 }
 
+/**
+ * ENGLISH: Removes surrounding quotes from the input string.
+ *
+ * SPANISH: Elimina las comillas que rodean la cadena de entrada.
+ *
+ * @param str The input string with potential quotes. /
+ *            La cadena de entrada con posibles comillas.
+ * @param i   The current index in the input string. /
+ * 			El índice actual en la cadena de entrada.
+ * @param res The result string where the unquoted section will be copied. /
+ * 			La cadena de resultado donde se copiará la sección sin comillas.
+ * @param j   The current index in the result string. /
+ * 			El índice actual en la cadena de resultado.
+ *
+ * @returns A new string without surrounding quotes, or NULL on memory
+ *          allocation failure. /
+ *          Una nueva cadena sin comillas que la rodean, o NULL en caso de
+ *          fallo de asignación de memoria.
+ */
 static void	copy_char(const char *str, int *i, char *res, int *j)
 {
 	res[(*j)++] = str[(*i)++];
 }
 
+/**
+ * ENGLISH: Removes surrounding quotes from the input string.
+ * 		It returns a new string without quotes.
+ *
+ * SPANISH: Elimina las comillas que rodean la cadena de entrada.
+ * 		Devuelve una nueva cadena sin comillas.
+ *
+ * @param str The input string with potential quotes. /
+ *            La cadena de entrada con posibles comillas.
+ *
+ * @returns A new string without surrounding quotes, or NULL on memory
+ *          allocation failure. /
+ *          Una nueva cadena sin comillas que la rodean, o NULL en caso de
+ *          fallo de asignación de memoria.
+ */
 char	*ft_remove_quotes(const char *str)
 {
 	int		i;

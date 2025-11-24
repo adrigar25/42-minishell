@@ -6,26 +6,11 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 20:25:36 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/24 18:07:15 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/24 19:01:24 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-/*
-** FUNCION: ft_split
-** -----------------
-** Divide una cadena en subcadenas utilizando un delimitador dado.
-**
-** PARAMETROS:
-** - char const *s: La cadena a dividir.
-** - char c: El delimitador utilizado para dividir la cadena.
-**
-** RETORNO:
-** - Un puntero a un array de cadenas (subcadenas).
-** - NULL si la reserva de memoria falla o si la cadena de entrada es NULL.
-**
-*/
 
 static void	free_result(char **result, size_t j)
 {
@@ -69,9 +54,25 @@ static char	**split_input(char **result, char *s, char c)
 	return (result);
 }
 
+/**
+ * ENGLISH: Splits the input string into an array of substrings based on the
+ *          specified delimiter character.
+ *
+ * SPANISH: Divide la cadena de entrada en un arreglo de subcadenas
+ *          basado en el carácter delimitador especificado.
+ *
+ * @param s The input string to be split. /
+ *          La cadena de entrada a dividir.
+ * @param c The delimiter character used to split the string. /
+ *          El carácter delimitador utilizado para dividir la cadena.
+ *
+ * @returns An array of substrings, or NULL on memory allocation failure. /
+ *          Un arreglo de subcadenas, o NULL en caso de fallo de asignación de
+ *          memoria.
+ */
 char	**ft_split(char const *s, char c)
 {
-	char **result;
+	char	**result;
 
 	if (!s)
 		return (NULL);
