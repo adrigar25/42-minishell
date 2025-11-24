@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/24 18:58:58 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/25 00:12:46 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ static void	update_shlvl(t_data *data)
  */
 static int	ft_init_data(t_data **data, char **envp)
 {
-	*data = calloc(1, sizeof **data);
+	*data = ft_calloc(1, sizeof **data);
 	if (!*data)
 		return (1);
 	(*data)->envp = ft_dupenv(envp);

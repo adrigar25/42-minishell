@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execute_cmds.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 16:35:40 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/24 17:33:32 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/25 00:12:46 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	ft_execute_cmds(t_cmd *cmd_list, t_data **data)
 
 	if (!cmd_list || !data || !*data)
 		return (ERROR);
-	pids = calloc((*data)->cmd_count, sizeof(pid_t));
+	pids = ft_calloc((*data)->cmd_count, sizeof(pid_t));
 	if (!pids)
 		return (ERROR);
 	current = cmd_list;

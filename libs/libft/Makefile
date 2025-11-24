@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
+#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:25:07 by adriescr          #+#    #+#              #
-#    Updated: 2025/11/24 17:05:14 by adriescr         ###   ########.fr        #
+#    Updated: 2025/11/25 00:12:45 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,6 +58,7 @@ MY_LIBFT = \
 	ft_split.c \
 	ft_count_words.c \
 	ft_memcpy.c \
+	ft_calloc.c \
 	ft_strlen.c \
 	ft_strdup.c \
 	ft_strjoin.c \

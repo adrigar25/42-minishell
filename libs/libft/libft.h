@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:22:52 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/24 18:07:25 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/25 00:12:46 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ size_t			ft_atoll(const char *str);
 char			*ft_itoa(int n);
 char			**ft_split(char const *s, char c);
 void			*ft_memcpy(void *dst, const void *src, size_t n);
+void			*ft_calloc(size_t count, size_t size);
 size_t			ft_count_words(const char *s, char c);
 size_t			ft_strlen(const char *s);
 char			*ft_strjoin(char *s1, char *s2);
