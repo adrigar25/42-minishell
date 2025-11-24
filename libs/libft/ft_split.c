@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 21:45:58 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/19 17:59:13 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 15:15:08 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	*free_all(char **arr, size_t j)
 	return (NULL);
 }
 
-/*
+/**
  * ENGLISH: Splits a string into an array of strings.
  *
  * SPANISH: Divide una cadena en un array de cadenas.
@@ -52,8 +52,6 @@ char	**ft_split(char const *s, char c)
 	size_t	vars[4];
 	char	**res;
 
-	if (!s)
-		return (NULL);
 	vars[0] = 0;
 	vars[1] = 0;
 	vars[2] = ft_count_words(s, c);
