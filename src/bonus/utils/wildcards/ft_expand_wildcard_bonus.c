@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 01:42:17 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/24 18:01:31 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 18:21:20 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,35 +44,11 @@ static void	get_dir_and_pattern(const char *pattern, char **dirpath,
 	}
 }
 
-static char	*build_path(const char *dirpath, const char *name)
-{
-	char	*tmp;
-	char	*result;
-
-	if (ft_strcmp(dirpath, ".") == 0)
-		return (ft_strdup((char *)name));
-	tmp = ft_strjoin((char *)dirpath, "/");
-	if (!tmp)
-		return (NULL);
-	result = ft_strjoin(tmp, (char *)name);
-	free(tmp);
-	return (result);
-}
-
-static int	store_match(char **matches, int count, const char *name)
-{
-	matches[count] = ft_strdup((char *)name);
-	if (!matches[count])
-		return (-1);
-	return (count + 1);
-}
-
 static int	expand_loop(DIR *dir, char **matches, int max_matches,
 		char *base_pattern)
 {
 	struct dirent	*entry;
 	int				count;
-	int				result;
 
 	count = 0;
 	entry = readdir(dir);
@@ -82,10 +58,10 @@ static int	expand_loop(DIR *dir, char **matches, int max_matches,
 					&& base_pattern[0] == '.'))
 			&& ft_match_pattern(base_pattern, entry->d_name))
 		{
-			result = store_match(matches, count, entry->d_name);
-			if (result == -1)
+			matches[count] = ft_strdup((char *)entry->d_name);
+			if (!matches[count])
 				return (count);
-			count = result;
+			count++;
 		}
 		entry = readdir(dir);
 	}
@@ -95,12 +71,22 @@ static int	expand_loop(DIR *dir, char **matches, int max_matches,
 static int	build_full_paths(char **matches, int count, const char *dirpath)
 {
 	int		i;
+	char	*tmp;
 	char	*full_path;
 
 	i = 0;
 	while (i < count)
 	{
-		full_path = build_path(dirpath, matches[i]);
+		if (ft_strcmp(dirpath, ".") == 0)
+			full_path = ft_strdup((char *)matches[i]);
+		else
+		{
+			tmp = ft_strjoin((char *)dirpath, "/");
+			if (!tmp)
+				return (-1);
+			full_path = ft_strjoin(tmp, (char *)matches[i]);
+			free(tmp);
+		}
 		if (!full_path)
 			return (-1);
 		free(matches[i]);
