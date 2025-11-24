@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:53:40 by adriescr          #+#    #+#             */
-/*   Updated: 2025/09/22 12:53:12 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:22:33 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
  *
  * SPANISH: Verifica si una cadena representa un número válido.
  *
- * @param str   The string to check. /
- *              La cadena a verificar.
+ * @param str	The string to check. /
+ *				La cadena a verificar.
  *
  * @returns 1 if the string is a valid number, 0 otherwise. /
- *          1 si la cadena es un número válido, 0 en caso contrario.
+ *			1 si la cadena es un número válido, 0 en caso contrario.
  */
 int	ft_is_number(const char *str)
 {

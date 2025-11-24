@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:20:55 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/09 16:56:18 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:44:59 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,12 @@ static char	*ft_extract_line(char **reminder)
 }
 
 /**
- * ENGLISH: Reads from a file descriptor and appends to the reminder.
+ * ENGLISH: Allocates a buffer for reading.
  *
- * SPANISH: Lee de un descriptor de archivo y agrega al recordatorio.
+ * SPANISH: Reserva un búfer para la lectura.
  *
- * @param fd        The file descriptor to read from. /
- *                  El descriptor de archivo del que leer.
- * @param reminder  The reminder string to append to. /
- *                  La cadena de recordatorio a la que agregar.
- *
- * @returns 1 on success, -1 on failure. /
- *          1 en caso de éxito, -1 en caso de error.
+ * @returns A pointer to the allocated buffer, or NULL on failure. /
+ *          Un puntero al búfer asignado, o NULL en caso de error.
  */
 static char	*ft_alloc_buffer(void)
 {
@@ -82,6 +77,20 @@ static int	ft_append_to_reminder(char **reminder, char *buffer)
 	return (0);
 }
 
+/**
+ * ENGLISH: Reads from the file descriptor and appends to the reminder.
+ * 		Stops when a newline is found or EOF is reached.
+ * SPANISH: Lee del descriptor de archivo y lo añade al recordatorio.
+ * 		Se detiene cuando se encuentra un salto de línea o se alcanza EOF.
+ *
+ * @param fd         The file descriptor to read from. /
+ *                   El descriptor de archivo del que leer.
+ * @param reminder   The reminder string to append to. /
+ *                   La cadena de recordatorio a la que añadir.
+ *
+ * @returns The number of bytes read, or -1 on error. /
+ *          El número de bytes leídos, o -1 en caso de error.
+ */
 static int	ft_read_to_reminder(int fd, char **reminder)
 {
 	char	*buffer;

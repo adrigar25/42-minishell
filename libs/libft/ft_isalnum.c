@@ -6,27 +6,21 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/09/22 12:53:17 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:24:21 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 /**
- * ENGLISH: Counts the number of words in a string,
- *          separated by a given delimiter.
+ * ENGLISH: Checks if a character is alphanumeric (letter or digit).
  *
- * SPANISH: Cuenta el número de palabras en una cadena,
- *          separadas por un delimitador dado.
+ * SPANISH: Verifica si un carácter es alfanumérico (letra o dígito).
  *
- * @param s   The string to count words in. /
- *            La cadena en la que contar las palabras.
+ * @param c The character to check. / El carácter a verificar.
  *
- * @param c   The delimiter character. /
- *            El carácter delimitador.
- *
- * @returns The number of words in the string. /
- *          El número de palabras en la cadena.
+ * @returns 1 if the character is alphanumeric, 0 otherwise. /
+ *          1 si el carácter es alfanumérico, 0 en caso contrario.
  */
 int	ft_isalnum(int c)
 {

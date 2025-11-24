@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_count_words.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 13:23:07 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/19 17:59:12 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 15:21:46 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  * SPANISH: Cuenta el número de palabras en una cadena,
  * 			separadas por un delimitador dado.
  *
- * @param s   The string to count words in. /
+ * @param str   The string to count words in. /
  *            La cadena en la que contar las palabras.
  *
  * @param c   The delimiter character. /
@@ -28,22 +28,22 @@
  * @returns The number of words in the string. /
  *          El número de palabras en la cadena.
  */
-size_t	ft_count_words(const char *s, char c)
+size_t	ft_count_words(const char *str, char c)
 {
 	size_t	count;
 	int		i;
 
-	if (!s)
+	if (!str)
 		return (0);
 	count = 0;
 	i = 0;
-	while (s[i])
+	while (str[i])
 	{
-		while (s[i] == c)
+		while (str[i] == c)
 			i++;
-		if (s[i])
+		if (str[i])
 			count++;
-		while (s[i] && s[i] != c)
+		while (str[i] && str[i] != c)
 			i++;
 	}
 	return (count);
