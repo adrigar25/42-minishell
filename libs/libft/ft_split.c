@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 20:25:36 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/24 15:43:09 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 17:35:26 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	free_result(char **result, size_t j)
 	free(result);
 }
 
-static char	*split_input(char **result, const char *s, char c)
+static char	**split_input(char **result, char *s, char c)
 {
 	size_t	i;
 	size_t	j;
@@ -71,12 +71,12 @@ static char	*split_input(char **result, const char *s, char c)
 
 char	**ft_split(char const *s, char c)
 {
-	char	**result;
+	char **result;
 
 	if (!s)
 		return (NULL);
 	result = (char **)malloc(sizeof(char *) * (ft_count_words(s, c) + 1));
 	if (!result)
 		return (NULL);
-	return (split_input(result, s, c));
+	return (split_input(result, (char *)s, c));
 }

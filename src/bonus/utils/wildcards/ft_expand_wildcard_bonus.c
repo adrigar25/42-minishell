@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 01:42:17 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/18 01:33:36 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 17:24:36 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,52 +59,55 @@ static char	*build_path(const char *dirpath, const char *name)
 	return (result);
 }
 
-static int	expand_loop(DIR *dir, t_expand_data *data)
+static int	expand_loop(DIR *dir, char **matches, int max_matches,
+		char *base_pattern, char *dirpath)
 {
 	struct dirent	*entry;
 	int				result;
+	int				count;
 
-	data->count = 0;
+	count = 0;
 	entry = readdir(dir);
-	while (entry && data->count < data->max_matches)
+	while (entry && count < max_matches)
 	{
-		if ((entry->d_name[0] != '.' || (data->base_pattern
-					&& data->base_pattern[0] == '.'))
-			&& ft_match_pattern(data->base_pattern, entry->d_name))
+		if ((entry->d_name[0] != '.' || (base_pattern
+					&& base_pattern[0] == '.'))
+			&& ft_match_pattern(base_pattern, entry->d_name))
 		{
-			data->matches[data->count] = build_path(data->dirpath,
-					entry->d_name);
-			if (!data->matches[data->count])
+			matches[count] = build_path(dirpath, entry->d_name);
+			if (!matches[count])
 				result = -1;
 			else
-				result = data->count + 1;
+				result = count + 1;
 			if (result == -1)
-				return (data->count);
-			data->count = result;
+				return (count);
+			count = result;
 		}
 		entry = readdir(dir);
 	}
-	return (data->count);
+	return (count);
 }
 
 int	ft_expand_wildcard(const char *pattern, char **matches, int max_matches)
 {
-	DIR				*dir;
-	t_expand_data	data;
+	DIR	*dir;
+	int	count;
 
+	char *dirpath;            // Cambiar de char ** a char *
+	const char *base_pattern; // Cambiar de char * a const char *
+	count = 0;
 	if (!pattern)
 		return (0);
-	get_dir_and_pattern(pattern, (char **)&data.dirpath, &data.base_pattern);
-	dir = opendir(data.dirpath);
+	get_dir_and_pattern(pattern, &dirpath, &base_pattern); // Pasar direcciones
+	dir = opendir(dirpath);
 	if (!dir)
 	{
-		free((char *)data.dirpath);
+		free(dirpath);
 		return (0);
 	}
-	data.matches = matches;
-	data.max_matches = max_matches;
-	data.count = expand_loop(dir, &data);
+	count = expand_loop(dir, matches, max_matches, (char *)base_pattern,
+			dirpath);
 	closedir(dir);
-	free((char *)data.dirpath);
-	return (data.count);
+	free(dirpath);
+	return (count);
 }

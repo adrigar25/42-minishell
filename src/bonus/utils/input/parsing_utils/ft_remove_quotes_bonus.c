@@ -53,10 +53,20 @@ static int	ft_calc_unquoted_len(const char *str)
 static void	copy_quoted(const char *str, int *i, char *res, int *j)
 {
 	char	q;
+	char	other_q;
 
 	q = str[(*i)++];
+	if (q == '"')
+		other_q = '\'';
+	else
+		other_q = '"';
 	while (str[*i] && str[*i] != q)
-		res[(*j)++] = str[(*i)++];
+	{
+		if (str[*i] == other_q)
+			res[(*j)++] = str[(*i)++];
+		else
+			res[(*j)++] = str[(*i)++];
+	}
 	if (str[*i] == q)
 		(*i)++;
 }

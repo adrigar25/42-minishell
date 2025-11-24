@@ -46,6 +46,10 @@ char	*ft_process_arg(char *arg, t_data *data)
 
 	if (!arg)
 		return (NULL);
+	if (arg[0] == '$' && arg[1] == '"' && arg[ft_strlen(arg) - 1] == '"')
+		return (ft_substr(arg, 1, ft_strlen(arg) - 1));
+	if (arg[0] == '$' && arg[1] == '\'' && arg[ft_strlen(arg) - 1] == '\'')
+		return (ft_substr(arg, 2, ft_strlen(arg) - 3));
 	if (arg[0] == '\'' && arg[ft_strlen(arg) - 1] == '\'')
 		return (ft_substr(arg, 0, ft_strlen(arg)));
 	dst = ft_strdup("");

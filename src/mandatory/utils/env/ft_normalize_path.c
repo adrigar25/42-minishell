@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_normalize_path.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 16:44:59 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/13 17:46:03 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/24 16:57:04 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static char	*build_path_from_stack(char **stack, int top)
 	return (res);
 }
 
-char	*ft_normalize_path(const char *path)
+char	*ft_normalize_path(char *path)
 {
 	char	**parts;
 	char	**stack;
