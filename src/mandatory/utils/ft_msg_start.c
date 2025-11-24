@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_msg_start.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 20:58:40 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/19 20:01:07 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 18:05:57 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
  *
  * SPANISH: Imprime el mensaje de bienvenida al iniciar el shell.
  *
+ * @param envp The environment variables. /
+ * 			Las variables de entorno.
+ *
  * @returns Always returns 0. /
  *          Siempre retorna 0.
  */
@@ -25,7 +28,8 @@ int	ft_msg_start(char **envp)
 	char	*welcome_msg;
 
 	welcome_msg = ft_search_file(NULL, "welcome.txt", envp);
-	ft_putstr("\x1B" "c");
+	ft_putstr("\x1B"
+				"c");
 	if (welcome_msg)
 	{
 		ft_print_file(welcome_msg, COLOR_MAGENTA);

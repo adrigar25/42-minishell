@@ -6,24 +6,28 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/13 17:43:49 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/24 17:21:56 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 /**
- * ENGLISH: Implements the pwd command, printing the current working directory
- * 			to the specified output file descriptor.
+ * ENGLISH: Retrieves the current working directory from the PWD environment
+ * 			variable.
+ * 		If PWD is not set or invalid, returns NULL.
  *
- * SPANISH: Implementa el comando pwd, imprimiendo el directorio de trabajo
- * 			actual en el descriptor de archivo de salida especificado.
+ * SPANISH: Obtiene el directorio de trabajo actual de la variable de entorno
+ * 			PWD.
+ * 		Si PWD no está establecido o es inválido, devuelve NULL.
  *
- * @param cmd The command structure containing file descriptors. /
- *            La estructura de comando que contiene descriptores de archivo.
+ * @param data The shell data structure containing environment variables. /
+ *             La estructura de datos del shell que contiene las variables de
+ *             entorno.
  *
- * @returns 0 on success, 1 on error. /
- *          0 en caso de éxito, 1 en caso de error.
+ * @returns The current working directory as a string, or NULL if not found. /
+ *          El directorio de trabajo actual como cadena, o NULL si no se
+ *          encuentra.
  */
 static char	*get_pwd_from_env(t_data *data)
 {
@@ -44,6 +48,16 @@ static char	*get_pwd_from_env(t_data *data)
 	return (out);
 }
 
+/**
+ * ENGLISH: Allocates and retrieves the current working directory using
+ * 			getcwd.
+ *
+ * SPANISH: Asigna y obtiene el directorio de trabajo actual usando getcwd.
+ *
+ * @returns The current working directory as a string, or NULL on failure. /
+ *          El directorio de trabajo actual como cadena, o NULL en caso de
+ *          error.
+ */
 static char	*get_cwd_alloc(void)
 {
 	char	cwd[1024];
@@ -60,6 +74,21 @@ static char	*get_cwd_alloc(void)
 	return (out);
 }
 
+/**
+ * ENGLISH: Writes the current working directory to the command's output file
+ * 			descriptor and frees the allocated memory.
+ *
+ * SPANISH: Escribe el directorio de trabajo actual en el descriptor de
+ * 			archivo de salida del comando y libera la memoria asignada.
+ *
+ * @param cmd The command structure containing output file descriptor. /
+ * 			La estructura de comando que contiene el descriptor de archivo
+ * 			de salida.
+ * @param pwd The current working directory string to write. /
+ * 			La cadena del directorio de trabajo actual a escribir.
+ * @returns 0 on success, 1 on failure. /
+ * 			0 en caso de éxito, 1 en caso de error.
+ */
 static int	write_pwd_and_free(t_cmd cmd, char *pwd)
 {
 	char	*buf;
@@ -83,6 +112,20 @@ static int	write_pwd_and_free(t_cmd cmd, char *pwd)
 	return (0);
 }
 
+/**
+ * ENGLISH: Implements the pwd command, retrieving and printing the current
+ * 			working directory.
+ *
+ * SPANISH: Implementa el comando pwd, obteniendo e imprimiendo el directorio
+ * 			de trabajo actual.
+ *
+ * @param cmd The command structure containing arguments and environment data. /
+ *            La estructura de comando que contiene los argumentos y datos de
+ *            entorno.
+ *
+ * @returns 0 on success, 1 on failure. /
+ *          0 en caso de éxito, 1 en caso de error.
+ */
 int	ft_pwd(t_cmd cmd)
 {
 	char	*pwd;

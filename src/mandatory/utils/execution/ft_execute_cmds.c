@@ -3,15 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execute_cmds.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 16:35:40 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/16 22:14:19 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 17:33:32 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+/**
+ * ENGLISH: Forks a new process to execute a command, setting up I/O
+ * 			redirections and handling built-in commands.
+ *
+ * SPANISH: Crea un nuevo proceso para ejecutar un comando,
+ * 			configurando redirecciones de E/S y manejando comandos internos.
+ *
+ * @param curr     The current command to execute. /
+ *                 El comando actual a ejecutar.
+ * @param cmd_l    The list of all commands. /
+ *                 La lista de todos los comandos.
+ * @param data     Pointer to the shell data structure. /
+ *                 Puntero a la estructura de datos del shell.
+ * @param pids     Array to store the PIDs of forked processes. /
+ *                 Arreglo para almacenar los PIDs de los procesos creados.
+ *
+ * @returns SUCCESS on successful fork, ERROR on failure. /
+ *          SUCCESS en fork exitoso, ERROR en caso de fallo.
+ */
 static int	ft_fork_exec(t_cmd *curr, t_cmd *cmd_l, t_data **data, pid_t *pids)
 {
 	pid_t	pid;

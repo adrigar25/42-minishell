@@ -3,18 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_finish_execution.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/18 10:07:49 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 17:35:03 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-/*
-** Frees the memory allocated for the command list.
-*/
+/**
+ * ENGLISH: Frees the linked list of command structures.
+ *
+ * SPANISH: Libera la lista enlazada de estructuras de comando.
+ *
+ * @param cmd_list   The head of the command list. /
+ *                   La cabeza de la lista de comandos.
+ */
 static void	ft_free_cmd_list(t_cmd *cmd_list)
 {
 	t_cmd	*tmp;
@@ -29,14 +34,14 @@ static void	ft_free_cmd_list(t_cmd *cmd_list)
 }
 
 /**
- * ENGLISH: Closes file descriptors for all commands in the list except standard
- * 			input/output.
+ * ENGLISH: Closes all file descriptors in the command list
+ *          that are not standard input/output.
  *
- * SPANISH: Cierra los descriptores de archivo de todos los comandos en la lista
- * 			excepto la entrada/salida estándar.
+ * SPANISH: Cierra todos los descriptores de archivo en la lista
+ * 			de comandos que no sean entrada/salida estándar.
  *
- * @param cmd_list   Pointer to the head of the command list. /
- *                   Puntero al inicio de la lista de comandos.
+ * @param cmd_list   The head of the command list. /
+ *                   La cabeza de la lista de comandos.
  */
 static void	ft_close_fds(t_cmd *cmd_list)
 {
@@ -53,6 +58,19 @@ static void	ft_close_fds(t_cmd *cmd_list)
 	}
 }
 
+/**
+ * ENGLISH: Handles a child process termination due to a signal,
+ *          updating the last exit status and printing messages.
+ *
+ * SPANISH: Maneja la terminación de un proceso hijo debido a una señal,
+ * 			actualizando el último estado de salida e imprimiendo mensajes.
+ *
+ * @param status               The termination status of the child process. /
+ *                             El estado de terminación del proceso hijo.
+ * @param last_exit_status     Pointer to the last exit status variable. /
+ *                             Puntero a la variable del último estado de
+ *                             salida.
+ */
 static void	ft_handle_signaled(int status, int *last_exit_status)
 {
 	int	sig;
@@ -68,6 +86,21 @@ static void	ft_handle_signaled(int status, int *last_exit_status)
 	}
 }
 
+/**
+ * ENGLISH: Waits for all child processes to finish,
+ *          updating the last exit status accordingly.
+ *
+ * SPANISH: Espera a que todos los procesos hijos terminen,
+ * 			actualizando el último estado de salida en consecuencia.
+ *
+ * @param pids                 The array of child process IDs. /
+ *                             La matriz de IDs de procesos hijos.
+ * @param cmd_count            The number of commands (child processes). /
+ *                             El número de comandos (procesos hijos).
+ * @param last_exit_status     Pointer to the last exit status variable. /
+ *                             Puntero a la variable del último estado de
+ *                             salida.
+ */
 static void	ft_wait_for_children(pid_t *pids, int cmd_count,
 		int *last_exit_status)
 {
@@ -89,6 +122,25 @@ static void	ft_wait_for_children(pid_t *pids, int cmd_count,
 	}
 }
 
+/**
+ * ENGLISH: Finalizes the execution process by closing file descriptors,
+ *          waiting for child processes, freeing resources, and updating
+ *          the last exit status.
+ *
+ * SPANISH: Finaliza el proceso de ejecución cerrando descriptores de archivo,
+ *          esperando a los procesos hijos, liberando recursos y actualizando
+ *          el último estado de salida.
+ *
+ * @param pids       The array of child process IDs. /
+ *                   La matriz de IDs de procesos hijos.
+ * @param cmd_list   The head of the command list. /
+ *                   La cabeza de la lista de comandos.
+ * @param data       The shell data structure. /
+ *                   La estructura de datos del shell.
+ *
+ * @returns The last exit status after execution. /
+ *          El último estado de salida después de la ejecución.
+ */
 int	ft_finish_execution(pid_t *pids, t_cmd *cmd_list, t_data *data)
 {
 	int	last_exit_status;

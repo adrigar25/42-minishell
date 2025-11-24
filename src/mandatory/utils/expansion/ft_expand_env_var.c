@@ -3,23 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expand_env_var.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/20 00:39:21 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 17:40:07 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+/**
+ * ENGLISH: Expands an environment variable in the given argument string.
+ *
+ * SPANISH: Expande una variable de entorno en la cadena de argumento dada.
+ *
+ * @param dst   The destination string where the expanded value will be
+ *              appended. /
+ *              La cadena de destino donde se añadirá el valor expandido.
+ *
+ * @param arg   The argument string containing the environment variable to
+ *              expand.
+ *              La cadena de argumento que contiene la variable de entorno a
+ *              expandir.
+ *
+ * @param j     Pointer to the current index in the argument string. /
+ *              Puntero al índice actual en la cadena de argumento.
+ *
+ * @param data  The shell data structure containing environment variables. /
+ *              La estructura de datos del shell que contiene las variables
+ *              de entorno.
+ *
+ * @returns SUCCESS on successful expansion, or an error code on failure. /
+ *          SUCCESS en caso de expansión exitosa,
+ *          o un código de error en caso de fallo.
+ */
 int	ft_expand_env_var(char **dst, char *arg, int *j, t_data *data)
 {
 	int		start;
 	char	*env_name;
 	char	*env_value;
 
-	if (!arg[*j + 1] || arg[*j + 1] == '\'' || arg[*j + 1] == '"'
-		|| arg[*j + 1] == ' ' || arg[*j + 1] == '\t')
+	if (!arg[*j + 1] || arg[*j + 1] == '\'' || arg[*j + 1] == '"' || arg[*j
+		+ 1] == ' ' || arg[*j + 1] == '\t')
 	{
 		(*j)++;
 		return (ft_append(dst, "$"));

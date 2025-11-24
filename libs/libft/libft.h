@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 13:22:52 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/24 17:24:47 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 18:07:25 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 int				ft_is_digit(unsigned char c);
 int				ft_is_number(const char *str);
 int				ft_atoi(const char *str);
+size_t			ft_atoll(const char *str);
 char			*ft_itoa(int n);
 char			**ft_split(char const *s, char c);
 void			*ft_memcpy(void *dst, const void *src, size_t n);

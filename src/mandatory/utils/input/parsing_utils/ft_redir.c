@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_redir.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 20:29:05 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/20 15:12:25 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 17:56:21 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,20 @@ int	ft_assign_fd(t_cmd **cmd, char *filename, char *type)
 }
 
 /**
- * ENGLISH: Checks if a token is a redirection operator.
+ * ENGLISH: Checks if the given filename for redirection is ambiguous.
+ *          A filename is considered ambiguous if it is NULL, empty,
+ *          or contains spaces or tabs.
  *
- * SPANISH: Verifica si un token es un operador de redirección.
+ * SPANISH: Verifica si el nombre de archivo dado para la redirección
+ *          es ambiguo.
+ *          Un nombre de archivo se considera ambiguo si es NULL,
+ *          está vacío, o contiene espacios o tabulaciones.
  *
- * @param token The token to check.
- *              El token a verificar.
+ * @param filename  The filename to check.
+ *                  El nombre del archivo a verificar.
  *
- * @returns 1 if the token is a redirection operator, 0 otherwise.
- *          1 si el token es un operador de redirección, 0 en caso contrario.
+ * @returns 1 if the filename is ambiguous, 0 otherwise.
+ *          1 si el nombre del archivo es ambiguo, 0 en caso contrario.
  */
 static int	ft_is_ambiguous_redirect(char *filename)
 {
@@ -86,6 +91,30 @@ static int	ft_is_ambiguous_redirect(char *filename)
 	return (0);
 }
 
+/**
+ * ENGLISH: Checks for ambiguous redirection in the command's argument.
+ *          If ambiguous, it sets error flags and prints an error message.
+ *
+ * SPANISH: Verifica si hay una redirección ambigua en el argumento
+ *          del comando.
+ *          Si es ambigua, establece las banderas de error e imprime
+ *          un mensaje de error.
+ *
+ * @param cmd           Pointer to the command structure.
+ *                      Puntero a la estructura del comando.
+ *
+ * @param argv          The command's argument vector.
+ *                      El vector de argumentos del comando.
+ *
+ * @param i             The index of the redirection operator in argv.
+ *                      El índice del operador de redirección en argv.
+ *
+ * @param expanded_arg  The processed argument after expansions.
+ *                      El argumento procesado después de las expansiones.
+ *
+ * @returns 1 if ambiguous redirection is detected, 0 otherwise.
+ *          1 si se detecta una redirección ambigua, 0 en caso contrario.
+ */
 static int	ft_check_ambiguous(t_cmd *cmd, char **argv, int i,
 		char *expanded_arg)
 {
@@ -113,6 +142,23 @@ static int	ft_check_ambiguous(t_cmd *cmd, char **argv, int i,
 	return (0);
 }
 
+/**
+ * ENGLISH: Handles file descriptor errors after attempting to assign
+ *          a file descriptor for redirection.
+ *
+ * SPANISH: Maneja los errores de descriptor de archivo después de
+ *          intentar asignar un descriptor de archivo para la redirección.
+ *
+ * @param cmd     Pointer to the command structure.
+ *                Puntero a la estructura del comando.
+ *
+ * @param fd_ret  The return value from the file descriptor assignment.
+ *                El valor de retorno de la asignación del descriptor
+ *                de archivo.
+ *
+ * @returns -1 if a critical error occurred, 0 otherwise.
+ *          -1 si ocurrió un error crítico, 0 en caso contrario.
+ */
 static int	ft_handle_fd_error(t_cmd *cmd, int fd_ret)
 {
 	if (fd_ret == -2)
@@ -125,6 +171,23 @@ static int	ft_handle_fd_error(t_cmd *cmd, int fd_ret)
 	return (0);
 }
 
+/**
+ * ENGLISH: Handles redirection for the command based on the
+ *          specified arguments.
+ *
+ * SPANISH: Maneja la redirección para el comando según los
+ *          argumentos especificados.
+ *
+ * @param cmd   Pointer to the command structure.
+ *              Puntero a la estructura del comando.
+ * @param argv  The command's argument vector.
+ *              El vector de argumentos del comando.
+ * @param i     The index of the redirection operator in argv.
+ *              El índice del operador de redirección en argv.
+ *
+ * @returns The next index to process in argv, or -1 on error.
+ *          El siguiente índice a procesar en argv, o -1 en caso de error.
+ */
 int	ft_redir(t_cmd *cmd, char **argv, int i)
 {
 	char	*expanded_arg;

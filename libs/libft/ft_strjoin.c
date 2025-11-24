@@ -6,7 +6,7 @@
 /*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:56:05 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/24 15:35:27 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/11/24 17:17:46 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,7 @@ char	*ft_strjoin(char *str1, char *str2)
 
 	if (!str2)
 		return (str1);
-	if (str1)
-		len1 = ft_strlen(str1);
+	len1 = ft_strlen(str1);
 	len2 = ft_strlen(str2);
 	new_str = malloc(len1 + len2 + 1);
 	if (!new_str)

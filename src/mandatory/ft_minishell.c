@@ -3,15 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:47:21 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/20 17:03:31 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 18:06:29 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * ENGLISH: Initializes a default environment if none is provided.
+ *
+ * SPANISH: Inicializa un entorno por defecto si no se proporciona ninguno.
+ *
+ * @returns A newly allocated array of environment variables, or NULL on
+ *          failure. /
+ *          Una matriz recién asignada de variables de entorno, o NULL en caso
+ *          de fallo.
+ */
 static char	**ft_init_env(void)
 {
 	char	**env;
@@ -41,6 +51,18 @@ static char	**ft_init_env(void)
 	return (free(env), NULL);
 }
 
+/**
+ * ENGLISH: Updates the SHLVL environment variable.
+ *          It increments the shell level, handling edge cases
+ *          like negative values and excessively high levels.
+ *
+ * SPANISH: Actualiza la variable de entorno SHLVL.
+ *          Incrementa el nivel del shell, manejando casos
+ *          especiales como valores negativos y niveles excesivamente altos.
+ *
+ * @param data Pointer to the shell data structure. /
+ *             Puntero a la estructura de datos del shell.
+ */
 static void	update_shlvl(t_data *data)
 {
 	char	*val;
@@ -68,6 +90,24 @@ static void	update_shlvl(t_data *data)
 	free(newlvl);
 }
 
+/**
+ * ENGLISH: Initializes the shell data structure.
+ *          It duplicates the provided environment variables
+ *          or initializes a default environment if none is provided.
+ *
+ * SPANISH: Inicializa la estructura de datos del shell.
+ *          Duplica las variables de entorno proporcionadas
+ *          o inicializa un entorno por defecto si no se proporciona ninguno.
+ *
+ * @param data Pointer to store the initialized shell data structure. /
+ *             Puntero para almacenar la estructura de datos del shell
+ *             inicializada.
+ * @param envp The environment variables. /
+ *             Las variables de entorno.
+ *
+ * @returns 0 on success, 1 on failure. /
+ *          0 en caso de éxito, 1 en caso de fallo.
+ */
 static int	ft_init_data(t_data **data, char **envp)
 {
 	*data = calloc(1, sizeof **data);
@@ -134,6 +174,29 @@ static int	ft_process_lines(char *input, t_data **data, int debug)
 	return (ft_free_matrix(lines), exit_status);
 }
 
+/**
+ * ENGLISH: The main function for the minishell program.
+ *          It initializes the shell, displays a welcome message if in
+ *          interactive mode,
+ *          reads user input, processes commands, and executes
+ *          them in a loop until exit.
+ *
+ * SPANISH: La función principal para el programa minishell.
+ *          Inicializa el shell, muestra un mensaje de bienvenida si está
+ *          en modo interactivo,
+ *          lee la entrada del usuario, procesa los comandos y los ejecuta
+ *          en un bucle hasta salir.
+ *
+ * @param envp   The environment variables. /
+ *               Las variables de entorno.
+ *
+ * @param debug  Flag to indicate if debug information should be shown. /
+ *               Indicador para indicar si se debe mostrar información de
+ *               depuración.
+ *
+ * @returns The exit status of the last executed command. /
+ *          El estado de salida del último comando ejecutado.
+ */
 int	ft_minishell(char **envp, int debug)
 {
 	char	*input;
