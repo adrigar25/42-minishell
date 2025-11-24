@@ -14,67 +14,6 @@
 #include "../../minishell_bonus.h"
 
 /**
- * ENGLISH: Converts a string to a long long integer.
- * 		Handles optional leading '+' or '-' signs.
- * 	SPANISH: Convierte una cadena a un entero largo largo.
- * 		Maneja signos '+' o '-' opcionales al principio.
- *
- * @param str   The string to convert. /
- * 			La cadena a convertir.
- *
- * @return The converted long long integer. /
- * 			El entero largo largo convertido.
- */
-long long	ft_atoll(const char *str)
-{
-	int			i;
-	int			sign;
-	long long	result;
-
-	i = 0;
-	sign = 1;
-	result = 0;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '+' || str[i] == '-')
-	{
-		if (str[i] == '-')
-			sign = -1;
-		i++;
-	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		result = result * 10 + (str[i] - '0');
-		i++;
-	}
-	return (result * sign);
-}
-
-static int	count_exit_args(char **args)
-{
-	int	count;
-
-	count = 0;
-	while (args[count])
-		count++;
-	return (count);
-}
-
-static void	handle_non_numeric_arg(char *arg)
-{
-	ft_fprintf(2, "exit\n");
-	exit(ft_handle_error(14, 2, arg, NULL));
-}
-
-static void	exit_with_numeric_code(char *arg)
-{
-	long long	exit_code;
-
-	exit_code = ft_atoll(arg);
-	exit((int)(exit_code % 256));
-}
-
-/**
  * ENGLISH: Implements the exit command, handling optional numeric arguments
  * 			and error cases.
  *
@@ -95,7 +34,7 @@ int	ft_exit(t_cmd *cmd)
 	args = cmd->argv;
 	if (!args)
 		exit(0);
-	argc = count_exit_args(args);
+	argc = ft_count_arg(args);
 	if (argc == 1)
 		exit(0);
 	else if (argc > 2)
@@ -104,8 +43,11 @@ int	ft_exit(t_cmd *cmd)
 		return (ft_handle_error(7, EXIT_FAILURE, NULL, NULL));
 	}
 	else if (!ft_is_numeric(args[1]))
-		handle_non_numeric_arg(args[1]);
+	{
+		ft_fprintf(2, "exit\n");
+		exit(ft_handle_error(14, 2, args[1], NULL));
+	}
 	else
-		exit_with_numeric_code(args[1]);
+		exit((int)(ft_atoll(args[1]) % 256));
 	return (0);
 }

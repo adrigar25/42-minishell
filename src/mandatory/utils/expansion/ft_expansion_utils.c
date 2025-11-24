@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expansion_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/16 21:09:30 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 17:41:10 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
  *
  * @returns SUCCESS (0) on success, ERROR (1) on memory allocation failure. /
  *          SUCCESS (0) en caso de éxito,
-	ERROR (1) en caso de fallo de asignación de memoria.
+ *          ERROR (1) en caso de fallo de asignación de memoria.
  */
 int	ft_copy_literal(char **dst, char *arg, int start, int end)
 {

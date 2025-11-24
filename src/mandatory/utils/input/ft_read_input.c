@@ -3,15 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   ft_read_input.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/20 19:56:57 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 18:03:31 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+/**
+ * ENGLISH: Reads input from the user, handling both interactive
+ *          and non-interactive modes.
+ *
+ * SPANISH: Lee la entrada del usuario, manejando tanto los modos
+ *          interactivo como no interactivo.
+ *
+ * @param input Pointer to store the read input string. /
+ *              Puntero para almacenar la cadena de entrada leída.
+ * @param data  Pointer to the shell data structure. /
+ *              Puntero a la estructura de datos del shell.
+ *
+ * @returns 1 on successful input read, 0 on EOF or error. /
+ *          1 en caso de lectura de entrada exitosa, 0 en EOF o error.
+ */
 static char	*read_interactive(t_data *data)
 {
 	char	*prompt;
@@ -23,6 +38,21 @@ static char	*read_interactive(t_data *data)
 	return (input);
 }
 
+/**
+ * ENGLISH: Reads input in non-interactive mode (e.g., from a pipe or file).
+ *          It reads a line from standard input and removes the trailing
+ *          newline.
+ *
+ * SPANISH: Lee la entrada en modo no interactivo (por ejemplo, desde una
+ *          tubería o archivo).
+ *          Lee una línea de la entrada estándar y elimina la nueva línea
+ *          final.
+ *
+ * @returns The read input string without the trailing newline, or NULL on EOF
+ * 		or error. /
+ * 		La cadena de entrada leída sin la nueva línea final, o NULL en EOF
+ * 		o error.
+ */
 static char	*read_noninteractive(void)
 {
 	char	*input;
@@ -38,6 +68,24 @@ static char	*read_noninteractive(void)
 	return (input);
 }
 
+/**
+ * ENGLISH: Reads input from the user, handling both interactive
+ *          and non-interactive modes. It continues to prompt until
+ *          a non-empty input is received or EOF occurs.
+ *
+ * SPANISH: Lee la entrada del usuario, manejando tanto los modos
+ *          interactivo como no interactivo.
+ *          Continúa solicitando hasta que se reciba una entrada
+ *          no vacía o ocurra EOF.
+ *
+ * @param input Pointer to store the read input string. /
+ *              Puntero para almacenar la cadena de entrada leída.
+ * @param data  Pointer to the shell data structure. /
+ *              Puntero a la estructura de datos del shell.
+ *
+ * @returns 1 on successful input read, 0 on EOF or error. /
+ *          1 en caso de lectura de entrada exitosa, 0 en EOF o error.
+ */
 int	ft_read_input(char **input, t_data *data)
 {
 	while (1)

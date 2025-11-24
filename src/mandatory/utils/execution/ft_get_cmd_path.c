@@ -3,28 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   ft_get_cmd_path.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 16:30:20 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/19 18:43:24 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 17:38:47 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 /**
- * ENGLISH: Gets the full path of a command by searching in the PATH
- * 			environment variable.
+ * ENGLISH: Retrieves the full path of a command by searching through the
+ * 		directories listed in the PATH environment variable.
  *
- * SPANISH: Obtiene la ruta completa de un comando buscando en la variable
- * 			de entorno PATH.
+ * SPANISH: Recupera la ruta completa de un comando buscando en los
+ * 		directorios listados en la variable de entorno PATH.
  *
- * @param cmd   The command to search for. /
- *              El comando a buscar.
+ * @param cmd   The command to find. /
+ * 			El comando a encontrar.
+ * @param envp  The environment variables. /
+ * 			Las variables de entorno.
  *
- * @returns The full path to the command if found, or NULL otherwise. /
- *          La ruta completa al comando si se encuentra, o NULL en caso
- *           contrario.
+ * @returns
+ * 		- If the command contains a '/', it is assumed to be a full or relative
+ * 		path and is returned as is. /
+ * 		Si el comando contiene un '/', se asume que es una ruta completa o
+ * 		relativa y se devuelve tal cual.
+ *
+ * 		- If the command is found in one of the PATH directories and is
+ * 		executable, its full path is returned. /
+ * 		Si el comando se encuentra en uno de los directorios de PATH y es
+ * 		ejecutable, se devuelve su ruta completa.
+ *
+ * 		- If the command is not found, NULL is returned. /
+ * 		Si el comando no se encuentra, se devuelve NULL.
  */
 char	*ft_get_cmd_path(char *cmd, char **envp)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 17:16:33 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/19 18:54:10 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 16:58:41 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,14 @@ static char	*ft_get_target_dir(char **argv, char **envp)
 		return (argv[1]);
 }
 
+/**
+ * ENGLISH: Checks for errors when retrieving the current working directory.
+ *
+ * SPANISH: Verifica errores al obtener el directorio de trabajo actual.
+ *
+ * @returns 1 if no error occurred, 0 otherwise.
+ *          1 si no ocurrió ningún error, 0 en caso contrario.
+ */
 static int	ft_check_getcwd_error(void)
 {
 	char	*check_cwd;
@@ -52,6 +60,21 @@ static int	ft_check_getcwd_error(void)
 	return (1);
 }
 
+/**
+ * ENGLISH: Handles successful directory change for the 'cd' command.
+ *
+ * SPANISH: Maneja el cambio de directorio exitoso para el comando 'cd'.
+ *
+ * @param target_dir The target directory that was changed to.
+ *                   El directorio de destino al que se cambió.
+ * @param prev       Indicates if the previous directory should be printed.
+ *                   Indica si se debe imprimir el directorio anterior.
+ * @param envp       A pointer to the environment variables array.
+ *                   Un puntero al array de variables de entorno.
+ *
+ * @returns 0 on success.
+ *          0 en caso de éxito.
+ */
 static int	ft_handle_chdir_success(char *target_dir, int prev, char ***envp)
 {
 	int	should_normalize;

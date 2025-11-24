@@ -6,7 +6,7 @@
 #    By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 13:25:07 by adriescr          #+#    #+#              #
-#    Updated: 2025/11/13 17:07:20 by adriescr         ###   ########.fr        #
+#    Updated: 2025/11/24 17:05:14 by adriescr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,6 +53,7 @@ MY_LIBFT = \
 	ft_is_digit.c \
 	ft_is_number.c \
 	ft_atoi.c \
+	ft_atoll.c \
 	ft_itoa.c \
 	ft_split.c \
 	ft_count_words.c \

@@ -3,15 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   ft_handle_error.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 16:27:37 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/09 14:02:33 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 17:31:21 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+/**
+ * ENGLISH: Prints execution-related error messages based on the error code.
+ *
+ * SPANISH: Imprime mensajes de error relacionados con la ejecución
+ * 			basados en el código de error.
+ *
+ * @param code  The error code. /
+ *              El código de error.
+ * @param msg   The message argument for formatting. /
+ *              El argumento de mensaje para formatear.
+ */
 static void	print_exec_errors(int code, char *msg)
 {
 	if (code == 1)
@@ -24,6 +35,17 @@ static void	print_exec_errors(int code, char *msg)
 		ft_fprintf(2, ERROR_NO_SUCH_FILE, msg);
 }
 
+/**
+ * ENGLISH: Prints syntax-related error messages based on the error code.
+ *
+ * SPANISH: Imprime mensajes de error relacionados con la sintaxis
+ * 			basados en el código de error.
+ *
+ * @param code  The error code. /
+ *              El código de error.
+ * @param msg   The message argument for formatting. /
+ *              El argumento de mensaje para formatear.
+ */
 static void	print_syntax_errors(int code, char *msg)
 {
 	if (code == 5)
@@ -32,6 +54,20 @@ static void	print_syntax_errors(int code, char *msg)
 		ft_fprintf(2, ERROR_SYNTAX_TOKEN, msg);
 }
 
+/**
+ * ENGLISH: Prints error messages related to built-in commands
+ *          and environment handling based on the error code.
+ *
+ * SPANISH: Imprime mensajes de error relacionados con comandos
+ * 		integrados y manejo de entorno basados en el código de error.
+ *
+ * @param code  The error code. /
+ * 			El código de error.
+ * @param msg   The first message argument for formatting. /
+ * 			El primer argumento de mensaje para formatear.
+ * @param msg2  The second message argument for formatting. /
+ * 			El segundo argumento de mensaje para formatear.
+ */
 static void	print_builtin_env_errors(int code, char *msg, char *msg2)
 {
 	if (code == 7)
@@ -46,6 +82,17 @@ static void	print_builtin_env_errors(int code, char *msg, char *msg2)
 		ft_fprintf(2, ERROR_NUM_ARG_REQ, msg);
 }
 
+/**
+ * ENGLISH: Prints redirection-related error messages based on the error code.
+ *
+ * SPANISH: Imprime mensajes de error relacionados con redirecciones
+ * 			basados en el código de error.
+ *
+ * @param code  The error code. /
+ *              El código de error.
+ * @param msg   The message argument for formatting. /
+ *              El argumento de mensaje para formatear.
+ */
 static void	print_redir_errors(int code, char *msg)
 {
 	if (code == 9)

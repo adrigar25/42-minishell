@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_search_in_dir.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:26:48 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/19 20:02:58 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/24 17:46:32 by adriescr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
  *          se encuentra, NULL en caso contrario.
  */
 static char	*search_file_in_entries(DIR *d, const char *dir,
-	const char *filename)
+		const char *filename)
 {
 	struct dirent	*entry;
 	char			*result;
@@ -59,22 +59,25 @@ static char	*search_file_in_entries(DIR *d, const char *dir,
 }
 
 /**
- * ENGLISH: Searches for a file with the given filename in the specified
- * 			directory.
- *          If not found, recursively searches in subdirectories.
+ * ENGLISH: Searches for a file with the given name in the specified
+ * 			directory and its subdirectories.
  *
- * SPANISH: Busca un archivo con el nombre dado en el directorio especificado.
- *          Si no se encuentra, busca recursivamente en los subdirectorios.
+ * SPANISH: Busca un archivo con el nombre dado en el directorio
+ * 			especificado y sus subdirectorios.
  *
- * @param dir       The directory to search in. /
- *                  El directorio donde buscar.
+ * @param dir      Path to the directory being searched. /
+ *                 Ruta al directorio que se está buscando.
  *
- * @param filename  The name of the file to search for. /
- *                  El nombre del archivo a buscar.
+ * @param filename Name of the file to search for. /
+ *                 Nombre del archivo a buscar.
  *
- * @returns The full path to the file if found, or NULL if not found. /
- *          La ruta completa al archivo si se encuentra, o NULL si
- *          no se encuentra.
+ * @param envp     Environment variables array. /
+ *                 Array de variables de entorno.
+ *
+ * @returns A newly allocated string with the full path if found,
+ *          NULL otherwise. /
+ *          Una cadena recién asignada con la ruta completa si
+ *          se encuentra, NULL en caso contrario.
  */
 char	*ft_search_in_dir(const char *dir, const char *filename, char **envp)
 {
