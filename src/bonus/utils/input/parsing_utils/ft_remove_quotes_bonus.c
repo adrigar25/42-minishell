@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_remove_quotes_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:16:59 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/24 18:46:39 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/12/02 17:38:28 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,28 +113,10 @@ static void	copy_quoted(const char *str, int *i, char *res, int *j)
 		(*i)++;
 }
 
-/**
- * ENGLISH: Removes surrounding quotes from the input string.
- *
- * SPANISH: Elimina las comillas que rodean la cadena de entrada.
- *
- * @param str The input string with potential quotes. /
- *            La cadena de entrada con posibles comillas.
- * @param i   The current index in the input string. /
- * 			El índice actual en la cadena de entrada.
- * @param res The result string where the unquoted section will be copied. /
- * 			La cadena de resultado donde se copiará la sección sin comillas.
- * @param j   The current index in the result string. /
- * 			El índice actual en la cadena de resultado.
- *
- * @returns A new string without surrounding quotes, or NULL on memory
- *          allocation failure. /
- *          Una nueva cadena sin comillas que la rodean, o NULL en caso de
- *          fallo de asignación de memoria.
- */
-static void	copy_char(const char *str, int *i, char *res, int *j)
+static void	copy_escaped_quote(const char *str, int *i, char *res, int *j)
 {
-	res[(*j)++] = str[(*i)++];
+	res[(*j)++] = str[*i + 1];
+	*i += 2;
 }
 
 /**
@@ -169,11 +151,13 @@ char	*ft_remove_quotes(const char *str)
 	j = 0;
 	while (str[i])
 	{
-		if ((str[i] == '\'' || str[i] == '"') && ft_has_closing_quote(str + i
-				+ 1, str[i]))
+		if (str[i] == 1 && (str[i + 1] == '\'' || str[i + 1] == '"'))
+			copy_escaped_quote(str, &i, res, &j);
+		else if ((str[i] == '\'' || str[i] == '"') && ft_has_closing_quote(str
+				+ i + 1, str[i]))
 			copy_quoted(str, &i, res, &j);
 		else
-			copy_char(str, &i, res, &j);
+			res[j++] = str[i++];
 	}
 	res[j] = '\0';
 	return (res);

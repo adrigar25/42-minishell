@@ -3,106 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   ft_process_arg.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/24 17:46:05 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/12/02 17:31:22 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-/**
- * ENGLISH: Handles expansion when a dollar sign is followed by a quote.
- * 		It extracts the content within the quotes and appends it to the
- * 		destination string.
- *
- * SPANISH: Maneja la expansión cuando un signo de dólar es seguido por una
- * 		comilla.
- * 		Extrae el contenido dentro de las comillas y lo añade a la cadena de
- * 		destino.
- *
- * @param dst Pointer to the destination string. /
- * 			Puntero a la cadena de destino.
- * @param arg The argument string containing the dollar sign and quotes. /
- * 			La cadena de argumento que contiene el signo de dólar y las
- * 			comillas.
- * @param j   Pointer to the current index in the argument string. /
- * 			Puntero al índice actual en la cadena de argumento.
- *
- * @returns SUCCESS on successful expansion, or ERROR on memory allocation
- *          failure. /
- *          SUCCESS en caso de expansión exitosa, o ERROR en caso de fallo de
- *          asignación de memoria.
- */
-static int	ft_handle_quoted_after_dollar(char **dst, char *arg, int *j)
+static void	update_quote_state(char c, int *in_dquote, int *in_squote)
 {
-	int		start;
-	int		end;
-	char	*content;
-	int		ret;
-
-	if (!arg[*j + 1] || !arg[*j + 2])
-	{
-		(*j)++;
-		return (ft_append(dst, "$"));
-	}
-	start = *j + 2;
-	end = start;
-	while (arg[end] && arg[end] != arg[*j + 1])
-		end++;
-	if (arg[end] != arg[*j + 1])
-		return ((*j)++, ft_append(dst, "$"));
-	content = ft_substr(arg, start, end - start);
-	if (!content)
-		return (ERROR);
-	ret = ft_append(dst, content);
-	free(content);
-	*j = end + 1;
-	return (ret);
+	if (c == '"' && !(*in_squote))
+		*in_dquote = !(*in_dquote);
+	else if (c == '\'' && !(*in_dquote))
+		*in_squote = !(*in_squote);
 }
 
-/**
- * ENGLISH: Expands a variable in the argument string starting at index j.
- * 		It handles special cases for quotes, exit status, and process ID.
- * 		Otherwise, it expands environment variables.
- *
- * SPANISH: Expande una variable en la cadena de argumento comenzando en el
- * 		índice j.
- * 		Maneja casos especiales para comillas, estado de salida e ID de
- * 		proceso.
- * 		De lo contrario, expande variables de entorno.
- *
- * @param dst Pointer to the destination string. /
- * 			Puntero a la cadena de destino.
- * @param arg The argument string containing the variable to expand. /
- * 			La cadena de argumento que contiene la variable a expandir.
- * @param j   Pointer to the current index in the argument string. /
- * 			Puntero al índice actual en la cadena de argumento.
- * @param data Pointer to the shell data structure containing environment
- * 			information. /
- * 			Puntero a la estructura de datos del shell que contiene
- * 			información del entorno.
- *
- * @returns SUCCESS on successful expansion, or ERROR on memory allocation
- *          failure. /
- *          SUCCESS en caso de expansión exitosa, o ERROR en caso de fallo de
- *          asignación de memoria.
- */
-static int	ft_expand_var(char **dst, char *arg, int *j, t_data *data)
+static int	process_loop(char *arg, char **dst, t_data *data)
 {
-	if (arg[*j + 1] == '"' && ft_strchr(arg + *j + 2, '\''))
+	int	j;
+	int	start;
+	int	in_dquote;
+	int	in_squote;
+
+	j = 0;
+	in_dquote = 0;
+	in_squote = 0;
+	while (arg[j])
 	{
-		(*j)++;
-		return (SUCCESS);
+		start = j;
+		while (arg[j] && arg[j] != '$')
+		{
+			update_quote_state(arg[j], &in_dquote, &in_squote);
+			j++;
+		}
+		if ((ft_copy_literal(dst, arg, start, j) == ERROR) || (arg[j] == '$'
+				&& !in_squote && (ft_expand_var(dst, arg, &j, data) == ERROR)))
+			return (ERROR);
+		if (arg[j] == '$' && in_squote && ft_append(dst, "$") == ERROR)
+			return (ERROR);
+		if (arg[j] == '$' && in_squote)
+			j++;
 	}
-	if (arg[*j + 1] == '"')
-		return (ft_handle_quoted_after_dollar(dst, arg, j));
-	if (arg[*j + 1] == '?')
-		return (ft_expand_exit_status(dst, j, data));
-	if (arg[*j + 1] == '$')
-		return (ft_expand_pid(dst, j, data));
-	return (ft_expand_env_var(dst, arg, j, data));
+	return (SUCCESS);
 }
 
 /**
@@ -127,29 +71,28 @@ static int	ft_expand_var(char **dst, char *arg, int *j, t_data *data)
  */
 char	*ft_process_arg(char *arg, t_data *data)
 {
-	int		j;
 	char	*dst;
-	int		start;
+	char	*tmp;
+	int		len;
 
 	if (!arg)
 		return (NULL);
-	if (arg[0] == '\'' && arg[ft_strlen(arg) - 1] == '\'')
-		return (ft_substr(arg, 0, ft_strlen(arg)));
+	len = ft_strlen(arg);
+	if (arg[0] == '\'' && arg[len - 1] == '\'')
+		return (ft_substr(arg, 0, len));
+	if (len > 3 && arg[0] == '$' && arg[1] == '\'' && arg[len - 1] == '\'')
+	{
+		tmp = ft_substr(arg, 2, len - 3);
+		if (!tmp)
+			return (NULL);
+		dst = ft_escape_quotes(tmp);
+		free(tmp);
+		return (dst);
+	}
 	dst = ft_strdup("");
 	if (!dst)
 		return (NULL);
-	j = 0;
-	while (arg[j])
-	{
-		start = j;
-		while (arg[j] && arg[j] != '$')
-			j++;
-		if ((ft_copy_literal(&dst, arg, start, j) == ERROR) || (arg[j] == '$'
-				&& (ft_expand_var(&dst, arg, &j, data) == ERROR)))
-		{
-			free(dst);
-			return (NULL);
-		}
-	}
+	if (process_loop(arg, &dst, data) == ERROR)
+		return (free(dst), NULL);
 	return (dst);
 }

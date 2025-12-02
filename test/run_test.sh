@@ -6,7 +6,7 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Custom shell path (project root /minishell)
-CUSTOM_SHELL="$SCRIPT_DIR/../minishell"
+CUSTOM_SHELL="$SCRIPT_DIR/../minishell_bonus"
 
 # Directory containing test cases (project_root/tests)
 TEST_DIR="$SCRIPT_DIR/tests"

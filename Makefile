@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 18:48:28 by adriescr          #+#    #+#              #
-#    Updated: 2025/11/20 19:22:54 by agarcia          ###   ########.fr        #
+#    Updated: 2025/12/02 17:35:28 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -105,6 +105,9 @@ MINISHELL_SRCS = \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/expansion/ft_expand_env_var.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/expansion/ft_expand_pid.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/expansion/ft_process_arg.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/expansion/ft_escape_quotes.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/expansion/ft_handle_quoted_after_dollar.c \
+	$(MANDATORY_DIR)/$(UTILS_DIR)/expansion/ft_expand_var.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/expansion/ft_handle_env_expansion.c \
 	$(MANDATORY_DIR)/$(UTILS_DIR)/expansion/ft_append.c \
 
@@ -178,6 +181,9 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_expand_env_var_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_expand_pid_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_process_arg_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_escape_quotes_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_handle_quoted_after_dollar_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_expand_var_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_handle_env_expansion_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/expansion/ft_append_bonus.c \
 

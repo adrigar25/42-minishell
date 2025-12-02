@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expand_env_var.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 10:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/24 18:13:40 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/12/02 17:38:10 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+static int	is_invalid_var_char(char c)
+{
+	if (!c || c == '\'' || c == '"' || c == ' ' || c == '\t')
+		return (1);
+	return (0);
+}
 
 /**
  * ENGLISH: Expands an environment variable in the given argument string.
@@ -43,13 +50,14 @@ int	ft_expand_env_var(char **dst, char *arg, int *j, t_data *data)
 	char	*env_name;
 	char	*env_value;
 
-	if (!arg[*j + 1] || arg[*j + 1] == '\'' || arg[*j + 1] == '"'
-		|| arg[*j + 1] == ' ' || arg[*j + 1] == '\t')
+	if (is_invalid_var_char(arg[*j + 1]))
 	{
 		(*j)++;
 		return (ft_append(dst, "$"));
 	}
 	(*j)++;
+	if (ft_is_digit(arg[*j]))
+		return ((*j)++, SUCCESS);
 	start = *j;
 	while (arg[*j] && (ft_isalnum(arg[*j]) || arg[*j] == '_'))
 		(*j)++;

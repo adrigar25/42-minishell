@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 01:25:02 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/24 16:57:12 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/12/02 17:35:27 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ int		ft_expand_exit_status(char **dst, int *j, t_data *data);
 int		ft_expand_env_var(char **dst, char *arg, int *j, t_data *data);
 int		ft_expand_pid(char **dst, int *j, t_data *data);
 char	*ft_process_arg(char *arg, t_data *data);
+char	*ft_escape_quotes(char *str);
+int		ft_handle_quoted_after_dollar(char **dst, char *arg, int *j);
+int		ft_expand_var(char **dst, char *arg, int *j, t_data *data);
 int		ft_is_escaped(const char *s, int pos);
 char	**ft_handle_env_expansion(char **argv, t_data *data);
 
