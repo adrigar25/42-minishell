@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_types_bonus.h                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 23:55:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/24 18:24:49 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/12/03 01:06:21 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ typedef struct s_data
  * 					redirection). /
  * 					El operador asociado con el comando (por ejemplo, tubería,
  * 					redirección).
+ * @member subshell  Pointer to subshell command list for parentheses. /
+ * 					Puntero a la lista de comandos del subshell para paréntesis.
  * @member data      Pointer to the global data structure. /
  * 					Puntero a la estructura de datos global.
  * @member next      Pointer to the next command node (for linked list). /
@@ -77,6 +79,7 @@ typedef struct s_cmd
 	int				has_error;
 	int				index;
 	int				op;
+	struct s_cmd	*subshell;
 	t_data			*data;
 	struct s_cmd	*next;
 }					t_cmd;

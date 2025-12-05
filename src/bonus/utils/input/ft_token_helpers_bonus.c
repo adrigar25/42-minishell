@@ -37,7 +37,8 @@ void	ft_skip_quotes_and_escapes(const char *cmd, int *i, int *in_quote,
 		char *quote_char)
 {
 	while (cmd[*i] && ((*in_quote) || (!ft_isspace(cmd[*i]) && cmd[*i] != '|'
-				&& cmd[*i] != '<' && cmd[*i] != '>' && cmd[*i] != '&')))
+				&& cmd[*i] != '<' && cmd[*i] != '>' && cmd[*i] != '&'
+				&& cmd[*i] != '(' && cmd[*i] != ')')))
 	{
 		if (!(*in_quote) && (cmd[*i] == '\'' || cmd[*i] == '"'))
 		{
@@ -56,6 +57,24 @@ void	ft_skip_quotes_and_escapes(const char *cmd, int *i, int *in_quote,
 		else
 			(*i)++;
 	}
+}
+
+static int	ft_handle_redir_op(const char *cmd, int *i, int escaped)
+{
+	if ((cmd[*i] == '<' || cmd[*i] == '>') && cmd[*i + 1] == cmd[*i]
+		&& !escaped)
+	{
+		(*i) += 2;
+		ft_skip_whitespace(cmd, i);
+		return (1);
+	}
+	else if ((cmd[*i] == '<' || cmd[*i] == '>') && !escaped)
+	{
+		(*i)++;
+		ft_skip_whitespace(cmd, i);
+		return (1);
+	}
+	return (0);
 }
 
 /**
@@ -77,20 +96,9 @@ int	ft_handle_operator(const char *cmd, int *i)
 	int	escaped;
 
 	escaped = ft_is_escaped(cmd, *i);
-	if ((cmd[*i] == '<' || cmd[*i] == '>') && cmd[*i + 1] == cmd[*i]
-		&& !escaped)
-	{
-		(*i) += 2;
-		ft_skip_whitespace(cmd, i);
+	if (ft_handle_redir_op(cmd, i, escaped))
 		return (1);
-	}
-	else if ((cmd[*i] == '<' || cmd[*i] == '>') && !escaped)
-	{
-		(*i)++;
-		ft_skip_whitespace(cmd, i);
-		return (1);
-	}
-	else if ((cmd[*i] == '|' || cmd[*i] == '&') && !escaped)
+	if ((cmd[*i] == '|' || cmd[*i] == '&') && !escaped)
 	{
 		if (cmd[*i + 1] == cmd[*i] && !ft_is_escaped(cmd, *i + 1))
 			(*i) += 2;
@@ -98,5 +106,7 @@ int	ft_handle_operator(const char *cmd, int *i)
 			(*i)++;
 		return (1);
 	}
+	if ((cmd[*i] == '(' || cmd[*i] == ')') && !escaped)
+		return ((*i)++, 1);
 	return (0);
 }

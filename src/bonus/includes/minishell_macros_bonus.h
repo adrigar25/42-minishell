@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 23:55:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/19 19:02:38 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/12/03 01:06:21 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,6 @@ not a valid identifier\n"
 # define OP_PIPE 1
 # define OP_OR 2
 # define OP_AND 3
+# define OP_SUBSHELL 4
 
 #endif /* MINISHELL_MACROS_BONUS_H */

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 00:33:34 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/20 15:38:57 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/12/03 01:15:57 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,32 +34,37 @@
  * @returns 0 on success, -1 on memory allocation failure.
  *          0 en caso de éxito, -1 en caso de fallo de asignación de memoria.
  */
-static int	ft_handle_token(const char *input, char **args, int *i, int *j)
+static int	ft_extract_word(const char *input, char **args, int *i, int *j)
 {
 	int	start;
 
+	start = *i;
+	while (input[*i] && (!ft_strchr("<>|()", input[*i])
+			|| ft_is_in_quotes(input, *i) || ft_is_escaped(input, *i))
+		&& (!ft_isspace(input[*i]) || ft_is_in_quotes(input, *i)))
+		*i += 1 + (input[*i] == '\\' && input[*i + 1]);
+	if (*i > start)
+	{
+		args[*j] = ft_substr((char *)input, start, *i - start);
+		*j += 1;
+	}
+	return (0);
+}
+
+static int	ft_handle_token(const char *input, char **args, int *i, int *j)
+{
 	ft_skip_whitespace(input, i);
-	if (ft_strchr("<>|", input[*i]) && !ft_is_escaped(input, *i)
+	if (ft_strchr("<>|()", input[*i]) && !ft_is_escaped(input, *i)
 		&& !ft_is_in_quotes(input, *i))
 	{
-		args[*j] = ft_substr((char *)input, *i, 1 + (input[*i
-					+ 1] == input[*i]));
+		args[*j] = ft_substr((char *)input, *i, 1 + (input[*i + 1] == input[*i]
+					&& input[*i] != '(' && input[*i] != ')'));
 		*j += 1;
-		*i += 1 + (input[*i + 1] == input[*i]);
+		*i += 1 + (input[*i + 1] == input[*i] && input[*i] != '('
+				&& input[*i] != ')');
 	}
 	else
-	{
-		start = *i;
-		while (input[*i] && (!ft_strchr("<>|", input[*i])
-				|| ft_is_in_quotes(input, *i) || ft_is_escaped(input, *i))
-			&& (!ft_isspace(input[*i]) || ft_is_in_quotes(input, *i)))
-			*i += 1 + (input[*i] == '\\' && input[*i + 1]);
-		if (*i > start)
-		{
-			args[*j] = ft_substr((char *)input, start, *i - start);
-			*j += 1;
-		}
-	}
+		ft_extract_word(input, args, i, j);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 23:55:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/12/02 17:35:29 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/12/03 01:06:21 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int		ft_is_builtin(t_cmd *cmd);
 int		ft_execute_cmds(t_cmd *cmd_list, t_data **data);
 int		ft_exec_bin(t_cmd *cmd);
 int		ft_should_execute(t_cmd **current, t_data *data);
+int		ft_execute_subshell(t_cmd *cmd, t_data **data, pid_t *pids);
 
 /* Prompt */
 
@@ -86,6 +87,7 @@ t_cmd	*ft_parse_input(t_data *data);
 int		ft_append(char **dst, const char *src);
 t_cmd	*ft_create_cmd_node(int index);
 void	ft_add_arg_to_cmd(t_cmd *cmd, char *arg);
+void	ft_free_cmd_list(t_cmd *cmd_list);
 int		ft_assign_fd(t_cmd **cmd, char *filename, char *type);
 int		ft_redir(t_cmd *cmd, char **argv, int i);
 int		ft_process_op(t_cmd **current_cmd, char *arg, int *cmd_index,
@@ -93,6 +95,8 @@ int		ft_process_op(t_cmd **current_cmd, char *arg, int *cmd_index,
 int		ft_process_token(t_cmd **current_cmd, char **argv, int i,
 			int *cmd_index);
 int		ft_has_closing_quote(const char *s, char quote);
+int		ft_process_subshell(t_cmd **current_cmd, t_data *data, int *i,
+			int *cmd_index);
 
 /* ENV */
 

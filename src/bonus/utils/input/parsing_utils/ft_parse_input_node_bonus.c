@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:51:29 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/20 19:48:33 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/12/03 01:06:21 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ t_cmd	*ft_create_cmd_node(int index)
 	new_cmd->outfd = STDOUT_FILENO;
 	new_cmd->has_error = 0;
 	new_cmd->op = 0;
+	new_cmd->subshell = NULL;
 	new_cmd->index = index;
 	new_cmd->next = NULL;
 	return (new_cmd);

@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/03 18:48:28 by adriescr          #+#    #+#              #
-#    Updated: 2025/12/02 17:35:28 by agarcia          ###   ########.fr        #
+#    Updated: 2025/12/03 01:06:21 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -128,11 +128,13 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/ft_split_input_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/ft_check_input_syntax_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/ft_parse_input_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/input/ft_free_cmd_list_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_parse_input_node_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_redir_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_redir_error_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_parse_input_op_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_parse_input_token_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_parse_subshell_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_remove_quotes_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/parsing_utils/ft_has_closing_quote_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/input/escape/ft_is_escaped_bonus.c \
@@ -166,6 +168,7 @@ MINISHELL_SRCS_BONUS = \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_is_builtin_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_setup_child_io_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_should_execute_bonus.c \
+	$(BONUS_DIR)/$(UTILS_DIR)/execution/ft_execute_subshell_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/heredoc/ft_heredoc_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/signals/ft_sigint_handler_bonus.c \
 	$(BONUS_DIR)/$(UTILS_DIR)/signals/ft_init_signals_bonus.c \

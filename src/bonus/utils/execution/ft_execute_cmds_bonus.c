@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 00:32:13 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/25 00:12:46 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/12/03 01:15:57 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,23 @@ static void	ft_wait_last(t_data **data, pid_t *pids, int idx)
  * @returns The exit status of the last command executed. /
  *          El estado de salida del último comando ejecutado.
  */
+static int	ft_exec_current_cmd(t_cmd *current, t_cmd *cmd_list, t_data **data,
+		pid_t *pids)
+{
+	if (current->subshell)
+	{
+		if (ft_execute_subshell(current, data, pids) == ERROR)
+			return (ERROR);
+	}
+	else if (ft_can_exec_builtin_direct(current))
+		(*data)->last_exit_status = ft_exec_builtin(current, data);
+	else if (ft_fork_exec(current, cmd_list, data, pids) == ERROR)
+		return (ERROR);
+	if (!current->next || current->next->op != OP_PIPE)
+		ft_wait_last(data, pids, current->index);
+	return (SUCCESS);
+}
+
 int	ft_execute_cmds(t_cmd *cmd_list, t_data **data)
 {
 	t_cmd	*current;
@@ -142,12 +159,8 @@ int	ft_execute_cmds(t_cmd *cmd_list, t_data **data)
 	{
 		if (ft_should_execute(&current, *data) == ERROR)
 			continue ;
-		if (ft_can_exec_builtin_direct(current))
-			(*data)->last_exit_status = ft_exec_builtin(current, data);
-		else if (ft_fork_exec(current, cmd_list, data, pids) == ERROR)
+		if (ft_exec_current_cmd(current, cmd_list, data, pids) == ERROR)
 			break ;
-		if (!current->next || current->next->op != OP_PIPE)
-			ft_wait_last(data, pids, current->index);
 		current = current->next;
 	}
 	ft_finish_execution(pids, cmd_list, *data);

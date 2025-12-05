@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_count_args_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 14:20:19 by adriescr          #+#    #+#             */
-/*   Updated: 2025/11/24 18:57:55 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/12/03 01:08:08 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ static void	skip_quotes_and_escapes(const char *cmd, int *i, int *in_quote,
 		char *quote_char)
 {
 	while (cmd[*i] && ((*in_quote) || (!ft_isspace(cmd[*i]) && cmd[*i] != '|'
-				&& cmd[*i] != '<' && cmd[*i] != '>' && cmd[*i] != '&')))
+				&& cmd[*i] != '<' && cmd[*i] != '>' && cmd[*i] != '&'
+				&& cmd[*i] != '(' && cmd[*i] != ')')))
 	{
 		if (!(*in_quote) && (cmd[*i] == '\'' || cmd[*i] == '"'))
 		{
@@ -120,16 +121,12 @@ static int	handle_operator(const char *cmd, int *i, int in_quote,
 	if ((cmd[*i] == '<' || cmd[*i] == '>') && cmd[*i + 1] == cmd[*i]
 		&& !is_escaped(cmd, *i, in_quote, quote_char))
 	{
-		(*i) += 2;
-		ft_skip_whitespace(cmd, i);
-		return (1);
+		return ((*i) += 2, ft_skip_whitespace(cmd, i), 1);
 	}
 	else if ((cmd[*i] == '<' || cmd[*i] == '>') && !is_escaped(cmd, *i,
 			in_quote, quote_char))
 	{
-		(*i)++;
-		ft_skip_whitespace(cmd, i);
-		return (1);
+		return ((*i)++, ft_skip_whitespace(cmd, i), 1);
 	}
 	else if ((cmd[*i] == '|' || cmd[*i] == '&') && !is_escaped(cmd, *i,
 			in_quote, quote_char))
@@ -141,6 +138,9 @@ static int	handle_operator(const char *cmd, int *i, int in_quote,
 			(*i)++;
 		return (1);
 	}
+	else if ((cmd[*i] == '(' || cmd[*i] == ')') && !is_escaped(cmd, *i,
+			in_quote, quote_char))
+		return ((*i)++, 1);
 	return (0);
 }
 

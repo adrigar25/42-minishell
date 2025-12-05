@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_finish_execution_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 20:10:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/24 18:37:42 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/12/03 01:06:21 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,19 +157,13 @@ int	ft_finish_execution(pid_t *pids, t_cmd *cmd_list, t_data *data)
 	int		last_exit_status;
 	t_cmd	*tmp;
 
+	(void)tmp;
 	last_exit_status = data->last_exit_status;
 	ft_close_fds(cmd_list);
 	ft_wait_for_children(pids, data->cmd_count, &last_exit_status);
 	data->last_exit_status = last_exit_status;
 	free(pids);
-	while (cmd_list)
-	{
-		tmp = cmd_list->next;
-		ft_free_matrix(cmd_list->argv);
-		free(cmd_list);
-		cmd_list = tmp;
-	}
-	cmd_list = NULL;
+	ft_free_cmd_list(cmd_list);
 	if (data && data->argv)
 	{
 		ft_free_matrix(data->argv);

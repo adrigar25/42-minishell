@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:25:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/20 18:49:10 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/12/03 01:06:21 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,30 @@ static int	ft_is_pipe_like(const char *s)
  *          0 si no se encuentran errores de sintaxis,
  *          o un código de error si se detecta un error de sintaxis.
  */
+static int	ft_check_parentheses(char **argv, int argc)
+{
+	int	i;
+	int	balance;
+
+	i = 0;
+	balance = 0;
+	while (i < argc)
+	{
+		if (!ft_strcmp(argv[i], "("))
+			balance++;
+		else if (!ft_strcmp(argv[i], ")"))
+		{
+			balance--;
+			if (balance < 0)
+				return (ft_handle_error(6, 2, ")", NULL));
+		}
+		i++;
+	}
+	if (balance != 0)
+		return (ft_handle_error(6, 2, "(", NULL));
+	return (0);
+}
+
 int	ft_check_input_syntax(char **argv, int argc)
 {
 	int	i;
@@ -99,7 +123,7 @@ int	ft_check_input_syntax(char **argv, int argc)
 	if (!argv || argc == 0)
 		return (0);
 	if (!ft_strcmp(argv[0], "|") || !ft_strcmp(argv[0], "&")
-		|| ft_is_logical_op(argv[0]))
+		|| ft_is_logical_op(argv[0]) || !ft_strcmp(argv[0], ")"))
 	{
 		return (ft_handle_error(6, 2, argv[0], NULL));
 	}
@@ -117,5 +141,5 @@ int	ft_check_input_syntax(char **argv, int argc)
 				return (ft_handle_error(6, 2, argv[i + 1], NULL));
 		}
 	}
-	return (0);
+	return (ft_check_parentheses(argv, argc));
 }

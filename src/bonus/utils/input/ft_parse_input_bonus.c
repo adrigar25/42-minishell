@@ -3,35 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_input_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adriescr <adriescr@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 18:57:27 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/24 18:48:38 by adriescr         ###   ########.fr       */
+/*   Updated: 2025/12/03 01:15:57 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell_bonus.h"
-
-/**
- * ENGLISH: Frees the memory allocated for the command list.
- *
- * SPANISH: Libera la memoria asignada para la lista de comandos.
- *
- * @param cmd_list The command list to free. /
- *                 La lista de comandos a liberar.
- */
-static void	free_cmd_list(t_cmd *cmd_list)
-{
-	t_cmd	*tmp;
-
-	while (cmd_list)
-	{
-		tmp = cmd_list->next;
-		ft_free_matrix(cmd_list->argv);
-		free(cmd_list);
-		cmd_list = tmp;
-	}
-}
 
 /**
  * ENGLISH: Checks if the token is a redirection operator.
@@ -85,6 +64,33 @@ static int	ft_is_operator(char *token)
  * @returns           SUCCESS on success, ERROR on failure. /
  * 					SUCCESS en caso de éxito, ERROR en caso de fallo.
  */
+static int	ft_handle_segment_token(t_cmd **current_cmd, t_data *data, int *i,
+		int *cmd_index)
+{
+	int	ret;
+
+	if (!ft_strcmp(data->argv[*i], "("))
+		return (ft_process_subshell(current_cmd, data, i, cmd_index));
+	if (ft_is_operator(data->argv[*i]))
+	{
+		if (ft_process_op(current_cmd, data->argv[*i], cmd_index,
+				(*current_cmd)->data) == ERROR)
+			return (ERROR);
+		return (SUCCESS);
+	}
+	if (ft_is_redir(data->argv[*i]))
+	{
+		ret = ft_redir(*current_cmd, data->argv, *i);
+		if (ret == -1)
+			return (ERROR);
+		*i = ret;
+		return (SUCCESS);
+	}
+	if (ft_strcmp(data->argv[*i], ")"))
+		ft_add_arg_to_cmd(*current_cmd, ft_remove_quotes(data->argv[*i]));
+	return (SUCCESS);
+}
+
 static int	ft_process_segment(t_cmd **current_cmd, t_data *data, int *i,
 		int *cmd_index)
 {
@@ -94,21 +100,9 @@ static int	ft_process_segment(t_cmd **current_cmd, t_data *data, int *i,
 	{
 		if (*i >= data->argc)
 			return (ERROR);
-		if (ft_is_operator(data->argv[*i]))
-		{
-			if (ft_process_op(current_cmd, data->argv[*i], cmd_index,
-					(*current_cmd)->data) == ERROR)
-				return (ERROR);
-		}
-		else if (ft_is_redir(data->argv[*i]))
-		{
-			ret = ft_redir(*current_cmd, data->argv, *i);
-			if (ret == -1)
-				return (ERROR);
-			*i = ret;
-		}
-		else
-			ft_add_arg_to_cmd(*current_cmd, ft_remove_quotes(data->argv[*i]));
+		ret = ft_handle_segment_token(current_cmd, data, i, cmd_index);
+		if (ret == ERROR)
+			return (ERROR);
 	}
 	(*i)++;
 	return (SUCCESS);
@@ -148,7 +142,7 @@ t_cmd	*ft_parse_input(t_data *data)
 		ret = ft_process_segment(&current_cmd, data, &i, &cmd_index);
 	if (ret == ERROR)
 	{
-		free_cmd_list(cmd_list);
+		ft_free_cmd_list(cmd_list);
 		return (NULL);
 	}
 	return (cmd_list);

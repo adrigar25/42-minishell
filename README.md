@@ -1,4 +1,4 @@
-# minishell — enunciado (estilo 42)
+# minishell
 
 ## 🌟 Introducción
 
